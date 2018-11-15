@@ -15,8 +15,8 @@ In this document we propose the design, architecture and implementation of a sel
 + Use Smart Contracts to manage the system basics
 + User does not need to directly create BlockChain transactions
 + Data availability via distributed filesystems such as IPFS
-+ Use static a web page for interacting with the system
-+ Incentivate third parties to participate with the system infraestructure
++ Use static a web page or APP for interacting with the system
++ Incentivate third parties to participate (relays) by adding a reward system
 
 ![overall](https://github.com/vocdoni/docs/raw/master/img/overall_design.png)
 
@@ -26,17 +26,23 @@ As an identity standard Vocdoni uses [Iden3](https://iden3.io).
 
 ### Voting process
 
-1. The organizer publish a new election via the Web Frontend
+1. The organizer publish a new election via the Web Frontend or APP
 
   + Sends a transaction to the Election Smart Contract
     - The funds sent in the transaction will be used for paying the Relay Nodes
+    - The amount sent is up to the organizer, so if the election wants preference, they payment should be high enough to overcome other on-going elections
   + Publish the list of required claims for voting
-  + Generates a Merkle Tree with all identities that can vote and makes it accessible
-  + Publish the ID of the election and the Encryption Public key
-  + Publish the format and/or list of possible voting options
+  + Generates a Merkle Tree with all public keys that can vote and makes it accessible (IPFS?)
+  + Publish to the Election Smart Contract the following information:
+    + Merkle Root Census
+    + IPFS hash Census
+    + Election ID
+    + Duration (#blocks)
+    + Encryption PubKey
+    + Voting Options
+    + Funds
 
-
-2. The user sees the new election via the Web Frontend
+2. The user wants to vote in the new election
 
   + Verifies that he can vote and gets the Election ID (common for everyone)
   + Generates the nullifier and a random number
@@ -66,15 +72,17 @@ As an identity standard Vocdoni uses [Iden3](https://iden3.io).
      ```
 
 3. The p2p relay pool receives the data from the user
-  + Relay nodes veriffy the PoW, if not valid the packet is discarted
+  + Relay nodes veriffy the PoW and the Zk-snarks proof, if not valid the packet is discarted
   + Choose a set of pending votes to relay
-  + Checks the ZK-snark proof and checks the vote is not already processed
-  + Creates a Merkle Tree with the chosen pending votes
-  + Add the Merkle Tree and the data to IPFS
-  + Uploads the Merkle Root and the IPFS hash to the Blockchain
+  + Aggregate the votes from several voters in a single packet of data
+  + Add the aggregated data to IPFS
+  + Upload the IPFS hash to the Blockchain (Ethereum)
   + Keep the data until the end of the election
 
 
 4. Once the election is finished
   + The organizer publishes the private key, so the votes and proofs are available
-  + A contract will reward the relay nodes which have contributed to relay and store votes
+  + The organizer checks the votes and validate the relay operation
+  + Relay nodes will be rewarded according their contribution
+
+![voting_process](https://github.com/vocdoni/docs/raw/master/img/voting_process.png)
