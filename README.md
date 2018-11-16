@@ -16,10 +16,11 @@ We achieve this by externalizing the heavy lifting to `relay` network, and unloa
 
 + Minimize transactions to the blockchain. Can potentially be used in the Ethereum Mainnet
 + `Voter` does not write, only reads from the blockchain
-+ `Voter` can participate with an ultra-light-client (static web/app)
++ `Voter` can participate with an light-client (static web/app)
 + Secure vote anonymization using ZK-snarks
 + Data availability via distributed filesystems (IPFS)
-+ Economically incentivized, `relay` network performs actions, not possible by light-clients.
++ Economically incentivized, `relay` network performs actions, not possible by light-clients
++ The whole `process` is verifiable by any external observer
 
 ![overall](https://github.com/vocdoni/docs/raw/master/img/overall_design.png)
 
@@ -31,28 +32,29 @@ We are developing our implementation using [Iden3](https://iden3.io), for having
 Other identity schemes could eventually be integrated.
 
 ## Definitions
-_The following definitions are extensively referenced through the document_
+_The following concepts are extensively referenced through the document_
 ### Actors
 `Voter`
 + A `voter` is the end user that will vote
 + Its digital representation we call it `identity`
-+ Inside the voting process is identified by a `public key`
-+ Can interact manage all interactions through a light client (web/app)
++ Inside the voting `process` is identified by a `public key`
++ Can manage all interactions through a light client (web/app)
 
 `Organizer`
-+ The user or entity that creates and manages a specific voting process
++ The user or entity that creates and manages a specific voting `process`
 + Needs to interact with the blockchain
-+ Pays for the costs of a process
-+ Has the highest interest for the process to success
++ Pays for the costs of a `process`
++ Has the highest interest for the `process` to succeed
++ Knows the census before hand (list of `Voters` `public keys`)
 
 `Relay`
 + Is used as a proxy between the `voter` and the blockchain
 + Is a selfish actor. Good behaviour is ensured through economic incentives
 + It may have to be split into several `relay` types
-+ Develops functions that would not be possible on a light client
++ Develops functions that would not be possible on a light-client
   - It relays `vote packages` to other `relays`
   - It aggregates `vote packages` and adds them into the blockchain
-  - It validates zk-snarks proofs
+  - It validates `zk-snarks proofs`
   - It validates anti-spam proof-of-work nonce
   - It ensures data availability on IPFS
   - Is responsible for the data availability of the `vote packages` it has added (will lose stake if those are not available)
@@ -68,7 +70,7 @@ _The following definitions are extensively referenced through the document_
 
 `Census Merkle Tree`
 + A Merkle-tree made of the `public keys` of all the `voters`
-+ The Merkle-root is hosted in the blockchain as a proof the census
++ The Merkle-root is hosted in the blockchain as a proof of the census
 + The tree needs to be publicly available (IPFS) for everyone to verify it.
 + The sk-snarks circuit will use its root to validate if `voter` `public key` is part of it
 
