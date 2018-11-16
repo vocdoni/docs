@@ -12,21 +12,21 @@ In this document we propose the design, architecture of a decentralized anonymou
 
 We want to bring decentralized voting to mass adoption. This requires a solution that has a user experience at the level of current centralized solutions.
 
-+ Minimize transactions to the blockchain 
-+ Voter does not need to interact with the blockchain
-+ Secure and anonymous voting using ZK-snarks
++ Minimize transactions to the blockchain. Could potentially be used in Ethereum Mainnet
++ `Voter` does not write, only reads from the blockchain
++ `Voter` can participate with an ultra-light-client (static web/app)
++ Secure vote anonimization using ZK-snarks
 + Data availability via distributed filesystems such as IPFS
-+ Use static a web page or APP for interacting with the system
-+ Incentivate third parties to participate (relays) by adding a reward system
++ Economically incentivized, , `relay` network performs actions, not possible by light-clients.
 
 ![overall](https://github.com/vocdoni/docs/raw/master/img/overall_design.png)
 
-## Identity
+### Identity
 The system is agnostic to the identity scheme used.
 
 We are developing our implementation using [Iden3](https://iden3.io), for having the best blance of decentralization vs scalability.
 
-##Players
+## Definitions
 ### Actors
 `Voter`
 + A `voter` is the end user that will vote
@@ -45,12 +45,16 @@ We are developing our implementation using [Iden3](https://iden3.io), for having
 + Is a selfish actor. Good behaviour is ensure through economic incentives
 + It may have to be splitted into serveral `relay` types
 + Develops functions that would not be possible on a light client
-  - It relays voting transactions to other `relays`
-  - It aregates voting transactions and adds them into the blockchain
+  - It relays `vote packages` to other `relays`
+  - It aggregates `vote packages` and adds them into the blockchain
   - It validates zk-snarks proofs
+  - It validates anti-spam proof-of-work nonce
   - It ensures data aviability on IPFS
+  - Is responsibile for the data aviability of the `vote packages` it has added (will loose stake if those are not available)
+  - It exposes a IPFS proxy
   - It provides Merkle-proofs to `User` requests that they are in the `census merkle tree`
-  - Provides RPC access to the blockchain
+  - It exposes an RPC end-point to the blockchain
+  - It should run a full Ethereum node
 
 ### Elements
 
@@ -141,31 +145,49 @@ We are developing our implementation using [Iden3](https://iden3.io), for having
     - `Encrypted vote`
     - `Nullifier`
   + Potentially it can encrypt the `vote package` with one or more `relay` public keys in order to minimize IP mapping
-  + Generates a Proof-of-Work nonce  (to avoid relay node spaming)
-  + It sends the `vote package` and the nonce the `relays` pool:
+  + Generates a Proof-of-Work nonce (to avoid relay node spaming)
+  + It sends the `vote package` and the nonce the `relays` pool
 
-4. The p2p relay pool receives the data from the user
-  + Relay nodes veriffy the PoW and the Zk-snarks proof, if not valid the packet is discarted
-  + Choose a set of pending votes to relay
-  + Aggregate the votes from several voters in a single packet of data
+  4. `Relays` validate and add the `vote package` into the blockchain
+  - The p2p `relay` pool receives the `vote package` from the `user`
+  + `Relay` nodes verify the proof-of-work and the `Zk-snarks proof`, if invalid the `vote-package` is discarted
+  + Choose a set of pending `vote packages` and aggregate them into a single packet of data
   + Add the aggregated data to IPFS
-  + Upload the IPFS hash to the Blockchain (Ethereum)
-  + Keep the data until the end of the election
+  + Upload the IPFS hash to the blockchain
 
-
-4. Once the election is finished
-  + The organizer publishes the private key, so the votes and proofs are available
-  + The organizer checks the votes and validate the relay operation
+4. Once the `process` is finished
+  + The owners of the `vote encryption keys` publishes the corrsponding `private keys`, so the votes and proofs are available
+  + The `organizer` downloads and verifies the votes
+  + The `organizer` makes the `process` closing transaction.
+  + 
+  + and validates the `relay` operation
   + Relay nodes will be rewarded according their contribution
 
 ![voting_process](https://github.com/vocdoni/docs/raw/master/img/voting_process.png)
 
 
 ### Unresolved questions
-+ How to check `relay` bad behaviour?
++ Most of unresolved details are around creating a fully decentralized relay network
+  + A centralized trusted `relay` it may still be a valid option in some cases
+  + A centralized `relay` makes the system non BFT by not making data available
+  + It can also very easly map an IP adresses to votes
+  + Unless tunneled with VPN the mapping can be also done by an external observer?
+
++ How can we minimize IP adress/vote mapping?
+  + Multiple encryption with `relay` keys?
+  + Can `relays` provide a VPN?
+  + Use [I2P](https://en.wikipedia.org/wiki/I2P)
+  + Use [Tor](https://en.wikipedia.org/wiki/Tor_(anonymity_network))
+  
++ How to check `relay` bad behaviour? Who checks it? (the `organization?`)
   + Time limits for an un-returned hash?
 
 + How to choose which relay to encrypt the `vote package` with? How can it be randomized?
++ How a `User` chooses which relay connects to?
 + How does the `relay` pool looks like?
++ How does a `user` validates that her `vote-package` has been added into the blockchain?
+  + Does it need to keep downloading every new hash of agregated `vote packages`? 
 
 ### Known Weaknesses
+- ZK-snarks trusted setup
+- IP/vote mapping
