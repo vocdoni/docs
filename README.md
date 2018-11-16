@@ -4,9 +4,9 @@ Status of the document: *work in progress*
 
 ## A fully verifiable decentralized anonymous voting system
 
-Cryptography and distributed p2p systems have brought a new, revolutionary digital technology which might change the way society organizes: blockchain. Among many other applications, it allows decision making through a secure, transparent, distributed and resilent voting system.
+Cryptography and distributed p2p systems have brought a new, revolutionary digital technology which might change the way society organizes: blockchain. Among many other applications, it allows decision making through a secure, transparent, distributed and resilient voting system.
 
-In this document we propose the design, architecture of a decentralized anonymous voting platform using decentralized identities.
+In this document, we propose the design, architecture of a decentralized anonymous voting platform using decentralized identities.
 
 ## Overview
 
@@ -15,16 +15,16 @@ We want to bring decentralized voting to mass adoption. This requires a solution
 + Minimize transactions to the blockchain. Could potentially be used in Ethereum Mainnet
 + `Voter` does not write, only reads from the blockchain
 + `Voter` can participate with an ultra-light-client (static web/app)
-+ Secure vote anonimization using ZK-snarks
++ Secure vote anonymization using ZK-snarks
 + Data availability via distributed filesystems such as IPFS
-+ Economically incentivized, , `relay` network performs actions, not possible by light-clients.
++ Economically incentivized, `relay` network performs actions, not possible by light-clients.
 
 ![overall](https://github.com/vocdoni/docs/raw/master/img/overall_design.png)
 
 ### Identity
 The system is agnostic to the identity scheme used.
 
-We are developing our implementation using [Iden3](https://iden3.io), for having the best blance of decentralization vs scalability.
+We are developing our implementation using [Iden3](https://iden3.io), for having the best balance of decentralization vs scalability.
 
 ## Definitions
 ### Actors
@@ -35,42 +35,42 @@ We are developing our implementation using [Iden3](https://iden3.io), for having
 + Can interact manage all interactions through a light client (web/app)
 
 `Organizer`
-+ The user or entity that creates and manages an especific voting process
++ The user or entity that creates and manages a specific voting process
 + Needs to interact with the blockchain
 + Pays for the costs of a process
 + Has the highest interest for the process to success
 
 `Relay`
 + Is used as a proxy between the `voter` and the blockchain
-+ Is a selfish actor. Good behaviour is ensure through economic incentives
-+ It may have to be splitted into serveral `relay` types
++ Is a selfish actor. Good behaviour is ensured through economic incentives
++ It may have to be split into several `relay` types
 + Develops functions that would not be possible on a light client
   - It relays `vote packages` to other `relays`
   - It aggregates `vote packages` and adds them into the blockchain
   - It validates zk-snarks proofs
   - It validates anti-spam proof-of-work nonce
-  - It ensures data aviability on IPFS
-  - Is responsibile for the data aviability of the `vote packages` it has added (will loose stake if those are not available)
-  - It exposes a IPFS proxy
-  - It provides Merkle-proofs to `User` requests that they are in the `census merkle tree`
+  - It ensures data availability on IPFS
+  - Is responsible for the data availability of the `vote packages` it has added (will lose stake if those are not available)
+  - It exposes an IPFS proxy
+  - It provides Merkle-proofs to `User` requests that they are in the `census Merkle tree`
   - It exposes an RPC end-point to the blockchain
   - It should run a full Ethereum node
 
 ### Elements
 
 `Process`
-+ We call `process` to a especific instance of a `voting process`
++ We call `process` to a specific instance of a `voting process`
 
 `Census Merkle Tree`
 + A Merkle-tree made of the `public keys` of all the `voters`
-+ The Merkle-root is hosted in the blockchain as a proof the cenus
++ The Merkle-root is hosted in the blockchain as a proof the census
 + The tree needs to be publicly available (IPFS) for everyone to verify it.
 + The sk-snarks circuit will use its root to validate if `voter` `public key` is part of it
 
 `Voting smart-contract`
 + All metadata that defines a `process` is stored here
 + The `User` light clients retrieve the `process` data from here
-+ All the agragated `vote packages` hashes are added here
++ All the aggregated `vote packages` hashes are added here
 + It holds the funds used to pay the `relays`
 + It holds the funds that the `relays` need to stake to ensure their good behaviour
 + When a `process` is successfully finished it transfers the funds to the `relays`
@@ -88,7 +88,7 @@ We are developing our implementation using [Iden3](https://iden3.io), for having
   - Anti spam proof of work
 
 `Vote encryption key`
-+ Is the public key used by he `Voters` to encrypt their vote
++ Is the public key used by the `Voters` to encrypt their vote
 + Its private key needs to be made publish at the end of the process, for everyone to validate the votes
 + Multiple `vote encryption keys` can be used to ensure that no one has access to the results before the `process` is finished
 
@@ -100,7 +100,7 @@ We are developing our implementation using [Iden3](https://iden3.io), for having
 `Zk-snarks proof`
 + A `Zk-snarks proof` that proves that the `user` can vote
 + It is generated in the `user` light-client
-+ It is an CPU and memory intensive process
++ It is a CPU and memory intensive process
 
 ### Voting process chronology
 
@@ -111,7 +111,7 @@ We are developing our implementation using [Iden3](https://iden3.io), for having
 
 1. The `organizer` generates a census
   + This first design iteration, assumes that the `organizer` has a list of all the `voters` that can participate
-  + It agregate all the `public keys` of the `voters` and generates the `census merkle tree` with them.
+  + It aggregates all the `public keys` of the `voters` and generates the `census Merkle tree` with them.
 
 2. The `organizer` publishes a new voting process.
   + Via a user interface, it fills the required `process metadata` regarding a voting process.
@@ -145,35 +145,35 @@ We are developing our implementation using [Iden3](https://iden3.io), for having
     - `Encrypted vote`
     - `Nullifier`
   + Potentially it can encrypt the `vote package` with one or more `relay` public keys in order to minimize IP mapping
-  + Generates a Proof-of-Work nonce (to avoid relay node spaming)
+  + Generates a Proof-of-Work nonce (to avoid relay node spamming)
   + It sends the `vote package` and the nonce the `relays` pool
 
   4. `Relays` validate and add the `vote package` into the blockchain
   - The p2p `relay` pool receives the `vote package` from the `user`
-  + `Relay` nodes verify the proof-of-work and the `Zk-snarks proof`, if invalid the `vote-package` is discarted
+  + `Relay` nodes verify the proof-of-work and the `Zk-snarks proof` if invalid the `vote-package` is discarded
   + Choose a set of pending `vote packages` and aggregate them into a single packet of data
   + Add the aggregated data to IPFS
   + Upload the IPFS hash to the blockchain
 
 4. Once the `process` is finished
-  + The owners of the `vote encryption keys` publishes the corrsponding `private keys`, so the votes and proofs are available
+  + The owners of the `vote encryption keys` publishes the corresponding `private keys`, so the votes and proofs are available
   + The `organizer` downloads and verifies the votes
   + The `organizer` makes the `process` closing transaction.
   + 
   + and validates the `relay` operation
-  + Relay nodes will be rewarded according their contribution
+  + Relay nodes will be rewarded according to their contribution
 
 ![voting_process](https://github.com/vocdoni/docs/raw/master/img/voting_process.png)
 
 
 ### Unresolved questions
-+ Most of unresolved details are around creating a fully decentralized relay network
++ Most of the unresolved details are around creating a fully decentralized relay network
   + A centralized trusted `relay` it may still be a valid option in some cases
   + A centralized `relay` makes the system non BFT by not making data available
-  + It can also very easly map an IP adresses to votes
-  + Unless tunneled with VPN the mapping can be also done by an external observer?
+  + It can also very easily map an IP address to votes
+  + Unless tunnelled with VPN the mapping can be also done by an external observer?
 
-+ How can we minimize IP adress/vote mapping?
++ How can we minimize IP address/vote mapping?
   + Multiple encryption with `relay` keys?
   + Can `relays` provide a VPN?
   + Use [I2P](https://en.wikipedia.org/wiki/I2P)
@@ -184,9 +184,9 @@ We are developing our implementation using [Iden3](https://iden3.io), for having
 
 + How to choose which relay to encrypt the `vote package` with? How can it be randomized?
 + How a `User` chooses which relay connects to?
-+ How does the `relay` pool looks like?
-+ How does a `user` validates that her `vote-package` has been added into the blockchain?
-  + Does it need to keep downloading every new hash of agregated `vote packages`? 
++ How does the `relay` pool look like?
++ How does a `user` validate that her `vote-package` has been added into the blockchain?
+  + Does it need to keep downloading every new hash of aggregated `vote packages`? 
 
 ### Known Weaknesses
 - ZK-snarks trusted setup
