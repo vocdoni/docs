@@ -12,11 +12,13 @@ In this document, we propose the design, architecture of a decentralized anonymo
 
 We want to bring decentralized voting to mass adoption. This requires a solution that has a user experience at the level of current centralized solutions.
 
-+ Minimize transactions to the blockchain. Could potentially be used in Ethereum Mainnet
+We achieve this by externalizing the heavy lifting to `relay` network, and unloading the end-user clients
+
++ Minimize transactions to the blockchain. Can potentially be used in the Ethereum Mainnet
 + `Voter` does not write, only reads from the blockchain
 + `Voter` can participate with an ultra-light-client (static web/app)
 + Secure vote anonymization using ZK-snarks
-+ Data availability via distributed filesystems such as IPFS
++ Data availability via distributed filesystems (IPFS)
 + Economically incentivized, `relay` network performs actions, not possible by light-clients.
 
 ![overall](https://github.com/vocdoni/docs/raw/master/img/overall_design.png)
@@ -26,12 +28,15 @@ The system is agnostic to the identity scheme used.
 
 We are developing our implementation using [Iden3](https://iden3.io), for having the best balance of decentralization vs scalability.
 
+Other identity schemes could eventually be integrated.
+
 ## Definitions
+_The following definitions are extensively referenced through the document_
 ### Actors
 `Voter`
 + A `voter` is the end user that will vote
 + Its digital representation we call it `identity`
-+ Inside the voting process is identified by a public key
++ Inside the voting process is identified by a `public key`
 + Can interact manage all interactions through a light client (web/app)
 
 `Organizer`
@@ -104,7 +109,7 @@ We are developing our implementation using [Iden3](https://iden3.io), for having
 
 ### Voting process chronology
 
-1. `Identity` creation
+0. `Identity` creation
   + Before the process in itself starts `voters` must have their digital `identity`  already created
   + The unique requirement for the those `identities` is that they need to be represented by a `public key`.
   + The system is agnostic to the identity system used but an integration will be required for each of them.
@@ -148,23 +153,21 @@ We are developing our implementation using [Iden3](https://iden3.io), for having
   + Generates a Proof-of-Work nonce (to avoid relay node spamming)
   + It sends the `vote package` and the nonce the `relays` pool
 
-  4. `Relays` validate and add the `vote package` into the blockchain
-  - The p2p `relay` pool receives the `vote package` from the `user`
+4. `Relays` validate and add the `vote package` into the blockchain
+  + The p2p `relay` pool receives the `vote package` from the `user`
   + `Relay` nodes verify the proof-of-work and the `Zk-snarks proof` if invalid the `vote-package` is discarded
   + Choose a set of pending `vote packages` and aggregate them into a single packet of data
   + Add the aggregated data to IPFS
   + Upload the IPFS hash to the blockchain
 
-4. Once the `process` is finished
-  + The owners of the `vote encryption keys` publishes the corresponding `private keys`, so the votes and proofs are available
+5. Finalizing the `process`
+  + The owners of the `vote encryption keys` publish the corresponding `private keys`, so the votes and proofs can ve deencryoted
   + The `organizer` downloads and verifies the votes
-  + The `organizer` makes the `process` closing transaction.
-  + 
-  + and validates the `relay` operation
-  + Relay nodes will be rewarded according to their contribution
+  + The `organizer` signals bad `relays`
+  + The `organizer` makes the `process` closing transaction
+  + `Relay` are rewarded according to their contribution
 
 ![voting_process](https://github.com/vocdoni/docs/raw/master/img/voting_process.png)
-
 
 ### Unresolved questions
 + Most of the unresolved details are around creating a fully decentralized relay network
@@ -179,12 +182,14 @@ We are developing our implementation using [Iden3](https://iden3.io), for having
   + Use [I2P](https://en.wikipedia.org/wiki/I2P)
   + Use [Tor](https://en.wikipedia.org/wiki/Tor_(anonymity_network))
   
-+ How to check `relay` bad behaviour? Who checks it? (the `organization?`)
-  + Time limits for an un-returned hash?
++ How does the `relay` pool look like? Is it a blockchain?
++ Do we need a `relay` market?
++ How does a `relay` compite with another `relay` pricing? Where are prices announced?
++ What is the prize of a `process` based on? Number of necessary transactions(not known before-hand)? 
++ How to check `relay` bad behaviour? Who checks it? (the `organization?`) Time limits for an un-returned hash?
 
 + How to choose which relay to encrypt the `vote package` with? How can it be randomized?
 + How a `User` chooses which relay connects to?
-+ How does the `relay` pool look like?
 + How does a `user` validate that her `vote-package` has been added into the blockchain?
   + Does it need to keep downloading every new hash of aggregated `vote packages`? 
 
