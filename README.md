@@ -4,22 +4,22 @@ Status of the document: *work in progress*
 
 ## A fully verifiable decentralized anonymous voting system
 
-Cryptography and distributed p2p systems have brought a new, revolutionary digital technology which might change the way society organizes: blockchain. Among many other applications, it allows decision making through a secure, transparent, distributed and resilient voting system.
+Cryptography and distributed p2p systems have given rise to a new, revolutionary digital technology which might change the way society organizes: blockchain. Among many other applications, it can allow for secure, transparent, distributed and resilient decision making.
 
-In this document, we propose the design, architecture of a decentralized anonymous voting platform using decentralized identities.
+In this document, we propose the system architecture of a decentralized anonymous voting platform.
 
 ## Overview
 
-We want to bring decentralized voting to mass adoption. This requires a solution that has a user experience at the level of current centralized solutions.
+We want to bring decentralized voting to mass adoption. This requires a solution that has a user experience at least on par with current, centralized solutions.
 
-We achieve this by externalizing the heavy lifting to `relay` network and unloading the end-user clients
+We achieve this by externalizing the heavy lifting to a `relay` network - thereby allowing for lightweight end-user clients. This fundamental architectural choice has the following implications:
 
-+ Minimize transactions to the blockchain. Can potentially be used in the Ethereum Mainnet
++ Minimizes transactions to the blockchain. Can potentially be used in the Ethereum Mainnet
 + `Voter` does not write, only reads from the blockchain
 + `Voter` can participate with an light-client (static web/app)
 + Secure vote anonymization using ZK-snarks
 + Data availability via distributed filesystems (IPFS)
-+ Economically incentivized, `relay` network performs actions, not possible by light-clients
++ Economically incentivized, `relay` network performs actions not possible by light-clients
 + The whole `process` is verifiable by any external observer
 
 ![overall](https://github.com/vocdoni/docs/raw/master/img/overall_design.png)
@@ -27,33 +27,33 @@ We achieve this by externalizing the heavy lifting to `relay` network and unload
 ### Identity
 The system is agnostic to the identity scheme used.
 
-We are developing our implementation using [Iden3](https://iden3.io), for having the best balance of decentralization vs scalability.
+We are developing our implementation using [Iden3](https://iden3.io), which promises an ideal balance of decentralization and scalability.
 
 Other identity schemes could eventually be integrated.
 
 ## Definitions
-_The following concepts are extensively referenced through the document_
+_The following concepts are referenced extensively throughout the document_
 
 ### Actors
 `Voter`
 + A `voter` is the end user that will vote
-+ Its digital representation we call it `identity`
-+ Inside the voting `process` is identified by a `public key`
++ Its digital representation is called an `identity`
++ Inside the voting `process`, and `identity` is specified by a `public key`
 + Can manage all interactions through a `light-client` (web/app)
 
 `Organizer`
-+ The user or entity that creates and manages a specific voting `process`
++ The entity that creates and manages a specific voting `process`
 + Needs to interact with the blockchain
 + Needs to add and retrieve data to IPFS
 + Pays for the costs of a `process`
 + Has the highest interest for the `process` to succeed
-+ Knows the census beforehand (list of `Voters` `public keys`)
++ Knows the census beforehand (list of `voters` that are authorized to participate in a specific `process`)
 
 `Relay`
 + Is used as a proxy between the `voter` and the blockchain
 + Is a selfish actor. Good behaviour is ensured through economic incentives
 + It may have to be split into several `relay` types
-+ Develops functions that would not be possible on a `light-client`
++ Performs functions that would not be possible on a `light-client`
   - Relays `vote packages` to other `relays`
   - Aggregates `vote packages` and adds them into the blockchain
   - Validates `zk-snarks proofs`
@@ -61,14 +61,14 @@ _The following concepts are extensively referenced through the document_
   - Ensures data availability on IPFS
   - Is responsible for the data availability of the `vote packages` it has added (will lose stake if those are not available)
   - Exposes an IPFS proxy for the `light-clients`
-  - Provides `census Merkle tree` Merkle-proofs to `voter`
+  - Provides `census` Merkle-proofs to `voter`
   - Exposes an RPC end-point to the blockchain for the `light-client`
   - It should run a full Ethereum node
 
 ### Elements
 
 `Process`
-+ We call `process` to a specific instance of a `voting process`
++ Represents an individual decision-making contest
 + Each process is identified by a `ProcessId`
 
 `ProcessId`
@@ -79,42 +79,41 @@ _The following concepts are extensively referenced through the document_
 + The client which `voters` will use to vote
 + Could be an app or static website running on a smart-phone
 + Provides UI for easy interaction
-+ While is a light-client, it still runs heavy processing such as the `zk-snarks proof` and the relay anti-spam proof-of-work
++ Runs some moderate computational loads, such as the `franchise proof` and the relay anti-spam proof-of-work
 
-`Census Merkle Tree`
+`Census`
 + A Merkle-tree made of the `public keys` of all the `voters`
 + The Merkle-root is hosted in the blockchain as a proof of the census
 + The tree needs to be publicly available (IPFS) for everyone to verify it.
 + The `zk-snarks circuit` will use its Merkle-root to validate if a `voter` `public key` is part of it
 
-`Zk-snarks proof`
-+ The `zk-snarks proof` is used to prove two things without revealing critical data
+`Franchise proof`
++ Leverages zk-snark technology
++ Used to prove two things without revealing critical data
   1. `Voter` is the owner of the `private key` corresponding to the `public key`
-  2. `Voter`'s `public key` is included in the `census Merkle tree`
+  2. `Voter`'s `public key` is included in the `census`
 + Generated in the `user` light-client
 + Is a CPU and memory intensive process
 + Is validated by the `relays` before adding the `voting package` in the blockchain
 + It is validated by the `organizer` once the `process` ends
 
-`Sk-snarks circuit`
-+ Creates the `ZK-snarks proofs`
-+ Validates the `ZK-snarks proofs`
-+ The same circuit is used for all the `process`
+`ZK-snarks circuit`
++ Used by the `voter` to generate the `franchise proof`
++ Used by the `relay` and `organizer` to validate the `franchise proof`
++ The same circuit can be use for any `process`
 + It requires a trusted setup to be generated
-+ Used by the `voter` to generate the `Zk-snarks proof`
-+ Used by the `relay` and the `organizer` to verify the `Zk-snarks proof`
 
 `Voting smart-contract`
 + The `process metadata` required by a `process` is published here when a new `process` is created
-+ The `User` light clients retrieve the `process metadata` from here
-+ All the aggregated `vote packages` hashes are added here
++ The `voter` light client retrieves the `process metadata` from here
++ Aggregated `vote package` hashes are added here
 + It holds the funds used to pay the `relays`
 + It holds the funds that the `relays` need to stake to ensure their good behaviour
 + When a `process` is successfully finished it transfers the funds to the `relays`
 
 `Process metadata`
 + Is the metadata that needs to be public before a `process` starts
-  - Merkle Root  of the `census Merkle tree`
+  - Merkle Root  of the `census` Merkle tree
   - `Vote encryption key`
   - Available `voting options`
   - `Process` start time (block number)
@@ -129,41 +128,42 @@ _The following concepts are extensively referenced through the document_
   - Anti spam proof of work
 
 `Vote encryption key`
++ Provided by `organizer`
 + The public key used by the `Voters` to encrypt their vote
 + Its private key needs to be made public at the end of the process, for everyone to decrypt the votes
 + Multiple `vote encryption keys` can be used to ensure that no one has access to the results before the `process` is finished
 + Entities providing the `vote encryption key` could be required to put some stake to ensure key publishing
 
 `Voting options`
-+ A potential option for the user to choose when she votes
++ A potential option for the user to choose when they vote
 + They are published when a `process` is created
 + They could be exclusive or not
 
 ## Voting process chronology
 
 ### 0. `Identity` creation
-  + Before the process in itself starts `voters` must have their digital `identity`  already created
+  + Before the process in itself starts `voters` must have their digital `identity`  already created.
   + The unique requirement for those `identities` is that they need to be represented by a `public key`.
-  + The system is agnostic to the identity system used but an integration will be required for each of them.
+  + The system is agnostic to the identity system used, but further systems may require additional work to fully integrate.
 
 ### 1. The `organizer` generates a census
-  + This first design iteration, assumes that the `organizer` has a list of all the `voters` that can participate
-  + It aggregates all the `public keys` of the `voters` and generates the `census Merkle tree` with them.
+  + Presently assumes that the `organizer` has a list of all the `voters` that can participate
+  + It aggregates all the `public keys` of the `voters` and generates the `census` Merkle tree from them.
 
 ### 2. The `organizer` publishes a new voting process.
-  + Via a user interface, it introduces the required `process metadata` regarding a voting process.
+  + Via a user interface, it provides the required `process metadata` regarding a voting process.
   + Sends a transaction to the `voting smart-contract`
     - It includes the `process metadata`, so is public for the other players
     - The funds sent in the transaction will be used to pay the `relays`
     - The amount sent is proportional to the needs of the `process` (number of participants, relay redundancy...)
-  + In parallel it also publishes the `census Merkle tree` to IPFS, to make it available to everyone else.
+  + In parallel it also publishes the `census` to IPFS, to make it available to everyone else.
 
 ### 3. `Voter` generates vote
 
 #### Selects `voting options`
   + Gets the `process metadata` from the `voting smart-contract`
-  + Gets the census Merkle-proof from a `relay`
-  + Verifies her `public key` is in the published `census Merkle tree`
+  + Gets the `census` Merkle-proof from a `relay`
+  + Verifies her `public key` is in the published `census` Merkle tree
   + Selects the desired `voting options` from the `process metadata`
 
 #### Generates vote
@@ -175,12 +175,12 @@ _The following concepts are extensively referenced through the document_
 ```
 nullifier = hash( process_id + user_private_key )
 ```
-#### `Zk-snarks proof` generation
-The `zk-snarks proof` is generated by running the `zk-snarks voting cicuit` with several inputs.
+#### `Franchise proof` generation
+The `franchise proof` is generated by running the `zk-snarks voting cicuit` with several inputs.
 
-**private input**: `Private Key`, `census tree` Merkle-proof  
-**public input**: `census tree` Merkle-root, `Nullifier`, `ProcessId`,`encrypted   vote`
-**output**: `Zk-Snarks proof` that she can vote  
+**private input**: `Private Key`, `census` Merkle-proof  
+**public input**: `census` Merkle-root, `Nullifier`, `ProcessId`,`encrypted   vote`
+**output**: `Franchise proof` that they can vote  
 
 + `Vote package` is created by aggregating
   - `Zk-snarks proof`
@@ -192,22 +192,22 @@ The `zk-snarks proof` is generated by running the `zk-snarks voting cicuit` with
 
 ### 4. `Relays` validate and add the `vote package` into the blockchain
   + The `relay` pool receives the `vote package` from the `user`
-  + A `relay` verifies the proof-of-work and the `Zk-snarks proof`. If invalid the `vote package` is discarded
-  + Chooses a set of pending `vote packages` and aggregates them into a single packet of data
-  + Adds the aggregated data to IPFS
-  + Uploads the IPFS hash to the blockchain
+  + A `relay` verifies the proof-of-work and the `franchise proof`. If either is invalid, the `vote package` is discarded.
+  + Chooses a set of pending `vote packages` and aggregates them into a single bundle of data.
+  + Adds the aggregated data bundle to IPFS
+  + Uploads the IPFS hash of the bundle to the blockchain
 
 ### 5. Finalizing the `process`
   + The owners of the `vote encryption keys` publish the corresponding `private keys`, so the votes and proofs can be decrypted
-  + The `organizer` gets the hashes of aggregated `vote packages` from the blockchain
-  + The `organizer` downloads the aggregated `vote packages` from IPFS
+  + The `organizer` gets the hashes of aggregated `vote package` bundles from the blockchain
+  + The `organizer` downloads the aggregated `vote package` bundles from IPFS
   + The `organizer` iterates over all the `vote packages`
     - It decrypts it with the published private key of the `voting encryption key`
-    - It runs the `zk-snarks proof` through the `zk-snarks circuit` and discards invalid proofs
+    - It runs the `franchise proof` through the `zk-snarks circuit` and discards invalid proofs
     - It discards `vote-packages` with repeated `nullifier` (double votes)
   - It computes the final results
   + The `organizer` signals bad `relays`
-  + The `organizer` makes the `process` closing transaction uploading the results
+  + The `organizer` makes the `process` closing transaction, uploading the results
   + `Relays` are rewarded according to their contribution
 
 ![voting_process](https://github.com/vocdoni/docs/raw/master/img/voting_process.png)
