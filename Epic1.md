@@ -28,8 +28,7 @@ A single repository to include them all makes sense
 ## Zk snarks circuit
 - Depends on J
 - Designed with [Circom](https://github.com/iden3/circom)
-- It is a dev tool does not need integration
-- Likely J will provide it
+- May have its own repository
 
 ### Franchise proof
 - Depends on the circuit
@@ -49,21 +48,19 @@ A single repository to include them all makes sense
 
 
 ## Voting smart-contract
-- Least important, could be omitted
+- Not need to implement time-frames
 - Should implement...
-    - createProcess(name, voteEncryptionKey)// No need for timeframes
+    - createProcess(name, voteEncryptionKey)
     - AddPackageAgregationHash(agregatedPackagesHash)
     - FinalizeProcess(voteEncryptionKey)
 
 ## Census Merkle-tree generation
-_Generates a Merkle-tree based on 
 - Takes thousands of public keys.
 - Creates a Merkle-tree
 - No optimizations (sparse Merkle-trees, streams...)
 - Makes sense to have its own repository
 - 
 ## Integration
-_
 - Can be done using a test suit
 - It only requires the client
 - Can be the start of the light-client repository
