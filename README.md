@@ -31,6 +31,8 @@ We are developing our implementation using [Iden3](https://iden3.io), which prom
 
 Other identity schemes could eventually be integrated.
 
+---
+
 ## Definitions
 _The following concepts are referenced extensively throughout the document_
 
@@ -120,7 +122,7 @@ _The following concepts are referenced extensively throughout the document_
   - `Process` end time (block number)
 
 `Vote package`
-+ Is the set of data sent by the `Voter` to the `relay` in order to vote 
++ Is the set of data sent by the `Voter` to the `relay` in order to vote
   - Franchise proof
   - Encrypted vote: encrypt(selected `vote options` + random nonce)
   - `Nullifier` : hash( `ProcessId` + `Voter` `private key` )
@@ -138,6 +140,8 @@ _The following concepts are referenced extensively throughout the document_
 + A potential option for the user to choose when they vote
 + They are published when a `process` is created
 + They could be exclusive or not
+
+---
 
 ## Voting process chronology
 
@@ -229,3 +233,14 @@ The `vote package` and the nonce are sent to the `relay` pool
 - IP/vote mapping
 - Most of the unresolved details are around creating a fully decentralized relay network. Multiple alternatives exist.
 - A centralized trusted `relay` is a very valid option in a certain context
+
+---
+
+## Web Frontend
+
+The web frontend and/or SmartPhone APP will allow users and organizers interact with the whole system.
+This piece must be as static as possible, thus non dependent on any dynamic database. This will allow multiple ways to access the frontend, for instance via IPFS or ZeroNet, making censorship very hard or even impossible.
+
+The web frontend interact with different service providers such as Web3, IPFS gateway or TOR proxy. However the user must be able to choose its own provider, manually or from an official list.
+
+![web_frontend](https://github.com/vocdoni/docs/raw/master/img/web_frontend_general.png)
