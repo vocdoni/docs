@@ -20,6 +20,11 @@
 + How does a `user` confirms that her `vote-package` has been added into the blockchain?
   + Does it need to keep downloading every new hash of aggregated `vote packages`? 
 
+## Results publishing
++ Current design required the organization to publish the final results "manually" to the `voting smart-contract`.
++ While everyone can still validate the results on its own the "oficial" results could be prone to errors or modifications.
++ We would like a way to publish the final results without relying on a trusted actor.
+
 ## Merit based census
 + Current design requires that the organization has access to an existing census
 + This pretty much implies that only entities with an existing user base can create `processes` 
