@@ -246,6 +246,8 @@ The `vote package` and the nonce are sent to the `relay` pool
 The web frontend and/or SmartPhone APP will allow users and organizers interact with the whole system.
 This piece must be as static as possible, thus non dependent on any dynamic database. This will allow multiple ways to access the frontend, for instance via IPFS or ZeroNet, making censorship very hard or even impossible.
 
+And static app makes it easy to checksum it, therefore minimizing atac vectors. 
+
 The web frontend interact with different service providers such as Web3, IPFS gateway or TOR proxy. However the user must be able to choose its own provider, manually or from an official list.
 
 <p align="center">
