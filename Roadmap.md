@@ -36,6 +36,7 @@ So fellow decentralization developers can validate it.
 So she can start working on a proof of concept
 
 ## `Epic 1`: Proof of concept
+Find the details on its own [document](https://github.com/vocdoni/docs/blob/master/Epic1.md)
 + `V` wants an end-to-end implementation of the proposed design  
 So she can get a better of understanding of...  
     ... how to structure the code base  

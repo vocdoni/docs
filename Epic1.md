@@ -1,10 +1,7 @@
 # `Epic 1`: Proof of concept
 
-Please, refer to the draft for references:  
-https://github.com/vocdoni/docs/blob/master/README.md
-
-And to the roadmap for context:  
-https://github.com/vocdoni/docs/blob/master/Roadmap.md
+Please, refer to the  whitepaper [draft](https://github.com/vocdoni/docs/blob/master/README.md) for therminology  
+Check the [roadmap](https://github.com/vocdoni/docs/blob/master/Roadmap.md) for context
 
 ## Goals
 The goal of this epic is to have a working proof of concept.
