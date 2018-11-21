@@ -21,6 +21,7 @@ It would be the first coordinated development.
  - There will be missing specifications and comunications
  - We will have to find out the best tools for coordination
  - We will have to setup enviroments find tools/libraries/frameworks...
+  
 So friction and slowness is expected... its ok :)
 
 Taking all the above in consideration, we still should be able to get the first `Proof of Concept` ready!
