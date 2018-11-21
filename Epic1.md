@@ -6,31 +6,44 @@ https://github.com/vocdoni/docs/blob/master/README.md
 And to the roadmap for context:  
 https://github.com/vocdoni/docs/blob/master/Roadmap.md
 
+## Goals
 The goal of this epic is to have a working proof of concept.
 This means:
-  - No relay network (centralized relay)
+  - No decentralized relay
   - No user interface
-  - No tests (maybe as replacement of the client)
-  - No nice code
   - No identities (just keys)
-  - No documentation
-  - No optimizations
+  - Unit testing not required
+  - Documentation not required
+  - [No optimizations](https://www.youtube.com/watch?v=4bQOSRm9YiQ)
   
-It could be divided two steps.
-1. (A) Snarks proof creation and validation
-1. (B) Voting contract
-2. Integration
+The outcome of this epic should be a clear set of specifications in order to move towars a firs MVP.
 
+## Sprints/checkpoints
+1. Libraries development 
+    - Overall setup: tooling/data schemes/libraraies/ frameworks
+    - `Franchise proof` creation and validation
+    - `Census tree` generation
+    - `Voting smart-contract`
+    - Relay setup
+
+2. Integration
+    - Client local integration
+    External integration
+    - Client-Relay integration
+    - Relay-Client integration
+
+## Repositories/ development blocks
 ## Snarks proof creation and validation
 
-### Zk snarks circuit
+### Snarks
+#### Zk snarks circuit
 - Depends on J
 - Designed with [Circom](https://github.com/iden3/circom)
 - May have its own repository
 
-### Franchise proof
+#### Franchise proof
 - Depends on the circuit
-- Needs to be executed in the client, and the Relay as well
+- Needs to be executed in the `light-client`, and the `Relay` as well
 - Should implement
     - createNullifier(processId, privateKey)
     - createProof(privateKey, censusMerkleProof, censusMerkleRoot, nullifier, processId, encryptedVoteHash) : proof
@@ -38,43 +51,48 @@ It could be divided two steps.
 - Should NOT implement
     - Vote encryption is not specific to the proof. (could use multiple keys, encryption schemes...)
 
-### Census Merkle-tree generation
+#### Census Merkle-tree generation
 - Makes sense to have its own repository, although it relies on the Snarks Circuit implementation
-- Takes thousands of public keys.
-- Creates a Merkle-tree
+- Takes thousands of public keys and creates a Merkle-tree
 - No optimizations (sparse Merkle-trees, streams...)
 
-
-
-## Voting smart-contract
-- Not need to implement time-frames for now
+### Voting smart-contract
 - Should implement...
     - createProcess(name, voteEncryptionKey)
     - getProcessMetadata(processId):processMetadata
-    - AddPackageAgregationHash(agregatedPackagesHash)//eventually should store the sender to know who added it
+    - AddVotesBatch(votesBatchHash)//eventually should store the sender to know who added it
     - getPackageAgregationHash(index)
     - FinalizeProcess(voteEncryptionKey)
 - Should not implement (YET)
-    - RegisterRelay // To be defined, likley not needed for now
+    - RegisterRelay()
+    - Time-frames (start/end blocks)
+    - Available `vote options`
 
-
-## Client integration
+### Client integration
 - Can be done using a test suit (no UI)
-- Should
-    - Download processMetadata from blockchain
-    - Encyrpts mock data vote  
-    - Generates VotePackage
-    - Sends VotePackage to relay
-    - Recieves reciept // TO BE DEFINED, probably not required for now
 
+1. Local integration
+    - Encyrpts mock vote
+    - Generates `vote package`
 
-## Relay integration
+2. External integration (relay/blockchain)
+    - Gets and uses `process metadata` from `voting smart-contract`
+    - Sends `vote-package` to `relay`
+  
+### Relay integration
 
-- voteAgregationHasn pinning
+1. Relay setup and infrastructure
+- Setup a testnet?
+- Build it into a docker?
+- Setup IPFS
+- Expose IPFS gateway
+- Setup Ethereum node
+- Expose Ethereum RPC
+- Setup testnet
+  
+2. External integration
+- Recieves `vote package`
 - validates franchise proof
-
-## Relay devops
-
-
-- IPFS gateway
-- Ethereum node
+- Groups `voting packages` and creates `votes batch`
+- Pins `votes batch`
+- Adds `votes batch` to the `voting-smart` contract
