@@ -14,11 +14,20 @@ startBlock
 endBlock
 voteEncryptionKeys
 status
+trustedGateways
+
+## VotingPackage
+FranchiseProof
+EncryptedVote
+Nullifier
+ProcessID
 
 # Modules (domains)
+
 ## Indentity
 getVotingPublicKey(): Public Key
 getVotingPrivateKey: Private key
+
 ## Franchise 
 getNullifier(privateKey, processId) : nullifierHash
 generateProof(privateKey, censusProof, censusRoot, nullifier, processId, encryptedVoteHash) :franchiseProof
@@ -33,17 +42,20 @@ getExternalData(url)
 ## Blockchain
 getProcessById(): processMetadata
 getOpenProcess(): [processIds]
+getRegisterdRelays(): [relayPublicKeys]
+batchExists(voteBatchHash): bool
 
 ## Relay
-generatePOW(votingPackage): nonce
+generatePOW(votingPackage): powNonce
+encryptVotingPackage(votingPakage, relayPublicKey)
+sendVote(gatewayIP, votingPackage, powNonce)
+getVotesBatchHashByNullifier(nullifier)
 
 ## Vote
 getOptions()
 getEncryptedVote(selectedVoteOptions, voteEncryptionKeys)
 getHash(encryptedVoteHash)
-getVotingPackage(franchiseProof, processId, encryptedVote, nullifier)
-## Vote manager (integration)
-
+getVotingPackage(franchiseProof, processId, encryptedVote, nullifier) : votingPackage
 
 # Flow
 ## Vote Manager
@@ -59,4 +71,10 @@ getVotingPackage(franchiseProof, processId, encryptedVote, nullifier)
 `Franchise` --> generateFranchiseProof()
 `Franchise` --> getNullifier()
 `Relay` --> generatePOW()
-`Vore` --> getVotingPackage()
+`Vote` --> getVotingPackage()
+`Blockchain` --> getRegisterdRelays()
+`Relay` --> encryptVotingPackage()
+`Relay` --> sendVote()
+`Relay` --> getVotesBatchHashByNullifier():votesBatchHash
+`Data` --> getExternalData(voteBatchHash)
+`Blockchain` --> batchExists(voteBatchHash)
