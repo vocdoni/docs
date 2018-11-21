@@ -1,14 +1,15 @@
 # Voĉdoni
 
-Status of the document: *work in progress*
+### A fully verifiable decentralized anonymous voting system
 
-## A fully verifiable decentralized anonymous voting system
+_This document is a work in progress and subject to change_
+
 
 Cryptography and distributed p2p systems have given rise to a new, revolutionary digital technology which might change the way society organizes: blockchain. Among many other applications, it can allow for secure, transparent, distributed and resilient decision making.
 
 In this document, we propose the system architecture of a decentralized anonymous voting platform.
 
-## Overview
+## Design overview
 
 We want to bring decentralized voting to mass adoption. This requires a solution that has a user experience at least on par with current, centralized solutions.
 
@@ -23,15 +24,6 @@ We achieve this by externalizing the heavy lifting to a `relay` network - thereb
 + The whole `process` is verifiable by any external observer
 
 ![overall](https://github.com/vocdoni/docs/raw/master/img/overall_design.png)
-
-### Identity
-The system is agnostic to the identity scheme used.
-
-We are developing our implementation using [Iden3](https://iden3.io), which promises an ideal balance of decentralization and scalability.
-
-Other identity schemes could eventually be integrated.
-
----
 
 ## Definitions
 _The following concepts are referenced extensively throughout the document_
@@ -233,23 +225,33 @@ The `vote package` and the nonce are sent to the `relay` pool
 
 ![voting_process](https://github.com/vocdoni/docs/raw/master/img/voting_process.png)
 
+
+---
+## Aditional notes
 ### Known Weaknesses
-- zk-SNARK trusted setup
+- Zk-SNARK trusted setup
 - IP/vote mapping
 - Most of the unresolved details are around creating a fully decentralized relay network. Multiple alternatives exist.
 - A centralized trusted `relay` is a very valid option in a certain context
 
----
+### Identity
+The system is agnostic to the identity scheme used.
 
-## Web Frontend
+We are developing our implementation using [Iden3](https://iden3.io), which promises an ideal balance of decentralization and scalability.
 
-The web frontend and/or SmartPhone APP will allow users and organizers interact with the whole system.
-This piece must be as static as possible, thus non dependent on any dynamic database. This will allow multiple ways to access the frontend, for instance via IPFS or ZeroNet, making censorship very hard or even impossible.
+Other identity schemes could eventually be integrated.
 
-And static app makes it easy to checksum it, therefore minimizing atac vectors. 
+## Light-client
 
-The web frontend interact with different service providers such as Web3, IPFS gateway or TOR proxy. However the user must be able to choose its own provider, manually or from an official list.
+The `light-client`  website/app will allow users and organizers interact with the whole system.
+
+This piece must be as static as possible, thus non dependent on any dynamic database. This allows for multiple ways to access the frontend, for instance via IPFS or ZeroNet, making censorship very hard or even impossible.
+
+Being static makes it easier to checksum it and therefore minimizing atac vectors. 
+
+The `light-client` needs to  interact with different service providers such as Web3 RPC, IPFS gateway or TOR proxy. However the user must be able to choose its own provider.
 
 <p align="center">
   <img src="https://github.com/vocdoni/docs/raw/master/img/web_frontend_general.png">
 </p>
+
