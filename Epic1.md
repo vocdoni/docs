@@ -3,12 +3,12 @@
 Please, refer to the draft for references:  
 https://github.com/vocdoni/docs/blob/master/README.md
 
-And to the roadmap for context:
+And to the roadmap for context:  
 https://github.com/vocdoni/docs/blob/master/Roadmap.md
 
 The goal of this epic is to have a working proof of concept.
 This means:
-  - No relay (user transacts directly blockchain)
+  - No relay network (centralized relay)
   - No user interface
   - No tests (maybe as replacement of the client)
   - No nice code
@@ -22,45 +22,59 @@ It could be divided two steps.
 2. Integration
 
 ## Snarks proof creation and validation
-The two elements below are tightly coupled.
-A single repository to include them all makes sense
 
-## Zk snarks circuit
+### Zk snarks circuit
 - Depends on J
 - Designed with [Circom](https://github.com/iden3/circom)
 - May have its own repository
 
 ### Franchise proof
 - Depends on the circuit
-- Needs to be executed in the client, eventually in the Relay as well
-- Vote encryption should be left out of the repo since is not specific of the proof. (could use multiple keys, encryption schemes...)
+- Needs to be executed in the client, and the Relay as well
 - Should implement
     - createNullifier(processId, privateKey)
     - createProof(privateKey, censusMerkleProof, censusMerkleRoot, nullifier, processId, encryptedVoteHash) : proof
     - validateProof(proof, merkleRoot, nullifier, encryptedVoteHash, processId): bool
-  
-- Needs:
-    - Process ID (from the voting contract, can be faked)
-    - VoteEncryption key (from the voting contract, can be faked)
-    - Nullifier
-        - ProccessId ( from the contact, can be faked)
-        - PrivateKey (can be faked)
+- Should NOT implement
+    - Vote encryption is not specific to the proof. (could use multiple keys, encryption schemes...)
 
-
-## Voting smart-contract
-- Not need to implement time-frames
-- Should implement...
-    - createProcess(name, voteEncryptionKey)
-    - AddPackageAgregationHash(agregatedPackagesHash)
-    - FinalizeProcess(voteEncryptionKey)
-
-## Census Merkle-tree generation
+### Census Merkle-tree generation
+- Makes sense to have its own repository, although it relies on the Snarks Circuit implementation
 - Takes thousands of public keys.
 - Creates a Merkle-tree
 - No optimizations (sparse Merkle-trees, streams...)
-- Makes sense to have its own repository
-- 
-## Integration
-- Can be done using a test suit
-- It only requires the client
-- Can be the start of the light-client repository
+
+
+
+## Voting smart-contract
+- Not need to implement time-frames for now
+- Should implement...
+    - createProcess(name, voteEncryptionKey)
+    - getProcessMetadata(processId):processMetadata
+    - AddPackageAgregationHash(agregatedPackagesHash)//eventually should store the sender to know who added it
+    - getPackageAgregationHash(index)
+    - FinalizeProcess(voteEncryptionKey)
+- Should not implement (YET)
+    - RegisterRelay // To be defined, likley not needed for now
+
+
+## Client integration
+- Can be done using a test suit (no UI)
+- Should
+    - Download processMetadata from blockchain
+    - Encyrpts mock data vote  
+    - Generates VotePackage
+    - Sends VotePackage to relay
+    - Recieves reciept // TO BE DEFINED, probably not required for now
+
+
+## Relay integration
+
+- voteAgregationHasn pinning
+- validates franchise proof
+
+## Relay devops
+
+
+- IPFS gateway
+- Ethereum node
