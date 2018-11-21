@@ -237,7 +237,7 @@ The `vote package` and the nonce are sent to the `relay` pool
 ### Identity
 The system is agnostic to the identity scheme used.
 
-We are developing our implementation using [Iden3](https://iden3.io), which promises an ideal balance of decentralization and scalability.
+We are developing our implementation using [Iden3](https://iden3.io),for its balance of decentralization and scalability.
 
 Other identity schemes could eventually be integrated.
 
