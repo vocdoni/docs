@@ -71,7 +71,7 @@
 
 1. `Blockchain` --> getProcessById()
 2. `Vote` --> getOptions()
-3. <UI input>
+3. `<UI input>`
 4. `Vote` --> getEncryptedVote()
 5. `Vote` --> getEncryptedVoteHash()
 6. `Identity` --> getVotingKey()
