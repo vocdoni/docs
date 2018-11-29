@@ -1,6 +1,7 @@
 ## Sprint 1
 
-Basic voting implementation with the next restrictions
+Basic voting implementation with the next restrictions:
+
   - No decentralized relay
   - Very basic client interface
   - No organizer user interface
@@ -9,9 +10,11 @@ Basic voting implementation with the next restrictions
   - Documentation not required
   - No optimizations
 
+### User stories
 
 + Local Auth
    - Import @ledfusion's flow
+
 
 + Census register
    - **App**: HTTP POST ...../register/0x123445678901234567891234567
