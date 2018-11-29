@@ -1,4 +1,4 @@
-## Sprint 1
+# Sprint 1
 
 Basic voting implementation with the next restrictions:
 
@@ -10,7 +10,34 @@ Basic voting implementation with the next restrictions:
   - Documentation not required
   - No optimizations
 
-### User stories
+---
+
+# Flow
+
+## Vote Manager
+
+1. `Blockchain` --> getProcessById()
+2. `Vote` --> getOptions()
+3. `<UI input>`
+4. `Vote` --> getEncryptedVote()
+5. `Vote` --> getEncryptedVoteHash()
+6. `Identity` --> getVotingKey()
+7. `Census` --> getCensusProof() `Data` --> getExternalData()
+8. `Identity` --> getVotingPrivateKey()
+9. `Franchise` --> generateFranchiseProof()
+10. `Franchise` --> getNullifier()
+11. `Relay` --> generatePOW()
+12. `Vote` --> getVotingPackage()
+13. `Blockchain` --> getRegisterdRelays()
+14. `Relay` --> encryptVotingPackage()
+15. `Relay` --> sendVote()
+16. `Relay` --> getVotesBatchHashByNullifier():votesBatchHash
+17. `Data` --> getExternalData(voteBatchHash)
+18. `Blockchain` --> batchExists(voteBatchHash)
+
+---
+
+# User stories
 
 + Local Auth
    - Import @ledfusion's flow
