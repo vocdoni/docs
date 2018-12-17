@@ -1,4 +1,4 @@
-# Sprint 1
+# Prototype 1
 
 Basic voting implementation with the next restrictions:
 
@@ -12,9 +12,9 @@ Basic voting implementation with the next restrictions:
 
 ---
 
-# Flow
+## Flow
 
-## Vote Manager
+#### Vote Manager
 
 1. `Blockchain` --> getProcessById()
 2. `Vote` --> getOptions()
@@ -37,7 +37,7 @@ Basic voting implementation with the next restrictions:
 
 ---
 
-# User stories
+## Interface Calls
 
 + Local Auth
    - Import @ledfusion's flow
