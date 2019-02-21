@@ -10,6 +10,8 @@
   content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css">
+  <script src="//unpkg.com/docsify-edit-on-github@1.0.1/index.js"></script>
+  <script src="https://unpkg.com/mermaid@8.0.0/dist/mermaid.min.js"></script>
 </head>
 
 <body>
@@ -22,8 +24,8 @@
     }
 
     window.$docsify = {
-      name: '',
-      repo: '',
+      name: 'Vocdoni docs',
+      repo: 'https://github.com/vocdoni/docs',
       loadSidebar: true,
       markdown: {
         renderer: {
@@ -36,12 +38,16 @@
             return this.origin.code.apply(this, arguments);
           }
         }
-      }
+      },
+      plugins: [
+        EditOnGithubPlugin.create(
+          'https://github.com/vocdoni/docs/edit/master/docs/'
+        )
+      ]
     }
 
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
-  <script src="https://unpkg.com/mermaid@8.0.0/dist/mermaid.min.js"></script>
 </body>
 
 </html>
