@@ -33,7 +33,7 @@ A file in `/docs/documentation/contribute.md` is accessible via [/#/documentatio
 
 ### Sidebar menu
 
-The sidebar is also a markdown file located at [`_sidebar.md`](https://github.com/vocdoni/docs/edit/master/docs/_sidebar.md).
+The sidebar is also a markdown file located at [`_sidebar.md`](https://github.com/vocdoni/docs/blob/master/docs/_sidebar.md).
 
 It is **not** dynamically generated.
 

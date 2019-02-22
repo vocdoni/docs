@@ -18,7 +18,7 @@ kebab-case-file-name.md
 
 ## Linting and formating
 
-IF you'r using VS Code, we highly recommend to install the following extensions, to leverage most of the work to keep the docs nice and tiddy...
+If you are using VS Code, we highly recommend to install the following extensions, to leverage most of the work for keeping the docs nice and tiddy...
 
-- [Markdown ling](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
+- [Markdown lint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
 - [Markdown formatter](https://marketplace.visualstudio.com/items?itemName=tehnix.vscode-tidymarkdown)

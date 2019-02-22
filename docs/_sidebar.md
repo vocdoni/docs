@@ -3,5 +3,5 @@
 - Documentation
 
   - [Contribute](/documentation/contribute.md)
-  - [Guidlines](/documentation/guidelines.md)
+  - [Guidelines](/documentation/guidelines.md)
   - [Mermaid](/documentation/mermaid.md)
