@@ -15,7 +15,7 @@ We are using [Docsify](https://docsify.js.org/#/).  It is a simple static site g
 ## Edit
 
 > Before editing!
-> Take a look at the documentation [guidelines](/doumentation/guidlines.md).
+> Take a look at the documentation [guidelines](/doumentation/guidelines.md).
 
 [Docsify's documentation](https://docsify.js.org/#/more-pages) explains the following with more detail. But for the lazy ones, here is a summary:
 
