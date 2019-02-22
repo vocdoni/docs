@@ -1,7 +1,14 @@
 - [Whitepaper](/whitepaper.md)
-  
-- Documentation
-
-  - [Contribute](/documentation/contribute.md)
-  - [Guidelines](/documentation/guidelines.md)
-  - [Mermaid](/documentation/mermaid.md)
+- Protocol (MVP)
+    - [Global arquitechture](/protocol/arquitechture.md)
+    - [User stories](/protocol/user-stories.md)
+        - [Sequence diagrams](/protocol/sequence-diagrams.md)
+    - [Data schema](/protocol/data-schema.md)
+- Integrating Vocdoni
+    - [Overview](/integration/overview.md)
+    - [Client set up](/integration/client-set-up.md)
+    - [Relay set up](/integration/relay-set-up.md)
+    - [Vote scrutiny](/integration/scrutiny.md)
+- [Contribute](/contribute.md)
+    - [Guidelines](/contribute/guidelines.md)
+    - [Mermaid diagrams](/contribute/mermaid.md)

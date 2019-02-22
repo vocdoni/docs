@@ -1,6 +1,6 @@
-# Guidlines
+# Guidelines
 
-Good praxis to keep a consistent documentation go here...
+(Good praxis to keep a consistent documentation goes here)
 
 ## Structure
 
