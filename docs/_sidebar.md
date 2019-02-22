@@ -2,6 +2,6 @@
   
 - Documentation
 
-  - [Guidlines](/documentation/guidlines.md)
-  - [Setup](/documentation/setup.md)
+  - [Contribute](/documentation/contribute.md)
+  - [Guidlines](/documentation/guidelines.md)
   - [Mermaid](/documentation/mermaid.md)
