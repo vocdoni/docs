@@ -26,6 +26,4 @@ Should render as...
 
 ## Preview in editor
 
-Very convinient if you don't want to preview it in the browser.
-
 [VS Code extension for Mermaid preview](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
