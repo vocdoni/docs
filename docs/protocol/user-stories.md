@@ -6,16 +6,19 @@
 
 ### Prior to voting
 
-- [Organizer] Register an entity to the blockchain
-	- Smart Contract with entity's (@ => metadata)
-- [App] Create an identity
-- [App] Subscribe to an entity
-	- Automatically choose a predefined one
-- [App] Register to an entity's census
-	- Use the web view to submit predefined actions
-	- The web view is custom code
-	- By now, submit a captcha
-	- Synchronous update to the Census Service
+- Deployment of the Entity and Process smart contracts
+- The **organizer** registers an Entity to the blockchain
+- The **user** creates a self-sovereign identity on the app
+- The **user** chooses an Entity from a list on the app and subscribes to it
+	- Optionally, the Entity can be predefined
+- The **user** performs custom requests to the Entity
+	- Sign up
+	- Submit a picture
+	- Make a payment
+	- Resolve a captcha
+	- Optionally, the organizer:
+		- Adds the user to a census
+		- Issues a claim
 
 ### Voting
 
