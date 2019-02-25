@@ -30,23 +30,23 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant PM as Process Manager
-    participant DVJS as DVote JS
+    participant DV as DVote JS
     participant BE as Blockchain Entity
     participant S as Swarm
 
-    PM->>DVJS: createEntity(entityMetadata)
+    PM->>DV: createEntity(entityMetadata)
 
-        DVJS->>+BE: Entity.get(address)
-        BE-->>-DVJS: entity
+        DV->>+BE: Entity.get(address)
+        BE-->>-DV: entity
 
         Alt It does not exist
-            DVJS-->+S: Swarm.add(entityMetadata) : metadataHash
+            DV-->+S: Swarm.add(entityMetadata) : metadataHash
 
-            DVJS->>+BE: Entity.create(name, metadataOrigin)
-            BE-->>-DVJS: txId
+            DV->>+BE: Entity.create(name, metadataOrigin)
+            BE-->>-DV: txId
         end
 
-    DVJS-->>PM: address
+    DV-->>PM: entityId
 ```
 
 **Used schemes:**
@@ -63,30 +63,30 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant App
-    participant DVJS as DVote JS
+    participant DV as DVote JS
     participant BE as Blockchain Entity
     participant S as Swarm
 
-    App->>+DVJS: getAll()
+    App->>+DV: getAll()
 
-        DVJS->>+BE: Entity.getEntityIds()
-        BE-->>-DVJS: idList
+        DV->>+BE: Entity.getEntityIds()
+        BE-->>-DV: idList
 
         loop entityIds
-            DVJS->>+BE: Entity.get(id)
-            BE-->>-DVJS: (name, metadataOrigin)
+            DV->>+BE: Entity.get(id)
+            BE-->>-DV: (name, metadataOrigin)
         end
 
-    DVJS-->>-App: entities
+    DV-->>-App: entities
 
     activate App
         Note right of App: User selects an entity
     deactivate App
 
-    App->>+DVJS: Entity.getMetadata(selectedEntity.metadataOrigin)
-        DVJS->>+S: Swarm.fetch(metadataHash)
-        S-->>-DVJS: entityMetadata
-    DVJS-->>-App: entityMetadata
+    App->>+DV: Entity.getMetadata(selectedEntity.metadataOrigin)
+        DV->>+S: Swarm.fetch(metadataHash)
+        S-->>-DV: entityMetadata
+    DV-->>-App: entityMetadata
 
     App->>App: addEntity(selectedEntity)
 ```
@@ -96,7 +96,7 @@ sequenceDiagram
 
 **Notes:** 
 * `metadataOrigin` can be in the form of `swarm:<metadataHash>` `ipfs:<metadataHash>` or `https://<host>/<path-to-json>`
-* In the case of React Native apps, DVoteJS will need to run on the WebRuntime component
+* In the case of React Native apps, DVote JS will need to run on the WebRuntime component
 
 ### Custom requests to an Entity
 
@@ -143,7 +143,7 @@ Depending on the activity of users, an **Entity** may decide to add their public
 sequenceDiagram
     participant PM as Process Manager
     participant DB as Internal Database
-    participant DVJS as DVote JS
+    participant DV as DVote JS
     participant CS as Census Service
 
     PM->>DB: getUsers({ pending: true })
@@ -151,14 +151,53 @@ sequenceDiagram
 
 
     loop pendingUsers
-        PM->>DVJS: Census.sign(addClaimPayload)
-        DVJS-->>PM: signature
+        PM->>DV: Census.sign(addClaimPayload)
+        DV-->>PM: signature
         
-        PM->>CS: addClaim(addClaimPayload, signature)
-        CS-->>PM: signature
+        PM->>CS: addClaim(censusId, claimData, signature)
+        CS-->>PM: success
     end
 
 ```
 
 **Used schemes:**
 * [addClaimPayload](/protocol/data-schema?id=census-service-request-payload)
+
+
+## Voting
+---
+
+### Voting process creation
+
+```mermaid
+sequenceDiagram
+    participant PM as Process Manager
+    participant DV as DVote JS
+    participant CS as Census Service
+    participant SW as Swarm
+    participant BC as Blockchain Process
+
+    PM->>+DV: Process.create(processDetails)
+
+        DV->>+CS: dump(censusId, signature)
+        CS-->>-DV: merkleTree
+
+        DV->>+SW: Swarm.put(merkleTree)
+        SW-->>-DV: Swarm hash
+
+        DV->>+CS: getRoot(censusId)
+        CS-->>-DV: rootHash
+
+        DV->>+SW: Swarm.put(processMetadata)
+        SW-->>-DV: Swarm hash
+
+        DV->>+BC: create(entityId, name, metadataOrigin)
+        BC-->>-DV: txId
+
+    DV-->>-PM: success
+
+```
+
+**Used schemes:**
+* [processMetadata](/protocol/data-schema?id=process-metadata)
+* `processDetails` parameter is defined [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)

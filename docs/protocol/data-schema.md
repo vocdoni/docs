@@ -2,6 +2,11 @@
 
 `The current contents are a work in progress`
 
+**TODO**: 
+- Entity ID detached from the creator's address
+    - Add ID to the Entity metadata
+    - Add Entity ID to processes
+
 ### Entity metadata
 
 ```json
@@ -18,11 +23,58 @@ entityMetadata = {
 }
 ```
 
-The JSON structure is to be stored on IPFS or Swarm, so anyone can get the full metadata of an entity.
+The JSON structure is to be stored on Swarm or IPFS, so anyone can get the full metadata of an entity.
 
 Used in:
 * [Entity creation](/protocol/sequence-diagrams?id=entity-creation)
 * [Entity subscription](/protocol/sequence-diagrams?id=entity-subscription)
+
+### Process metadata
+
+```json
+entityMetadata = {
+    "name": "Basic income rule",
+    "question": "Should basic income be a human right?",
+    "options": [
+        { "name": "Yes", "value": 1 },
+        { "name": "No", "value": 2 },
+        { "name": "I don't know", "value": 3 }
+    ],
+    "startBlock": 10000,
+    "endBlock":  11000,
+    "meta": {
+        "description": "## Markdown text goes here\n### Abstract",
+        "images": [
+            "https://server/image-1.jpg",
+            "https://server/image-2.jpg",
+            "swarm:<hash-3>",
+            "ipfs:<hash-4>"
+        ],
+        "organizer": {
+            "id": "0x1234...",  // address of the Entity
+            "metadata": "swarm:<hash>" // hash of the metadata on Swarm
+        }
+    },
+    "census": {
+        "id": "census-1234",  // censusId
+        "origin": "https://.../", // or pss:<publicKey> of the service to request data
+        "merkleRoot": "0x1234..."
+    },
+    "publicKey": "0x1234...", // to encrypt vote packages
+    "relays": [{
+        "origin": "pss:<publicKey>" // or https://.../
+    }]
+}
+```
+
+The JSON structure is to be stored on Swarm or IPFS, so anyone can get the full metadata of a voting process.
+
+Used in:
+* [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
+
+#### (Process metadata on the blockchain)
+#### (Process metadata on dvote-js)
+
 
 ### Census Service request payload
 

@@ -22,11 +22,11 @@
 
 ### Voting
 
-- [Organizer] Regenerate the merkle tree from the current census
-- [Organizer] Publish the merkle tree to IPFS
-- [Organizer] Start a voting process
-	- Blockchain + metadata
-	- Publish IPFS root hash
+- The **organizer** starts a voting process
+	- Get the Root Hash of a Census Merkle Tree
+	- Publish the Merkle Tree to Swarm
+	- Publish the process metadata to Swarm
+	- Send a transaction to the blockchain with the name and the metadata origin
 - [App] Get the voting processes of an entity
 	- Get meta data, relay list, public key, etc
 - [App] Verify that the user can vote
