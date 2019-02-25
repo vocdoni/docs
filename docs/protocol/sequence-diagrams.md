@@ -27,20 +27,22 @@ sequenceDiagram
     DVoteJS->>+Blockchain Entity: Entity.get(address)
     Blockchain Entity-->>-DVoteJS: entity
 
-    Note right of DVoteJS: Check if it exists
-    
-    DVoteJS-->+IPFS: ipfs.pin(entityMetadata) : metadataHash
+    Alt It does not exist
+        DVoteJS-->+Swarm: Swarm.add(entityMetadata) : metadataHash
 
-    DVoteJS->>+Blockchain Entity: Entity.create(name, metadataHash)
-    Blockchain Entity-->>-DVoteJS: txId
+        DVoteJS->>+Blockchain Entity: Entity.create(name, metadataOrigin)
+        Blockchain Entity-->>-DVoteJS: txId
+    end
 
     DVoteJS-->>ProcessManager: address
 ```
 
-Used schemas:
+**Used schemas:**
 * [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
 
-**Note:** <small>IPFS is not an external service. Data is pinned in the local IPFS repository of the Process Manager, but from this point, data becomes available through the P2P network.</small>
+**Notes:** 
+* `metadataOrigin` can be in the form of `swarm:<metadataHash>` `ipfs:<metadataHash>` or `https://<host>/<path-to-json>`
+* Swarm is not an external service. Data is pinned in the local Swarm repository of the Process Manager, and from this point, data becomes available through the P2P network.
 
 ### Identity creation
 
@@ -55,17 +57,27 @@ sequenceDiagram
     DVoteJS->>+Blockchain Entity: Entity.getEntityIds()
     Blockchain Entity-->>-DVoteJS: idList
 
-    loop
+    loop entityIds
         DVoteJS->>+Blockchain Entity: Entity.get(id)
-        Blockchain Entity-->>-DVoteJS: entityMetadata
+        Blockchain Entity-->>-DVoteJS: (name, metadataOrigin)
     end
 
     DVoteJS-->>-App: entities
 
     activate App
-    Note right of App: User selects an identity
+    Note right of App: User selects an entity
     deactivate App
+
+    App->>+Swarm: Swarm.fetch(selectedEntity.metadataHash)
+    Swarm-->>-App: entityMetadata
 
     App->>App: addEntity(selectedEntity)
 
 ```
+
+**Used schemas:**
+* [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
+
+**Notes:** 
+* `metadataOrigin` can be in the form of `swarm:<metadataHash>` `ipfs:<metadataHash>` or `https://<host>/<path-to-json>`
+

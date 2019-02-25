@@ -21,5 +21,6 @@ entityMetadata = {
 The JSON structure is to be stored on IPFS or Swarm, so anyone can get the full metadata of an entity.
 
 Used in:
-* [Register an entity](/protocol/sequence-diagrams?id=register-an-entity)
+* [Entity creation](/protocol/sequence-diagrams?id=entity-creation)
+* [Entity subscription](/protocol/sequence-diagrams?id=entity-subscription)
 
