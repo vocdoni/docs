@@ -18,20 +18,54 @@ sequenceDiagram
     Blockchain-->>-Vodconi: address
 ```
 
-### Register an entity
+### Entity creation
 
 ```mermaid
 sequenceDiagram
-    Entity->>+Process Manager: registerEntity(entityMetadata)
-    Process Manager->>+Blockchain: getEntity(address)
-    Blockchain-->>-Process Manager: entity
-    Note right of Process Manager: Check if it exists
-    Process Manager-->+IPFS: pin(entityMetadataJson) : metadataHash
-    Process Manager->>+Blockchain: registerEntity(name, metadataHash)
-    Blockchain-->>-Process Manager: txId
-    Process Manager-->>-Entity: 
+    ProcessManager->>DVoteJS: createEntity(entityMetadata)
+
+    DVoteJS->>+Blockchain Entity: Entity.get(address)
+    Blockchain Entity-->>-DVoteJS: entity
+
+    Note right of DVoteJS: Check if it exists
+    
+    DVoteJS-->+IPFS: ipfs.pin(entityMetadata) : metadataHash
+
+    DVoteJS->>+Blockchain Entity: Entity.create(name, metadataHash)
+    Blockchain Entity-->>-DVoteJS: txId
+
+    DVoteJS-->>ProcessManager: address
 ```
 
-**Note:** IPFS is not an external service. Data is pinned in the local IPFS repository of the Process Manager, but from this point, data becomes available through the P2P network.
+Used schemas:
+* [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
 
-[Related data schema](/protocol/data-schema.md?id=entity-metadata) `(TODO)`
+**Note:** <small>IPFS is not an external service. Data is pinned in the local IPFS repository of the Process Manager, but from this point, data becomes available through the P2P network.</small>
+
+### Identity creation
+
+-
+
+### Entity subscription
+
+```mermaid
+sequenceDiagram
+    App->>+DVoteJS: getAll()
+
+    DVoteJS->>+Blockchain Entity: Entity.getEntityIds()
+    Blockchain Entity-->>-DVoteJS: idList
+
+    loop
+        DVoteJS->>+Blockchain Entity: Entity.get(id)
+        Blockchain Entity-->>-DVoteJS: entityMetadata
+    end
+
+    DVoteJS-->>-App: entities
+
+    activate App
+    Note right of App: User selects an identity
+    deactivate App
+
+    App->>App: addEntity(selectedEntity)
+
+```

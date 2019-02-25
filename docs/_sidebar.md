@@ -2,7 +2,7 @@
 - Protocol (MVP)
     - [Global arquitechture](/protocol/arquitechture.md)
     - [User stories](/protocol/user-stories.md)
-        - [Sequence diagrams](/protocol/sequence-diagrams.md)
+    - [Sequence diagrams](/protocol/sequence-diagrams.md)
     - [Data schema](/protocol/data-schema.md)
 - Integrating Vocdoni
     - [Overview](/integration/overview.md)
