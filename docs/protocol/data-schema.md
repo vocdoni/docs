@@ -42,7 +42,7 @@
 
 The JSON structure is to be stored on Swarm or IPFS, so anyone can get the full metadata of an entity.
 
-Used in:
+**Used in:**
 * [Entity creation](/protocol/sequence-diagrams?id=entity-creation)
 * [Entity subscription](/protocol/sequence-diagrams?id=entity-subscription)
 
@@ -62,31 +62,38 @@ Used in:
     "meta": {
         "description": "## Markdown text goes here\n### Abstract",
         "images": [
-            "https://server/image-1.jpg",
-            "https://server/image-2.jpg",
-            "swarm:<hash-3>",
-            "ipfs:<hash-4>"
+            "bzz://<contentHash>",
+            "bzz-feed://<feedHash>",
+            "ipfs://<contentHash>",
+            "http://<url>/image.jpg",
+            "https://<url>/image.jpg"
         ],
         "organizer": {
             "id": "0x1234...",  // address of the Entity
-            "metadata": "swarm:<hash>" // hash of the metadata on Swarm
+            "metadata": "bzz-feed://<feedHash>" // organizer's metadata on Swarm
         }
     },
     "census": {
         "id": "census-1234",  // censusId
-        "origin": "https://.../", // or pss:<publicKey> of the service to request data
+        "origin": "pss://<publicKey>", // census service to request data
+        // "origin": "pss://<publicKey>@<address>",
+        // "origin": "https://<census-service-host>/",
         "merkleRoot": "0x1234..."
     },
     "publicKey": "0x1234...", // to encrypt vote packages
     "relays": [{
-        "origin": "pss:<publicKey>" // or https://.../
+        "origin": "pss://<publicKey>"
+        // "origin": "pss://<publicKey>@<address>"
+    }],
+    "gateways": [{
+        "origin": "https://<url>/<route>"
     }]
 }
 ```
 
-The JSON structure is to be stored on Swarm or IPFS, so anyone can get the full metadata of a voting process.
+The JSON payload is to be stored on Swarm or IPFS, so anyone can get the complete metadata of a voting process in a decentralized way.
 
-Used in:
+**Used in:**
 * [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
 
 #### (Process metadata on the blockchain)
@@ -110,7 +117,7 @@ Depending on the method, certain parameters are expected:
 
 Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 
-* [API specs here](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
+* [Census service API specs](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
 
-Used in:
+**Used in:**
 * [Adding users to a census](/protocol/sequence-diagrams?id=adding-users-to-a-census)
