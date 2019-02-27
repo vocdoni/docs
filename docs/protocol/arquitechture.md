@@ -2,7 +2,13 @@
 
 `The current contents are a work in progress`
 
-![alt text](./arquitechture.png "Logo Title Text 1")
+## Service arquitechture
+
+![Main arquitechture](./arquitechture-main.png "Main arquitechture")
+
+## Network arquitechture
+
+![Network arquitechture](./arquitechture-network.png "Network arquitechture")
 
 ## Client
 `The current contents are a work in progress`

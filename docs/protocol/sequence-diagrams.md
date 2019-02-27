@@ -40,7 +40,7 @@ sequenceDiagram
         BE-->>-DV: entity
 
         Alt It does not exist
-            DV-->+S: Swarm.add(entityMetadata) : metadataHash
+            DV-->+S: Swarm.put(entityMetadata) : metadataHash
 
             DV->>+BE: Entity.create(name, metadataOrigin)
             BE-->>-DV: txId
@@ -84,7 +84,7 @@ sequenceDiagram
     deactivate App
 
     App->>+DV: Entity.getMetadata(selectedEntity.metadataOrigin)
-        DV->>+S: Swarm.fetch(metadataHash)
+        DV->>+S: Swarm.get(metadataHash)
         S-->>-DV: entityMetadata
     DV-->>-App: entityMetadata
 

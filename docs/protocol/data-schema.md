@@ -7,10 +7,27 @@
     - Add ID to the Entity metadata
     - Add Entity ID to processes
 
+## Origins
+
+### Messaging
+
+- `pss://<publicKey>`
+- `pss://<publicKey>@<address>`
+- `pubsub://<topic>`
+
+### Content
+
+- `bzz://<contentHash>`
+- `bzz-feed://<feedHash>`
+- `ipfs://<contentHash>`
+- `http://<url>/<route>`
+- `https://<url>/<route>`
+
+
 ### Entity metadata
 
 ```json
-entityMetadata = {
+{
     "name": "The Entity",
     "urls": {
         "home": "https://www.the-entity.org/"
@@ -32,7 +49,7 @@ Used in:
 ### Process metadata
 
 ```json
-entityMetadata = {
+{
     "name": "Basic income rule",
     "question": "Should basic income be a human right?",
     "options": [

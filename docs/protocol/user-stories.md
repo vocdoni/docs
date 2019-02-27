@@ -24,7 +24,7 @@
 
 - The **organizer** starts a voting process
 	- Get the Root Hash of a Census Merkle Tree
-	- Publish the Merkle Tree to Swarm
+	<!-- - Publish the Merkle Tree to Swarm -->
 	- Publish the process metadata to Swarm
 	- Send a transaction to the blockchain with the name and the metadata origin
 - [App] Get the voting processes of an entity

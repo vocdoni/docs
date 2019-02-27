@@ -6,6 +6,8 @@
     - [Data schema](/protocol/data-schema.md)
 - Integrating Vocdoni
     - [Overview](/integration/overview.md)
+    - [DVote JS library](/integration/dvote-js.md)
+    - [DVote Go library](/integration/go-dvote.md)
     - [Client set up](/integration/client-set-up.md)
     - [Relay set up](/integration/relay-set-up.md)
     - [Vote scrutiny](/integration/scrutiny.md)
