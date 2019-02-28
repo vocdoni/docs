@@ -39,7 +39,7 @@
 #### dvote-smart-contracts
 `The current contents are a work in progress`
 
-## IPFS/PSS
+## IPFS/Swarm
 `The current contents are a work in progress`
 
 ---
