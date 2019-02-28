@@ -155,11 +155,13 @@ sequenceDiagram
 
 
     loop pendingUsers
-        PM->>DV: Census.sign(addClaimPayload)
-        DV-->>PM: signature
-        
-        PM->>CS: addClaim(censusId, claimData, signature)
-        CS-->>PM: success
+        PM->>DV: Census.addClaim(censusId, censusOrigin, claimData, web3Provider)
+        activate DV
+        DV->>DV: signRequestPayload(payload, web3Provider)
+        deactivate DV
+        DV->>CS: addClaim(addClaimPayload)
+        CS-->>DV: success
+        DV-->>PM: success
     end
 
 ```
@@ -187,13 +189,13 @@ sequenceDiagram
         CS-->>-DV: merkleTree
 
         DV->>+SW: Swarm.put(merkleTree)
-        SW-->>-DV: Swarm hash
+        SW-->>-DV: merkleTreeHash
 
         DV->>+CS: getRoot(censusId)
         CS-->>-DV: rootHash
 
         DV->>+SW: Swarm.put(processMetadata)
-        SW-->>-DV: Swarm hash
+        SW-->>-DV: metadataHash
 
         DV->>+BC: create(entityId, name, metadataOrigin)
         BC-->>-DV: txId
@@ -204,4 +206,64 @@ sequenceDiagram
 
 **Used schemes:**
 * [processMetadata](/protocol/data-schema?id=process-metadata)
-* `processDetails` parameter is defined [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
+* The `processDetails` parameter is defined [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
+
+### Voting process retrieval
+
+A user wants to retrieve the voting processes of a given Entity
+
+```mermaid
+sequenceDiagram
+    participant App as App user
+    participant DV as DVote JS
+    participant BC as Blockchain Process
+    participant SW as Swarm
+
+    App->>+DV: Process.fetchByEntity(entityAddress)
+
+        DV->>BC: getProcessesIdByOrganizer(entityAddress)
+        BC-->>DV: processIDs
+
+        loop processIDs
+
+            DV->>BC: getMetadata(processId)
+            BC-->>DV: (name, metadataOrigin, merkleRootHash, startBlock, endBlock)
+
+            alt Process is active or in the future
+                DV->>SW: Swarm.get(metadataHash)
+                SW-->>DV: processMetadata
+            end
+
+        end
+
+    DV-->>-App: processesMetadata
+```
+
+**Used schemes:**
+* [processMetadata](/protocol/data-schema?id=process-metadata)
+
+### Check census inclusion
+
+A user wants to know whether he/she belongs in the census of a process or not.
+
+```mermaid
+sequenceDiagram
+    participant App as App user
+    participant DV as DVote JS
+    participant CS as Census Service
+
+    App->>+DV: Census.checkKeyInCensus(publicKey, censusId, censusOrigin)
+
+        DV->>+CS: genProof(censusId, publicKey)
+        CS-->>-DV: result
+
+    DV-->>-App: isInCensus
+```
+
+**Used schemes:**
+* [genProofPayload](/protocol/data-schema?id=census-service-request-payload)
+
+**Note:** 
+- `genProof` may be replaced with a call to `hasClaim`, for efficiency
+- The `censusId` and `censusOrigin` should have been fetched from a the metadata of a process
+

@@ -27,11 +27,12 @@
 	<!-- - Publish the Merkle Tree to Swarm -->
 	- Publish the process metadata to Swarm
 	- Send a transaction to the blockchain with the name and the metadata origin
-- [App] Get the voting processes of an entity
-	- Get meta data, relay list, public key, etc
-- [App] Verify that the user can vote
-	- By now, depending on the Census service (still centralized)
-	- Retrieve true/false + merkle proof
+- The **App user** gets the voting processes of an **Entity**
+	- Get metadata, relay list, encryption public key, etc.
+- The **App user** checks that he/she is part of the census
+	- Retrieve true/false
+- The **App user** requests the census merkle proof
+	- The **Census service** replies with the merkle proof
   
 ### After voting
 

@@ -112,24 +112,64 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 Requests sent to the census service may invoke different operations (`method`).
 
-Depending on the method, certain parameters are expected:
+Depending on the `method`, certain parameters are expected:
 
 ```json
-{ "method": "addClaim", "censusId": "string", "claimData": "string", "signature": "string" }
-{ "method": "getRoot", "censusId": "string" }
-{ "method": "genProof", "censusId": "string", "claimData": "string", "rootHash": "optional-string" }
-{ "method": "checkProof", "censusId": "string", "claimData": "string", "rootHash": "optional-string", "proofData": "string" }
-{ "method": "getIdx", "censusId": "string", "claimData": "string", "rootHash": "optional-string" }
-{ "method": "dump", "censusId": "string", "rootHash": "optional-string", "signature": "string" }
+{
+    "method": "addClaim",
+    "censusId": "string",
+    "claimData": "string",
+    "signature": "string"
+}
+```
+```json
+{
+    "method": "getRoot",
+    "censusId": "string" 
+}
+```
+```json
+{
+    "method": "genProof",
+    "censusId": "string",
+    "claimData": "string",
+    "rootHash": "optional-string"
+}
+```
+```json
+{
+    "method": "checkProof",
+    "censusId": "string",
+    "claimData": "string",
+    "rootHash": "optional-string",
+    "proofData": "string"
+}
+```
+```json
+{
+    "method": "getIdx",
+    "censusId": "string",
+    "claimData": "string",
+    "rootHash": "optional-string"
+}
+```
+```json
+{
+    "method": "dump",
+    "censusId": "string",
+    "rootHash": "optional-string",
+    "signature": "string"
+}
 ```
 
 Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 
-* [Census service API specs](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
-
 **Used in:**
 * [Adding users to a census](/protocol/sequence-diagrams?id=adding-users-to-a-census)
 
+**Related:**
+
+* [Census service API specs](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
 
 ### Gateway request payload
 
