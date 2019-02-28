@@ -108,11 +108,23 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 * [Process JS methods](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
 
 
+## Vote Package
+
+### ZK Snarks Vote Package
+
+`Work in progress`
+
+### Ring Signature Vote Package
+
+`Work in progress`
+
+## Census Service
+
 ### Census Service request payload
 
-Requests sent to the census service may invoke different operations (`method`).
+Requests sent to the census service may invoke different operations.
 
-Depending on the `method`, certain parameters are expected:
+Depending on the `method`, certain parameters are expected or optional:
 
 #### Census addClaim
 ```json
@@ -208,3 +220,6 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 ### Relay request payload
 
 `Work in progress`
+
+**Notes:**
+- See [Vote Package](/protocol/data-schema?id=vote-package) above
