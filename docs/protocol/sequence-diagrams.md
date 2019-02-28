@@ -51,10 +51,10 @@ sequenceDiagram
 
 **Used schemes:**
 * [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
+* `metadataOrigin` should be as [stated here](/protocol/data-schema?id=content-uri)
 
 **Notes:** 
-* `metadataOrigin` can be in the form of `swarm:<metadataHash>` `ipfs:<metadataHash>` or `https://<host>/<path-to-json>`
-* Swarm is not an external service. Data is pinned in the local Swarm repository of the Process Manager, and from this point, data becomes available through the P2P network.
+* Swarm is not a service by itself. Data pinned in the local Swarm repository of the Process Manager becomes available through a P2P network.
 
 <!-- ### Identity creation -->
 
@@ -95,10 +95,14 @@ sequenceDiagram
 * [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
 
 **Notes:** 
-* `metadataOrigin` can be in the form of `swarm:<metadataHash>` `ipfs:<metadataHash>` or `https://<host>/<path-to-json>`
+* `metadataOrigin` should be as [stated here](/protocol/data-schema?id=content-uri)
 * In the case of React Native apps, DVote JS will need to run on the WebRuntime component
 
 ### Custom requests to an Entity
+
+Actions like creating an Entity or subscribing to it are standard processes. However every Entity will probably have specific requirements on what users have to accomplish in order to join a census.
+
+Some may require filling a simple form. Some others may ask to log in from an existing HTTP service. Uploading ID pictures, selfies or even making payments need custom implementations that decide that a user must eventually be added to a census.
 
 Below are some examples:
 
@@ -137,7 +141,7 @@ sequenceDiagram
 
 #### Adding users to a census
 
-Depending on the activity of users, an **Entity** may decide to add their public keys to a census.
+Depending on the activity of users, an **Entity** may decide to add public keys to one or more census.
 
 ```mermaid
 sequenceDiagram
