@@ -114,6 +114,7 @@ Requests sent to the census service may invoke different operations (`method`).
 
 Depending on the `method`, certain parameters are expected:
 
+#### Census addClaim
 ```json
 {
     "method": "addClaim",
@@ -122,12 +123,22 @@ Depending on the `method`, certain parameters are expected:
     "signature": "string"
 }
 ```
+
+**Used in:**
+* [Adding users to a census](/protocol/sequence-diagrams?id=adding-users-to-a-census)
+
+#### Census getRoot
 ```json
 {
     "method": "getRoot",
     "censusId": "string" 
 }
 ```
+
+**Used in:**
+- [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
+
+#### Census genProof
 ```json
 {
     "method": "genProof",
@@ -136,6 +147,12 @@ Depending on the `method`, certain parameters are expected:
     "rootHash": "optional-string"
 }
 ```
+
+**Used in:**
+- [Check census inclusion](/protocol/sequence-diagrams?id=check-census-inclusion)
+- [Get the Census Merkle Proof](/protocol/sequence-diagrams?id=get-the-census-merkle-proof)
+
+#### Census checkProof
 ```json
 {
     "method": "checkProof",
@@ -145,6 +162,8 @@ Depending on the `method`, certain parameters are expected:
     "proofData": "string"
 }
 ```
+
+#### Census getIdx
 ```json
 {
     "method": "getIdx",
@@ -153,6 +172,8 @@ Depending on the `method`, certain parameters are expected:
     "rootHash": "optional-string"
 }
 ```
+
+#### Census dump
 ```json
 {
     "method": "dump",
@@ -162,14 +183,23 @@ Depending on the `method`, certain parameters are expected:
 }
 ```
 
-Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
-
 **Used in:**
-* [Adding users to a census](/protocol/sequence-diagrams?id=adding-users-to-a-census)
+- [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
+
+Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 
 **Related:**
 
 * [Census service API specs](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
+
+### Census Serice response payload
+
+```json
+{
+    "error": false,
+    "response": "string"
+}
+```
 
 ### Gateway request payload
 

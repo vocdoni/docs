@@ -167,7 +167,7 @@ sequenceDiagram
 ```
 
 **Used schemes:**
-* [addClaimPayload](/protocol/data-schema?id=census-service-request-payload)
+* [addClaimPayload](/protocol/data-schema?id=census-addclaim)
 
 
 ## Voting
@@ -206,6 +206,7 @@ sequenceDiagram
 
 **Used schemes:**
 * [processMetadata](/protocol/data-schema?id=process-metadata)
+* [getRootPayload](/protocol/data-schema?id=census-getroot)
 * The `processDetails` parameter is defined [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
 
 ### Voting process retrieval
@@ -246,24 +247,53 @@ sequenceDiagram
 
 A user wants to know whether he/she belongs in the census of a process or not.
 
+The request can be sent through HTTP/PSS/PubSub. The response may be fetched by subscribing to a topic on PSS/PubSub.
+
 ```mermaid
 sequenceDiagram
     participant App as App user
     participant DV as DVote JS
     participant CS as Census Service
 
-    App->>+DV: Census.checkKeyInCensus(publicKey, censusId, censusOrigin)
+    App->>+DV: Census.hasClaim(publicKey, censusId, censusOrigin)
 
         DV->>+CS: genProof(censusId, publicKey)
-        CS-->>-DV: result
+        CS-->>-DV: isInCensus
 
     DV-->>-App: isInCensus
 ```
 
 **Used schemes:**
-* [genProofPayload](/protocol/data-schema?id=census-service-request-payload)
+* [genProofPayload](/protocol/data-schema?id=census-genproof)
 
-**Note:** 
+**Notes:** 
 - `genProof` may be replaced with a call to `hasClaim`, for efficiency
+- The `censusId` and `censusOrigin` should have been fetched from a the metadata of a process
+
+
+### Get the Census Merkle Proof
+
+A user wants to get the merkle proof for his/her public key on a Census.
+
+The request can be sent through HTTP/PSS/PubSub. The response may be fetched by subscribing to a topic on PSS/PubSub.
+
+```mermaid
+sequenceDiagram
+    participant App as App user
+    participant DV as DVote JS
+    participant CS as Census Service
+
+    App->>+DV: Census.getMerkleProof(publicKey, censusId, censusOrigin)
+
+        DV->>+CS: genProof(censusId, publicKey)
+        CS-->>-DV: merkleProof
+
+    DV-->>-App: merkleProof
+```
+
+**Used schemes:**
+* [genProofPayload](/protocol/data-schema?id=census-genproof)
+
+**Notes:** 
 - The `censusId` and `censusOrigin` should have been fetched from a the metadata of a process
 
