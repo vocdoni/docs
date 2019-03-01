@@ -48,7 +48,6 @@
 		- The app requests the chunk of census where he/she belongs to the **Census Service**
 			- The **Census Service** replies with the public key set
 		- The app encrypts the **vote value** with the public key of the voting process
-		- The app compiles the **vote package** with the encrypted vote and processId
 		- The app signs the **vote package** with the **Ring Signature**
 		<!-- - ~POW~ -->
 		- The app selects a **Relay** among the available ones and encrypts the signed vote package

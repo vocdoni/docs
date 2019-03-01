@@ -67,6 +67,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
         { "name": "No", "value": 2 },
         { "name": "I don't know", "value": 3 }
     ],
+    "type": "zk-snarks",  // Allowed ["zk-snarks", "lrs"]
     "startBlock": 10000,
     "endBlock":  11000,
     "meta": {
@@ -88,7 +89,8 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
         "origin": "pss://<publicKey>", // Census service to request data from
         // "origin": "pss://<publicKey>@<address>",
         // "origin": "https://<census-service-host>/",
-        "merkleRoot": "0x1234..."
+        "merkleRoot": "0x1234...",
+        "modulusSize": 5000           // Only when type="lrs"
     },
     "publicKey": "0x1234...", // To encrypt vote packages
     "relays": [{
@@ -109,13 +111,16 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 * [Process Smart Contract](https://github.com/vocdoni/dvote-smart-contracts/blob/master/contracts/VotingProcess.sol)
 * [Process JS methods](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
 
+**Notes:**
+- The `type` field indicates the scrutiny method that will be used for the process. Any vote package generated with the wrong type will be discarded. 
 
 ## Vote Package
 
-### ZK Snarks Vote Package
+### Vote Package - ZK Snarks
 
 ```json
 {
+    "type": "zk-snarks",
     "nullifyer": "0x1234...",
     "proof": "01234...",
     "encryptedVote": "0x1234...",
@@ -124,9 +129,14 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 }
 ```
 
-### Ring Signature Vote Package
+### Vote Package - Ring Signature
 
-`Work in progress`
+```json
+{
+    "type": "lrs",
+
+}
+```
 
 ## Census Service
 
@@ -166,13 +176,26 @@ Depending on the `method`, certain parameters are expected or optional:
     "method": "genProof",
     "censusId": "string",
     "claimData": "string",
-    "rootHash": "optional-string"
+    "rootHash": "optional-string"  // from a specific version
 }
 ```
 
 **Used in:**
 - [Check census inclusion](/protocol/sequence-diagrams?id=check-census-inclusion)
-- [Get the Census Merkle Proof](/protocol/sequence-diagrams?id=get-the-census-merkle-proof)
+- [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
+
+#### Census getChunk
+```json
+{
+    "method": "getChunk",
+    "censusId": "string",
+    "rootHash": "optional-string"  // from a specific version,
+    // ... WIP
+}
+```
+
+**Used in:**
+- [Casting a vote with Linkable Ring Signatures](/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 
 #### Census checkProof
 ```json
@@ -180,7 +203,7 @@ Depending on the `method`, certain parameters are expected or optional:
     "method": "checkProof",
     "censusId": "string",
     "claimData": "string",
-    "rootHash": "optional-string",
+    "rootHash": "optional-string",  // from a specific version
     "proofData": "string"
 }
 ```

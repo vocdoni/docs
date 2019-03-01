@@ -283,9 +283,9 @@ sequenceDiagram
     participant GW as Gateway
     participant RL as Relay
 
-    App->>+DV: Process.castVote(vote, processMetadata)
+    App->>+DV: Process.castVote(vote, processMetadata, merkleProof?)
 
-        alt merkleProof not stored
+        alt merkleProof not provided
 
             DV->>+CS: genProof(processMetadata.census.id, publicKey)
             CS-->>-DV: merkleProof
@@ -314,7 +314,56 @@ sequenceDiagram
 **Used schemes:**
 * [processMetadata](/protocol/data-schema?id=process-metadata)
 * [genProofPayload](/protocol/data-schema?id=census-genproof)
-* [ZK Vote Package](/protocol/data-schema?id=zk-snarks-vote-package)
+* [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
 
 **Notes:**
 - The Merkle Proof could be retrieved and stored beforehand
+
+
+## Casting a vote with Linkable Ring Signatures
+
+Requests can be sent through HTTP/PSS/PubSub. Responses may be fetched by subscribing to a topic on PSS/PubSub.
+
+```mermaid
+sequenceDiagram
+
+    participant App
+    participant DV as DVote JS
+    participant CS as Census Service
+    participant GW as Gateway
+    participant RL as Relay
+
+    App->>+DV: Process.castVote(vote, processMetadata, censusChunk?)
+
+        alt censusChunk not provided
+
+            DV->>+CS: getChunk(publicKeyModulus)
+            CS-->>-DV: censusChunk
+
+        end
+
+        DV->>DV: encrypt(vote, processMetadata.publicKey)
+        
+        DV->>DV: sign(processMetadata.address, privateKey, censusChunk)
+
+        DV->>DV: encryptVotePackage(package, relay.publicKey)
+
+        DV->>GW: submitVotePackage(encryptedVotePackage, relay.origin)
+            
+            GW->>RL: submitVotePackage(encryptedVotePackage)
+            RL-->>GW: ACK
+        
+        GW-->>DV: submitted
+
+    DV-->>-App: submitted
+
+```
+
+**Used schemes:**
+* [processMetadata](/protocol/data-schema?id=process-metadata)
+* [getChunk](/protocol/data-schema?id=census-getchunk)
+* [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
+
+**Notes:**
+- The `publicKeyModulus` allows to segment the whole census into `N` polling stations. Every public key is assigned to exactly one, depending on the modulus that yields a division by `processMetadata.census.modulusSize`.
+
