@@ -166,6 +166,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 **Used in:**
 - [Registering a Vote Batch](/protocol/sequence-diagrams?id=registering-a-vote-batch)
+- [Checking a submitted vote](/protocol/sequence-diagrams?id=checking-a-submitted-vote)
 
 ## Census Service
 

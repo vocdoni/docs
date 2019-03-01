@@ -68,13 +68,15 @@
 ### After voting
 
 - The **App User** checks that his/her vots is registered
-	- Using **ZK Snarks**
-		- The app asks a **Gateway** for the txId of a batch containing his/her nullifyer
-		- The **Gateway** broadcasts the request to all the relays
-		- If a **Relay** has sent a transaction to the blockchain with the nullifyer in a batch, it replies with the transaction Id and the batch origin
-	- Using **Ring Signatures**
-		- The app asks a **Gateway** for the txId of a batch containing his/her signature
-		- If a **Relay** has sent a transaction to the blockchain with the signature in a batch, it replies with the transaction Id and the batch origin
+	- The app asks a **Gateway** for the batchId from a transaction including his/her nullifyer (ZK Snarks) or signature (Linkable Ring Signatures)
+	- The **Gateway** broadcasts the expected Relay
+	- If the **Relay** has sent a transaction to the blockchain with the nullifyer/signature in a batch, it replies with the batch submission Id and the batch origin. NACK otherwise.
+	- The app fetches the value of the given batchId on the Blockchain
+	- The app fetches the contents of the Vote Batch on Swarm at the given origin
+	- The app checks that the nullifyer/signature is indeed registered
+- The organizing **Entity** publishes the private key to the blockchain so that the vote count can start and newer batch submissions are rejected
+
+
 
 
 - [Organizer] Vote count and publishing to the blockchain

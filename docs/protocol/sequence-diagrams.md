@@ -268,7 +268,7 @@ sequenceDiagram
 - `genProof` may be replaced with a call to `hasClaim`, for efficiency
 - The `censusId` and `censusOrigin` should have been fetched from a the metadata of a process
 
-## Casting a vote with ZK Snarks
+### Casting a vote with ZK Snarks
 
 Requests can be sent through HTTP/PSS/PubSub. Responses may be fetched by subscribing to a topic on PSS/PubSub.
 
@@ -310,15 +310,15 @@ sequenceDiagram
 ```
 
 **Used schemes:**
-* [processMetadata](/protocol/data-schema?id=process-metadata)
-* [genProofPayload](/protocol/data-schema?id=census-genproof)
-* [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
+- [processMetadata](/protocol/data-schema?id=process-metadata)
+- [genProofPayload](/protocol/data-schema?id=census-genproof)
+- [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
 
 **Notes:**
 - The Merkle Proof could be retrieved and stored beforehand
 
 
-## Casting a vote with Linkable Ring Signatures
+### Casting a vote with Linkable Ring Signatures
 
 Requests can be sent through HTTP/PSS/PubSub. Responses may be fetched by subscribing to a topic on PSS/PubSub.
 
@@ -358,14 +358,14 @@ sequenceDiagram
 ```
 
 **Used schemes:**
-* [processMetadata](/protocol/data-schema?id=process-metadata)
-* [getChunk](/protocol/data-schema?id=census-getchunk)
-* [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
+- [processMetadata](/protocol/data-schema?id=process-metadata)
+- [getChunk](/protocol/data-schema?id=census-getchunk)
+- [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
 
 **Notes:**
 - The `publicKeyModulus` allows to segment the whole census into `N` polling stations. Every public key is assigned to exactly one, depending on the modulus that yields a division by `processMetadata.census.modulusSize`.
 
-## Registering a Vote Batch
+### Registering a Vote Batch
 
 ```mermaid
 sequenceDiagram
@@ -386,6 +386,76 @@ sequenceDiagram
 ```
 
 **Used schemes:**
-* [Vote Batch](/protocol/data-schema?id=vote-batch)
+- [Vote Batch](/protocol/data-schema?id=vote-batch)
 
+
+## After voting
+
+### Checking a submitted vote
+
+The sequence diagram applies to both **ZK Snarks** and **LRS** Vote Packages. `nullifyerOrSignature` will be interpreted according to the process' `type` on its metadata.
+
+```mermaid
+sequenceDiagram
+    participant App
+    participant DV as DVote JS
+    participant GW as Gateway
+    participant RL as Relay
+    participant BC as Blockchain Process
+    participant SW as Swarm
+
+    App->>DV: checkVoteStatus(processAddress, relayOrigin)
+
+        DV->>DV: computeNullifyerOrSignature()
+
+        DV->>+GW: checkVoteStatus(processAddress, nullifyerOrSignature, relayOrigin)
+
+            GW-->>RL: checkVoteStatus(processAddress, nullifyerOrSignature)
+            RL-->>GW: (batchId?, batchOrigin?)
+
+        GW-->>-DV: (batchId?, batchOrigin?)
+
+        alt it does not trust the batchOrigin
+
+            DV->>+BC: Process.getBatch(batchId)
+            BC-->>-DV: (processAddress, batchOrigin)
+        
+        end
+
+        DV->>+SW: Swarm.get(batchHash)
+        SW-->>-DV: batch
+
+        DV->>DV: checkWithinBatch(nullifyerOrSignature, batch)
+
+    DV-->>App: isRegistered
+```
+
+**Used schemes:**
+- [Vote Batch](/protocol/data-schema?id=vote-batch)
+
+**Notes:**
+- `nullifyerOrSignature` is expected to contain a nullifyer when the process `type` is `zk-snarks`
+- `nullifyerOrSignature` is expected to contain a ring signature when the process `type` is `lrs`
+
+
+### Closing a Voting Process
+
+```mermaid
+sequenceDiagram
+    participant PM as Process Manager
+    participant DV as DVote JS
+    participant BC as Blockchain Process
+
+    PM->>DV: Process.close(processAddress, privateKey)
+
+        DV->>+BC: Process.close(processAddress, privateKey)
+
+            BC->>BC: checkPrivateKey(privateKey)
+            BC->>BC: closeProcess(processAddress)
+
+        BC-->>-DV: success
+
+    DV-->>PM: success
+
+```
 
