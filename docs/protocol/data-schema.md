@@ -60,6 +60,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 ```json
 {
     "name": "Basic income rule",
+    "address": "0x1234...", // on the blockchain
     "question": "Should basic income be a human right?",
     "voteOptions": [
         { "name": "Yes", "value": 1 },
@@ -91,8 +92,9 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
     },
     "publicKey": "0x1234...", // To encrypt vote packages
     "relays": [{
-        "origin": "pss://<publicKey>"
-        // "origin": "pss://<publicKey>@<address>"
+        "origin": "pss://<publicKey>",
+        // "origin": "pss://<publicKey>@<address>",
+        "publicKey": "0x1234..."
     }],
     "gateways": [{
         "origin": "https://<url>/<route>"
@@ -112,7 +114,15 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 ### ZK Snarks Vote Package
 
-`Work in progress`
+```json
+{
+    "nullifyer": "0x1234...",
+    "proof": "01234...",
+    "encryptedVote": "0x1234...",
+    "processAddress": "0x1234...",
+    "censusMerkleRoot": "0x1234..."
+}
+```
 
 ### Ring Signature Vote Package
 

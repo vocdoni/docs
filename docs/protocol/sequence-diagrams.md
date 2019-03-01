@@ -270,30 +270,51 @@ sequenceDiagram
 - `genProof` may be replaced with a call to `hasClaim`, for efficiency
 - The `censusId` and `censusOrigin` should have been fetched from a the metadata of a process
 
+## Casting a vote with ZK Snarks
 
-### Get the Census Merkle Proof
-
-A user wants to get the merkle proof for his/her public key on a Census.
-
-The request can be sent through HTTP/PSS/PubSub. The response may be fetched by subscribing to a topic on PSS/PubSub.
+Requests can be sent through HTTP/PSS/PubSub. Responses may be fetched by subscribing to a topic on PSS/PubSub.
 
 ```mermaid
 sequenceDiagram
-    participant App as App user
+
+    participant App
     participant DV as DVote JS
     participant CS as Census Service
+    participant GW as Gateway
+    participant RL as Relay
 
-    App->>+DV: Census.getMerkleProof(publicKey, censusId, censusOrigin)
+    App->>+DV: Process.castVote(vote, processMetadata)
 
-        DV->>+CS: genProof(censusId, publicKey)
-        CS-->>-DV: merkleProof
+        alt merkleProof not stored
 
-    DV-->>-App: merkleProof
+            DV->>+CS: genProof(processMetadata.census.id, publicKey)
+            CS-->>-DV: merkleProof
+
+        end
+
+        DV->>DV: computeNullifyer()
+
+        DV->>DV: encrypt(vote, processMetadata.publicKey)
+
+        DV->>DV: generateZkProof(provingK, verificationK, signals)
+
+        DV->>DV: encryptVotePackage(package, relay.publicKey)
+
+        DV->>GW: submitVotePackage(encryptedVotePackage, relay.origin)
+            
+            GW->>RL: submitVotePackage(encryptedVotePackage)
+            RL-->>GW: ACK
+        
+        GW-->>DV: submitted
+
+    DV-->>-App: submitted
+
 ```
 
 **Used schemes:**
+* [processMetadata](/protocol/data-schema?id=process-metadata)
 * [genProofPayload](/protocol/data-schema?id=census-genproof)
+* [ZK Vote Package](/protocol/data-schema?id=zk-snarks-vote-package)
 
-**Notes:** 
-- The `censusId` and `censusOrigin` should have been fetched from a the metadata of a process
-
+**Notes:**
+- The Merkle Proof could be retrieved and stored beforehand
