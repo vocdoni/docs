@@ -162,7 +162,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
     "relay": {
         "publicKey": "0x1234..."
     },
-    "batch": [ // Vote Package, see above
+    "votes": [ // Vote Package, see above
         { ... },
         { ... },
         { ... }

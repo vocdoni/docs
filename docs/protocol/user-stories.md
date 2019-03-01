@@ -1,9 +1,5 @@
 # User stories
 
-(Original content [on the wiki](https://github.com/vocdoni/docs/wiki/MVP-v1#user-stories))
-
-`The current contents are a work in progress`
-
 ### Prior to voting
 
 - Deployment of the Entity and Process smart contracts
@@ -79,7 +75,7 @@
 	- The **Scrutinizer** fetches the process metadata and the private key
 	- The **Scrutinizer** fetches the list of batchId's from the `processAddress` on the Blockchain
 	- The **Scrutinizer** fetches the data of every batch registered
-	- The **Scrutinizer** ensures that vote batches come from trusted Relays and corresponds to the given processAddress
+	- The **Scrutinizer** ensures that vote batches come from trusted Relays, correspond to the given processAddress and contain votes with the right  `type` of verification
 	- The **Scrutinizer** merges the batch votes into a single list
 	- The **Scrutinizer** detects duplicate nullifyers or singatures
 		- It only keeps the vote submitted in the latest batch

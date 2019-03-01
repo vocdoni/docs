@@ -49,7 +49,7 @@ sequenceDiagram
     DV-->>PM: entityId
 ```
 
-**Used schemes:**
+**Used schemas:**
 - [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
 - `metadataOrigin` should be as [stated here](/protocol/data-schema?id=content-uri)
 
@@ -91,7 +91,7 @@ sequenceDiagram
     App->>App: addEntity(selectedEntity)
 ```
 
-**Used schemes:**
+**Used schemas:**
 - [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
 
 **Notes:** 
@@ -129,7 +129,7 @@ sequenceDiagram
 
 ```
 
-**Used schemes:**
+**Used schemas:**
 - [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
 
 **Notes:** 
@@ -166,7 +166,7 @@ sequenceDiagram
 
 ```
 
-**Used schemes:**
+**Used schemas:**
 - [addClaimPayload](/protocol/data-schema?id=census-addclaim)
 
 
@@ -202,7 +202,7 @@ sequenceDiagram
 
 ```
 
-**Used schemes:**
+**Used schemas:**
 - [processMetadata](/protocol/data-schema?id=process-metadata)
 - [getRootPayload](/protocol/data-schema?id=census-getroot)
 - The `processDetails` parameter is specified [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
@@ -238,7 +238,7 @@ sequenceDiagram
     DV-->>-App: processesMetadata
 ```
 
-**Used schemes:**
+**Used schemas:**
 - [processMetadata](/protocol/data-schema?id=process-metadata)
 
 ### Check census inclusion
@@ -261,7 +261,7 @@ sequenceDiagram
     DV-->>-App: isInCensus
 ```
 
-**Used schemes:**
+**Used schemas:**
 - [genProofPayload](/protocol/data-schema?id=census-genproof)
 
 **Notes:** 
@@ -309,7 +309,7 @@ sequenceDiagram
 
 ```
 
-**Used schemes:**
+**Used schemas:**
 - [processMetadata](/protocol/data-schema?id=process-metadata)
 - [genProofPayload](/protocol/data-schema?id=census-genproof)
 - [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
@@ -357,7 +357,7 @@ sequenceDiagram
 
 ```
 
-**Used schemes:**
+**Used schemas:**
 - [processMetadata](/protocol/data-schema?id=process-metadata)
 - [getChunk](/protocol/data-schema?id=census-getchunk)
 - [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
@@ -385,7 +385,7 @@ sequenceDiagram
 
 ```
 
-**Used schemes:**
+**Used schemas:**
 - [Vote Batch](/protocol/data-schema?id=vote-batch)
 
 
@@ -430,7 +430,7 @@ sequenceDiagram
     DV-->>App: isRegistered
 ```
 
-**Used schemes:**
+**Used schemas:**
 - [Vote Batch](/protocol/data-schema?id=vote-batch)
 
 **Notes:**
@@ -503,10 +503,13 @@ sequenceDiagram
         end
     DV-->>-SC: voteBatches
 
-    SC->>+DV: skipInvalidRelayBatches(voteBatches, processManager.relays)
+    SC->>+DV: skipInvalidRelayBatches(voteBatches, processMetadata.relays)
     DV-->>-SC: validRelayBatches
     
-    SC->>SC: sort(merge(validRelayBatches))
+    SC->>+DV: skipInvalidTypeBatches(validRelayBatches, processMetadata.type)
+    DV-->>-SC: validTypeBatches
+    
+    SC->>SC: sort(merge(validTypeBatches))
 
     SC->>+DV: resolveDuplicates(voteBatches)
     DV-->>-SC: uniqueVotePackages
@@ -551,7 +554,7 @@ sequenceDiagram
 
 ```
 
-**Used schemes:**
+**Used schemas:**
 - [processMetadata](/protocol/data-schema?id=process-metadata)
 - [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
 - [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
