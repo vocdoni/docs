@@ -67,7 +67,16 @@
   
 ### After voting
 
-- [App] Check that the vote is registered
+- The **App User** checks that his/her vots is registered
+	- Using **ZK Snarks**
+		- The app asks a **Gateway** for the txId of a batch containing his/her nullifyer
+		- The **Gateway** broadcasts the request to all the relays
+		- If a **Relay** has sent a transaction to the blockchain with the nullifyer in a batch, it replies with the transaction Id and the batch origin
+	- Using **Ring Signatures**
+		- The app asks a **Gateway** for the txId of a batch containing his/her signature
+		- If a **Relay** has sent a transaction to the blockchain with the signature in a batch, it replies with the transaction Id and the batch origin
+
+
 - [Organizer] Vote count and publishing to the blockchain
 	- By now, centralized on the Organizer side
 	- Anyone else can do it on his/her own

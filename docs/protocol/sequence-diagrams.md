@@ -40,7 +40,7 @@ sequenceDiagram
         BE-->>-DV: entity
 
         Alt It does not exist
-            DV-->+S: Swarm.put(entityMetadata) : metadataHash
+            DV-->S: Swarm.put(entityMetadata) : metadataHash
 
             DV->>+BE: Entity.create(name, metadataOrigin)
             BE-->>-DV: txId
@@ -188,14 +188,12 @@ sequenceDiagram
         DV->>+CS: dump(censusId, signature)
         CS-->>-DV: merkleTree
 
-        DV->>+SW: Swarm.put(merkleTree)
-        SW-->>-DV: merkleTreeHash
+        DV-->SW: Swarm.put(merkleTree) : merkleTreeHash
 
         DV->>+CS: getRoot(censusId)
         CS-->>-DV: rootHash
 
-        DV->>+SW: Swarm.put(processMetadata)
-        SW-->>-DV: metadataHash
+        DV-->SW: Swarm.put(processMetadata) : metadataHash
 
         DV->>+BC: create(entityId, name, metadataOrigin)
         BC-->>-DV: txId
@@ -207,7 +205,7 @@ sequenceDiagram
 **Used schemes:**
 * [processMetadata](/protocol/data-schema?id=process-metadata)
 * [getRootPayload](/protocol/data-schema?id=census-getroot)
-* The `processDetails` parameter is defined [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
+* The `processDetails` parameter is specified [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
 
 ### Voting process retrieval
 
@@ -366,4 +364,28 @@ sequenceDiagram
 
 **Notes:**
 - The `publicKeyModulus` allows to segment the whole census into `N` polling stations. Every public key is assigned to exactly one, depending on the modulus that yields a division by `processMetadata.census.modulusSize`.
+
+## Registering a Vote Batch
+
+```mermaid
+sequenceDiagram
+    participant RL as Relay
+    participant SW as Swarm
+    participant BC as Blockchain Process
+
+    activate RL
+        RL->>RL: loadPendingVotes()
+        RL->>RL: filterInvalidVotes()
+    deactivate RL
+
+    RL-->SW: Swarm.put(voteBatch) : batchHash
+
+    RL->>+BC: Process.registerBatch(batchOrigin)
+    BC-->>-RL: txId
+
+```
+
+**Used schemes:**
+* [Vote Batch](/protocol/data-schema?id=vote-batch)
+
 

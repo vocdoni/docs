@@ -121,22 +121,51 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 ```json
 {
     "type": "zk-snarks",
+    "processAddress": "0x1234...",
+    "encryptedVote": "0x1234...",
     "nullifyer": "0x1234...",
     "proof": "01234...",
-    "encryptedVote": "0x1234...",
-    "processAddress": "0x1234...",
     "censusMerkleRoot": "0x1234..."
 }
 ```
+
+**Used in:**
+- [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
 
 ### Vote Package - Ring Signature
 
 ```json
 {
     "type": "lrs",
-
+    "processAddress": "0x1234...",
+    "encryptedVote": "0x1234...",
+    "signature": "0x1234...", // The ring signature over the processAdress
+    "publicKeyModulus": 4321,
+    "censusMerkleRoot": "0x1234..."
 }
 ```
+
+**Used in:**
+- [Casting a vote with Linkable Ring Signatures](/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
+
+## Vote Batch
+
+```json
+{
+    "type": "lrs", // or zk-snarks
+    "relay": {
+        "publicKey": "0x1234..."
+    },
+    "batch": [ // Vote Package, see above
+        { ... },
+        { ... },
+        { ... }
+    ]
+}
+```
+
+**Used in:**
+- [Registering a Vote Batch](/protocol/sequence-diagrams?id=registering-a-vote-batch)
 
 ## Census Service
 
@@ -189,8 +218,8 @@ Depending on the `method`, certain parameters are expected or optional:
 {
     "method": "getChunk",
     "censusId": "string",
-    "rootHash": "optional-string"  // from a specific version,
-    // ... WIP
+    "rootHash": "optional-string",  // from a specific version
+    "publicKeyModulus": 4321
 }
 ```
 
