@@ -50,8 +50,8 @@ sequenceDiagram
 ```
 
 **Used schemes:**
-* [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
-* `metadataOrigin` should be as [stated here](/protocol/data-schema?id=content-uri)
+- [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
+- `metadataOrigin` should be as [stated here](/protocol/data-schema?id=content-uri)
 
 **Notes:** 
 * Swarm is not a service by itself. Data pinned in the local Swarm repository of the Process Manager becomes available through a P2P network.
@@ -92,11 +92,11 @@ sequenceDiagram
 ```
 
 **Used schemes:**
-* [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
+- [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
 
 **Notes:** 
-* `metadataOrigin` should be as [stated here](/protocol/data-schema?id=content-uri)
-* In the case of React Native apps, DVote JS will need to run on the WebRuntime component
+- `metadataOrigin` should be as [stated here](/protocol/data-schema?id=content-uri)
+- In the case of React Native apps, DVote JS will need to run on the WebRuntime component
 
 ### Custom requests to an Entity
 
@@ -130,10 +130,10 @@ sequenceDiagram
 ```
 
 **Used schemes:**
-* [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
+- [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
 
 **Notes:** 
-* `ACTION-URL` is defined on the metadata of the contract. It is expected to be a full URL to which GET parameters will be appended (`publicKey` and optionally `censusId`)
+- `ACTION-URL` is defined on the metadata of the contract. It is expected to be a full URL to which GET parameters will be appended (`publicKey` and optionally `censusId`)
 
 #### Submit a picture
 #### Make a payment
@@ -167,7 +167,7 @@ sequenceDiagram
 ```
 
 **Used schemes:**
-* [addClaimPayload](/protocol/data-schema?id=census-addclaim)
+- [addClaimPayload](/protocol/data-schema?id=census-addclaim)
 
 
 ## Voting
@@ -203,9 +203,9 @@ sequenceDiagram
 ```
 
 **Used schemes:**
-* [processMetadata](/protocol/data-schema?id=process-metadata)
-* [getRootPayload](/protocol/data-schema?id=census-getroot)
-* The `processDetails` parameter is specified [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
+- [processMetadata](/protocol/data-schema?id=process-metadata)
+- [getRootPayload](/protocol/data-schema?id=census-getroot)
+- The `processDetails` parameter is specified [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
 
 ### Voting process retrieval
 
@@ -239,7 +239,7 @@ sequenceDiagram
 ```
 
 **Used schemes:**
-* [processMetadata](/protocol/data-schema?id=process-metadata)
+- [processMetadata](/protocol/data-schema?id=process-metadata)
 
 ### Check census inclusion
 
@@ -262,7 +262,7 @@ sequenceDiagram
 ```
 
 **Used schemes:**
-* [genProofPayload](/protocol/data-schema?id=census-genproof)
+- [genProofPayload](/protocol/data-schema?id=census-genproof)
 
 **Notes:** 
 - `genProof` may be replaced with a call to `hasClaim`, for efficiency
@@ -375,7 +375,7 @@ sequenceDiagram
 
     activate RL
         RL->>RL: loadPendingVotes()
-        RL->>RL: filterInvalidVotes()
+        RL->>RL: skipInvalidVotes()
     deactivate RL
 
     RL-->SW: Swarm.put(voteBatch) : batchHash
@@ -459,3 +459,102 @@ sequenceDiagram
 
 ```
 
+### Vote Scrutiny
+
+Anyone with internet access can compute the scrutiny of a given processAddress. However, the vote batch data needs to be pinned online for a certain period of time.
+
+```mermaid
+sequenceDiagram
+    participant SC as Scrutinizer
+    participant DV as DVote JS/Go
+    participant BC as Blockchain Process
+    participant SW as Swarm
+
+    SC->>+DV: Process.get(processAddress)
+    
+        DV->>+BC: Process.get(processAddress)
+        BC-->>-DV: (name, metadataOrigin, privateKey)
+    
+    DV-->>-SC: (name, metadataOrigin)
+
+    SC->>+DV: Swarm.get(metadataHash)
+    
+        DV->>+SW: Swarm.get(metadataHash)
+        SW-->>-DV: processMetadata
+    
+    DV-->>-SC: processMetadata
+
+    SC->>+DV: Process.getVoteBatchIds(processAddress)
+    
+        DV->>+BC: Process.getVoteBatchIds(processAddress)
+        BC-->>-DV: batchIds
+    
+    DV-->>-SC: batchIds
+
+    SC->>+DV: Process.fetchBatches(batchIds)
+        loop batchIds
+
+            DV->>+BC: Process.getBatch(batchId)
+            BC-->>-DV: (type, relay, batchOrigin)
+            
+            DV->>+SW: Swarm.get(batchHash)
+            SW-->>-DV: voteBatch
+
+        end
+    DV-->>-SC: voteBatches
+
+    SC->>+DV: skipInvalidRelayBatches(voteBatches, processManager.relays)
+    DV-->>-SC: validRelayBatches
+    
+    SC->>SC: sort(merge(validRelayBatches))
+
+    SC->>+DV: resolveDuplicates(voteBatches)
+    DV-->>-SC: uniqueVotePackages
+    
+    alt type=zk-snarks
+        loop uniqueVotePackages
+
+            SC->>+DV: Snark.check(proof, votePackage.publicSignals)
+            DV-->>-SC: valid
+        
+        end
+    else type=lrs
+
+        SC->>SC: groupByModulus(uniqueVotePackages)
+        loop voteGroups
+
+            SC->>+DV: LRS.check(signature, voteGroup.pubKeys, processAddress)
+            DV-->>-SC: isWithinGroup
+
+            SC->>+DV: LRS.isUnseen(signature, processedVotes.signature)
+            DV-->>-SC: isUnseen
+
+        end
+    end
+
+    loop validVotes
+    
+        SC->>+DV: decrypt(vote.encryptedVote, privateKey)
+        DV-->>-SC: voteValue
+
+        SC->>SC: updateVoteCount(voteValue)
+
+    end
+
+    SC->>+DV: Swarm.put(voteSummary)
+        DV-->SW: Swarm.put(voteSummary)
+    DV-->>-SC: voteSummaryHash
+
+    SC->>+DV: Swarm.put(voteList)
+        DV-->SW: Swarm.put(voteList)
+    DV-->>-SC: voteListHash
+
+```
+
+**Used schemes:**
+- [processMetadata](/protocol/data-schema?id=process-metadata)
+- [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
+- [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
+- [Vote Batch](/protocol/data-schema?id=vote-batch)
+- [Vote Summary](/protocol/data-schema?id=vote-summary)
+- [Vote List](/protocol/data-schema?id=vote-list)

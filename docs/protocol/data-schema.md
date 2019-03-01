@@ -105,7 +105,11 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 ```
 
 **Used in:**
-* [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
+- [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
+- [Voting process retrieval](/protocol/sequence-diagrams?id=voting-process-retrieval)
+- [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
+- [Casting a vote with Linkable Ring Signatures](/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
+- [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
 
 **Related:**
 * [Process Smart Contract](https://github.com/vocdoni/dvote-smart-contracts/blob/master/contracts/VotingProcess.sol)
@@ -131,6 +135,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 **Used in:**
 - [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
+- [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
 
 ### Vote Package - Ring Signature
 
@@ -147,6 +152,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 **Used in:**
 - [Casting a vote with Linkable Ring Signatures](/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
+- [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
 
 ## Vote Batch
 
@@ -167,6 +173,90 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 **Used in:**
 - [Registering a Vote Batch](/protocol/sequence-diagrams?id=registering-a-vote-batch)
 - [Checking a submitted vote](/protocol/sequence-diagrams?id=checking-a-submitted-vote)
+- [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
+
+## Vote Summary
+
+```json
+{
+    "process": {
+        "name": "Basic income rule",
+        "address": "0x1234...", // on the blockchain
+        "question": "Should basic income be a human right?",
+        "voteOptions": [
+            { "name": "Yes", "value": 1 },
+            { "name": "No", "value": 2 },
+            { "name": "I don't know", "value": 3 }
+        ],
+    },
+    "organizer": {
+        "address": "0x1234...",  // Address of the Entity entry on the blockchain
+        "metadata": "bzz-feed://<feedHash>" // Organizer's metadata on Swarm
+    },
+    "results": {
+        "1": 12345678,
+        "2": 23456789,
+        "3": 34567890
+    }
+}
+```
+
+**Used in:**
+- [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
+
+## Vote List
+
+```json
+{
+    "process": {
+        "name": "Basic income rule",
+        "address": "0x1234...", // on the blockchain
+        "question": "Should basic income be a human right?",
+        "voteOptions": [
+            { "name": "Yes", "value": 1 },
+            { "name": "No", "value": 2 },
+            { "name": "I don't know", "value": 3 }
+        ],
+    },
+    "organizer": {
+        "address": "0x1234...",  // Address of the Entity entry on the blockchain
+        "metadata": "bzz-feed://<feedHash>" // Organizer's metadata on Swarm
+    },
+    "votes": {
+        "valid": [{
+            "nullifyer": "0x1234...",
+            "vote": 1,
+            "batchId": "0x1234..."
+        }],
+        "invalid": [{
+            "reason": "invalid-relay",
+            "package": { ... }  // original vote package
+        }, {
+            "reason": "duplicate-vote",
+            "batchId": "0x1234...",
+            "package": { ... }  // original vote package
+        }, {
+            "reason": "invalid-proof",
+            "batchId": "0x1234...",
+            "package": { ... }  // original vote package
+        }, {
+            "reason": "invalid-signature",
+            "batchId": "0x1234...",
+            "package": { ... }  // original vote package
+        }, {
+            "reason": "invalid-vote-value",
+            "batchId": "0x1234...",
+            "package": { ... }  // original vote package
+        }]
+    }
+}
+```
+
+**Used in:**
+- [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
+
+**Notes:**
+- The current payload may lead to a size of several Gigabytes of data, which may not be suitable for mobile devices
 
 ## Census Service
 
@@ -276,11 +366,11 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 }
 ```
 
-### Gateway request payload
+## Gateway request payload
 
 `Work in progress`
 
-### Relay request payload
+## Relay request payload
 
 `Work in progress`
 

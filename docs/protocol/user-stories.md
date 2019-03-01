@@ -76,16 +76,20 @@
 	- The app checks that the nullifyer/signature is indeed registered
 - The organizing **Entity** publishes the private key to the blockchain so that the vote count can start and newer batch submissions are rejected
 - A **Scrutinizer** does the vote count
+	- The **Scrutinizer** fetches the process metadata and the private key
 	- The **Scrutinizer** fetches the list of batchId's from the `processAddress` on the Blockchain
 	- The **Scrutinizer** fetches the data of every batch registered
 	- The **Scrutinizer** ensures that vote batches come from trusted Relays and corresponds to the given processAddress
 	- The **Scrutinizer** merges the batch votes into a single list
 	- The **Scrutinizer** detects duplicate nullifyers or singatures
 		- It only keeps the vote submitted in the latest batch
-	- On ZK votes, the **Scrutinizer** validates the given ZK Snark proof and checks that the given censusMerkleRoot matches the process' metadata
-	- On LRS votes, the **Scrutinizer** checks the given ring signature against the rest of available votes
+	- On ZK votes:
+		- The **Scrutinizer** validates the given ZK Snark proof and checks that the given censusMerkleRoot matches the process' metadata
+	- On LRS votes: 
+		- The **Scrutinizer** groups the votePackages by their publicKeyModulus
+		- For every group, the **Scrutinizer** checks the given ring signature against the rest of the group's votes
 	- The **Scrutinizer** decrypts the encrypted vote of the valid votes and computes the sum of appearences of every vote value
-	- The **Scrutinizer** broadcasts the results of the voting process
+	- The **Scrutinizer** broadcasts the results of the voting process and the actual vote values
 
 **Potential alternatives:**
-- Let Scrutinizers to publish their vote count after staking ether
+- Let Scrutinizers publish their vote count after staking ether
