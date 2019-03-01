@@ -75,11 +75,17 @@
 	- The app fetches the contents of the Vote Batch on Swarm at the given origin
 	- The app checks that the nullifyer/signature is indeed registered
 - The organizing **Entity** publishes the private key to the blockchain so that the vote count can start and newer batch submissions are rejected
+- A **Scrutinizer** does the vote count
+	- The **Scrutinizer** fetches the list of batchId's from the `processAddress` on the Blockchain
+	- The **Scrutinizer** fetches the data of every batch registered
+	- The **Scrutinizer** ensures that vote batches come from trusted Relays and corresponds to the given processAddress
+	- The **Scrutinizer** merges the batch votes into a single list
+	- The **Scrutinizer** detects duplicate nullifyers or singatures
+		- It only keeps the vote submitted in the latest batch
+	- On ZK votes, the **Scrutinizer** validates the given ZK Snark proof and checks that the given censusMerkleRoot matches the process' metadata
+	- On LRS votes, the **Scrutinizer** checks the given ring signature against the rest of available votes
+	- The **Scrutinizer** decrypts the encrypted vote of the valid votes and computes the sum of appearences of every vote value
+	- The **Scrutinizer** broadcasts the results of the voting process
 
-
-
-
-- [Organizer] Vote count and publishing to the blockchain
-	- By now, centralized on the Organizer side
-	- Anyone else can do it on his/her own
-- [App] Get a vote's results via Blockchain
+**Potential alternatives:**
+- Let Scrutinizers to publish their vote count after staking ether

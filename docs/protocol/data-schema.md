@@ -267,7 +267,7 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 
 * [Census service API specs](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
 
-### Census Serice response payload
+### Census Service response payload
 
 ```json
 {
