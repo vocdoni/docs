@@ -4,6 +4,7 @@
     - [User stories](/protocol/user-stories.md)
     - [Sequence diagrams](/protocol/sequence-diagrams.md)
     - [Data schema](/protocol/data-schema.md)
+    - [Franchise proof](/protocol/franchise-proof.md)
 - Integrating Vocdoni
     - [Overview](/integration/overview.md)
     - [DVote JS library](/integration/dvote-js.md)
