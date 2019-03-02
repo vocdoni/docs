@@ -1,9 +1,5 @@
 # User stories
 
-(Original content [on the wiki](https://github.com/vocdoni/docs/wiki/MVP-v1#user-stories))
-
-`The current contents are a work in progress`
-
 ### Prior to voting
 
 - Deployment of the Entity and Process smart contracts
@@ -48,7 +44,6 @@
 		- The app requests the chunk of census where he/she belongs to the **Census Service**
 			- The **Census Service** replies with the public key set
 		- The app encrypts the **vote value** with the public key of the voting process
-		- The app compiles the **vote package** with the encrypted vote and processId
 		- The app signs the **vote package** with the **Ring Signature**
 		<!-- - ~POW~ -->
 		- The app selects a **Relay** among the available ones and encrypts the signed vote package
@@ -68,8 +63,29 @@
   
 ### After voting
 
-- [App] Check that the vote is registered
-- [Organizer] Vote count and publishing to the blockchain
-	- By now, centralized on the Organizer side
-	- Anyone else can do it on his/her own
-- [App] Get a vote's results via Blockchain
+- The **App User** checks that his/her vots is registered
+	- The app asks a **Gateway** for the batchId from a transaction including his/her nullifyer (ZK Snarks) or signature (Linkable Ring Signatures)
+	- The **Gateway** broadcasts the expected Relay
+	- If the **Relay** has sent a transaction to the blockchain with the nullifyer/signature in a batch, it replies with the batch submission Id and the batch origin. NACK otherwise.
+	- The app fetches the value of the given batchId on the Blockchain
+	- The app fetches the contents of the Vote Batch on Swarm at the given origin
+	- The app checks that the nullifyer/signature is indeed registered
+- The organizing **Entity** publishes the private key to the blockchain so that the vote count can start and newer batch submissions are rejected
+- A **Scrutinizer** does the vote count
+	- The **Scrutinizer** fetches the process metadata and the private key
+	- The **Scrutinizer** fetches the list of batchId's from the `processAddress` on the Blockchain
+	- The **Scrutinizer** fetches the data of every batch registered
+	- The **Scrutinizer** ensures that vote batches come from trusted Relays, correspond to the given processAddress and contain votes with the right  `type` of verification
+	- The **Scrutinizer** merges the batch votes into a single list
+	- The **Scrutinizer** detects duplicate nullifyers or singatures
+		- It only keeps the vote submitted in the latest batch
+	- On ZK votes:
+		- The **Scrutinizer** validates the given ZK Snark proof and checks that the given censusMerkleRoot matches the process' metadata
+	- On LRS votes: 
+		- The **Scrutinizer** groups the votePackages by their publicKeyModulus
+		- For every group, the **Scrutinizer** checks the given ring signature against the rest of the group's votes
+	- The **Scrutinizer** decrypts the encrypted vote of the valid votes and computes the sum of appearences of every vote value
+	- The **Scrutinizer** broadcasts the results of the voting process and the actual vote values
+
+**Potential alternatives:**
+- Let Scrutinizers publish their vote count after staking ether
