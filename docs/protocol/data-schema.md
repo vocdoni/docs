@@ -10,11 +10,19 @@ The list of potential origins can be as follows:
 
 ### Messaging URI
 
-- `pss://<publicKey>`
-- `pss://<publicKey>@<address>`
+Referd as `<messaging uri>` from now on.
+
+- `pss://<publicKey@address>`
+    - Uses Ethereum Swarm/PSS protocol
+    - address can be empty
 - `pubsub://<topic>`
+    - Uses IPFS pubsub protocol
+- `shh://<publicKey>`
+    - Uses Ethereum Whisper protocol
 
 ### Content URI
+
+Referd as `<content uri>` from now on.
 
 - `bzz://<contentHash>`
 - `bzz-feed://<feedHash>`
@@ -38,7 +46,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
         "parameters": {
             // Tell our custom Process Manager what census service
             // to use when registering users
-            "censusOrigin": "pss://<publicKey>",
+            "censusOrigin": "<messaging uri>",
             "censusId": "the-entity-main-census"
         }
     }]
@@ -70,33 +78,21 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
     "endBlock":  11000,
     "meta": {
         "description": "## Markdown text goes here\n### Abstract",
-        "images": [
-            "bzz://<contentHash>",
-            "bzz-feed://<feedHash>",
-            "ipfs://<contentHash>",
-            "http://<url>/image.jpg",
-            "https://<url>/image.jpg"
-        ],
+        "images": [ "<content uri>", ... ],
         "organizer": {
             "address": "0x1234...",  // Address of the Entity entry on the blockchain
-            "metadata": "bzz-feed://<feedHash>" // Organizer's metadata on Swarm
+            "metadata": "<content uri>" // Organizer's metadata on Swarm
         }
     },
     "census": {
         "id": "the-entity-main-census",  // Census ID to use
-        "origin": "pss://<publicKey>", // Census service to request data from
-        // "origin": "pss://<publicKey>@<address>",
-        // "origin": "https://<census-service-host>/",
+        "origin": "<messaging uri>", // Census service to request data from
         "merkleRoot": "0x1234..."
     },
     "publicKey": "0x1234...", // To encrypt vote packages
     "relays": [{
-        "origin": "pss://<publicKey>"
-        // "origin": "pss://<publicKey>@<address>"
+        "origin": "<messaging uri>"
     }],
-    "gateways": [{
-        "origin": "https://<url>/<route>"
-    }]
 }
 ```
 
