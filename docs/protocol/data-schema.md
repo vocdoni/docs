@@ -36,6 +36,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 ```json
 {
+    "version": "1.0",    // Protocol version
     "address": "0x1234...",
     "name": "The Entity",
     "home": "https://www.the-entity.org/",
@@ -80,6 +81,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 ```json
 {
+    "version": "1.0",    // Protocol version
     "name": "Basic income rule",
     "address": "0x1234...", // on the blockchain
     "question": "Should basic income be a human right?",
@@ -133,6 +135,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 ```json
 {
+    "version": "1.0",    // Protocol version
     "type": "zk-snarks",
     "processAddress": "0x1234...",
     "encryptedVote": "0x1234...",
@@ -150,6 +153,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 ```json
 {
+    "version": "1.0",    // Protocol version
     "type": "lrs",
     "processAddress": "0x1234...",
     "encryptedVote": "0x1234...",
@@ -167,6 +171,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 ```json
 {
+    "version": "1.0",    // Protocol version
     "type": "lrs", // or zk-snarks
     "relay": {
         "publicKey": "0x1234..."
@@ -188,6 +193,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 ```json
 {
+    "version": "1.0",    // Protocol version
     "process": {
         "name": "Basic income rule",
         "address": "0x1234...", // on the blockchain
@@ -217,6 +223,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 ```json
 {
+    "version": "1.0",    // Protocol version
     "process": {
         "name": "Basic income rule",
         "address": "0x1234...", // on the blockchain
@@ -275,8 +282,8 @@ Used to contain news and data posts.
 [{
     "title": "New voting process available",
     "description": "Basic income vote available on April 1st",
-    "pubDate": "2019-01-01T10:10:00.000Z",
-    "content": "HTML content goes here"
+    "date": "2019-01-01T10:10:00.000Z",
+    "content": "<h2>Basic income vote</h2><p>HTML content goes here</p>"
 }]
 ```
 
