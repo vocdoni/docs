@@ -39,8 +39,11 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
     "address": "0x1234...",
     "name": "The Entity",
     "home": "https://www.the-entity.org/",
-    "actions": [{
-        "name": "Sign up to The Entity", // Optional array of custom actions
+    "actions": [{  // Optional array of custom actions
+        "name": {
+            "default": "Sign up to The Entity",  // used if none of the languages matches
+            "fr": "S'inscrise à l'organisation"
+        },
         "type": "browser",
         "url": "https://process-manager.domain/sign-up/",
         "parameters": {
@@ -49,7 +52,16 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
             "censusOrigin": "<messaging uri>",
             "censusId": "the-entity-main-census"
         }
-    }]
+    }],
+    "content": {
+        "news": {
+            "name": {
+                "default": "Official news",
+                "fr": "Messages officiels"
+            },
+            "origin": "bzz-feed://<feedHash>" // Points to an origin resolving to Content Data
+        }
+    }
 }
 ```
 
@@ -60,6 +72,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 **Related:**
 * [Entity Smart Contract](https://github.com/vocdoni/dvote-smart-contracts/blob/master/contracts/VotingEntity.sol)
 * [Entity JS methods](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/entity.ts)
+* [Content Data](/protocol/data-schema?id=content-data)
 
 ## Process metadata
 
@@ -253,6 +266,19 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 **Notes:**
 - The current payload may lead to a size of several Gigabytes of data, which may not be suitable for mobile devices
+
+## Content Data
+
+Used to contain news and data posts.
+
+```json
+[{
+    "title": "New voting process available",
+    "description": "Basic income vote available on April 1st",
+    "pubDate": "2019-01-01T10:10:00.000Z",
+    "content": "HTML content goes here"
+}]
+```
 
 ## Census Service
 
