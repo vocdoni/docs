@@ -5,27 +5,55 @@
 - Deployment of the Entity and Process smart contracts
 - The **organizer** registers an Entity to the blockchain
 - The **user** creates a self-sovereign identity on the app
+  - Allow to add a second identity
+  - Identified by a friendly name
+- The **user** restores an identity
+	- Import mnemonic
+	- Encrypted back up (QR)
+	- Lead the user into registering again with the new identity
 - The **user** chooses an Entity from a list on the app and subscribes to it
 	- Optionally, the Entity can be predefined
+- The **user** protects his/her identity with a pattern or a pin
+<!-- - The **user** unlocks the app to access the content -->
+- The **user** exports an encrypted backup of his/her identity
+- The **app** checks the pending actions of the user
+	- For every Entity's action on the metadata, it fetches their visibility status
 - The **user** performs custom requests to the Entity
 	- Sign up
+	  - Proove that the user owns the private/public key
 	- Submit a picture
 	- Make a payment
 	- Resolve a captcha
 	- Optionally, the organizer:
 		- Adds the user to a census
-		- Issues a claim
+- The **organizer** manages the user registry
+	- Reattach the attributes of a public key/account to another one
+	- View and edit personal details
+	- Add or revoke attributes
+	  - When a user's flags are changed, a census update is triggered
+- The **organizer** manages the census list
+	- Manage a census
+		- Publish the censusId + public key to the Entity blockchain
+		- Define the filters that a user must satisfy to be in the census
+	- Drop a census
+- The **organizer** manages public content
+  - Create posts
+  - Hide posts
+- The **user** accesses the public content of the Entity
+	- Access the list
+	- Access a specific post
 
 ### Voting
 
 - The **organizer** starts a voting process
-	- Get the Root Hash of a Census Merkle Tree
+	- Choose the census Id
+	- Get the Merkle Root Hash
 	<!-- - Publish the Merkle Tree to Swarm -->
 	- Publish the process metadata to Swarm
 	- Send a transaction to the blockchain with the name and the metadata origin
 - The **App user** gets the voting processes of an **Entity**
 	- Get metadata, relay list, encryption public key, etc.
-- The **App user** checks that he/she is part of the census
+- The **App user** checks that he/she is part of a process' census
 	- Retrieve true/false
 - The **App user** wants to cast a vote
 	- Using **ZK Snarks**
@@ -52,7 +80,7 @@
 		- The **Relay** receives the **Gateway** message and sends back an ACK message
 - A **Relay** processes an incoming vote package
 	- The **Relay** decrypts the vote package
-	- The **Relay** checks that none if its batches includes the current nullifyer
+	- The **Relay** checks that none if its batches includes the current nullifyer or none of the previous signatures is linked to the  new one
 	- The **Relay** checks that the current timestamp is within the start/end blocks
 	- If the vote package contains a **ZK Proof**, the **Relay** checks that it is valid
 	- If the vote package contains a **Ring Signature**, the **Relay** checks that the signature belongs to the census	
@@ -85,7 +113,8 @@
 		- The **Scrutinizer** groups the votePackages by their publicKeyModulus
 		- For every group, the **Scrutinizer** checks the given ring signature against the rest of the group's votes
 	- The **Scrutinizer** decrypts the encrypted vote of the valid votes and computes the sum of appearences of every vote value
-	- The **Scrutinizer** broadcasts the results of the voting process and the actual vote values
+		- Any non-valid vote values is considered as a null vote
+- The **organizer** broadcasts the results of the voting process and the actual vote values
 
 **Potential alternatives:**
 - Let Scrutinizers publish their vote count after staking ether

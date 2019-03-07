@@ -46,13 +46,19 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
             "fr": "S'inscrise à l'organisation"
         },
         "type": "browser",
-        "url": "https://process-manager.domain/sign-up/",
+        "url": "https://census-manager.domain/sign-up/",
         "parameters": {
             // Tell our custom Process Manager what census service
             // to use when registering users
             "censusOrigin": "<messaging uri>",
             "censusId": "the-entity-main-census"
-        }
+        },
+        // Is a signed timestamp+body required?
+        "needs-signature": true,
+        // Endpoint to POST with publicKey and signature fields
+        // Returning true will show the action and hide it otherwise
+        "visible": "https://census-manager.domain/status/visible/"
+        // "visible": true
     }],
     "content": {
         "news": {
