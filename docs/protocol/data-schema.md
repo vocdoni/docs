@@ -10,7 +10,7 @@ The list of potential origins can be as follows:
 
 ### Messaging URI
 
-Referd as `<messaging uri>` from now on.
+Refered as `<messaging uri>` from now on.
 
 - `pss://<publicKey@address>`
     - Uses Ethereum Swarm/PSS protocol
@@ -22,7 +22,7 @@ Referd as `<messaging uri>` from now on.
 
 ### Content URI
 
-Referd as `<content uri>` from now on.
+Refered as `<content uri>` from now on.
 
 - `bzz://<contentHash>`
 - `bzz-feed://<feedHash>`

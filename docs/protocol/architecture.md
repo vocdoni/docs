@@ -7,7 +7,7 @@ To avoid censorship and to provide resilence, the network architecture should ac
 + Do not rely on DNS
 + Do not depend on specific IPs
 + Do not depend on any specific company or cloud infrastructure
-+ Do use p2p network connections when possible
++ Do use P2P network connections when possible
 + Do use static web pages, so they can be replicated
 + Do allow third parties to add infrastructure
 
@@ -21,29 +21,43 @@ To this end, the Vocdoni platform is composed of the following components.
 
 + The messaging protocol is provided by a distributed message protocol such as Whisper, IPFS/PubSub or Swarm/PSS.
 
-+ The client interface (app or webapp) interacts with the p2p network and blockchain through one or multiple gateways (using WebSockets or HTTP/RPC). These gateways are neutral/agnostic, so any can be used. All cryptography and/or or security should be done client side, such that the only function of the gateways is to forward information.
++ The client interface (app or webapp) interacts with the P2P network and blockchain through one or multiple gateways (using WebSockets or HTTP/RPC). These gateways are neutral/agnostic, so any can be used. All cryptography and/or or security should be done client side, such that the only function of the gateways is to forward information.
 
-### Components
+## Components
 
-#### Relay
+### Relay
 
-The relay pool is the group of nodes which are responsible for processing votes, verifying correctness, publishing on the BlockChain and keeping the data on the p2p filesystem network.
+The relay pool is a group of nodes which are responsible for handling votes, verifying their validity, publishing them to the BlockChain and keeping their data pinned on the P2P filesystem.
 
-#### Gateway/Web3
-The gateways provide an entry point to the p2p network. They allow the client to communicate with the different services (census, relay, etc.) through a WebSocket or HTTP interface.
+### Gateway/Web3
+Gateways provide an entry point to the P2P network. They allow clients to reach decentralized services (census, relays, etc.) through a WebSocket or an HTTP interface.
 
-#### Census
-The server which manages the census of a specific entity. It stores the merkletree with the user claims, allows the manager to administrate it (using asymmetric key signature authentication), and allows the clients to fetch the merkeltree data.
+### Census Service
+A server handling the public census of an Entity. It stores Merkle trees with user claims, it allows the organizer to trigger updates (using asymmetric key signature authentication) and allows clients to ask for data on a particular Merkle tree.
 
-The Census service is a critical piece of the overall platform, so its real IP/location should be hidden as much as possible. Ideally, it should be reachable only via the p2p messaging protocol.
+The Census Service is a critical piece of the overall platform, so its real IP/location should be hidden as much as possible. Ideally, it should only be reachable through the P2P messaging protocol.
 
-#### Census registry webapp
-A web page provided by the Entity which will be used to verify a user befored including it in the Census. This webapp is loaded as a webview from the client app, once the user chooses to subscribe to a specific Entity. The required steps to pass the verification are determined by each particular Entity.
+### Census Registry
+A web site provided by the Entity typically used to validate a user before adding him/her to a Census. This web site is loaded on a webview from the client app, once the user decides to register to an Entity. The required steps to pass a validation are dependent on every Entity and need a custom integration.
 
-#### Manager
-The server providing the entity organizer web page to manage the census and the elections/processes. This server is is only available by the entity administrators.
+### Census Manager
+A private server allowing Entity administrators to manage the attributes (age, payment status, etc.) of users registered to it. Data from this service typically lives on a private database that will produce updated versions of specific census on demand.
 
-----
+The web site also allows to create new census and define the requirements that users have to accomplish to be included.
+
+### Process Manager
+A private server providing the Entity administrators a web site to manage voting processes on the blockchain. 
+
+### Client app
+Any mobile app or web site with access to Web3 libraries and cryptographic primitives to compute signatures and blockchain transactions.
+
+### Blockchain
+An Ethereum blockchain capable of mining transactions.
+
+### Scrutinizer
+Any participant on the system can fetch the scrutiny script and compute the voting process results on his/her own.
+
+
 
 ## Client
 `The current contents are a work in progress`
