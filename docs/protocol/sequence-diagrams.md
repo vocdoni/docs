@@ -226,7 +226,7 @@ sequenceDiagram
         loop processIDs
 
             DV->>BC: getMetadata(processId)
-            BC-->>DV: (name, metadataOrigin, merkleRootHash, startBlock, endBlock)
+            BC-->>DV: (name, metadataOrigin, merkleRootHash, relayList, startBlock, endBlock)
 
             alt Process is active or in the future
                 DV->>SW: Swarm.get(metadataHash)

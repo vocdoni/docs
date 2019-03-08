@@ -113,11 +113,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
         "merkleRoot": "0x1234...",
         "modulusSize": 5000  // Only when type="lrs"
     },
-    "publicKey": "0x1234...", // To encrypt vote packages
-    "relays": [{
-        "origin": "<messagning uri>",
-        "publicKey": "0x1234..."
-    }],
+    "publicKey": "0x1234..." // To encrypt vote packages
 }
 ```
 
@@ -134,6 +130,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 **Notes:**
 - The `type` field indicates the scrutiny method that will be used for the process. Any vote package generated with the wrong type will be discarded. 
+- The list of authorized relays is available on the Process smart contract
 
 ## Vote Package
 
