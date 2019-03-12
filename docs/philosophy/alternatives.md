@@ -6,19 +6,20 @@ These close alternatives that we're aware of, compared at a feature level.
 - [Belenios](https://www.inria.fr/en/centre/nancy/news/e-voting-belenios-software-now-available-for-general-public-use)
 - [Open Vote Network](https://github.com/stonecoldpat/anonymousvoting)
 - [Agora](https://www.agora.vote/)
+- [Estonia I-voting](https://www.valimised.ee/en/internet-voting/internet-voting-estonia)
 
-|                       | Vocdoni | Democracy Earth | Belenios | Open Vote | Agora |
-| --------------------- | :-----: | :-------------: | :------: | :-------: | :---: |
-| Censorship resistant  |    ✔️    |        ❌        |    ❌     |     ❌     |   ✔️    |
-| Soverign identity     |    ✔️    |        ✔️        |    ❌     |     ✔️     |   ✔️   |
-| Vote from smartphone  |    ✔️    |        ✔️        |    ❌     |     ❌     |   ✔️   |
-| End to end verifiable |    ✔️    |        ✔️        |    -     |     ✔️     |   ✔️   |
-| No trusted parties    |    ✔️    |        ✔️        |    ❌     |     ✔️     |   ✔️   |
-| Open source           |    ✔️    |        ✔️        |    ✔️     |     ✔️     |   ❌   |
-| Nation size suport |    ✔️    |        ✔️        |    ❌     |     ❌     |   ✔️    |
-| No I.C.O.           |    ✔️    |        ❌        |    ✔️     |     ✔️     |   ❌   |
-| Form agnostic *       |    ✔️    |        ❌        |    ✔️     |     ✔️     |   ✔️    |
-| Released and proven   |    ❌    |        ❌        |    ✔️     |     ✔️     |   ❌   |
+|                       | Vocdoni | Democracy Earth | Belenios | Open Vote | Agora | Estonia |
+| --------------------- | :-----: | :-------------: | :------: | :-------: | :---: |:-------:|
+| Censorship resistant  |    ✔️    |        ❌        |    ❌     |     ❌     |   ✔️   |  ❌      |
+| Soverign identity     |    ✔️    |        ✔️        |    ❌     |     ✔️     |   ✔️   |  ❌      |
+| Vote from smartphone  |    ✔️    |        ✔️        |    ❌     |     ❌     |   ✔️   |  ❌      |
+| End to end verifiable |    ✔️    |        ✔️        |    -     |     ✔️     |   ✔️   |  ❌      |
+| No trusted parties    |    ✔️    |        ✔️        |    ❌     |     ✔️     |   ✔️   |  ❌      |
+| Open source           |    ✔️    |        ✔️        |    ✔️     |     ✔️     |   ❌   |  ✔️      |
+| Nation size suport    |    ✔️    |        ✔️        |    ❌     |     ❌     |   ✔️   |  ✔️      |
+| No I.C.O.             |    ✔️    |        ❌        |    ✔️     |     ✔️     |   ❌   |  ❌      |
+| Form agnostic *       |    ✔️    |        ❌        |    ✔️     |     ✔️     |   ✔️   |  -      |
+| Released and proven   |    ❌    |        ❌        |    ✔️     |     ✔️     |   ❌   |  ✔️      |
 
 > Let us know about similar projects, so we potentially join efforts to develop better technical solutions :)
 
