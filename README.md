@@ -1,8 +1,3 @@
-# Voĉdoni
+# Vocdoni
 
-All of the content in this repository lives in the  [Wiki](https://github.com/vocdoni/docs/wiki).
-
-The rest of the repo is only used to store static assets.
-
-
-[![Screenshot](img/repo-wiki.png)](https://github.com/vocdoni/docs/wiki)
+All of the content in this repository can be viewed on the [Documentation page](https://vocdoni.io/docs).
