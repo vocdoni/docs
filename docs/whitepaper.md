@@ -4,11 +4,9 @@
 
 _This document is a work in progress and subject to change, specific and more accurated documentation can be found in topic specific wiki pages_
 
-Refer to [MVP v1](MVP-v1) to see the details and designt of the first prototype implementation, work-in-progress.
-
 --------------------------------------------------------------------------------
 
-Cryptography and distributed p2p systems have given rise to a new, revolutionary digital technology which might change the way society organizes: blockchain. Among many other applications, it can allow for secure, transparent, distributed and resilient decision making.
+Cryptography and distributed P2P systems have given rise to a new, revolutionary digital technology which might change the way society organizes: blockchain. Among many other applications, it can allow for secure, transparent, distributed and resilient decision making.
 
 In this document, we propose the system architecture of a decentralized anonymous voting platform.
 
@@ -23,7 +21,7 @@ We achieve this by externalizing the heavy lifting to a `relay` network - thereb
 - Minimizes transactions to the blockchain. Can potentially be used in the Ethereum Mainnet
 - `Voter` does not write, only reads from the blockchain
 - `Voter` can participate with an light-client (static web/app)
-- Secure vote anonymization using zk-SNARK
+- Secure vote anonymization using zk-SNARK or Linkable Ring Sugnatures
 - Data integrity via content-addressed storage (IPFS)
 - Economically incentivized, `relay` network performs actions not possible by light-clients
 - The whole `process` is verifiable by any external observer

@@ -21,7 +21,9 @@ To this end, the Vocdoni platform is composed of the following components.
 
 + The messaging protocol is provided by a distributed message protocol such as Whisper, IPFS/PubSub or Swarm/PSS.
 
-+ The client interface (app or webapp) interacts with the P2P network and blockchain through one or multiple gateways (using WebSockets or HTTP/RPC). These gateways are neutral/agnostic, so any can be used. All cryptography and/or or security should be done client side, such that the only function of the gateways is to forward information.
++ The client interface (app or webapp) interacts with the P2P network and the Blockchain through gateways (using WebSockets or HTTP/RPC). 
+
+* Gateways are neutral/agnostic, as the cryptography layer is to be done on the client side. The only intent of gateways is forwarding requests from clients that can't open sockets by themselves (typically web browsers).
 
 ## Components
 
@@ -59,11 +61,13 @@ Any participant on the system can fetch the scrutiny script and compute the voti
 
 ## Component relationship
 
+Below is the relationship between publicly accessible and private services that interact within a voting process.
+
 ```mermaid
 graph TD;
 
 OR(Organizer)-- manage census -->CM
-OR-->|manage elections|PR[Process Manager]
+OR-->|manage votes|PM[Process Manager]
 
 subgraph Entity Private Services
 	CR-.->S["External KYC<br/>Stripe..."]
@@ -75,41 +79,45 @@ end
 CL(Client)-- register to an entity -->CR
 CM-.->|update|CS[Census Service]
 CS-.-BL((Blockchain))
-PR-->|get census root hash|CS
-PR-.->|post new process|BL
+PM-->|get a census root hash|CS
+PM-.->|post a new process|BL
 ```
 
-## Client
-`The current contents are a work in progress`
+## Platform tools
 
-#### dvote-client
-`The current contents are a work in progress`
+### DVote JS
+Formerly known as `dvote-client`, this library aims to provide utility classes and methods to invoke decentralized operations within a voting process. It covers the typical functionality of Client applications, as well as the Process Manager or the Census Manager. 
 
-#### Web runtime (for React Native)
-`The current contents are a work in progress`
+The intended functionality is to interact with a public Ethereum blockchain, to fetch data from a decentralized filesystem, to enforce data schema validity, to prepare vote packages and using decentralized messaging networks through Gateways or Relays. 
 
-## Relay
-`The current contents are a work in progress`
+[More information](/integration/dvote-js)
 
-#### Snarks validator
-`The current contents are a work in progress`
+### Go DVote
+Same as DVote JS, this library provides the necessary tools to interact with Vocdoni from components like Gateways, Relays or a Census Service. 
 
-#### go-dvote
-`The current contents are a work in progress`
+Its intent is to provide communication systems compatible with their JS counterparts, and process data conforming to the standard formats and data structures. 
 
-## Process Manager Service
-`The current contents are a work in progress`
-## Census Service
-`The current contents are a work in progress`
-## Blockchain
-`The current contents are a work in progress`
+[More information](/integration/go-dvote)
 
-#### dvote-smart-contracts
-`The current contents are a work in progress`
+### DVote Solidity
+Formerly known as `dvote-smart-contracts`, this library provides the Smart Contracts that support the integrity transactions involving Entities and Voting Processes.
 
-## IPFS/Swarm
-`The current contents are a work in progress`
+Much of the work involving metadata is delegated to decentralized filesystems, providing the complete metadata. 
 
----
+[More information](/protocol/smart-contracts)
 
-This page is a work in progress.
+### Web runtime (for React Native)
+Environments like React Native allow to develop mobile app clients with an efficient and consistent platrofm but lack the support of cryptographic API's present by default on Web browsers or NodeJS. Several crypto libraries rely on such API's, which are not available on RN. 
+
+Until React Native or Expo ship with native support, the current workaround is to mount a virtual web view and load them in a bundle, so the app code can queue operations to a web environment, pretty much like a WebWorker. 
+
+[More information](https://github.com/vocdoni/clientApp/tree/master/web-runtime)
+
+### Snarks validator
+(This component will be fully disclosed when the ZK Snarks implementation becomes available)
+
+### Swarm and IPFS
+Both systems provide a decentralized channel to pin and distribute data in a censorship resistant and verifiable way. 
+
+### PSS and IPFS PubSub
+Both related to Swarm amb IPFS, they provide a decentralized messaging system that provides anonimity and censorship resilience. 
