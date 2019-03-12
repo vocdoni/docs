@@ -60,7 +60,7 @@ Any participant on the system can fetch the scrutiny script and compute the voti
 ## Components relation
 
 ```mermaid
-graph LR;
+graph TD;
 
 OR(organizer)-- manage census -->CM
 OR-->|manage elections|PR[process manager]
