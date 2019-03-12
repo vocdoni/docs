@@ -59,7 +59,7 @@
 	- Using **ZK Snarks**
 		- The app requests the census proof to the **Census Service**
 			- The **Census service** replies with the merkle proof
-		- The app computes the nullifyer
+		- The app computes the nullifier
 		- The app encrypts the **vote value** with the public key of the voting process
 		- The app fetches the proving and verification keys and generates the **Zero-Knowledge Proof** that he/she is eligible to cast a valid vote
 		- The app generates the **vote package**
@@ -80,7 +80,7 @@
 		- The **Relay** receives the **Gateway** message and sends back an ACK message
 - A **Relay** processes an incoming vote package
 	- The **Relay** decrypts the vote package
-	- The **Relay** checks that none if its batches includes the current nullifyer or none of the previous signatures is linked to the  new one
+	- The **Relay** checks that none if its batches includes the current nullifier or none of the previous signatures is linked to the  new one
 	- The **Relay** checks that the current timestamp is within the start/end blocks
 	- If the vote package contains a **ZK Proof**, the **Relay** checks that it is valid
 	- If the vote package contains a **Ring Signature**, the **Relay** checks that the signature belongs to the census	
@@ -92,12 +92,12 @@
 ### After voting
 
 - The **App User** checks that his/her vots is registered
-	- The app asks a **Gateway** for the batchId from a transaction including his/her nullifyer (ZK Snarks) or signature (Linkable Ring Signatures)
+	- The app asks a **Gateway** for the batchId from a transaction including his/her nullifier (ZK Snarks) or signature (Linkable Ring Signatures)
 	- The **Gateway** broadcasts the expected Relay
-	- If the **Relay** has sent a transaction to the blockchain with the nullifyer/signature in a batch, it replies with the batch submission Id and the batch origin. NACK otherwise.
+	- If the **Relay** has sent a transaction to the blockchain with the nullifier/signature in a batch, it replies with the batch submission Id and the batch origin. NACK otherwise.
 	- The app fetches the value of the given batchId on the Blockchain
 	- The app fetches the contents of the Vote Batch on Swarm at the given origin
-	- The app checks that the nullifyer/signature is indeed registered
+	- The app checks that the nullifier/signature is indeed registered
 - The organizing **Entity** publishes the private key to the blockchain so that the vote count can start and newer batch submissions are rejected
 - A **Scrutinizer** does the vote count
 	- The **Scrutinizer** fetches the process metadata and the private key
@@ -105,7 +105,7 @@
 	- The **Scrutinizer** fetches the data of every batch registered
 	- The **Scrutinizer** ensures that vote batches come from trusted Relays, correspond to the given processAddress and contain votes with the right  `type` of verification
 	- The **Scrutinizer** merges the batch votes into a single list
-	- The **Scrutinizer** detects duplicate nullifyers or singatures
+	- The **Scrutinizer** detects duplicate nullifiers or singatures
 		- It only keeps the vote submitted in the latest batch
 	- On ZK votes:
 		- The **Scrutinizer** validates the given ZK Snark proof and checks that the given censusMerkleRoot matches the process' metadata

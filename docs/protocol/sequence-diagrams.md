@@ -113,19 +113,19 @@ The user selects an action from the entityMetadata > actions available.
 ```mermaid
 sequenceDiagram
     participant App
-    participant PM as Process Manager
+    participant CR as Census Registry
     participant DB as Internal Database
 
-    App->>PM: Navigate to: <ACTION-URL>?publicKey=<pk>&censusId=<id>
-        activate PM
-            Note right of PM: Fill the form
-        deactivate PM
+    App->>CR: Navigate to: <ACTION-URL>?publicKey=<pk>&censusId=<id>
+        activate CR
+            Note right of CR: Fill the form
+        deactivate CR
 
-        PM->>PM: signUp(name, lastName, publicKey, censusId)
+        CR->>CR: signUp(name, lastName, publicKey, censusId)
 
-        PM->>DB: insert(name, lastName, publicKey, censusId)
-        DB-->>PM: 
-    PM-->>App: success
+        CR->>DB: insert(name, lastName, publicKey, censusId)
+        DB-->>CR: 
+    CR-->>App: success
 
 ```
 
@@ -290,7 +290,7 @@ sequenceDiagram
 
         end
 
-        DV->>DV: computeNullifyer()
+        DV->>DV: computeNullifier()
 
         DV->>DV: encrypt(vote, processMetadata.publicKey)
 
@@ -393,7 +393,7 @@ sequenceDiagram
 
 ### Checking a submitted vote
 
-The sequence diagram applies to both **ZK Snarks** and **LRS** Vote Packages. `nullifyerOrSignature` will be interpreted according to the process' `type` on its metadata.
+The sequence diagram applies to both **ZK Snarks** and **LRS** Vote Packages. `nullifierOrSignature` will be interpreted according to the process' `type` on its metadata.
 
 ```mermaid
 sequenceDiagram
@@ -406,11 +406,11 @@ sequenceDiagram
 
     App->>DV: checkVoteStatus(processAddress, relayOrigin)
 
-        DV->>DV: computeNullifyerOrSignature()
+        DV->>DV: computeNullifierOrSignature()
 
-        DV->>+GW: checkVoteStatus(processAddress, nullifyerOrSignature, relayOrigin)
+        DV->>+GW: checkVoteStatus(processAddress, nullifierOrSignature, relayOrigin)
 
-            GW-->>RL: checkVoteStatus(processAddress, nullifyerOrSignature)
+            GW-->>RL: checkVoteStatus(processAddress, nullifierOrSignature)
             RL-->>GW: (batchId?, batchOrigin?)
 
         GW-->>-DV: (batchId?, batchOrigin?)
@@ -425,7 +425,7 @@ sequenceDiagram
         DV->>+SW: Swarm.get(batchHash)
         SW-->>-DV: batch
 
-        DV->>DV: checkWithinBatch(nullifyerOrSignature, batch)
+        DV->>DV: checkWithinBatch(nullifierOrSignature, batch)
 
     DV-->>App: isRegistered
 ```
@@ -434,8 +434,8 @@ sequenceDiagram
 - [Vote Batch](/protocol/data-schema?id=vote-batch)
 
 **Notes:**
-- `nullifyerOrSignature` is expected to contain a nullifyer when the process `type` is `zk-snarks`
-- `nullifyerOrSignature` is expected to contain a ring signature when the process `type` is `lrs`
+- `nullifierOrSignature` is expected to contain a nullifier when the process `type` is `zk-snarks`
+- `nullifierOrSignature` is expected to contain a ring signature when the process `type` is `lrs`
 
 
 ### Closing a Voting Process

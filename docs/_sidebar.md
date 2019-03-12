@@ -1,5 +1,5 @@
 - [White paper](/whitepaper.md)
-- Protocol (MVP)
+- Protocol
     - [Global architecture](/protocol/architecture.md)
     - [User stories](/protocol/user-stories.md)
     - [Sequence diagrams](/protocol/sequence-diagrams.md)

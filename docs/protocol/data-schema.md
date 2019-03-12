@@ -142,7 +142,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
     "type": "zk-snarks",
     "processAddress": "0x1234...",
     "encryptedVote": "0x1234...",
-    "nullifyer": "0x1234...",
+    "nullifier": "0x1234...",
     "proof": "01234...",
     "censusMerkleRoot": "0x1234..."
 }
@@ -243,7 +243,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
     },
     "votes": {
         "valid": [{
-            "nullifyer": "0x1234...",
+            "nullifier": "0x1234...",
             "vote": 1,
             "batchId": "0x1234..."
         }],

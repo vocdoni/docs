@@ -71,7 +71,7 @@ Basic voting implementation with the next restrictions:
    - **dvote-client**: encryptVote(vote, votePubKey)
    - **dvote-client**: hashEncryptedVote(_, privKey)
    - **dvote-client**: generateProof(aboveData)
-   - **dvote-client**: getNullifyer(privKey, id)
+   - **dvote-client**: getNullifier(privKey, id)
    - **dvote-client**: generatePOW()
    - **dvote-client**: getVotingPackage()
    - **dvote-client**: getRelays()

@@ -55,22 +55,21 @@ It allows members of a group to sign messages on the group’s behalf such that 
 
 Unlike ZK Snarks, LRS do not rely on a trusted setup. 
 
-Documentation:
+**Documentation**
 
 - https://medium.com/asecuritysite-when-bob-met-alice/linkable-ring-signatures-stealth-addresses-and-mixer-contracts-cff7057a457
 
-Academic papers:
+**Academic papers**
 
 - https://eprint.iacr.org/2018/379.pdf
 - https://dl.acm.org/citation.cfm?id=2103015
 
+**Libraries**
+- Go implementation: https://github.com/noot/ring-go (linkable branch)
+- `Missing JavaScript implementation on ECDSA`
 
-Go implementation: https://github.com/noot/ring-go (linkable branch)
 
-`Missing javascript implementation`
-
-
-## How LRS are used
+### How LRS are used
 
 ### Registration to an organization
 
@@ -107,9 +106,9 @@ end
 
 ---
 
-## Implementations
+### Performance
 
-`core i7, 8GB RAM`
+ECDSA Linkable Ring Signature test using Go on a Core i7 with 8GB of RAM
 
 ```
 Time: 0,388s
@@ -122,3 +121,207 @@ Time: 2,567s
 Signature size: 1000
 Signature bytes: 96114
 ```
+
+
+### Javascript example (using RSA)
+
+The Vocdoni platform is designed to work on Ethereum public blockchains, so its users are meant to be using ECDSA key pairs.
+
+As a reference, you can have a look at a RSA implementation: https://github.com/MaiaVictor/lrs
+
+Install via npm
+```sh
+npm install lrs
+```
+
+On `test-node.js` add the following lines and run the script:
+
+```javascript
+const lrs = require("lrs");
+const NUM_ACCOUNTS = 1000;
+const accounts = [];
+
+// parties generate their public/private key pairs
+console.time("Generate keys");
+for (let i = 0; i < NUM_ACCOUNTS; i++) {
+	accounts.push(lrs.gen());
+}
+console.timeEnd("Generate keys");
+
+// first key is for alice (the real signer)
+const alice = accounts[0];
+
+// The list of public key is known and distributed
+var group = accounts.map((m) => m.publicKey);
+console.log("Group data length:", JSON.stringify(group).length, "bytes");
+
+// Alice signs a message in behalf of one of the group
+console.time("Sign ring")
+var signed = lrs.sign(group, alice, "The body is buried on the backyard.");
+console.timeEnd("Sign ring")
+
+console.log("Signature data length:", signed.length, "bytes");
+
+// Anyone is able to verify *some* of them signed that message
+console.time("Verify")
+console.log(lrs.verify(group, signed, "The body is buried on the backyard."));
+console.timeEnd("Verify")
+
+console.time("Check double sign")
+// If that same person signs another message...
+var signed2 = lrs.sign(group, alice, "Just kidding, he is alive.");
+console.timeEnd("Check double sign")
+
+// We are able to tell the signature came from the same person
+console.log(lrs.link(signed, signed2));
+```
+### On browser
+
+Edit an HTML container:
+
+```html
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+	<h3>Linkable ring signature</h3>
+	<pre id="content"></pre>
+
+	<script src="./test-browser.js"></script>
+</body>
+
+</html>
+```
+
+And then edit the `test-browser.js` file:
+
+```javascript
+const lrs = require("lrs");
+const NUM_ACCOUNTS = 100;
+const accounts = [];
+
+// LOGGING SCREEN UTILS
+
+const logMap = {}
+
+function log(text, ...rest) {
+	const node = document.querySelector("#content")
+	if (node) node.innerText += text + " " + rest.join(" ") + "\n"
+	console.log(text, ...rest)
+}
+
+function logStart(key) {
+	const node = document.querySelector("#content")
+	if (logMap[key]) {
+		console.warn(`logStart(${key}) is already defined. Overwriting.`)
+
+		logMap[key] = Date.now()
+		if (node) node.innerText += key + " [restarted]\n"
+	}
+	else {
+		logMap[key] = Date.now()
+		if (node) node.innerText += key + " [started]\n"
+		console.log(key + " [started]")
+	}
+}
+
+function logEnd(key) {
+	if (!logMap[key]) {
+		const node = document.querySelector("#content")
+		if (node) node.innerText += key + " [unstarted]\n"
+		console.warn(`logStart(${key}) not started.`)
+		return
+	}
+
+	const diff = (Date.now() - logMap[key]) / 1000
+	const node = document.querySelector("#content")
+	if (node) node.innerText += `${key} [done in ${diff.toFixed(1)}s]\n`
+	log(`${key} [done in ${diff.toFixed(1)}s]`)
+	delete logMap[key]
+}
+
+// CODE
+
+function main() {
+	// parties generate their public/private key pairs
+	logStart("Generate keys");
+	for (let i = 0; i < NUM_ACCOUNTS; i++) {
+		accounts.push(lrs.gen());
+	}
+	logEnd("Generate keys");
+
+	// first key is for alice (the real signer)
+	const alice = accounts[0];
+
+	// The list of public key is known and distributed
+	var group = accounts.map((m) => m.publicKey);
+
+	// Alice signs a message in behalf of one of the group
+	logStart("Sign ring")
+	var signed = lrs.sign(group, alice, "The body is buried on the backyard.");
+	logEnd("Sign ring")
+
+	log("Signature", signed.length);
+
+	// Anyone is able to verify *some* of them signed that message
+	logStart("Verify")
+	log(lrs.verify(group, signed, "The body is buried on the backyard."));
+	logEnd("Verify")
+
+	logStart("Check double sign")
+	// If that same person signs another message...
+	var signed2 = lrs.sign(group, alice, "Just kidding, he is alive.");
+	logEnd("Check double sign")
+
+	// We are able to tell the signature came from the same person
+	log(lrs.link(signed, signed2));
+}
+
+main();
+
+```
+
+You can use ParcelJS to run the example:
+
+```
+npx parcel index.html -p 8080
+```
+
+### Run test.js
+
+```
+$ size=100 node test.js
+Generate keys: 854.913ms
+Sign ring: 812.574ms
+Signature 19675
+true
+Verify: 721.555ms
+Check double sign: 773.458ms
+true
+
+$ size=1000 node test.js
+Generate keys: 7043.474ms
+Sign ring: 7106.234ms
+Signature 193240
+true
+Verify: 6933.126ms
+Check double sign: 7318.286ms
+true
+
+$ size=5000 node test.js
+Generate keys: 36035.585ms
+Sign ring: 38174.756ms
+Signature 964723
+true
+Verify: 37611.042ms
+Check double sign: 37604.330ms
+true
+```
+
+Time and size scales linearly. 
+
+* 100 ring size signature needs 0.8s to be signed and have a size of 19kBytes
+* 1000 ring size signaure needs 7s to be signed and have a size of 193kBytes
+* 5000 ring size signaure needs 38s to be signed and have a size of 964kBytes
