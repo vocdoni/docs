@@ -1,4 +1,4 @@
-# Alternative project to Vocdoni
+# Alternative projects to Vocdoni
 
 These close alternatives that we're aware of, compared at a feature level.
 
