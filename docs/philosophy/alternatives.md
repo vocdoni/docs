@@ -17,6 +17,7 @@ These close alternatives that we're aware of, compared at a feature level.
 | No trusted parties    |    ✔️    |        ✔️        |    ❌     |     ✔️     |   ✔️   |  ❌      |
 | Open source           |    ✔️    |        ✔️        |    ✔️     |     ✔️     |   ❌   |  ❌      |
 | Nation size suport    |    ✔️    |        ✔️        |    ❌     |     ❌     |   ✔️   |  ✔️      |
+| Voter IP obfuscation  |    ✔️    |        ❌        |    ❌     |     ❌     |   ❌   |  ❌      |
 | No I.C.O.             |    ✔️    |        ❌        |    ✔️     |     ✔️     |   ❌   |  ️️️️️✔️    |
 | Form agnostic *       |    ✔️    |        ❌        |    ✔️     |     ✔️     |   ✔️   |  -      |
 | Released and proven   |    ❌    |        ❌        |    ✔️     |     ✔️     |   ❌   |  ✔️      |
