@@ -57,7 +57,26 @@ An Ethereum blockchain capable of mining transactions.
 ### Scrutinizer
 Any participant on the system can fetch the scrutiny script and compute the voting process results on his/her own.
 
+## Components relation
 
+```mermaid
+graph LR;
+
+OR(organizer)-- manage census -->CM
+OR-->|manage elections|PR[process manager]
+
+subgraph Entity Private Services
+CR-.->S["external KYC<br/>stripe/jummio..."]
+CR[census registry]-->DB
+CM[census manager]-->DB((database))
+DB-->BCK[backup service]
+end
+CL(client)-- register to entity -->CR
+CM-.->|update|CS[census service]
+CS-.-BL((blockchain))
+PR-->|get census root hash|CS
+PR-.->|publish new election|BL
+```
 
 ## Client
 `The current contents are a work in progress`
