@@ -8,16 +8,16 @@ These close alternatives that we're aware of, compared at a feature level.
 - [Agora](https://www.agora.vote/)
 - [Estonia I-voting](https://www.valimised.ee/en/internet-voting/internet-voting-estonia)
 
-|                       | Vocdoni | Democracy Earth | Belenios | Open Vote | Agora | Estonia |
+|                       | Vocdoni | Democracy Earth | Belenios | Open Vote | Agora | Estonia I-voting |
 | --------------------- | :-----: | :-------------: | :------: | :-------: | :---: |:-------:|
 | Censorship resistant  |    ✔️    |        ❌        |    ❌     |     ❌     |   ✔️   |  ❌      |
 | Soverign identity     |    ✔️    |        ✔️        |    ❌     |     ✔️     |   ✔️   |  ❌      |
 | Vote from smartphone  |    ✔️    |        ✔️        |    ❌     |     ❌     |   ✔️   |  ❌      |
 | End to end verifiable |    ✔️    |        ✔️        |    -     |     ✔️     |   ✔️   |  ❌      |
 | No trusted parties    |    ✔️    |        ✔️        |    ❌     |     ✔️     |   ✔️   |  ❌      |
-| Open source           |    ✔️    |        ✔️        |    ✔️     |     ✔️     |   ❌   |  ✔️      |
+| Open source           |    ✔️    |        ✔️        |    ✔️     |     ✔️     |   ❌   |  ❌      |
 | Nation size suport    |    ✔️    |        ✔️        |    ❌     |     ❌     |   ✔️   |  ✔️      |
-| No I.C.O.             |    ✔️    |        ❌        |    ✔️     |     ✔️     |   ❌   |  ❌      |
+| No I.C.O.             |    ✔️    |        ❌        |    ✔️     |     ✔️     |   ❌   |  ️️️️️✔️    |
 | Form agnostic *       |    ✔️    |        ❌        |    ✔️     |     ✔️     |   ✔️   |  -      |
 | Released and proven   |    ❌    |        ❌        |    ✔️     |     ✔️     |   ❌   |  ✔️      |
 
@@ -25,7 +25,7 @@ These close alternatives that we're aware of, compared at a feature level.
 
 > Please, submit a Pull Request if you find any inaccuacy with the table above
 
-## Form agnostic*
+## Form agnostic* 
 
 We understand voting as an anonymous signaling mechanism. Therefore, our technical architecture does not make assumptions about the `form` of how the outcomes of a voting process are computed and used.
 
