@@ -67,7 +67,45 @@ Go implementation: https://github.com/noot/ring-go (linkable branch)
 
 `Missing javascript implementation`
 
-#### Test go implementation
+
+## How LRS are used
+
+### Registration to an organization
+
+```mermaid
+graph TD;
+C((Organization Census))
+V1(Vocter)-- send public key -->C
+V2(Vocter)-- send public key -->C
+V3(Vocter)-- send public key -->C
+```
+
+### Start an election and vote
+
+```mermaid
+graph BT;
+O((Organizer)) -->|Create new election|B
+B[Blockchain] -->|fetch election ID| C((Census))
+B -->|fetch election ID| V1(Voter 1)
+
+C-.->Pub1["PubKey V1 + electionID"]
+C-.->Pub2["PubKey V2 + electionID"]
+C-.->Pub3["PubKey V3 + electionID"]
+
+R[Linkable Ring Signature]
+V1-.->Priv1["Privkey V1 + electionID"]
+Priv1-->|create election signatre| R
+
+subgraph 
+Pub1-.-R
+Pub2-.-R
+Pub3-.-R
+end
+```
+
+---
+
+## Implementations
 
 `core i7, 8GB RAM`
 
