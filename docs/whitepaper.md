@@ -26,7 +26,7 @@ We achieve this by externalizing the heavy lifting to a `relay` network - thereb
 - Economically incentivized, `relay` network performs actions not possible by light-clients
 - The whole `process` is verifiable by any external observer
 
-![overall](https://github.com/vocdoni/docs/raw/master/img/overall_design.png)
+![overall](https://github.com/vocdoni/docs/raw/master/old/img/overall_design.png)
 
 ## Definitions
 
@@ -224,7 +224,7 @@ _The following concepts are referenced extensively throughout the document_
 - **public input:** census Merkle-root, Nullifier, ProcessId, Hash(encrypted vote)
 - **output:** Franchise proof
 
-![](https://github.com/vocdoni/docs/raw/master/img/SnarksCircuit.png)
+![](https://github.com/vocdoni/docs/raw/master/old/img/SnarksCircuit.png)
 
 #### Vote package creation
 
@@ -241,7 +241,7 @@ _The following concepts are referenced extensively throughout the document_
 
 - The `vote package` and the nonce are sent to the `relay` pool
 
-![](https://github.com/vocdoni/docs/raw/master/img/voting_packet.png)
+![](https://github.com/vocdoni/docs/raw/master/old/img/voting_packet.png)
 
 ### 4\. `Relays` validate and add the `vote package` into the blockchain
 
@@ -267,7 +267,7 @@ _The following concepts are referenced extensively throughout the document_
 - The `organizer` makes the `process` closing transaction, uploading the results
 - `Relays` are rewarded according to their contribution
 
-![voting_process](https://github.com/vocdoni/docs/raw/master/img/voting_process.png)
+![voting_process](https://github.com/vocdoni/docs/raw/master/old/img/voting_process.png)
 
 --------------------------------------------------------------------------------
 
@@ -298,4 +298,4 @@ Being static makes it easier to checksum it and therefore minimizing atac vector
 
 The `light-client` needs to interact with different service providers such as Web3 RPC, IPFS gateway or TOR proxy. However the user must be able to choose its own provider.
 
-![](https://github.com/vocdoni/docs/raw/master/img/web_frontend_general.png)
+![](https://github.com/vocdoni/docs/raw/master/old/img/web_frontend_general.png)
