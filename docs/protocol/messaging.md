@@ -21,6 +21,7 @@ The need for inter-party messaging arises in several places in the vocdoni archi
 * Kademlia message routing
 * One-to-one, one-to-some, one-to-many via topics and variable-length addressing
 * Forward secrecy possible via handshake/initiation protocol
+* Behavior extremely similar to Whisper when used in broadcast mode (including plausible deniability)
 
 ## Swarm Features
 After exploring the protocols listed above, we have decided to leverage PSS for the time being. Below you will find high-level explanations of some of PSS's features.
