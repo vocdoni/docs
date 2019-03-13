@@ -1,4 +1,4 @@
-- [White paper](/whitepaper.md)
+<!-- - [White paper](/whitepaper.md) -->
 - Protocol
     - [Global architecture](/protocol/architecture.md)
     - [User stories](/protocol/user-stories.md)
