@@ -43,5 +43,3 @@ graph TD;
 All messages have a topic, to which recipients must be subscribed. Senders can specify a specific address, a neighborhood (address mask) or no address at all to broadcast to all subscribers. Messages are routed using a kademlia-style distance metric (XOR of addresses, interpereted as an integer). 
 
 As an example, let's say the node with address 001 wants to send a unicast message to the node with address 101. If we evaluate all of the nodes to which 001 is directly connected, 001->100 (257), 001->011 (27), 001->010 (17), we see that the message will be routed through node 010.
-
-### Encryption
