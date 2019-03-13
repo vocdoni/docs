@@ -5,6 +5,7 @@
     - [Sequence diagrams](/protocol/sequence-diagrams.md)
     - [Data schema](/protocol/data-schema.md)
     - [Smart contracts](/protocol/smart-contracts.md)
+    - [Voting process](/protocol/voting-process.md)
     - [Franchise proof](/protocol/franchise-proof.md)
     - [Messaging protocol](/protocol/messaging.md)
 - Integrating Vocdoni
@@ -14,14 +15,17 @@
     - [Client set up](/integration/client-set-up.md)
     - [Relay set up](/integration/relay-set-up.md)
     - [Vote scrutiny](/integration/scrutiny.md)
-- Philosphy
-  - [Vision](/philosophy/vision.md)
-  - [Problem and solution](/philosophy/problem-solution.md)
-  - [Market](/philosophy/market.md)
-  - [Product](/philosophy/product.md)
-  - [Alternatives](/philosophy/alternatives.md)
-  - [Business model](/philosophy/business-model.md)
-  - [Investment](/philosophy/investment.md)
+- About us
+  - [Vision](/about-us/vision.md)
+  - [Problem and solution](/about-us/problem-solution.md)
+  - [Market](/about-us/market.md)
+  - [Product](/about-us/product.md)
+  - [Alternatives](/about-us/alternatives.md)
+  - [Business model](/about-us/business-model.md)
+  - [Investment](/about-us/investment.md)
+  - [How we work](/about-us/how-we-work.md)
+  - [Open postions](/about-us/open-positions.md)
+  
 - [Contribute](/contribute.md)
     - [Guidelines](/contribute/guidelines.md)
     - [Mermaid diagrams](/contribute/mermaid.md)
