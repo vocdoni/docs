@@ -6,6 +6,7 @@
     - [Data schema](/protocol/data-schema.md)
     - [Smart contracts](/protocol/smart-contracts.md)
     - [Franchise proof](/protocol/franchise-proof.md)
+    - [Messaging protocol](/protocol/messaging.md)
 - Integrating Vocdoni
     - [Overview](/integration/overview.md)
     - [DVote JS library](/integration/dvote-js.md)
