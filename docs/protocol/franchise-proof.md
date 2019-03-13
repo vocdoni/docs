@@ -71,19 +71,45 @@ Unlike ZK Snarks, **LRS do not rely on a trusted setup**.
 - `Missing JavaScript implementation on ECDSA`
 
 
-### How LRS are used
+### How LRS are used in Vocdoni
 
-### Registration to an organization
+#### 1. Registration to an organization
+
+First, the Voters need to send their public keys to the Census organization service (each organization can choose which method to use for veryfing and identity). This is done just once so the same public key can be used for multiple elections.
 
 ```mermaid
 graph TD;
 C((Organization Census))
-V1(Vocter)-- send public key -->C
-V2(Vocter)-- send public key -->C
-V3(Vocter)-- send public key -->C
+V1(Voter)-- send public key -->C
+V2(Voter)-- send public key -->C
+V3(Voter)-- send public key -->C
 ```
 
-### Start an election and vote
+#### 2. Create census rings
+
+The usage of LRS requires the census to be published, so Voters can create their Rings for casting the vote. The Ring creation follow a set of principles:
+
++ If Census < 1000, use a single Ring with all existing pubkeys
++ If Census > 1000, census must be split on several groups of keys
+	+ the organizer will publish a number (N) which will be used by the voters to know to which group of keys are they assigned by using the following formula: 
+	`GroupNumber = VoterPubKey % N`
+	+ before publishing N the census must pre-compute all the keys to check that if accomplish the minimum size grup of keys. So in case N generates a group with too few, that number must be discarted and try a new one
+
+#### 3. Derivate election keys
+
+In addition to `N`, the Organizer will publish a uniq ID that will identify the election (`processID`). This ID will be used by both parties (Voter and Organizer) to derivate the temporary election pulic keys using the following mechanism:
+
++ On ECDSA the PubKey derivates from the PrivKey as follows:
+`PubKeyVoter = PrivKeyVoter * G`
++ The Organizer derivate the new temporary PublicKey for each voter this way:
+`PubKeyElectionVoter = PubKeyVoter + G*Hash(ElectionID)`
++ Each voter derivates its new Private Key this way: 
+`PrivKeyElectionVoter = PrivKeyVoter + Hash(ElectionID)`
+
+
+#### 4. Start an election and vote
+
+Once the Rings and the temporary keys are published, the Voter can create its Linkable Ring Signature for signing the ballot.
 
 ```mermaid
 graph BT;
