@@ -60,7 +60,7 @@
 		- The app requests the census proof to the **Census Service**
 			- The **Census service** replies with the merkle proof
 		- The app computes the nullifier
-		- The app encrypts the **vote value** with the public key of the voting process
+		- The app encrypts the **vote value** and a nonce with the public key of the voting process
 		- The app fetches the proving and verification keys and generates the **Zero-Knowledge Proof** that he/she is eligible to cast a valid vote
 		- The app generates the **vote package**
 		<!-- - ~POW~ -->
@@ -71,7 +71,7 @@
 	- Using **Ring Signatures**
 		- The app requests the chunk of census where he/she belongs to the **Census Service**
 			- The **Census Service** replies with the public key set
-		- The app encrypts the **vote value** with the public key of the voting process
+		- The app encrypts the **vote value** and a nonce with the public key of the voting process
 		- The app signs the **vote package** with the **Ring Signature**
 		<!-- - ~POW~ -->
 		- The app selects a **Relay** among the available ones and encrypts the signed vote package

@@ -5,6 +5,7 @@
     - [Sequence diagrams](/protocol/sequence-diagrams.md)
     - [Data schema](/protocol/data-schema.md)
     - [Smart contracts](/protocol/smart-contracts.md)
+    - [Voting process](/protocol/voting-process.md)
     - [Franchise proof](/protocol/franchise-proof.md)
 - Integrating Vocdoni
     - [Overview](/integration/overview.md)

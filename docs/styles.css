@@ -82,3 +82,17 @@ body {
 .sidebar-toggle span {
     background-color: #fb0;
 }
+
+/* MERMAID CUSTOM FLOW CHARTS */
+
+.mermaid span.edgeLabel, .mermaid span > center {
+    background-color: #f7f7f7 !important;
+}
+
+.mermaid g.node > rect {
+    stroke: #9b9c9a !important;
+    fill: #effff9 !important;
+}
+.mermaid g > foreignObject {
+    color: #2d3e31;
+}
