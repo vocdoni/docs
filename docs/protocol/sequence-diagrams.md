@@ -277,16 +277,20 @@ sequenceDiagram
 
     participant App
     participant DV as DVote JS
-    participant CS as Census Service
     participant GW as Gateway
+    participant CS as Census Service
     participant RL as Relay
 
     App->>+DV: Process.castVote(vote, processMetadata, merkleProof?)
 
         alt merkleProof not provided
 
-            DV->>+CS: genProof(processMetadata.census.id, publicKey)
-            CS-->>-DV: merkleProof
+            DV->>+GW: genProof(processMetadata.census.id, publicKey)
+
+            GW->>+CS: PSS.broadcast(genProofData)
+            CS-->>-GW: merkleProof
+
+            GW-->>-DV: merkleProof
 
         end
 
@@ -298,9 +302,9 @@ sequenceDiagram
 
         DV->>DV: encryptVotePackage(package, relay.publicKey)
 
-        DV->>GW: submitVotePackage(encryptedVotePackage, relay.origin)
+        DV->>GW: submitVoteEnvelope(encryptedVotePackage, relay.origin)
             
-            GW->>RL: submitVotePackage(encryptedVotePackage)
+            GW->>RL: submitVoteEnvelope(encryptedVotePackage)
             RL-->>GW: ACK
         
         GW-->>DV: submitted
@@ -327,16 +331,20 @@ sequenceDiagram
 
     participant App
     participant DV as DVote JS
-    participant CS as Census Service
     participant GW as Gateway
+    participant CS as Census Service
     participant RL as Relay
 
     App->>+DV: Process.castVote(vote, processMetadata, censusChunk?)
 
         alt censusChunk not provided
 
-            DV->>+CS: getChunk(publicKeyModulus)
-            CS-->>-DV: censusChunk
+            DV->>+GW: getChunk(publicKeyModulus)
+
+            GW->>+CS: PSS.broadcast(getChunkData)
+            CS-->>-GW: censusChunk
+
+            GW-->>-DV: censusChunk
 
         end
 
@@ -346,9 +354,9 @@ sequenceDiagram
 
         DV->>DV: encryptVotePackage(package, relay.publicKey)
 
-        DV->>GW: submitVotePackage(encryptedVotePackage, relay.origin)
+        DV->>GW: submitVoteEnvelope(encryptedVotePackage, relay.origin)
             
-            GW->>RL: submitVotePackage(encryptedVotePackage)
+            GW->>RL: submitVoteEnvelope(encryptedVotePackage)
             RL-->>GW: ACK
         
         GW-->>DV: submitted

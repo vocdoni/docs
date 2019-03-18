@@ -219,14 +219,14 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 ```json
 {
     "version": "1.0",    // Protocol version
-    "type": "zk-snarks",
+    "type": "zk-snarks-vote",
     "processAddress": "0x1234...",
-    "encryptedVote": "0x1234...",
     "nullifier": "0x1234...",
-    "proof": "01234...",
-    "censusMerkleRoot": "0x1234..."
+    "vote": "2"
 }
 ```
+
+It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?id=vote-envelope-zk-snarks)
 
 **Used in:**
 - [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
@@ -237,12 +237,50 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 ```json
 {
     "version": "1.0",    // Protocol version
-    "type": "lrs",
+    "type": "lrs-vote",
     "processAddress": "0x1234...",
-    "encryptedVote": "0x1234...",
+    "nullifier": "0x1234...",
+    "vote": "1"
+}
+```
+
+It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?id=vote-envelope-ring-signature)
+
+**Used in:**
+- [Casting a vote with Linkable Ring Signatures](/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
+- [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
+
+## Vote Envelope
+
+### Vote Envelope - ZK Snarks
+
+```json
+{
+    "version": "1.0",    // Protocol version
+    "type": "zk-snarks-envelope",
+    "processAddress": "0x1234...",
+    "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the vote package JSON
+    "nullifier": "0x1234...",
+    "proof": "01234...",
+    "censusMerkleRoot": "0x1234..."
+}
+```
+
+**Used in:**
+- [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
+- [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
+
+### Vote Envelope - Ring Signature
+
+```json
+{
+    "version": "1.0",    // Protocol version
+    "type": "lrs-envelope",
+    "processAddress": "0x1234...",
+    "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the vote package JSON
     "signature": "0x1234...", // The ring signature over the processAdress
     "publicKeyModulus": 4321,
-    "censusMerkleRoot": "0x1234..."
+    "censusMerkleRoot": "0x1234..."  // To identify the census version used
 }
 ```
 
@@ -363,10 +401,12 @@ Used to contain news and data posts.
 
 ```json
 [{
+    "guid": "123",
     "title": "New voting process available",
-    "description": "Basic income vote available on April 1st",
-    "date": "2019-01-01T10:10:00.000Z",
-    "content": "<h2>Basic income vote</h2><p>HTML content goes here</p>"
+    "description": "Universal Basic Income announced",
+    "pubDate": "2019-01-01T10:00:00.000Z",
+    "content": "<h2>Universal Basic Income</h2><p>HTML content goes here</p>",
+    "language": "en"
 }]
 ```
 
@@ -482,7 +522,11 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 
 `Work in progress`
 
+### Submit Vote Envelope
+
 ## Relay request payload
+
+### Submit Vote Envelope
 
 `Work in progress`
 
