@@ -51,6 +51,7 @@
 	<!-- - Publish the Merkle Tree to Swarm -->
 	- Publish the process metadata to Swarm
 	- Send a transaction to the blockchain with the name and the metadata origin
+	- The Smart Contract checks that the sender's address matches the entity's
 - The **App user** gets the voting processes of an **Entity**
 	- Get metadata, relay list, encryption public key, etc.
 - The **App user** checks that he/she is part of a process' census
