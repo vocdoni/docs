@@ -1,12 +1,12 @@
 body {
     color: #666;
-    font-family:  Open Sans, Lato ,sans-serif;
+    font-family: Open Sans, Lato, sans-serif;
     background-color: #eee;
 }
 
 .anchor span {
     color: #333;
-    font-weight:400;
+    font-weight: 400;
 }
 
 .markdown-section {
@@ -19,13 +19,11 @@ body {
     color: inherit;
     font-weight: inherit;
     text-decoration-color: rgba(0, 0, 0, 0.3);
-    
 }
 
-.markdown-section a:hover{
+.markdown-section a:hover {
     font-weight: 600;
     color: #fb0;
-    
 }
 
 .markdown-section h2 {
@@ -48,22 +46,23 @@ body {
 .markdown-section blockquote {
     border-left: 3px solid #fb0;
     color: #999;
-    font-family:  Open Sans, Lato ,sans-serif;
+    font-family: Open Sans, Lato, sans-serif;
 }
 
 .markdown-section blockquote p {
-  font-weight:inherit;
+    font-weight: inherit;
 }
 
-.markdown-section table{
-  font-weight:inherit;
+.markdown-section table {
+    font-weight: inherit;
+    word-break: break-word;
+    font-size: 0.85em;
 }
 
 .markdown-section td, .markdown-section th {
     border: 1px solid #eee;
-    padding: 10px 15px;
+    padding: 10px 10px;
 }
-
 
 .sidebar {
     border: 1px;
@@ -72,14 +71,13 @@ body {
     padding-right: 0px;
 }
 
-.sidebar ul li.active>a{
-    color:#fb0;
-    font-weight:900;
-    
+.sidebar ul li.active>a {
+    color: #fb0;
+    font-weight: 900;
 }
 
 .sidebar-toggle {
-    bottom: inherit; 
+    bottom: inherit;
     background-color: #eee;
 }
 
@@ -89,14 +87,15 @@ body {
 
 /* MERMAID CUSTOM FLOW CHARTS */
 
-.mermaid span.edgeLabel, .mermaid span > center {
+.mermaid span.edgeLabel, .mermaid span>center {
     background-color: #f7f7f7 !important;
 }
 
-.mermaid g.node > rect {
+.mermaid g.node>rect {
     stroke: #9b9c9a !important;
     fill: #effff9 !important;
 }
-.mermaid g > foreignObject {
+
+.mermaid g>foreignObject {
     color: #2d3e31;
 }
