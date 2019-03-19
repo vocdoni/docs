@@ -1,4 +1,4 @@
-# Investing
+# Funding and investing
 
 Vocdoni is born from the activist movement. We seek to build effective tools to empower the civil society from the bottom up and it has never been our goal to have a lucrative product.
 

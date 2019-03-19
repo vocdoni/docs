@@ -5,6 +5,6 @@
 - [Product](/about-us/product.md)
 - [Alternatives](/about-us/alternatives.md)
 - [Business model](/about-us/business-model.md)
-- [Investment](/about-us/investment.md)
+- [Funding](/about-us/funding.md)
 - [How we work](/about-us/how-we-work.md)
 - [Open postions](/about-us/open-positions.md)
