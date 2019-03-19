@@ -518,17 +518,49 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 }
 ```
 
-## Gateway request payload
+## Gateway requests payload
 
 `Work in progress`
 
-### Submit Vote Envelope
+### Submit Web3 call
 
-## Relay request payload
+...
 
-### Submit Vote Envelope
+### Fetch Swarm data
+
+...
+
+### Fetch IPFS data
+
+...
+
+### Send a PSS message
+
+...
+
+### Listen for a PSS response
+
+...
+
+### Submit Vote Envelope (to Relay)
+
+...
+
+### Request vote confirmation (to Relay)
+
+...
+
+## Relay requests payload
 
 `Work in progress`
+
+### Relay Vote Envelope (to the Blockchain)
+
+...
+
+### Confirm vote registration (to the client app)
+
+...
 
 **Notes:**
 - See [Vote Package](/protocol/data-schema?id=vote-package) above
