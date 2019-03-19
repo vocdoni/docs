@@ -41,10 +41,14 @@ body {
     margin-bottom: -0.6em;
 }
 
+.markdown-section pre {
+    line-height: 1.2rem;
+}
+
 .markdown-section blockquote {
     border-left: 3px solid #fb0;
     color: #999;
-   font-family:  Open Sans, Lato ,sans-serif;
+    font-family:  Open Sans, Lato ,sans-serif;
 }
 
 .markdown-section blockquote p {

@@ -40,25 +40,105 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
     "address": "0x1234...",
     "name": "The Entity",
     "home": "https://www.the-entity.org/",
-    "actions": [{  // Optional array of custom actions
+
+    // Optional array of custom actions
+    "actions": [{
+
+        // Interactive web browser action example
+        "type": "browser",
+
+        // Localized name to appear on the app
         "name": {
             "default": "Sign up to The Entity",  // used if none of the languages matches
-            "fr": "S'inscrise à l'organisation"
+            "fr": "S'inscrire à l'organisation"
         },
-        "type": "browser",
-        "url": "https://census-manager.domain/sign-up/",
-        "parameters": {
-            // Tell our custom Process Manager what census service
-            // to use when registering users
-            "censusOrigin": "<messaging uri>",
-            "censusId": "the-entity-main-census"
-        },
-        // Is a signed timestamp+body required?
-        "needs-signature": true,
-        // Endpoint to POST with publicKey and signature fields
+
+        // The URL to open with query string parameters:
+        // - signature = sign(hash(timestamp), privateKey)
+        // - publicKey
+        // - timestamp (UNIX timestamp)
+        "url": "https://census-register.cloud/sign-up/",
+        
+        // Endpoint to POST to with publicKey and signature+timestamp JSON fields
         // Returning true will show the action and hide it otherwise
-        "visible": "https://census-manager.domain/status/visible/"
-        // "visible": true
+        "visible": "https://census-registry.cloud/lambda/census-register-visible/"
+        // "visible": true    (always visible, alternatively)
+    },
+    {
+        // App-driven image upload example
+        "type": "image",
+
+        // Localized name to appear on the app
+        "name": {
+            "default": "ID Card verification",  // used if none of the languages matches
+            "fr": "Vérification de la carte d'identité"
+        },
+
+        // Requested image types to provide
+        "source": [
+
+            // An entry example expecting a picture from the front camera, overlaying a face silhouette
+            // on the screen and identified by the "face-portrait" field name in the JSON payload
+            {
+                "type": "front-camera",
+                "name": "face-portrait",
+                "orientation": "portrait",
+                "overlay": "face",
+                "caption": {
+                    "default": "...",
+                    "fr": "..."
+                }
+            },
+
+            // Example expecting two more pictures using the back camera and overlaying
+            // either sides of an ID card respectively
+            {
+                "type": "back-camera",
+                "name": "id-front",
+                "orientation": "landscape",
+                "overlay": "id-card-front",
+                "caption": {
+                    "default": "...",
+                    "fr": "..."
+                }
+            },
+            {
+                "type": "back-camera",
+                "name": "id-back",
+                "orientation": "landscape",
+                "overlay": "id-card-back",
+                "caption": {
+                    "default": "...",
+                    "fr": "..."
+                }
+            },
+
+            // Example requesting one more image from the phone's library
+            {
+                "type": "gallery",
+                "name": "custom-1",
+                "caption": {
+                    "default": "...",
+                    "fr": "..."
+                }
+            }
+        ],
+
+        // Endpoint accepting POST requests with JSON payload:
+        // {
+        //   name1: "base64-image-payload",
+        //   name2: "base64-image-payload",
+        //   ...
+        // }
+        // 
+        // The URL will receive the following query string parameters:
+        // - signature = sign(hash(jsonBody), privateKey)
+        // - publicKey
+        "url": "https://census-registry.cloud/lambda/upload-kyc-pictures/",
+
+        // Endpoint to POST to with publicKey and signature+timestamp fields
+        // Returning true will show the action and hide it otherwise
+        "visible": "https://census-registry.cloud/lambda/image-upload-visible/"
     }],
     "content": {
         "news": {
@@ -139,14 +219,14 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 ```json
 {
     "version": "1.0",    // Protocol version
-    "type": "zk-snarks",
+    "type": "zk-snarks-vote",
     "processAddress": "0x1234...",
-    "encryptedVote": "0x1234...",
     "nullifier": "0x1234...",
-    "proof": "01234...",
-    "censusMerkleRoot": "0x1234..."
+    "vote": "2"
 }
 ```
+
+It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?id=vote-envelope-zk-snarks)
 
 **Used in:**
 - [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
@@ -157,12 +237,50 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 ```json
 {
     "version": "1.0",    // Protocol version
-    "type": "lrs",
+    "type": "lrs-vote",
     "processAddress": "0x1234...",
-    "encryptedVote": "0x1234...",
+    "nullifier": "0x1234...",
+    "vote": "1"
+}
+```
+
+It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?id=vote-envelope-ring-signature)
+
+**Used in:**
+- [Casting a vote with Linkable Ring Signatures](/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
+- [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
+
+## Vote Envelope
+
+### Vote Envelope - ZK Snarks
+
+```json
+{
+    "version": "1.0",    // Protocol version
+    "type": "zk-snarks-envelope",
+    "processAddress": "0x1234...",
+    "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the vote package JSON
+    "nullifier": "0x1234...",
+    "proof": "01234...",
+    "censusMerkleRoot": "0x1234..."
+}
+```
+
+**Used in:**
+- [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
+- [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
+
+### Vote Envelope - Ring Signature
+
+```json
+{
+    "version": "1.0",    // Protocol version
+    "type": "lrs-envelope",
+    "processAddress": "0x1234...",
+    "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the vote package JSON
     "signature": "0x1234...", // The ring signature over the processAdress
     "publicKeyModulus": 4321,
-    "censusMerkleRoot": "0x1234..."
+    "censusMerkleRoot": "0x1234..."  // To identify the census version used
 }
 ```
 
@@ -283,10 +401,12 @@ Used to contain news and data posts.
 
 ```json
 [{
+    "guid": "123",
     "title": "New voting process available",
-    "description": "Basic income vote available on April 1st",
-    "date": "2019-01-01T10:10:00.000Z",
-    "content": "<h2>Basic income vote</h2><p>HTML content goes here</p>"
+    "description": "Universal Basic Income announced",
+    "pubDate": "2019-01-01T10:00:00.000Z",
+    "content": "<h2>Universal Basic Income</h2><p>HTML content goes here</p>",
+    "language": "en"
 }]
 ```
 
@@ -398,13 +518,49 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 }
 ```
 
-## Gateway request payload
+## Gateway requests payload
 
 `Work in progress`
 
-## Relay request payload
+### Submit Web3 call
+
+...
+
+### Fetch Swarm data
+
+...
+
+### Fetch IPFS data
+
+...
+
+### Send a PSS message
+
+...
+
+### Listen for a PSS response
+
+...
+
+### Submit Vote Envelope (to Relay)
+
+...
+
+### Request vote confirmation (to Relay)
+
+...
+
+## Relay requests payload
 
 `Work in progress`
+
+### Relay Vote Envelope (to the Blockchain)
+
+...
+
+### Confirm vote registration (to the client app)
+
+...
 
 **Notes:**
 - See [Vote Package](/protocol/data-schema?id=vote-package) above
