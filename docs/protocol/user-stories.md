@@ -24,17 +24,16 @@
 	- Submit a picture
 	- Make a payment
 	- Resolve a captcha
-	- Optionally, the organizer:
-		- Adds the user to a census
+- Eventually, the **organizer** may add the user to one or more census
 - The **organizer** manages the user registry
 	- Reattach the attributes of a public key/account to another one
 	- View and edit personal details
 	- Add or revoke attributes
 	  - When a user's flags are changed, a census update is triggered
-- The **organizer** manages the census list
+- The **organizer** manages a certain census
 	- Manage a census
 		- Publish the censusId + public key to the Entity blockchain
-		- Define the filters that a user must satisfy to be in the census
+		- Define the filters that a user must satisfy to be in a census
 	- Drop a census
 - The **organizer** manages public content
   - Create posts
