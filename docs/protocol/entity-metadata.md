@@ -30,24 +30,23 @@ In our case, it mostly stores not critical data related to user experience and c
 
 This is a suggested usage for the keys
 
-| Key                               | Example                                                                                            | Description                                                                                                          |
-| --------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| **Required keys**                 |                                                                                                    |                                                                                                                      |
-| `name`                            | "Free Republic of Liberland"                                                                       | Organization's name to be displayed                                                                                  |
-| `vndr.vocdoni.censusRequestUrl`   | "https://liberland.org/en/citizenship"                                                             | Url where a user needs to use to in order to request to be part of the entity                                        |
-| **Supported keys**                |                                                                                                    |                                                                                                                      |
-| `Feed_url`                        | "https://liberland.org/en/news/feed"                                                               | An http url to retrieve a news feed                                                                                  |
-| `Feed_hash`                       | "0x111111111111"                                                                                   | The latest multi-hash of the feed. As a checksum or to retrieve it from an IPFS gateway as a fallback from `RSS_url` |
-| `description`                     | "Is a sovereign state located between Croatia and Serbia on the west bank of the Danube River... " | A self-descriptive text                                                                                              |
-| `avatar_url`                      | "https://liberland.org/en/assets/images/about/Liberland_vlajka.png"                                | An image file to be displayed next to the entity name                                                                |
-| `avatar_hash`                     | "0x222222222222"                                                                                   | To retreive from IPFS of for checksum                                                                                |
-| `vndr.vocdoni.keys_to_display`    | "podcast_feed, vndr.youtube, vndr.twitter, constitution_url"                                       | All the keys that the user wants to display in Vocodoni's page                                                       |
-| `vndr.vocdoni.supported_entities` | "0x333333333333"                                                                                   | Contract address of the entitities that this entitiy supports. See "Nested Entities" section below                   |
-| **Arbitrary keys**                |                                                                                                    |                                                                                                                      |
-| `podcast_feed`                    | "http://feeds.soundcloud.com/users/soundcloud:users:157300215/sounds.rss"                          |                                                                                                                      |
-| `constitution_url`                | "https://liberland.org/en/constitution"                                                            |                                                                                                                      |
-| `vndr.twitter`                    | "https://twitter.com/Liberland_org"                                                                |                                                                                                                      |
-| `vndr.youtube`                    | "https://www.youtube.com/channel/UCh29cq8F3Iz7iqyI_LRhyVQ"                                         |
+| Key                               | Example                                                    | Description                                                            |
+| --------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------- |
+| **Required keys**                 |                                                            |                                                                        |
+| `name`                            | Free Republic of Liberland                                 | Organization's name to be displayed                                    |
+| `vndr.vocdoni.censusRequestUrl`   | https://liberland.org/en/citizenship                       | To request to be part of the entity                                    |
+| **Supported keys**                |                                                            |                                                                        |
+| `Feed_url`                        | https://liberland.org/ en/news/feed                        | To retrieve a news feed                                                |
+| `Feed_hash`                       | 0x111111111111                                             | Latest multi-hash of the feed. As checksum or to get from IPFS gateway |
+| `description`                     | Is a sovereign state...                                    | A self-descriptive text                                                |
+| `avatar_url`                      | https://liberland.org/logo.png                             | An image file to be displayed next to the entity name                  |
+| `avatar_hash`                     | 0x222222222222                                             | To retreive from IPFS of for checksum                                  |
+| `vndr.vocdoni.keys_to_display`    | podcast_feed, vndr.youtube, vndr.twitter, constitution_url | Keys the user wants to be displayed on its page                        |
+| `vndr.vocdoni.supported_entities` | 0x333333333333                                             | See Nested Entities section below                                      |
+| **Arbitrary keys**                |                                                            |                                                                        |
+| `podcast_feed`                    | http://liberland.org/podcast.rss                           |                                                                        |
+| `constitution_url`                | https://liberland.org/en/constitution                      |                                                                        |
+| `vndr.twitter`                    | https://twitter.com/Liberland_org                          |                                                                        |
 
 ### `WIP` Interface: Storage of array of text records
 
