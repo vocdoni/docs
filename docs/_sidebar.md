@@ -8,6 +8,7 @@
     - [Voting process](/protocol/voting-process.md)
     - [Franchise proof](/protocol/franchise-proof.md)
     - [Messaging protocol](/protocol/messaging.md)
+    - [Entity metadata](/protocol/entity-metadata.md)
 <!-- - Integrating Vocdoni -->
 <!--    - [Overview](/integration/overview.md) -->
 <!--    - [DVote JS library](/integration/dvote-js.md) -->
