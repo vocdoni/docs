@@ -1,3 +1,4 @@
+
 # Sequence diagrams
 
 ## Prior to voting

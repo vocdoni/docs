@@ -10,15 +10,22 @@ The list of potential origins can be as follows:
 
 ### Messaging URI
 
+`WIP`: Use [Multicodec](https://github.com/multiformats/multistream) ?
+
 Refered as `<messaging uri>` from now on.
 
 - `pss://<publicKey@address>`
-    - Uses Ethereum Swarm/PSS protocol
-    - address can be empty
+
+  - Uses Ethereum Swarm/PSS protocol
+  - address can be empty
+
 - `pubsub://<topic>`
-    - Uses IPFS pubsub protocol
+
+  - Uses IPFS pubsub protocol
+
 - `shh://<publicKey>`
-    - Uses Ethereum Whisper protocol
+
+  - Uses Ethereum Whisper protocol
 
 ### Content URI
 
@@ -32,143 +39,60 @@ Refered as `<content uri>` from now on.
 
 ## Entity metadata
 
-The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the metadata of an entity through a decentralized channel.
+See [Entity metatdata](/protocol/entity-metadata.md)
+
+**Used in:**
+
+- [Entity creation](/protocol/sequence-diagrams?id=entity-creation)
+- [Entity subscription](/protocol/sequence-diagrams?id=entity-subscription)
+
+**Related:**
+
+- [Entity Smart Contract](https://github.com/vocdoni/dvote-solidity/blob/master/contracts/VotingEntity.sol)
+- [Entity JS methods](https://github.com/vocdoni/dvote-js/blob/master/src/dvote/entity.ts)
+
+--------------------------------------------------------------------------------
+
+## Process metadata
+
+### QuestionDetails
+
+It holds all the details to present to the user in order to make cast her vote.
+
+The creation of this document is critical. Multiple checks should be in place to guarantee that the data is choeren (well formatted, not missing locales...).
+
+The index of the votingOptions is used as identifier.
+
+The hash of this data is stored in the `Voting` contract in `questionDetails` using [multicodec format](https://github.com/multiformats/multistream)
 
 ```json
 {
-    "version": "1.0",    // Protocol version
-    "address": "0x1234...",
-    "name": "The Entity",
-    "home": "https://www.the-entity.org/",
-
-    // Optional array of custom actions
-    "actions": [{
-
-        // Interactive web browser action example
-        "type": "browser",
-
-        // Localized name to appear on the app
-        "name": {
-            "default": "Sign up to The Entity",  // used if none of the languages matches
-            "fr": "S'inscrire à l'organisation"
-        },
-
-        // The URL to open with query string parameters:
-        // - signature = sign(hash(timestamp), privateKey)
-        // - publicKey
-        // - timestamp (UNIX timestamp)
-        "url": "https://census-register.cloud/sign-up/",
-        
-        // Endpoint to POST to with publicKey and signature+timestamp JSON fields
-        // Returning true will show the action and hide it otherwise
-        "visible": "https://census-registry.cloud/lambda/census-register-visible/"
-        // "visible": true    (always visible, alternatively)
+    "version":"1.0",
+    "defaultLocal":"en", // Will default to this local if it doesn't match user's preferences
+    "questionType":"exclusive", //To be defined.  What logic the UI should follow when choosing the votingOptions.
+    "question":{
+        "en": "Should basic income be a human right?",
+        "ca": "La renda básica universal hauria de ser un dret humà?"
     },
-    {
-        // App-driven image upload example
-        "type": "image",
-
-        // Localized name to appear on the app
-        "name": {
-            "default": "ID Card verification",  // used if none of the languages matches
-            "fr": "Vérification de la carte d'identité"
+    "votingOptions":[
+        {
+            {"en": "Yes"},
+            {"cat": "Sí"}
         },
-
-        // Requested image types to provide
-        "source": [
-
-            // An entry example expecting a picture from the front camera, overlaying a face silhouette
-            // on the screen and identified by the "face-portrait" field name in the JSON payload
-            {
-                "type": "front-camera",
-                "name": "face-portrait",
-                "orientation": "portrait",
-                "overlay": "face",
-                "caption": {
-                    "default": "...",
-                    "fr": "..."
-                }
-            },
-
-            // Example expecting two more pictures using the back camera and overlaying
-            // either sides of an ID card respectively
-            {
-                "type": "back-camera",
-                "name": "id-front",
-                "orientation": "landscape",
-                "overlay": "id-card-front",
-                "caption": {
-                    "default": "...",
-                    "fr": "..."
-                }
-            },
-            {
-                "type": "back-camera",
-                "name": "id-back",
-                "orientation": "landscape",
-                "overlay": "id-card-back",
-                "caption": {
-                    "default": "...",
-                    "fr": "..."
-                }
-            },
-
-            // Example requesting one more image from the phone's library
-            {
-                "type": "gallery",
-                "name": "custom-1",
-                "caption": {
-                    "default": "...",
-                    "fr": "..."
-                }
-            }
-        ],
-
-        // Endpoint accepting POST requests with JSON payload:
-        // {
-        //   name1: "base64-image-payload",
-        //   name2: "base64-image-payload",
-        //   ...
-        // }
-        // 
-        // The URL will receive the following query string parameters:
-        // - signature = sign(hash(jsonBody), privateKey)
-        // - publicKey
-        "url": "https://census-registry.cloud/lambda/upload-kyc-pictures/",
-
-        // Endpoint to POST to with publicKey and signature+timestamp fields
-        // Returning true will show the action and hide it otherwise
-        "visible": "https://census-registry.cloud/lambda/image-upload-visible/"
-    }],
-    "content": {
-        "news": {
-            "name": {
-                "default": "Official news",
-                "fr": "Messages officiels"
-            },
-            "origin": "bzz-feed://<feedHash>" // Points to an origin resolving to Content Data
+        {
+            {"en": "No"},
+            {"cat": "No"}
         }
-    }
+    ]
 }
 ```
-
-**Used in:**
-* [Entity creation](/protocol/sequence-diagrams?id=entity-creation)
-* [Entity subscription](/protocol/sequence-diagrams?id=entity-subscription)
-
-**Related:**
-* [Entity Smart Contract](https://github.com/vocdoni/dvote-smart-contracts/blob/master/contracts/VotingEntity.sol)
-* [Entity JS methods](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/entity.ts)
-* [Content Data](/protocol/data-schema?id=content-data)
-
-## Process metadata
 
 The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the metadata of a voting process through a decentralized channel.
 
 ```json
 {
     "version": "1.0",    // Protocol version
-    "name": "Basic income rule",
+    "name": "Basic income rule", //Human friendly, not an identifier
     "address": "0x1234...", // on the blockchain
     "question": "Should basic income be a human right?",
     "voteOptions": [
@@ -198,6 +122,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 ```
 
 **Used in:**
+
 - [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
 - [Voting process retrieval](/protocol/sequence-diagrams?id=voting-process-retrieval)
 - [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
@@ -205,11 +130,13 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 - [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
 
 **Related:**
-* [Process Smart Contract](https://github.com/vocdoni/dvote-smart-contracts/blob/master/contracts/VotingProcess.sol)
-* [Process JS methods](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
+
+- [Process Smart Contract](https://github.com/vocdoni/dvote-smart-contracts/blob/master/contracts/VotingProcess.sol)
+- [Process JS methods](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
 
 **Notes:**
-- The `type` field indicates the scrutiny method that will be used for the process. Any vote package generated with the wrong type will be discarded. 
+
+- The `type` field indicates the scrutiny method that will be used for the process. Any vote package generated with the wrong type will be discarded.
 - The list of authorized relays is available on the Process smart contract
 
 ## Vote Package
@@ -229,6 +156,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?id=vote-envelope-zk-snarks)
 
 **Used in:**
+
 - [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
 - [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
 
@@ -247,6 +175,7 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
 It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?id=vote-envelope-ring-signature)
 
 **Used in:**
+
 - [Casting a vote with Linkable Ring Signatures](/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 - [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
 
@@ -267,6 +196,7 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
 ```
 
 **Used in:**
+
 - [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
 - [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
 
@@ -285,6 +215,7 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
 ```
 
 **Used in:**
+
 - [Casting a vote with Linkable Ring Signatures](/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 - [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
 
@@ -306,6 +237,7 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
 ```
 
 **Used in:**
+
 - [Registering a Vote Batch](/protocol/sequence-diagrams?id=registering-a-vote-batch)
 - [Checking a submitted vote](/protocol/sequence-diagrams?id=checking-a-submitted-vote)
 - [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
@@ -338,6 +270,7 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
 ```
 
 **Used in:**
+
 - [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
 
 ## Vote List
@@ -390,9 +323,11 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
 ```
 
 **Used in:**
+
 - [Vote Scrutiny](/protocol/sequence-diagrams?id=vote-scrutiny)
 
 **Notes:**
+
 - The current payload may lead to a size of several Gigabytes of data, which may not be suitable for mobile devices
 
 ## Content Data
@@ -419,6 +354,7 @@ Requests sent to the census service may invoke different operations.
 Depending on the `method`, certain parameters are expected or optional:
 
 #### Census addClaim
+
 ```json
 {
     "method": "addClaim",
@@ -429,9 +365,11 @@ Depending on the `method`, certain parameters are expected or optional:
 ```
 
 **Used in:**
-* [Adding users to a census](/protocol/sequence-diagrams?id=adding-users-to-a-census)
+
+- [Adding users to a census](/protocol/sequence-diagrams?id=adding-users-to-a-census)
 
 #### Census getRoot
+
 ```json
 {
     "method": "getRoot",
@@ -440,9 +378,11 @@ Depending on the `method`, certain parameters are expected or optional:
 ```
 
 **Used in:**
+
 - [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
 
 #### Census genProof
+
 ```json
 {
     "method": "genProof",
@@ -453,10 +393,12 @@ Depending on the `method`, certain parameters are expected or optional:
 ```
 
 **Used in:**
+
 - [Check census inclusion](/protocol/sequence-diagrams?id=check-census-inclusion)
 - [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
 
 #### Census getChunk
+
 ```json
 {
     "method": "getChunk",
@@ -467,9 +409,11 @@ Depending on the `method`, certain parameters are expected or optional:
 ```
 
 **Used in:**
+
 - [Casting a vote with Linkable Ring Signatures](/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 
 #### Census checkProof
+
 ```json
 {
     "method": "checkProof",
@@ -481,6 +425,7 @@ Depending on the `method`, certain parameters are expected or optional:
 ```
 
 #### Census getIdx
+
 ```json
 {
     "method": "getIdx",
@@ -491,6 +436,7 @@ Depending on the `method`, certain parameters are expected or optional:
 ```
 
 #### Census dump
+
 ```json
 {
     "method": "dump",
@@ -501,13 +447,14 @@ Depending on the `method`, certain parameters are expected or optional:
 ```
 
 **Used in:**
+
 - [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
 
 Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 
 **Related:**
 
-* [Census service API specs](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
+- [Census service API specs](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
 
 ### Census Service response payload
 
@@ -563,4 +510,5 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 ...
 
 **Notes:**
+
 - See [Vote Package](/protocol/data-schema?id=vote-package) above

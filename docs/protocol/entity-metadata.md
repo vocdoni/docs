@@ -21,32 +21,40 @@ Several resolver contracts may exist, they all need to conform the same interfac
 
 We make use of ENS resolvers interfaces, but not necessarily use ENS domains (see below)
 
-A resolver stores each entity data into a record addressed by an `entityId`. If we use the ENS domains this is the [ENS node](https://docs.ens.domains/terminology), otherwise, this is the hash of the address that created the entity.
+A resolver stores each entity data into a record addressed by an `entityId`. If we use the ENS domains the `entityId` is the [ENS node](https://docs.ens.domains/terminology), otherwise, the `entitiyId` is the hash of the address that created the entity.
 
 ### Interface: Storage of text records
 
 [EIP 634: Storage of text records in ENS](https://eips.ethereum.org/EIPS/eip-634) is convenient to store arbitrary data. It can be used as a simple key-value store.
-In our case, it mostly stores not critical data related to user experience and communication.
 
+Vocdoni specific keys (`vndr.vocdoni.key`) are represented as JSON objects
+Content-addressed data (hashes) with not specfic hash function are referenced using [Mulistream/Multicodec](https://github.com/multiformats/multistream).
+If there is a specific codec for the hash function (in case we want to provide multiple options to be resolved) it should be suffixed with the protocol `.http`, 
 This is a suggested usage for the keys
 
-| Key                               | Example                                                    | Description                                                            |
-| --------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------- |
-| **Required keys**                 |                                                            |                                                                        |
-| `name`                            | Free Republic of Liberland                                 | Organization's name to be displayed                                    |
-| `vndr.vocdoni.censusRequestUrl`   | https://liberland.org/en/citizenship                       | To request to be part of the entity                                    |
-| **Supported keys**                |                                                            |                                                                        |
-| `Feed_url`                        | https://liberland.org/ en/news/feed                        | To retrieve a news feed                                                |
-| `Feed_hash`                       | 0x111111111111                                             | Latest multi-hash of the feed. As checksum or to get from IPFS gateway |
-| `description`                     | Is a sovereign state...                                    | A self-descriptive text                                                |
-| `avatar_url`                      | https://liberland.org/logo.png                             | An image file to be displayed next to the entity name                  |
-| `avatar_hash`                     | 0x222222222222                                             | To retreive from IPFS of for checksum                                  |
-| `vndr.vocdoni.keys_to_display`    | podcast_feed, vndr.youtube, vndr.twitter, constitution_url | Keys the user wants to be displayed on its page                        |
-| `vndr.vocdoni.supported_entities` | 0x333333333333                                             | See Nested Entities section below                                      |
-| **Arbitrary keys**                |                                                            |                                                                        |
-| `podcast_feed`                    | http://liberland.org/podcast.rss                           |                                                                        |
-| `constitution_url`                | https://liberland.org/en/constitution                      |                                                                        |
-| `vndr.twitter`                    | https://twitter.com/Liberland_org                          |                                                                        |
+| Key                                | Example                                                | Description                                                   |
+| ---------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------- |
+| **"Required" keys**                |                                                        |                                                               |
+| `name`                             | Free Republic of Liberland                             | Organization's name to be displayed                           |
+| `vndr.vocdoni.censusRequestUrl`    | "https://liberland.org/en/citizenship"                 | To request to be part of the entity                           |
+| `vndr.vocdoni.relays`              | "["0x123","0x234"]"                                    | Relay keys                                                    |
+| `vndr.vocdoni.processess.active`   | "["0x987","0x876"]"                                    | Processess tht the client will desplay as active              |
+| **Supported keys**                 |                                                        |                                                               |
+| `vndr.vocdoni.processess.test`     | "["0x787","0x776"]"                                    | Processess tht the client will desplay as active              |
+| `vndr.vocdoni.processess.inactive` | "["0x887","0x886"]"                                    | Processess tht the client will desplay as active              |
+| `vndr.vocdoni.feed.http`           | "https://liberland.org/ en/news/feed"                  | News feed following [JS feed](https://jsonfeed.org/version/1) |
+| `vndr.vocdoni.feed.multicodec`     | "0xfe1"                                                | News feed, could be IPFS or SWARM                             |
+| `vndr.vocdoni.feed.ipfs`           | "0xfe2"                                                | News feed to be retrieved using IPFS                          |
+| `vndr.vocdoni.feed.swarm`          | "0xfe3"                                                | News feed to be retrieved using Swarm                         |
+| `description`                      | Is a sovereign state...                                | A self-descriptive text                                       |
+| `avatar_url`                       | https://liberland.org/logo.png                         | An image file to be displayed next to the entity name         |
+| `avatar_hash`                      | 0xaaa                                                  | To retreive from IPFS of for checksum                         |
+| `vndr.vocdoni.keys_to_display`     | "["podcast_feed", "vndr.twitter", "constitution_url"]" | Keys the user wants to be displayed on its page               |
+| `vndr.vocdoni.entities.trusted`    | "0xeee"                                                | Contract address. See Nested Entities section below           |
+| **Arbitrary keys**                 |                                                        |                                                               |
+| `podcast_feed`                     | http://liberland.org/podcast.rss                       |                                                               |
+| `constitution_url`                 | https://liberland.org/en/constitution                  |                                                               |
+| `vndr.twitter`                     | https://twitter.com/Liberland_org                      |                                                               |
 
 ### `WIP` Interface: Storage of array of text records
 
@@ -174,7 +182,7 @@ These are smart contracts that conform to a specific interface that allows users
 
 #### Nested entities
 
-In the `keys` example above I suggested `vndr.vocdoni.supported_entities`. Which is a key that points to an `Entities curated list`.
+In the `keys` example above I suggested `vndr.vocdoni.entities.trusted`. Which is a key that points to an `Entities curated list`.
 
 This allows each entity to define its own list of trusted/child/supported entities. Is a very simple discovery/filtering/reputation mechanism that we can make use of while we wait for more complex Identity support.
 

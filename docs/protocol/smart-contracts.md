@@ -2,6 +2,8 @@
 
 A decentralized vote within the platform needs to interact with several Smart Contract instances.
 
+All the smart-contracts live in the 
+
 In a logical order, entities need to register as such to the **Entity** Smart Contract and make their metadata available on Swarm, IPFS of HTTPS. Afterwards, entities may organize voting processes, which need to be registered in the **Process** Smart Contract. 
 
 Vocdoni will provide its own instance for each one, but organizers are free to deploy their own version on any Ethereum blockchain. Smart Contracts are written in Solidity and need to be compiled into EVM bytecode. 
@@ -114,4 +116,3 @@ Used as a registry of voting processes, associated to the entity with the same a
 `getBatch(uint processId)`
 
 * Provides the data origin on which a given vote batch can be fetched
-
