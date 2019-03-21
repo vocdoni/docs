@@ -518,35 +518,121 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 }
 ```
 
-## Gateway requests payload
+## Gateway
 
-`Work in progress`
+### Fetch Census Proof
+```json
+{
+  "method": "fetchCensusProof",
+  "censusRootHash": "hexString",
+  "pubKey": "hexString"
+}
+```
+```json
+{
+  "error":bool,
+  "response":["iden3MkproofHexString"]
+}
+```
+**Used in:**
+- [Voting with zksnarks](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
 
-### Submit Web3 call
+### Fetch Process Ring
+```json
+{
+  "method": "fetchProcessRing"
+  "processId": "hexString",
+  "modulus": int,
+}
+```
+```json
+{
+  "error": bool
+  "response": ["pubKey1", "pubKey2", ...]
+}
+```
+**Used in:**
+- [Voting with LRS](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 
-...
+### Submit Ballot
+```json
+{
+  "method": "submitVote",
+  "type": "LRS/Snarks",
+  "processId": "hexString",
+  "content": "voteEnvelope",
+  "relayPubKey": "hexString"
+}
+```
 
-### Fetch Swarm data
+```json
+{
+  "error":bool,
+  "response": []
+}
+```
+**Used in:**
+- [Voting with zksnarks](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
+- [Voting with LRS](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 
-...
+### Check Vote Status
+```json
+{
+  "method": "getVoteStatus",
+  "processId": "hexString",
+  "voteId": "hexString"
+}
+```
 
-### Fetch IPFS data
+```json
+{
+  "error": bool,
+  "response": ["status"]
+}
+```
+**Used in:**
+- [Checking a submitted vote](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=checking-a-submitted-vote)
 
-...
+### Fetch File
+```json
+{
+  "method": "fetchFile",
+  "uri": "uri"
+}
+```
 
-### Send a PSS message
+```json
+{
+  "error": bool,
+  "response": ["base64File"]
+}
+```
+**Used in:**
+- [Entity subscription](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=entity-subscription)
+- [Voting process retrieval](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=voting-process-retrieval)
+- [Checking a submitted vote](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=checking-a-submitted-vote)
+- [Vote scrutiny](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=vote-scrutiny)
 
-...
+### Add File
+Available only post-auth on trusted gateways
+```json
+{
+  "method": "addFile",
+  "type": "ipfs/swarm"
+  "content": "base64File"
+}
+```
 
-### Listen for a PSS response
-
-...
-
-### Submit Vote Envelope (to Relay)
-
-...
-
-### Request vote confirmation (to Relay)
+```json
+{
+  "error": bool,
+  "response": ["uri"]
+}
+```
+**Used in:**
+- [Entity creation](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=entity-creation)
+- [Voting process creation](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=voting-process-creation)
+- [Vote scrutiny](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=vote-scrutiny)
 
 ...
 
