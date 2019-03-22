@@ -3,7 +3,6 @@
 
 - `Voting`: Handles the voting processes. Unique for now.
 - `EntityResolver`: Stores all the metadata regarding an Entity. Multiple can exist.
-- `EntityList`: Stores a list of references to Entities. Multiple can exists.
 
 ## Authentication
 
@@ -38,12 +37,3 @@ A pointer to the resolver smart-contract pointing to the entity metadata
 See [Entity Metadata](/protocol/entity-metadata.md)
 
 ---
-
-## EntityList
-```solidity
-struct entity {
-        address resolver;
-        bytes32 entityId; //address hash or ENS node of  the creator of the process
-```
-
-getAllEntities()
