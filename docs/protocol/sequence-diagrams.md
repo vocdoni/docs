@@ -1,5 +1,29 @@
 # Sequence diagrams
 
+- [Sequence diagrams](#sequence-diagrams)
+  - [Prior to voting](#prior-to-voting)
+    - [Contract deployment (Entity)](#contract-deployment-entity)
+    - [Contract deployment (Process)](#contract-deployment-process)
+    - [Set Entity metadata](#set-entity-metadata)
+    - [Entity subscription](#entity-subscription)
+    - [Custom requests to an Entity](#custom-requests-to-an-entity)
+      - [Sign up](#sign-up)
+      - [Submit a picture](#submit-a-picture)
+      - [Make a payment](#make-a-payment)
+      - [Resolve a captcha](#resolve-a-captcha)
+      - [Adding users to a census](#adding-users-to-a-census)
+  - [Voting](#voting)
+    - [Voting process creation](#voting-process-creation)
+    - [Voting process retrieval](#voting-process-retrieval)
+    - [Check census inclusion](#check-census-inclusion)
+    - [Casting a vote with ZK Snarks](#casting-a-vote-with-zk-snarks)
+    - [Casting a vote with Linkable Ring Signatures](#casting-a-vote-with-linkable-ring-signatures)
+    - [Registering a Vote Batch](#registering-a-vote-batch)
+  - [After voting](#after-voting)
+    - [Checking a submitted vote](#checking-a-submitted-vote)
+    - [Closing a Voting Process](#closing-a-voting-process)
+    - [Vote Scrutiny](#vote-scrutiny)
+
 ## Prior to voting
 
 --------------------------------------------------------------------------------
@@ -80,8 +104,6 @@ sequenceDiagram
 <!-- ### Identity creation -->
 
 ### Entity subscription
-
-`WIP`
 
 ```mermaid
 
