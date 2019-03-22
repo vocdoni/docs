@@ -87,35 +87,35 @@ This is a suggested usage for the keys
 - `T`: Storage of text
 - `L`: Storage of lists of text
 
-| Key                                       | In   | Example                                                | Description                                                                |
-|-------------------------------------------|------|--------------------------------------------------------|----------------------------------------------------------------------------|
-| **"Required" keys**                       |      |                                                        |                                                                            |
-| `name`                                    | T | Free Republic of Liberland                             | Organization's name to be displayed. Necessary if summary can't be fetched |
-| `vndr.vocdoni.this`                       | T | "0xabc"                                                | Returns all metadata. See below.                                           |
-| **Supported keys**                        |      |                                                        |                                                                            |
-| `vndr.vocdoni.censusRequestUrl`           | T | "https://liberland.org/en/citizenship"                 | To request to be part of the entity                                        |
-| `vndr.vocdoni.processContract`            | T | "0xccc"                                                | Pointer to the contract used for the processess                            |
-| `vndr.vocdoni.gatewayBootnodes`           | L | <see gatewayBootnodes below>                           | gatewayBootnodes metadata                                                  |
-| `vndr.vocdoni.relays`                     | L | "["0x123","0x234"]"                                    | Relay keys                                                                 |
-| `vndr.vocdoni.processess.active`          | L | "["0x987","0x876"]"                                    | Processess tht the client will desplay as active                           |
-| `vndr.vocdoni.processess.inactive`        | L | "["0x887","0x886"]"                                    | Processess tht the client will desplay as active                           |
-| `vndr.vocdoni.processess.test`            | L | "["0x787","0x776"]"                                    | Processess tht the client will desplay as active                           |
-| `vndr.vocdoni.actions.ipfs`               | T | "0xaaa"                                                | Pointer to entity Actions. See below                                       |
-| `vndr.vocdoni.feed.http`                  | T | "https://liberland.org/feed"                           | Pointer to a feed. Resolved via http.                                      |
-| `vndr.vocdoni.feed.hash`                  | T | "0xfe1"                                                | Pointer to a feed. Could be IPFS or SWARM                                  |
-| `vndr.vocdoni.feed.ipfs`                  | T | "0xfe2"                                                | Pointer to a feed. Via IPFS                                                |
-| `vndr.vocdoni.feed.bzz`                   | T | "0xfe3"                                                | Pointer to a feed. Via Swarm                                               |
-| `vndr.vocdoni.description`                | T | "Is a sovereign state..."                              | A self-descriptive text                                                   |
-| `vndr.vocdoni.avatar.https`               | T | "https://liberland.org/logo.png"                       | An image file to be displayed next to the entity name                      |
-| `vndr.vocdoni.hash`                       | T | "0xaaa"                                                | To retreive from IPFS of for checksum                                      |
-| `vndr.vocdoni.keysToDisplay`              | L | "["podcast_feed", "vndr.twitter", "constitution_url"]" | Keys the user wants to be displayed on its page                            |
-| `vndr.vocdoni.entities.boot`              | L | "0xeee"                                                | Entities list.                                                             |
-| `vndr.vocdoni.entities.trusted`           | L | "0xeee"                                                | Entities list.                                                             |
-| `vndr.vocdoni.entities.fallbackBootnodes` | L | "0xeee"                                                | Entities list.                                                             |
-| **Arbitrary keys**                        |      |                                                        |                                                                            |
-| `podcastFeed`                             | T | http://liberland.org/podcast.rss                       |                                                                            |
-| `constitution.http`                       | T | https://liberland.org/en/constitution                  |                                                                            |
-| `vndr.twitter`                            | T | https://twitter.com/Liberland_org                      |                                                                            |
+| Key                                       | I   | Example                                                | Description                                                                |
+|-------------------------------------------|-----|--------------------------------------------------------|----------------------------------------------------------------------------|
+| **"Required" keys**                       |     |                                                        |                                                                            |
+| `name`                                    | `T` | Free Republic of Liberland                             | Organization's name to be displayed. Necessary if summary can't be fetched |
+| `vndr.vocdoni.this`                       | `T` | "0xabc"                                                | Returns all metadata. See below.                                           |
+| **Supported keys**                        |     |                                                        |                                                                            |
+| `vndr.vocdoni.censusRequestUrl`           | `T` | "https://liberland.org/en/citizenship"                 | To request to be part of the entity                                        |
+| `vndr.vocdoni.processContract`            | `T` | "0xccc"                                                | Pointer to the contract used for the processess                            |
+| `vndr.vocdoni.gatewayBootnodes`           | `L` | "[{<gatewayBootnode>}]                             | gatewayBootnodes metadata                                                  |
+| `vndr.vocdoni.relays`                     | `L` | "["0x123","0x234"]"                                    | Relay keys                                                                 |
+| `vndr.vocdoni.processess.active`          | `L` | "["0x987","0x876"]"                                    | Processess tht the client will desplay as active                           |
+| `vndr.vocdoni.processess.inactive`        | `L` | "["0x887","0x886"]"                                    | Processess tht the client will desplay as active                           |
+| `vndr.vocdoni.processess.test`            | `L` | "["0x787","0x776"]"                                    | Processess tht the client will desplay as active                           |
+| `vndr.vocdoni.actions.ipfs`               | `T` | "0xaaa"                                                | Pointer to entity Actions. See below                                       |
+| `vndr.vocdoni.feed.http`                  | `T` | "https://liberland.org/feed"                           | Pointer to a feed. Resolved via http.                                      |
+| `vndr.vocdoni.feed.hash`                  | `T` | "0xfe1"                                                | Pointer to a feed. Could be IPFS or SWARM                                  |
+| `vndr.vocdoni.feed.ipfs`                  | `T` | "0xfe2"                                                | Pointer to a feed. Via IPFS                                                |
+| `vndr.vocdoni.feed.bzz`                   | `T` | "0xfe3"                                                | Pointer to a feed. Via Swarm                                               |
+| `vndr.vocdoni.description`                | `T` | "Is a sovereign state..."                              | A self-descriptive text                                                    |
+| `vndr.vocdoni.avatar.https`               | `T` | "https://liberland.org/logo.png"                       | An image file to be displayed next to the entity name                      |
+| `vndr.vocdoni.hash`                       | `T` | "0xaaa"                                                | To retreive from IPFS of for checksum                                      |
+| `vndr.vocdoni.keysToDisplay`              | `L` | "["podcast_feed", "vndr.twitter", "constitution_url"]" | Keys the user wants to be displayed on its page                            |
+| `vndr.vocdoni.entities.boot`              | `L` | "[{entityRef}]"                                        | Entities list.                                                             |
+| `vndr.vocdoni.entities.trusted`           | `L` | "[{entityRef}]"                                         | Entities list.                                                             |
+| `vndr.vocdoni.entities.fallbackBootnodes` | `L` | "[{entityRef}]"                                         | Entities list.                                                             |
+| **Arbitrary keys**                        |     |                                                        |                                                                            |
+| `podcastFeed`                             | `T` | http://liberland.org/podcast.rss                       |                                                                            |
+| `constitution.http`                       | `T` | https://liberland.org/en/constitution                  |                                                                            |
+| `vndr.twitter`                            | `T` | https://twitter.com/Liberland_org                      |                                                                            |
 
 ## Data-schema
 
@@ -131,6 +131,7 @@ This creates two sources of truth. The metadata in the contract itself and the o
 
 It is representend as a JSON object, replacing the `.` convention with objects. The prefix `vndr.vocdoni` is ommited.
 
+**metadata:**
 ```json
 {
   "name": "Free Republic of Liberland",
@@ -178,6 +179,7 @@ The data is fetched directly from the blockchain, otherwise, the user may not be
 
 It uses the `Storage of lists of text interface`
 
+**gatewayBootnode:**
 ```json
   {
     "pubKey": "public key", //used to encrypt the communication between the bootnode and the gateway
@@ -188,7 +190,7 @@ It uses the `Storage of lists of text interface`
     "port": port,
     "protocol": "http/https/ws"
   }
-]
+
 ```
 
 ### Entities list
@@ -200,13 +202,16 @@ Entities lists have several purposes.
 - `vndr.vocdoni.entities.fallbackNodes`: As a mechanism to find fallback `gateway boot nodes` on trusted entities.
 - Alternative purposes can be added.
 
-Each element on the list hosts the `resolver contract` address, where the metadata lives, and the `entityId`.
+Each element on the list hosts an `EntityRef`
+- `resolver`: contract address, where the metadata lives,
+- `entityId`: unique entity identifier
 
 If it lives in the blockchain it uses the `Storage of lists of text interface`, otherwise is a JSON array.
 There could be a centralized search engine that facilitate entities lists.
 
 It uses the key `vndr.vocdoni.entities.<type>`
 
+**entityRef:**
 ```json
 {
   "entityId":"0xeee",
@@ -225,6 +230,7 @@ We follow the [JSON feed specification](https://jsonfeed.org/version/1)
 
 Actions are stored in IPFS/SWARM its reference is stored in `vndr.vocdoni.actions.ipfs`
 
+**actions:**
 ```json
 {
     "version": "1.0",    // Protocol version
