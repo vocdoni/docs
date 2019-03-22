@@ -79,7 +79,7 @@ sequenceDiagram
 
 <!-- ### Identity creation -->
 
- ### Entity subscription
+### Entity subscription
 
 `WIP`
 
@@ -121,18 +121,18 @@ sequenceDiagram
     App->>App: Displays Entites
     App->>App: User subscribes
 ```
+
 **Used schemas:**
 
 - [Entity metadata](/protocol/entity-metadata.md)
 
 **Notes:**
 
-- `metadataOrigin` should be as [stated here](/protocol/data-schema?id=content-uri)
 - In the case of React Native apps, DVote JS will need to run on the WebRuntime component
 
 ### Custom requests to an Entity
 
-Actions like creating an Entity or subscribing to it are standard processes. However every Entity will probably have specific requirements on what users have to accomplish in order to join a census.
+An Entity may have specific requirements on what users have to accomplish in order to join a be part of its user registry.
 
 Some may require filling a simple form. Some others may ask to log in from an existing HTTP service. Uploading ID pictures, selfies or even making payments need custom implementations that decide that a user must eventually be added to a census.
 
@@ -145,18 +145,18 @@ The user selects an action from the entityMetadata > actions available.
 ```mermaid
 sequenceDiagram
     participant App
-    participant CR as Census Registry
+    participant UR as User Registry
     participant DB as Internal Database
 
-    App->>CR: Navigate to: <ACTION-URL>?publicKey=<pk>&censusId=<id>
-        activate CR
-            Note right of CR: Fill the form
-        deactivate CR
+    App->>UR: Navigate to: ACTION-URL?publicKey=0x1234&censusId=0x4321
+        activate UR
+            Note right of UR: Fill the form
+        deactivate UR
 
-        CR->>CR: signUp(name, lastName, publicKey, censusId)
+        UR->>UR: signUp(name, lastName, publicKey, censusId)
 
-        CR->>DB: insert(name, lastName, publicKey, censusId)
-    CR-->>App: success
+        UR->>DB: insert(name, lastName, publicKey, censusId)
+    UR-->>App: success
 ```
 
 **Used schemas:**
