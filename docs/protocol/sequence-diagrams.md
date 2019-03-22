@@ -1,8 +1,8 @@
-
 # Sequence diagrams
 
 ## Prior to voting
----
+
+--------------------------------------------------------------------------------
 
 ### Contract deployment (Entity)
 
@@ -26,76 +26,73 @@ sequenceDiagram
     B-->>-V: address
 ```
 
-### Entity creation
+### Set Entity metadata
+
+The `entityId` is the unique identifier of an entity:
+
+```solidity
+bytes32 entityId = keccak256(entityAddress);
+```
+
+An Entity starts existing at the moment it has some metadata stored in the resolver smart contract
+
+At the moment setting any metadata to the entity is done via the the `Storage of text records` interface used by the resolver contract:
+
+```solidity
+setText(entityId, key, value);
+```
+
+There is a set of `keys` that are required for an Entity to have to be compliant with Vocdoni 
+
+See [Entity metadata](/protocol/entity-metadata.md) for all the keys and data-schemas.
 
 ```mermaid
+
 sequenceDiagram
     participant PM as Process Manager
-    participant DV as DVote JS
-    participant BE as Blockchain Entity
-    participant S as Swarm
+    participant DV as dvote-js
+    participant ER as Entity Resolver contract
 
-    PM->>DV: createEntity(entityMetadata)
-
-        DV->>+BE: Entity.get(address)
-        BE-->>-DV: entity
-
-        Alt It does not exist
-            DV-->S: Swarm.put(entityMetadata) : metadataHash
-
-            DV->>+BE: Entity.create(name, metadataOrigin)
-            BE-->>-DV: txId
-        end
-
+    PM->>DV: getEntityId(entityAddress)
     DV-->>PM: entityId
+
+    PM->>DV: getDefaultResolver()
+    DV-->>PM: resolverAddress
+
+
+    PM->>PM: Fill-up name
+    PM->>DV: setName(value)
+        DV->>ER: setText(entityId,"name","Liberland")
+
+    loop Applies to any key
+        PM->>PM: Fill-up key-value
+        PM->>DV: set[key](value)
+        DV->>ER: setText(entityId,key,value)
+    end
+
 ```
 
 **Used schemas:**
-- [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
-- `metadataOrigin` should be as [stated here](/protocol/data-schema?id=content-uri)
 
-**Notes:** 
-* Swarm is not a service by itself. Data pinned in the local Swarm repository of the Process Manager becomes available through a P2P network.
+- [Entity metadata](/protocol/entity-metadata.md)
 
 <!-- ### Identity creation -->
 
-### Entity subscription
+ ### Entity subscription
+
+`WIP`
 
 ```mermaid
-sequenceDiagram
-    participant App
-    participant DV as DVote JS
-    participant BE as Blockchain Entity
-    participant S as Swarm
 
-    App->>+DV: getAll()
-
-        DV->>+BE: Entity.getEntityIds()
-        BE-->>-DV: idList
-
-        loop entityIds
-            DV->>+BE: Entity.get(id)
-            BE-->>-DV: (name, metadataOrigin)
-        end
-
-    DV-->>-App: entities
-
-    activate App
-        Note right of App: User selects an entity
-    deactivate App
-
-    App->>+DV: Entity.getMetadata(selectedEntity.metadataOrigin)
-        DV->>+S: Swarm.get(metadataHash)
-        S-->>-DV: entityMetadata
-    DV-->>-App: entityMetadata
-
-    App->>App: addEntity(selectedEntity)
+    
 ```
 
 **Used schemas:**
-- [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
 
-**Notes:** 
+- [Entity metadata](/protocol/entity-metadata.md)
+
+**Notes:**
+
 - `metadataOrigin` should be as [stated here](/protocol/data-schema?id=content-uri)
 - In the case of React Native apps, DVote JS will need to run on the WebRuntime component
 
@@ -125,19 +122,21 @@ sequenceDiagram
         CR->>CR: signUp(name, lastName, publicKey, censusId)
 
         CR->>DB: insert(name, lastName, publicKey, censusId)
-        DB-->>CR: 
     CR-->>App: success
-
 ```
 
 **Used schemas:**
+
 - [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
 
-**Notes:** 
+**Notes:**
+
 - `ACTION-URL` is defined on the metadata of the contract. It is expected to be a full URL to which GET parameters will be appended (`publicKey` and optionally `censusId`)
 
 #### Submit a picture
+
 #### Make a payment
+
 #### Resolve a captcha
 
 #### Adding users to a census
@@ -164,15 +163,15 @@ sequenceDiagram
         CS-->>DV: success
         DV-->>PM: success
     end
-
 ```
 
 **Used schemas:**
+
 - [addClaimPayload](/protocol/data-schema?id=census-addclaim)
 
-
 ## Voting
----
+
+--------------------------------------------------------------------------------
 
 ### Voting process creation
 
@@ -200,10 +199,10 @@ sequenceDiagram
         BC-->>-DV: txId
 
     DV-->>-PM: success
-
 ```
 
 **Used schemas:**
+
 - [processMetadata](/protocol/data-schema?id=process-metadata)
 - [getRootPayload](/protocol/data-schema?id=census-getroot)
 - The `processDetails` parameter is specified [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
@@ -240,6 +239,7 @@ sequenceDiagram
 ```
 
 **Used schemas:**
+
 - [processMetadata](/protocol/data-schema?id=process-metadata)
 
 ### Check census inclusion
@@ -263,9 +263,11 @@ sequenceDiagram
 ```
 
 **Used schemas:**
+
 - [genProofPayload](/protocol/data-schema?id=census-genproof)
 
-**Notes:** 
+**Notes:**
+
 - `genProof` may be replaced with a call to `hasClaim`, for efficiency
 - The `censusId` and `censusOrigin` should have been fetched from a the metadata of a process
 
@@ -304,24 +306,24 @@ sequenceDiagram
         DV->>DV: encryptVotePackage(package, relay.publicKey)
 
         DV->>GW: submitVoteEnvelope(encryptedVotePackage, relay.origin)
-            
+
             GW->>RL: submitVoteEnvelope(encryptedVotePackage)
             RL-->>GW: ACK
-        
+
         GW-->>DV: submitted
 
     DV-->>-App: submitted
-
 ```
 
 **Used schemas:**
+
 - [processMetadata](/protocol/data-schema?id=process-metadata)
 - [genProofPayload](/protocol/data-schema?id=census-genproof)
 - [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
 
 **Notes:**
-- The Merkle Proof could be retrieved and stored beforehand
 
+- The Merkle Proof could be retrieved and stored beforehand
 
 ### Casting a vote with Linkable Ring Signatures
 
@@ -350,28 +352,29 @@ sequenceDiagram
         end
 
         DV->>DV: encrypt(vote, processMetadata.publicKey)
-        
+
         DV->>DV: sign(processMetadata.address, privateKey, censusChunk)
 
         DV->>DV: encryptVotePackage(package, relay.publicKey)
 
         DV->>GW: submitVoteEnvelope(encryptedVotePackage, relay.origin)
-            
+
             GW->>RL: submitVoteEnvelope(encryptedVotePackage)
             RL-->>GW: ACK
-        
+
         GW-->>DV: submitted
 
     DV-->>-App: submitted
-
 ```
 
 **Used schemas:**
+
 - [processMetadata](/protocol/data-schema?id=process-metadata)
 - [getChunk](/protocol/data-schema?id=census-getchunk)
 - [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
 
 **Notes:**
+
 - The `publicKeyModulus` allows to segment the whole census into `N` polling stations. Every public key is assigned to exactly one, depending on the modulus that yields a division by `processMetadata.census.modulusSize`.
 
 ### Registering a Vote Batch
@@ -391,12 +394,11 @@ sequenceDiagram
 
     RL->>+BC: Process.registerBatch(batchOrigin)
     BC-->>-RL: txId
-
 ```
 
 **Used schemas:**
-- [Vote Batch](/protocol/data-schema?id=vote-batch)
 
+- [Vote Batch](/protocol/data-schema?id=vote-batch)
 
 ## After voting
 
@@ -428,7 +430,7 @@ sequenceDiagram
 
             DV->>+BC: Process.getBatch(batchId)
             BC-->>-DV: (processAddress, batchOrigin)
-        
+
         end
 
         DV->>+SW: Swarm.get(batchHash)
@@ -440,12 +442,13 @@ sequenceDiagram
 ```
 
 **Used schemas:**
+
 - [Vote Batch](/protocol/data-schema?id=vote-batch)
 
 **Notes:**
+
 - `nullifierOrSignature` is expected to contain a nullifier when the process `type` is `zk-snarks`
 - `nullifierOrSignature` is expected to contain a ring signature when the process `type` is `lrs`
-
 
 ### Closing a Voting Process
 
@@ -465,7 +468,6 @@ sequenceDiagram
         BC-->>-DV: success
 
     DV-->>PM: success
-
 ```
 
 ### Vote Scrutiny
@@ -480,24 +482,24 @@ sequenceDiagram
     participant SW as Swarm
 
     SC->>+DV: Process.get(processAddress)
-    
+
         DV->>+BC: Process.get(processAddress)
         BC-->>-DV: (name, metadataOrigin, privateKey)
-    
+
     DV-->>-SC: (name, metadataOrigin)
 
     SC->>+DV: Swarm.get(metadataHash)
-    
+
         DV->>+SW: Swarm.get(metadataHash)
         SW-->>-DV: processMetadata
-    
+
     DV-->>-SC: processMetadata
 
     SC->>+DV: Process.getVoteBatchIds(processAddress)
-    
+
         DV->>+BC: Process.getVoteBatchIds(processAddress)
         BC-->>-DV: batchIds
-    
+
     DV-->>-SC: batchIds
 
     SC->>+DV: Process.fetchBatches(batchIds)
@@ -505,7 +507,7 @@ sequenceDiagram
 
             DV->>+BC: Process.getBatch(batchId)
             BC-->>-DV: (type, relay, batchOrigin)
-            
+
             DV->>+SW: Swarm.get(batchHash)
             SW-->>-DV: voteBatch
 
@@ -514,21 +516,21 @@ sequenceDiagram
 
     SC->>+DV: skipInvalidRelayBatches(voteBatches, processMetadata.relays)
     DV-->>-SC: validRelayBatches
-    
+
     SC->>+DV: skipInvalidTypeBatches(validRelayBatches, processMetadata.type)
     DV-->>-SC: validTypeBatches
-    
+
     SC->>SC: sort(merge(validTypeBatches))
 
     SC->>+DV: resolveDuplicates(voteBatches)
     DV-->>-SC: uniqueVotePackages
-    
+
     alt type=zk-snarks
         loop uniqueVotePackages
 
             SC->>+DV: Snark.check(proof, votePackage.publicSignals)
             DV-->>-SC: valid
-        
+
         end
     else type=lrs
 
@@ -545,7 +547,7 @@ sequenceDiagram
     end
 
     loop validVotes
-    
+
         SC->>+DV: decrypt(vote.encryptedVote, privateKey)
         DV-->>-SC: voteValue
 
@@ -560,10 +562,10 @@ sequenceDiagram
     SC->>+DV: Swarm.put(voteList)
         DV-->SW: Swarm.put(voteList)
     DV-->>-SC: voteListHash
-
 ```
 
 **Used schemas:**
+
 - [processMetadata](/protocol/data-schema?id=process-metadata)
 - [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
 - [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
