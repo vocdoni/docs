@@ -36,13 +36,15 @@ bytes32 entityId = keccak256(entityAddress);
 
 An Entity starts existing at the moment it has some metadata stored in the resolver smart contract
 
-At the moment setting any metadata to the entity is done via the the `Storage of text records` interface used by the resolver contract:
+Setting any metadata to the entity is done via the the `Storage of text records` or via `Storage of lists of text` interfaces used by the resolver contract:
 
 ```solidity
-setText(entityId, key, value);
-```
 
-There is a set of `keys` that are required for an Entity to have to be compliant with Vocdoni 
+setText(entityId, key, value);
+
+setListText(entityId, key, index, value);
+
+```
 
 See [Entity metadata](/protocol/entity-metadata.md) for all the keys and data-schemas.
 
@@ -58,7 +60,6 @@ sequenceDiagram
 
     PM->>DV: getDefaultResolver()
     DV-->>PM: resolverAddress
-
 
     PM->>PM: Fill-up name
     PM->>DV: setName(value)
@@ -84,9 +85,42 @@ sequenceDiagram
 
 ```mermaid
 
-    
-```
+sequenceDiagram
+    participant App
+    participant DV as dvote-js
+    participant ER as Entity Resolver contract
+    participant IPFS as Ipfs/Swarm
 
+    App->>App: get reference entityId/resolver from config
+    App->>DV: getBootEntities(resolver, entityId)
+    DV->>ER: list(entityId, "vndr.vocdoni.entities.boot")
+    ER-->>DV: entitiesList[]
+
+    alt default
+        loop
+            DV->>ER: text(entities[i], "vndr.vocdoni.this")
+            ER-->>DV: entityMetadataHash
+            DV->>IPFS: Ipfs.get(entityMetadataHash)
+            IPFS-->DV: entityMetadata
+        end
+    end
+
+    alt if default fails
+        loop
+            DV->>ER: text(entities[i], "vndr.vocdoni.name")
+            ER-->>DV: entityName
+
+            loop necessary data
+                DV->>ER: text(entities[i], key)
+                ER-->>DV: data
+            end
+        end
+    end
+
+    DV-->>App:  entitiesMetadata []
+    App->>App: Displays Entites
+    App->>App: User subscribes
+```
 **Used schemas:**
 
 - [Entity metadata](/protocol/entity-metadata.md)
