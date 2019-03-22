@@ -1,20 +1,27 @@
 # Entity metadata
 
-`The current contents are a work in progress`
+An entity can have many roles. For the most part, is the organizer and the ultimate responsibility of a voting process.
 
-An entity is an organizer and the ultimate responsable of a process.
-One entity can have an arbitrary number of processes.
+But it could not make use of the voting mechanism an instead just be an element of trust:
+
+- Can publish news/information via the `feed`
+- Can provide pointers to trusted/related `entities`
+- Can provide alternative trusted bootstrap nodes or relays
+
+For the most part, all this data lives in the blockchain. Alternatively, it is indexed in the blockchain and retrieved using other protocols.
+
+We call all this data `Entity-metadata`
 
 ## Index
 - [Entity metadata](#entity-metadata)
   - [Index](#index)
-  - [Entity](#entity)
   - [Resolver](#resolver)
     - [Interface: Storage of text records](#interface-storage-of-text-records)
     - [Interface: Storage of lists of text](#interface-storage-of-lists-of-text)
     - [Suggested keys](#suggested-keys)
   - [Data-schema](#data-schema)
-    - [Gateway bootnodes](#gateway-bootnodes)
+    - [Gateway boot nodes](#gateway-boot-nodes)
+    - [Entities list](#entities-list)
     - [Feed](#feed)
     - [Actions](#actions)
   - [ENS](#ens)
@@ -22,17 +29,6 @@ One entity can have an arbitrary number of processes.
     - [No Mainnet](#no-mainnet)
     - [ENS domain authentication](#ens-domain-authentication)
     - [Comparison](#comparison)
-  - [Subscription](#subscription)
-    - [Entities curated lists](#entities-curated-lists)
-      - [Nested entities](#nested-entities)
-
-## Entity
-
-Any `Entity` have associated several metadata.
-
-Most of the metadata is necessary to provide alternative censorship resistant channels of communications between the Entity and the user.
-
-The data in itself or a hash of it is stored in the blockchain.
 
 ---
 
@@ -40,11 +36,11 @@ The data in itself or a hash of it is stored in the blockchain.
 
 A resolver is a smart-contract in charge of returning the required data from the user.
 
-Several resolver contracts may exist, they all need to conform the same interfaces, specified by Vocdoni.
+Several resolver contracts may exist, they all need to conform with the same interfaces, specified by Vocdoni.
 
 We make use of ENS resolvers interfaces, but not necessarily use ENS domains (see below)
 
-A resolver stores each entity data into a record addressed by an `entityId`. If we use the ENS domains the `entityId` is the [ENS node](https://docs.ens.domains/terminology), otherwise, the `entitiyId` is the hash of the address that created the entity.
+A resolver stores each entity data into a record addressed by an `entityId`. If we use the ENS domains the `entityId` is the [ENS node](https://docs.ens.domains/terminology), otherwise, the `entityId` is the hash of the address that created the entity.
 
 ### Interface: Storage of text records
 
@@ -52,7 +48,7 @@ A resolver stores each entity data into a record addressed by an `entityId`. If 
 
 Vocdoni specific keys (`vndr.vocdoni.key`) are represented as JSON objects.
 
-`WIP` Content-addressed data (hashes) with not specfic hash function are referenced using [Mulistream/Multicodec](https://github.com/multiformats/multistream). They use the suffix `.hash`
+`WIP` Content-addressed data (hashes) with not specific hash function are referenced using [Mulistream/Multicodec](https://github.com/multiformats/multistream). They use the suffix `.hash`
 
 If there is a specific codec for the hash function (in case we want to provide multiple options to be resolved) it should be suffixed with its protocol `.http`, `.bzz`, `.ipfs` ...
 
@@ -64,10 +60,10 @@ function text(bytes32 node, string key) constant returns (string text);
 
 ### Interface: Storage of lists of text
 
-This is necessary in order to minimize the amount of data to write when the metadata can be splitted.
-The user is responsble for managing the indexes, the array does not move its elements.
+This is necessary in order to minimize the amount of data to write when the metadata can be split.
+The user is responsible for managing the indexes, the array does not move its elements.
 
-> The implementation does not exists yet and the API may differ from the final implementation
+> The implementation does not exist yet and the API may differ from the final implementation
 
 The behaviour wants to mimic `The storage of text records`
 
@@ -112,14 +108,14 @@ This is a suggested usage for the keys
 
 ## Data-schema
 
-### Gateway bootnodes
+### Gateway boot nodes
 
-Gateways bootnodes are servers trusted by the Entity
+Gateways boot nodes are servers trusted by the Entity
 
 - They provide a list of potential gateways to the client
-- They provide the gateways the necessary information to join the network
+- They provide the gateways with the necessary information to join the network
 
-The data is fetched directly from the blockchain, otherwise the user may not be able to fetch the gateway data because she doesn't have access to the gateway...
+The data is fetched directly from the blockchain, otherwise, the user may not be able to fetch the gateway data because she doesn't have access to the gateway...
 
 It uses the `Storage of lists of text interface`
 
@@ -136,9 +132,30 @@ It uses the `Storage of lists of text interface`
 ]
 ```
 
+### Entities list
+
+Entities lists have several purposes.
+
+- They serve as an entry point for the user to subscribe to new entities
+- They provide a reputation/whitelisting mechanism for entities to express a relationship with other entities
+- They provide a fallback mechanism to find fallback `gateway boot nodes` on trusted entities.
+
+Each element on the list hosts the `resolver contract` address, where the metadata lives, and the `entityId`.
+
+If it lives in the blockchain it uses the `Storage of lists of text interface`, otherwise is a JSON array.
+
+It uses the key `vndr.vocdoni.entities.<type>`
+
+```json
+{
+  "entityId":"0xeee",
+  "resolver":"0xaaa"
+}
+```
+
 ### Feed
 
-The `Feed` serves the purpose of having a uni-directional censorship resistant communication channel between the `Entity` and the `user`.
+The `Feed` serves the purpose of having a uni-directional censorship-resistant communication channel between the `Entity` and the `user`.
 You can imagine it as an RSS feed
 
 We follow the [JSON feed specification](https://jsonfeed.org/version/1)
@@ -291,7 +308,7 @@ Therefore, we understand that we should only make use of ENS domains in the Ethe
 
 At the same time, we understand that some implementations of Vocdoni may not have a use for ENS, therefore we should not rely on it for any fundamental architectural design.
 
-We do make use of the ENS resolvers and we follow the same architecture since there isre a lot of value in potentially using ENS domains.
+We do make use of the ENS resolvers and we follow the same architecture since there is a lot of value in potentially using ENS domains.
 
 ### ENS domain authentication
 
@@ -335,32 +352,3 @@ Some implementations may decide to make use of ENS domains
 | Storage of text records           |          ✓          |      ✓      |
 | Storage of array of text records  |          ✓          |      ✓      |
 | Other Vocdoni specific interfaces |          ✓          |      ✓      |
-
-## Subscription
-
-A user can subscribe to any entity she pleases.
-
-Because the resolver architecture, metadata of different entities may exist in different resolver contracts.
-
-The client app stores the resolver and the entityId of the entity and fetches the data when it needs.
-
-### Entities curated lists
-
-In order to provide an entry point for a user to find entities to subscribe we have `Entities curated lists`.
-
-These are smart contracts that conform to a specific interface that allows users to fetch the available entities of this list.
-
-- An entity itself can a have pointer to a list of trusted lists of entities
-- Can be used for testing scenarios
-- The owner of the list can establish a KYC process, or complex logic to appear on the list
-
-#### Nested entities
-
-In the `keys` example above I suggested `vndr.vocdoni.entities.trusted`. Which is a key that points to an `Entities curated list`.
-
-This allows each entity to define its own list of trusted/child/supported entities. Is a very simple discovery/filtering/reputation mechanism that we can make use of while we wait for more complex Identity support.
-
-- A big organization could list all its departments. And each department could do the same to its sub-departments and so on...
-- It is a very elegant way to filter, especially if a list is big, there are entities with similar names...
-- It does not require almost any UI implementation on the client side.
-- Can be used to find additional trusted gateways in case the ones of the current entity are down.
