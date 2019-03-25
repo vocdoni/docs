@@ -77,6 +77,7 @@ See [Entity metadata](/protocol/entity-metadata.md) for all the keys and data-sc
 sequenceDiagram
     participant PM as Process Manager
     participant DV as dvote-js
+    participant GW as Gateway
     participant ER as Entity Resolver contract
 
     PM->>DV: getEntityId(entityAddress)
@@ -87,12 +88,14 @@ sequenceDiagram
 
     PM->>PM: Fill-up name
     PM->>DV: setName(value)
-        DV->>ER: setText(entityId,"name","Liberland")
+        DV->>GW: Web3(setText(entityId,"name","Liberland"))
+        GW->>ER: setText(entityId,"name","Liberland")
 
     loop Applies to any key
         PM->>PM: Fill-up key-value
         PM->>DV: set[key](value)
-        DV->>ER: setText(entityId,key,value)
+        DV->>GW: Web3(setText(entityId,key,value)
+        GW->>ER: setText(entityId,key,value)
     end
 
 ```
@@ -110,31 +113,42 @@ sequenceDiagram
 sequenceDiagram
     participant App
     participant DV as dvote-js
+    participant GW as Gateway
     participant ER as Entity Resolver contract
     participant IPFS as Ipfs/Swarm
 
     App->>App: get reference entityId/resolver from config
     App->>DV: getBootEntities(resolver, entityId)
-    DV->>ER: list(entityId, "vndr.vocdoni.entities.boot")
-    ER-->>DV: entitiesList[]
+    DV->>GW: Web3(list(entityId, "vndr.vocdoni.entities.boot"))
+    GW->>ER: list(entityId, "vndr.vocdoni.entities.boot")
+    ER-->>GW: entitiesList[]
+    GW-->>DV: entitiesList[]
 
     alt default
         loop
-            DV->>ER: text(entities[i], "vndr.vocdoni.this")
-            ER-->>DV: entityMetadataHash
-            DV->>IPFS: Ipfs.get(entityMetadataHash)
-            IPFS-->DV: entityMetadata
+            DV->>GW: Web3(text(entities[i], "vndr.vocdoni.this"))
+            GW->>ER: text(entities[i], "vndr.vocdoni.this")
+            ER-->>GW: entityMetadataHash
+            GW-->>DV: entityMetadataHash
+            DV->>GW: fetchFile(entityMetadataHashURI)
+            GW->>IPFS: Ipfs.get(entityMetadataHash)
+            IPFS-->GW: entityMetadata
+            GW-->DV: entityMetadata
         end
     end
 
     alt if default fails
         loop
-            DV->>ER: text(entities[i], "vndr.vocdoni.name")
-            ER-->>DV: entityName
+            DV->>GW: Web3(text(entities[i], "vndr.vocdoni.name"))
+            GW->>ER: text(entities[i], "vndr.vocdoni.name")
+            ER-->>GW: entityName
+            GW-->>DV: entityName
 
             loop necessary data
-                DV->>ER: text(entities[i], key)
-                ER-->>DV: data
+                DV->>GW: Web3(text(entities[i], key))
+                GW->>ER: text(entities[i], key)
+                ER-->>GW: data
+                GW-->>DV: data
             end
         end
     end
@@ -204,6 +218,7 @@ sequenceDiagram
     participant PM as Process Manager
     participant DB as Internal Database
     participant DV as DVote JS
+    participant GW as Gateway
     participant CS as Census Service
 
     PM->>DB: getUsers({ pending: true })
@@ -215,8 +230,10 @@ sequenceDiagram
         activate DV
         DV->>DV: signRequestPayload(payload, web3Provider)
         deactivate DV
-        DV->>CS: addClaim(addClaimPayload)
-        CS-->>DV: success
+        DV->>GW: addClaim(addClaimPayload)
+        GW->>CS: addClaim(addClaimPayload)
+        CS-->>GW: success
+        GW-->>DV: success
         DV-->>PM: success
     end
 ```
@@ -235,24 +252,33 @@ sequenceDiagram
 sequenceDiagram
     participant PM as Process Manager
     participant DV as DVote JS
+    participant GW as Gateway
     participant CS as Census Service
     participant SW as Swarm
     participant BC as Blockchain Process
 
     PM->>+DV: Process.create(processDetails)
 
-        DV->>+CS: dump(censusId, signature)
-        CS-->>-DV: merkleTree
+        DV->>+GW: censusDump(censusId, signature)
+        GW->>+CS: dump(censusId, signature)
+        CS-->>-GW: merkleTree
+        GW-->>-DV: merkleTree
 
-        DV-->SW: Swarm.put(merkleTree) : merkleTreeHash
+        DV-->>+GW: addFile(merkleTree) : merkleTreeHash
+        GW-->>+SW: Swarm.put(merkleTree) : merkleTreeHash
 
-        DV->>+CS: getRoot(censusId)
-        CS-->>-DV: rootHash
+        DV->>+GW: getCensusRoot(censusId)
+        GW->>+CS: getRoot(censusId)
+        CS-->>-GW: rootHash
+        GW-->>-DV: rootHash
 
-        DV-->SW: Swarm.put(processMetadata) : metadataHash
+        DV-->GW: addFile(processMetadata) : metadataHash
+        GW-->SW: Swarm.put(processMetadata) : metadataHash
 
-        DV->>+BC: create(entityId, name, metadataOrigin)
-        BC-->>-DV: txId
+        DV->>+GW: Web3(create(entityId, name, metadataOrigin))
+        GW->>+BC: create(entityId, name, metadataOrigin)
+        BC-->>-GW: txId
+        GW-->>-DV: txId
 
     DV-->>-PM: success
 ```
@@ -271,22 +297,29 @@ A user wants to retrieve the voting processes of a given Entity
 sequenceDiagram
     participant App as App user
     participant DV as DVote JS
+    participant GW as Gateway
     participant BC as Blockchain Process
     participant SW as Swarm
 
     App->>+DV: Process.fetchByEntity(entityAddress)
 
-        DV->>BC: getProcessesIdByOrganizer(entityAddress)
-        BC-->>DV: processIDs
+        DV->>GW: Web3(getProcessesIdByOrganizer(entityAddress))
+        GW->>BC: getProcessesIdByOrganizer(entityAddress)
+        BC-->>GW: processIDs
+        GW-->>DV: processIDs
 
         loop processIDs
 
-            DV->>BC: getMetadata(processId)
-            BC-->>DV: (name, metadataOrigin, merkleRootHash, relayList, startBlock, endBlock)
+            DV->>GW: Web3(getMetadata(processId))
+            GW->>BC: getMetadata(processId)
+            BC-->>GW: (name, metadataOrigin, merkleRootHash, relayList, startBlock, endBlock)
+            GW-->>DV: (name, metadataOrigin, merkleRootHash, relayList, startBlock, endBlock)
 
             alt Process is active or in the future
-                DV->>SW: Swarm.get(metadataHash)
-                SW-->>DV: processMetadata
+                DV->>GW: fetchFile(metadataHash)
+                GW->>SW: Swarm.get(metadataHash)
+                SW-->>GW: processMetadata
+                GW-->>DV: processMetadata
             end
 
         end
@@ -308,12 +341,15 @@ The request can be sent through HTTP/PSS/PubSub. The response may be fetched by 
 sequenceDiagram
     participant App as App user
     participant DV as DVote JS
+    participant GW as Gateway
     participant CS as Census Service
 
     App->>+DV: Census.hasClaim(publicKey, censusId, censusOrigin)
 
-        DV->>+CS: genProof(censusId, publicKey)
-        CS-->>-DV: isInCensus
+        DV->>+GW: genCensusProof(censusId, publicKey)
+        GW->>+CS: genProof(censusId, publicKey)
+        CS-->>-GW: isInCensus
+        GW-->>-DV: isInCensus
 
     DV-->>-App: isInCensus
 ```
@@ -346,7 +382,7 @@ sequenceDiagram
 
             DV->>+GW: genProof(processMetadata.census.id, publicKey)
 
-            GW->>+CS: PSS.broadcast(genProofData)
+            GW->>+CS: genProofData(censusId, publicKey)
             CS-->>-GW: merkleProof
 
             GW-->>-DV: merkleProof
@@ -361,9 +397,9 @@ sequenceDiagram
 
         DV->>DV: encryptVotePackage(package, relay.publicKey)
 
-        DV->>GW: submitVoteEnvelope(encryptedVotePackage, relay.origin)
+        DV->>GW: submitVote(encryptedVotePackage, relay.origin)
 
-            GW->>RL: submitVoteEnvelope(encryptedVotePackage)
+            GW->>RL: transmitVoteEnvelope(encryptedVotePackage)
             RL-->>GW: ACK
 
         GW-->>DV: submitted
@@ -400,7 +436,7 @@ sequenceDiagram
 
             DV->>+GW: getChunk(publicKeyModulus)
 
-            GW->>+CS: PSS.broadcast(getChunkData)
+            GW->>+CS: getChunkData(modulus)
             CS-->>-GW: censusChunk
 
             GW-->>-DV: censusChunk
@@ -413,9 +449,9 @@ sequenceDiagram
 
         DV->>DV: encryptVotePackage(package, relay.publicKey)
 
-        DV->>GW: submitVoteEnvelope(encryptedVotePackage, relay.origin)
+        DV->>GW: submitVote(encryptedVotePackage, relay.origin)
 
-            GW->>RL: submitVoteEnvelope(encryptedVotePackage)
+            GW->>RL: transmitVoteEnvelope(encryptedVotePackage)
             RL-->>GW: ACK
 
         GW-->>DV: submitted
@@ -475,22 +511,26 @@ sequenceDiagram
 
         DV->>DV: computeNullifierOrSignature()
 
-        DV->>+GW: checkVoteStatus(processAddress, nullifierOrSignature, relayOrigin)
+        DV->>+GW: getVoteStatus(processAddress, nullifierOrSignature, relayOrigin)
 
-            GW-->>RL: checkVoteStatus(processAddress, nullifierOrSignature)
+            GW-->>RL: requestVoteStatus(processAddress, nullifierOrSignature)
             RL-->>GW: (batchId?, batchOrigin?)
 
         GW-->>-DV: (batchId?, batchOrigin?)
 
         alt it does not trust the batchOrigin
 
-            DV->>+BC: Process.getBatch(batchId)
-            BC-->>-DV: (processAddress, batchOrigin)
+            DV->>+GW: Web3(Process.getBatch(batchId))
+            GW->>+BC: Process.getBatch(batchId)
+            BC-->>-GW: (processAddress, batchOrigin)
+            GW-->>-DV: (processAddress, batchOrigin)
 
         end
 
-        DV->>+SW: Swarm.get(batchHash)
-        SW-->>-DV: batch
+        DV->>+GW: fetchFile(batchHashURI)
+        GW->>+SW: Swarm.get(batchHash)
+        SW-->>-GW: batch
+        GW-->>-DV: batch
 
         DV->>DV: checkWithinBatch(nullifierOrSignature, batch)
 
@@ -512,16 +552,19 @@ sequenceDiagram
 sequenceDiagram
     participant PM as Process Manager
     participant DV as DVote JS
+    participant GW as Gateway
     participant BC as Blockchain Process
 
     PM->>DV: Process.close(processAddress, privateKey)
 
-        DV->>+BC: Process.close(processAddress, privateKey)
+        DV->>+GW: Web3(Process.close(processAddress, privateKey))
+        GW->>+BC: Process.close(processAddress, privateKey)
 
             BC->>BC: checkPrivateKey(privateKey)
             BC->>BC: closeProcess(processAddress)
 
-        BC-->>-DV: success
+        BC-->>-GW: success
+        GW-->>-DV: success
 
     DV-->>PM: success
 ```
@@ -533,39 +576,50 @@ Anyone with internet access can compute the scrutiny of a given processAddress. 
 ```mermaid
 sequenceDiagram
     participant SC as Scrutinizer
-    participant DV as DVote JS/Go
+    participant DV as DVote JS
+    participant GW as Gateway
     participant BC as Blockchain Process
     participant SW as Swarm
 
     SC->>+DV: Process.get(processAddress)
 
-        DV->>+BC: Process.get(processAddress)
-        BC-->>-DV: (name, metadataOrigin, privateKey)
+        DV->>+GW: Web3(Process.get(processAddress))
+        GW->>+BC: Process.get(processAddress)
+        BC-->>-GW: (name, metadataOrigin, privateKey)
+        GW-->>-DV: (name, metadataOrigin, privateKey)
 
     DV-->>-SC: (name, metadataOrigin)
 
     SC->>+DV: Swarm.get(metadataHash)
 
-        DV->>+SW: Swarm.get(metadataHash)
-        SW-->>-DV: processMetadata
+        DV->>+GW: fetchFile(metadataHash)
+        GW->>+SW: Swarm.get(metadataHash)
+        SW-->>-GW: processMetadata
+        GW-->>-DV: processMetadata
 
     DV-->>-SC: processMetadata
 
     SC->>+DV: Process.getVoteBatchIds(processAddress)
 
-        DV->>+BC: Process.getVoteBatchIds(processAddress)
-        BC-->>-DV: batchIds
+        DV->>+GW: Web3(Process.getVoteBatchIds(processAddress))
+        GW->>+BC: Process.getVoteBatchIds(processAddress)
+        BC-->>-GW: batchIds
+        GW-->>-DV: batchIds
 
     DV-->>-SC: batchIds
 
     SC->>+DV: Process.fetchBatches(batchIds)
         loop batchIds
 
-            DV->>+BC: Process.getBatch(batchId)
-            BC-->>-DV: (type, relay, batchOrigin)
+            DV->>+GW: Web3(Process.getBatch(batchId))
+            GW->>+BC: Process.getBatch(batchId)
+            BC-->>-GW: (type, relay, batchOrigin)
+            GW-->>-DV: (type, relay, batchOrigin)
 
-            DV->>+SW: Swarm.get(batchHash)
-            SW-->>-DV: voteBatch
+            DV->>+GW: fetchFile(batchHash)
+            GW->>+SW: Swarm.get(batchHash)
+            SW-->>-GW: voteBatch
+            GW-->>-DV: voteBatch
 
         end
     DV-->>-SC: voteBatches
@@ -611,12 +665,18 @@ sequenceDiagram
 
     end
 
-    SC->>+DV: Swarm.put(voteSummary)
-        DV-->SW: Swarm.put(voteSummary)
+    SC->>+DV: addFile(voteSummary)
+        DV-->GW: addFile(voteSummary)
+        GW-->SW: Swarm.put(voteSummary)
+        SW-->>GW: voteSummaryHash
+        GW-->>DV: voteSummaryHash
     DV-->>-SC: voteSummaryHash
 
-    SC->>+DV: Swarm.put(voteList)
-        DV-->SW: Swarm.put(voteList)
+    SC->>+DV: addFile(voteList)
+        DV-->GW: addFile(voteList)
+        GW-->SW: Swarm.put(voteList)
+        SW-->>GW: voteListHash
+        GW-->>DV: voteListHash
     DV-->>-SC: voteListHash
 ```
 
