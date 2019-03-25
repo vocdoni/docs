@@ -76,19 +76,18 @@ The hash of this data is stored in the `Voting` contract in `questionDetails` us
 ```json
 {
     "version": "1.0",
-    "defaultLocale": "en", // Will default to this local if it doesn't match user's preferences
-    "questionType": "exclusive", // To be defined.  What logic the UI should follow when choosing the votingOptions.
+    "questionType": "single-choice", // To be defined.  What logic the UI should follow when choosing the votingOptions.
     "question": {
-        "en": "Should universal basic income become a human right?",
-        "ca": "Estàs d'acord amb que la renda básica universal sigui un dret humà?"
+        "default": "Should universal basic income become a human right?",
+        "ca": "Estàs d'acord amb que la renda bàsica universal sigui un dret humà?"
     },
     "votingOptions": [
         {
-            "en": "Yes" ,
+            "default": "Yes" ,
             "ca": "Sí"
         },
         {
-            "en": "No",
+            "default": "No",
             "ca": "No"
         }
     ]
