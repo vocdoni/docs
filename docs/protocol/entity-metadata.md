@@ -102,20 +102,15 @@ Storage types:
 | `vndr.vocdoni.processess.active`          | `L` | ["0x987","0x876"]                                    | Processess displayed as available by the client                           |
 | `vndr.vocdoni.processess.past`        | `L` | ["0x887","0x886"]                                    | Processess that already ended                           |
 | `vndr.vocdoni.processess.upcoming`            | `L` | ["0x787","0x776"]                                    | Processess that will become active in the future                           |
-| `vndr.vocdoni.actions.ipfs`               | `T` | 0xaaa                                                | Pointer to entity Actions. See below                                       |
-| `vndr.vocdoni.feed.http`                  | `T` | https://liberland.org/feed                           | Pointer to a feed. Resolved via http.                                      |
-| `vndr.vocdoni.feed.hash`                  | `T` | 0xfe1                                                | Pointer to a feed. Could be IPFS or SWARM                                  |
-| `vndr.vocdoni.feed.ipfs`                  | `T` | 0xfe2                                                | Pointer to a feed. Via IPFS                                                |
-| `vndr.vocdoni.feed.bzz`                   | `T` | 0xfe3                                                | Pointer to a feed. Via Swarm                                               |
+| `vndr.vocdoni.feed`                  | `T` | https://liberland.org/feed                           | [Content URI](/protocol/data-schema?id=content-uri) to fetch a [JSON feed](https://jsonfeed.org/)        |
 | `vndr.vocdoni.description`                | `T` | Is a sovereign state...                              | A self-descriptive text                                                    |
-| `vndr.vocdoni.avatar.https`               | `T` | https://liberland.org/logo.png                       | An image file to be displayed next to the entity name                      |
-| `vndr.vocdoni.hash`                       | `T` | 0xaaa                                                | To retreive from IPFS of for checksum                                      |
+| `vndr.vocdoni.avatar`               | `T` | https://liberland.org/logo.png                       | [Content URI](/protocol/data-schema?id=content-uri) of an image file to display next to the entity name                      |
+| `vndr.vocdoni.hash`                       | `T` | 0xaaa                                                | The keccak256() of the JSON metadata                                     |
 | `vndr.vocdoni.keysToDisplay`              | `L` | ["podcast_feed", "vndr.twitter", "constitution_url"] | Keys the user wants to be displayed on its page                            |
-| `vndr.vocdoni.entities.boot`              | `L` | [{entityRef}]                                        | Entities list.                                                             |
-| `vndr.vocdoni.entities.trusted`           | `L` | [{entityRef}]                                         | Entities list.                                                             |
-| `vndr.vocdoni.entities.fallbackBootnodes` | `L` | [{entityRef}]                                         | Entities list.                                                             |
+| `vndr.vocdoni.entities.boot`              | `L` | [{&lt;entityRef&gt;}]                                        | A [list of related entities](#entities-list) to suggest.          |
+| `vndr.vocdoni.entities.fallback.bootnodes` | `L` | [{&lt;entityRef&gt;}]                                         | A [list of entities](#entities-list) to borrow the bootnodes from in the case of failure.                                                             |
 | **Arbitrary keys**                        |     |                                                        |                                                                            |
-| `podcastFeed`                             | `T` | http://liberland.org/podcast.rss                       |                                                                            |
+| `podcast.feed`                             | `T` | https://liberland.org/podcast.rss                       |                                                                            |
 | `constitution.http`                       | `T` | https://liberland.org/en/constitution                  |                                                                            |
 | `vndr.twitter`                            | `T` | https://twitter.com/Liberland_org                      |                                                                            |
 
