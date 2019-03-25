@@ -82,13 +82,17 @@ sequenceDiagram
     DV-->>PM: resolverAddress
 
     PM->>PM: Fill-up name
-    PM->>DV: setName(value)
-        DV->>ER: setText(entityId,"name","Liberland")
+    PM->>+DV: Entity.setName(entityId, name)
+        DV->>ER: setText(entityId, "name", name)
+        ER-->>DV: 
+    DV-->>-PM: 
 
-    loop Applies to any key
+    loop additional key/values
         PM->>PM: Fill-up key-value
-        PM->>DV: set[key](value)
-        DV->>ER: setText(entityId,key,value)
+        PM->>+DV: Entity.set(entityId, key, value)
+            DV->>ER: setText(entityId, key, value)
+            ER-->>DV: 
+        DV-->>-PM: 
     end
 
 ```
