@@ -39,11 +39,19 @@ Refered as `<content uri>` from now on.
 
 ## Entity metadata
 
-See [Entity metatdata](/protocol/entity-metadata.md)
+Entities are able to create voting processes. As such, users need to be able to subscribe to them and retrieve basic information about the organization. 
+
+The metadata of an entity is an aggregate of information living on the Blockchain and P2P filesystems. For a complete reference of every section, see the [Data-schema](/protocol/entity-metadata?id=data-schema) on the [Entity metatdata](/protocol/entity-metadata.md) chapter.
+
+- [Entity metadata](/protocol/entity-metadata?id=entity-metadata-1)
+- [Gateway boot nodes](/protocol/entity-metadata?id=gateway-boot-nodes)
+- [Entities list](/protocol/entity-metadata?id=entities-list)
+- [Feed](/protocol/entity-metadata?id=feed)
+- [Actions](/protocol/entity-metadata?id=actions)
 
 **Used in:**
 
-- [Entity creation](/protocol/sequence-diagrams?id=entity-creation)
+- [Set Entity metadata](/protocol/sequence-diagrams?id=set-entity-metadata)
 - [Entity subscription](/protocol/sequence-diagrams?id=entity-subscription)
 
 **Related:**
@@ -57,9 +65,9 @@ See [Entity metatdata](/protocol/entity-metadata.md)
 
 ### QuestionDetails
 
-It holds all the details to present to the user in order to make cast her vote.
+It holds all the details to display so that users can make a choice about a vote.
 
-The creation of this document is critical. Multiple checks should be in place to guarantee that the data is choeren (well formatted, not missing locales...).
+The creation of this document is critical. Multiple checks should be in place to ensure that the data is choerent (well formatted, all relevant locales present, etc).
 
 The index of the votingOptions is used as identifier.
 
@@ -67,21 +75,21 @@ The hash of this data is stored in the `Voting` contract in `questionDetails` us
 
 ```json
 {
-    "version":"1.0",
-    "defaultLocal":"en", // Will default to this local if it doesn't match user's preferences
-    "questionType":"exclusive", //To be defined.  What logic the UI should follow when choosing the votingOptions.
-    "question":{
-        "en": "Should basic income be a human right?",
-        "ca": "La renda básica universal hauria de ser un dret humà?"
+    "version": "1.0",
+    "defaultLocal": "en", // Will default to this local if it doesn't match user's preferences
+    "questionType": "exclusive", // To be defined.  What logic the UI should follow when choosing the votingOptions.
+    "question": {
+        "en": "Should universal basic income become a human right?",
+        "ca": "Estàs d'acord amb que la renda básica universal sigui un dret humà?"
     },
-    "votingOptions":[
+    "votingOptions": [
         {
-            {"en": "Yes"},
-            {"cat": "Sí"}
+            "en": "Yes" ,
+            "ca": "Sí"
         },
         {
-            {"en": "No"},
-            {"cat": "No"}
+            "en": "No",
+            "ca": "No"
         }
     ]
 }
@@ -577,7 +585,7 @@ Available only post-auth on trusted gateways
 }
 ```
 **Used in:**
-- [Entity creation](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=entity-creation)
+- [Set Entity metadata](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=set-entity-metadata)
 - [Voting process creation](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=voting-process-creation)
 - [Vote scrutiny](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=vote-scrutiny)
 
