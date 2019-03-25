@@ -92,7 +92,7 @@ Storage types:
 | Key                                       | Type   | Example                                                | Description                                                                |
 |-------------------------------------------|-----|--------------------------------------------------------|----------------------------------------------------------------------------|
 | **Required keys**                       |     |                                                        |                                                                            |
-| `name`                                    | `T` | Free Republic of Liberland                             | Organization's name to be displayed. Necessary if the summary can't be fetched |
+| `name`                                    | `T` | Free Republic of Liberland                             | A fallback of the organization name (used on failure to fetch the JSON localized version) |
 | `vndr.vocdoni.meta`                       | `T` | 0xabc                                                | [Content URI](/protocol/data-schema?id=content-uri) to fetch all the metadata from. See [Entity Metadata](#entity-metadata-1) below.      |
 | **Supported keys**                        |     |                                                        |                                                                            |
 | `vndr.vocdoni.censusRequestUrl`           | `T` | https://liberland.org/en/citizenship                 | Endpoint to navigate to in order to join.                                        |
@@ -103,45 +103,48 @@ Storage types:
 | `vndr.vocdoni.processess.past`        | `L` | ["0x887","0x886"]                                    | Processess that already ended                           |
 | `vndr.vocdoni.processess.upcoming`            | `L` | ["0x787","0x776"]                                    | Processess that will become active in the future                           |
 | `vndr.vocdoni.feed`                  | `T` | https://liberland.org/feed                           | [Content URI](/protocol/data-schema?id=content-uri) to fetch a [JSON feed](https://jsonfeed.org/)        |
-| `vndr.vocdoni.description`                | `T` | Is a sovereign state...                              | A self-descriptive text                                                    |
+| `vndr.vocdoni.description`                | `T` | Is a sovereign state...                              | A fallback of a self-descriptive text (used on failure to fetch the JSON localized version)                             |
 | `vndr.vocdoni.avatar`               | `T` | https://liberland.org/logo.png                       | [Content URI](/protocol/data-schema?id=content-uri) of an image file to display next to the entity name                      |
-| `vndr.vocdoni.hash`                       | `T` | 0xaaa                                                | The keccak256() of the JSON metadata                                     |
+| `vndr.vocdoni.meta.hash`                       | `T` | 0xaaa                                                | The keccak256() of the JSON metadata                                     |
 | `vndr.vocdoni.keysToDisplay`              | `L` | ["podcast_feed", "vndr.twitter", "constitution_url"] | Keys the user wants to be displayed on its page                            |
-| `vndr.vocdoni.entities.boot`              | `L` | [{&lt;entityRef&gt;}]                                        | A [list of related entities](#entities-list) to suggest.          |
+| `vndr.vocdoni.entities.suggested`              | `L` | [{&lt;entityRef&gt;}]                                        | A list of suggested entities.  See [Entities List](#entities-list)        |
+| `vndr.vocdoni.entities.related`              | `L` | [{&lt;entityRef&gt;}]                                        | A list of related entities.  See [Entities List](#entities-list)        |
 | `vndr.vocdoni.entities.fallback.bootnodes` | `L` | [{&lt;entityRef&gt;}]                                         | A [list of entities](#entities-list) to borrow the bootnodes from in the case of failure.                                                             |
 | **Arbitrary keys**                        |     |                                                        |                                                                            |
-| `podcast.feed`                             | `T` | https://liberland.org/podcast.rss                       |                                                                            |
-| `constitution.http`                       | `T` | https://liberland.org/en/constitution                  |                                                                            |
-| `vndr.twitter`                            | `T` | https://twitter.com/Liberland_org                      |                                                                            |
+| `podcast.feed`                             | `T` | https://liberland.org/podcast.rss                       | (Custom values)                                                                           |
+| `constitution.http`                       | `T` | https://liberland.org/en/constitution                  |  (Custom values)                                                                          |
+| `vndr.twitter`                            | `T` | https://twitter.com/Liberland_org                      |  (Custom values)                                                                          |
 
 ## Data-schema
 
 ### Entity metadata
 
-It holds all the metadata in a single JSON object. It is used to faciltate the retrival of metadata and minimizing the number of requests.
+It holds the entire data of the Entity in a single JSON object. It is used to simplify the retrival of metadata and to avoiding redundant requests.
 
-`To debate`: It should never be fetched via `http` to prevent man in the middle attacks. `https`?
+This could create two sources of truth. The metadata in the contract itself and the one in this object. **In the event of a mismatch, the metadata on the blockchain is used.**
 
-This creates two sources of truth. The metadata in the contract itself and the one in this object.
+**JSON metadata**
 
-> If conflict, the metadata in the blockchain is always the valid one
-
-It is representend as a JSON object, replacing the `.` convention with objects. The prefix `vndr.vocdoni` is ommited.
-
-**metadata:**
 ```json
 {
-  "name": "Free Republic of Liberland",
-  "description": "https://liberland.org/en/citizenship",
+  "version": "1.0",    // Protocol version
+  "name": {
+    "default": "Free Republic of Liberland",
+    "fr": "République Livre de Liberland"
+  },
+  "description": {
+    "default": "In a sovereign state...",
+    "fr": "Dans un état souverain"
+  },
   "censusRequestUrl": "https://liberland.org/en/citizenship",
   "processContract": "0xccc",
   "gatewayBootnodes": [
     {
-      "pubKey": "public key", //used to encrypt the communication between the bootnode and the gateway
-      "updateProto": "pss",
-      "updateParams": { "updateFrequency": 10000, "topic":"vocdoni_gateways", "address":"0x" },
+      "publicKey": "0x12345", // used to encrypt the communication between the Bootnode and Gateways
+      "updateProtocol": "pss",
+      "updateParams": { "updateFrequency": 10000, "topic": "vocdoni_gateways", "address": "0x" },
       "difficulty": integer,
-      "host": "IP/DNS",
+      "host": "ip or domain name",
       "port": port,
       "protocol": "http/https/ws"
     }
@@ -151,15 +154,16 @@ It is representend as a JSON object, replacing the `.` convention with objects. 
     "past":["0x887","0x886"],
     "upcoming":["0x787","0x776"]
   }
-  "actions":"<actions>"
-  "avatar":{
-    "http":
-  },
-  "feed":{
-    "http": "https://liberland.org/feed",
-    "hash":"0xfe1",
-    "ipfs":"0xfe2",
-    "bzz": "0xfe3"
+  "actions": [ <actions> ], // See below
+  "avatar": "https://liberland.org/logo.png,bzz://12345,ipfs://12345",
+  "content": {
+    "news": {
+      "name": {
+        "default": "Official news",
+        "fr": "Journal"
+      },
+      "origin": "https://liberland.org/feed,bzz-feed://23456,ipfs://23456" // JSON Feed
+    }
   }
   ...
 }
@@ -167,35 +171,22 @@ It is representend as a JSON object, replacing the `.` convention with objects. 
 
 ### Gateway boot nodes
 
-Gateways boot nodes are servers trusted by the Entity
+Client apps will normally be unable to join P2P networks by themselves, so Vocdoni makes use of Gateways to enable decentralized transactions over HTTP/S. However, a decentralized system has no guarantee of what Gateways will be up at the current time.
 
-- They provide a list of potential gateways to the client
-- They provide the gateways with the necessary information to join the network
+This field provides a list of bootnodes with the only goal of serving a list of active Gateways. Gateway bootnodes are servers trusted by the Entity
 
-The data is fetched directly from the blockchain, otherwise, the user may not be able to fetch the gateway data because she doesn't have access to the gateway...
+- They provide a list of active Gateways to the client
+- They provide Gateways with the necessary information to join the network
 
-It uses the `Storage of lists of text interface`
+This leads to a chicken-and-egg problem. You need a Gateway to fetch data from the Blockchain, but you can't because you don't have a Gateway to fetch from it. The solution is to use a well-known public gateway
 
-**gatewayBootnode:**
-```json
-  {
-    "pubKey": "public key", //used to encrypt the communication between the bootnode and the gateway
-    "updateProto": "pss",
-    "updateParams": { "updateFrequency": 10000, "topic":"vocdoni_gateways", "address":"0x" },
-    "difficulty": integer,
-    "host": "IP/DNS",
-    "port": port,
-    "protocol": "http/https/ws"
-  }
-
-```
 
 ### Entities list
 
 Entities lists have several purposes.
 
-- `vndr.vocdoni.entities.boot` : Entry point for the user to subscribe to new entities.
-- `vndr.vocdoni.entities.trusted`: Reputation/whitelisting mechanism for entities to express a relationship with other entities
+- `vndr.vocdoni.entities.suggested` : Entry point for the user to subscribe to new entities.
+- `vndr.vocdoni.entities.related`: Reputation/whitelisting mechanism for entities to express a relationship with other entities
 - `vndr.vocdoni.entities.fallbackNodes`: As a mechanism to find fallback `gateway boot nodes` on trusted entities.
 - Alternative purposes can be added.
 
@@ -211,8 +202,8 @@ It uses the key `vndr.vocdoni.entities.<type>`
 **entityRef:**
 ```json
 {
-  "entityId":"0xeee",
-  "resolver":"0xaaa"
+  "entityId": "0xeee",
+  "resolver": "0xaaa"
 }
 ```
 
@@ -225,12 +216,12 @@ We follow the [JSON feed specification](https://jsonfeed.org/version/1)
 
 ### Actions
 
-Actions are stored in IPFS/SWARM its reference is stored in `vndr.vocdoni.actions.ipfs`
+Actions are stored in IPFS/SWARM its reference is stored in `vndr.vocdoni.actions`
 
 **actions:**
 ```json
 {
-    "version": "1.0",    // Protocol version
+    ...
     "actions": [{
 
         // Interactive web browser action example
@@ -328,22 +319,13 @@ Actions are stored in IPFS/SWARM its reference is stored in `vndr.vocdoni.action
         // Endpoint to POST to with publicKey and signature+timestamp fields
         // Returning true will show the action and hide it otherwise
         "visible": "https://census-registry.cloud/lambda/image-upload-visible/"
-    }],
-    "content": {
-        "news": {
-            "name": {
-                "default": "Official news",
-                "fr": "Messages officiels"
-            },
-            "origin": "bzz-feed://<feedHash>" // Points to an origin resolving to Content Data
-        }
-    }
+    }]
 }
 ```
 
 ## ENS
 
->ENS’s job is to map human-readable names like ‘alice.eth’ to machine-readable identifiers such as Ethereum addresses, content hashes, and metadata. ENS also supports ‘reverse resolution’, making it possible to associate metadata such as canonical names or interface descriptions with Ethereum addresses.
+> ENS’s job is to map human-readable names like ‘alice.eth’ to machine-readable identifiers such as Ethereum addresses, content hashes, and metadata. ENS also supports ‘reverse resolution’, making it possible to associate metadata such as canonical names or interface descriptions with Ethereum addresses.
 
 ENS exist to suit our exact purpose, we endorse it, but we may not make complete use of it.
 
