@@ -55,22 +55,18 @@ sequenceDiagram
 The `entityId` is the unique identifier of an entity:
 
 ```solidity
-bytes32 entityId = keccak256(entityAddress);
+bytes32 entityId = keccak256 (entityAddress);
 ```
 
-An Entity starts existing at the moment it has some metadata stored in the resolver smart contract
+An Entity starts existing at the moment it has some metadata stored on the resolver smart contract
 
 Setting any metadata to the entity is done via the the `Storage of text records` or via `Storage of lists of text` interfaces used by the resolver contract:
 
 ```solidity
+setText (entityId, key, value);
 
-setText(entityId, key, value);
-
-setListText(entityId, key, index, value);
-
+setListText (entityId, key, index, value);
 ```
-
-See [Entity metadata](/protocol/entity-metadata.md) for all the keys and data-schemas.
 
 ```mermaid
 
