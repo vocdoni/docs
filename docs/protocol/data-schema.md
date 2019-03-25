@@ -76,7 +76,7 @@ The hash of this data is stored in the `Voting` contract in `questionDetails` us
 ```json
 {
     "version": "1.0",
-    "defaultLocal": "en", // Will default to this local if it doesn't match user's preferences
+    "defaultLocale": "en", // Will default to this local if it doesn't match user's preferences
     "questionType": "exclusive", // To be defined.  What logic the UI should follow when choosing the votingOptions.
     "question": {
         "en": "Should universal basic income become a human right?",
