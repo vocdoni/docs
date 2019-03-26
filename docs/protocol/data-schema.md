@@ -467,6 +467,57 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 
 ## Gateway
 
+### Add Census Claim
+```json
+{
+  "method": "addCensusClaim
+  "censusId": "hexString",
+  "censusOrigin": "hexString",
+  "claimData": "hexString"
+}
+```
+```json
+{
+  "error": bool
+}
+```
+**Used in:**
+- [Adding users to a census](vocdoni.io/docs/#/protocol/sequence-diagrams?id=adding-users-to-a-census)
+
+### Get Census Root
+```json
+{
+  "method": "getCensusRoot"
+  "censusId": "hexString"
+}
+```
+```json
+{
+  "error": bool,
+  "rootHash": "hexString"
+}
+```
+**Used in:**
+- [Voting process creation](http://vocdoni.io/docs/#/protocol/sequence-diagrams?id=voting-process-creation)
+
+### Census Dump
+```json
+{
+  "method":"censusDump",
+  "censusId": "hexString",
+  "signature": "hexString"
+}
+```
+```json
+{
+  "error": bool,
+  "merkleTree": "hexString"
+}
+```
+**Used in:**
+- [Voting process creation](http://vocdoni.io/docs/#/protocol/sequence-diagrams?id=voting-process-creation)
+
+
 ### Fetch Census Proof
 ```json
 {
