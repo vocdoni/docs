@@ -470,7 +470,7 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 ### Add Census Claim
 ```json
 {
-  "method": "addClaim",
+  "method": "addCensusClaim
   "censusId": "hexString",
   "censusOrigin": "hexString",
   "claimData": "hexString"

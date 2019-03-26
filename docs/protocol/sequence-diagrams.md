@@ -226,12 +226,12 @@ sequenceDiagram
 
 
     loop pendingUsers
-        PM->>DV: Census.addClaim(censusId, censusOrigin, claimData, web3Provider)
+        PM->>DV: Census.addCensusClaim(censusId, censusOrigin, claimData, web3Provider)
         activate DV
         DV->>DV: signRequestPayload(payload, web3Provider)
         deactivate DV
-        DV->>GW: addClaim(addClaimPayload)
-        GW->>CS: addClaim(addClaimPayload)
+        DV->>GW: addCensusClaim(addClaimPayload)
+        GW->>CS: addCensusClaim(addClaimPayload)
         CS-->>GW: success
         GW-->>DV: success
         DV-->>PM: success
