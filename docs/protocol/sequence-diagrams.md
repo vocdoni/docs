@@ -28,28 +28,6 @@
 
 --------------------------------------------------------------------------------
 
-### Contract deployment (Entity)
-
-```mermaid
-sequenceDiagram
-    participant V as Vocdoni 
-    participant B as Blockchain 
-
-    V->>+B: Entity.deploy()
-    B-->>-V: address
-```
-
-### Contract deployment (Process)
-
-```mermaid
-sequenceDiagram
-    participant V as Vocdoni
-    participant B as Blockchain
-
-    V->>+B: Process.deploy()
-    B-->>-V: address
-```
-
 ### Set Entity metadata
 
 The `entityId` is the unique identifier of an entity:
@@ -73,25 +51,38 @@ setListText (entityId, key, index, value);
 sequenceDiagram
     participant PM as Process Manager
     participant DV as dvote-js
+    participant GW as Gateway
     participant ER as Entity Resolver contract
 
     PM->>DV: getEntityId(entityAddress)
     DV-->>PM: entityId
 
+    alt has a Gateway
+        Note right of PM: Set Metamask <br/> to the Gateway
+    else
+        Note right of PM: Boot a GW and tell <br/> Metamask to use it
+    end
+
     PM->>DV: getDefaultResolver()
+        Note right of DV: Hardcoded default Entity<br/>Resolver instance
     DV-->>PM: resolverAddress
 
+
     PM->>PM: Fill-up name
-    PM->>+DV: Entity.setName(entityId, name)
-        DV->>ER: setText(entityId, "name", name)
-        ER-->>DV: 
+    PM->>+DV: EntityResolver.setName(entityId, name)
+        DV->>GW: EntityResolver.setText(entityId, "name", name)
+            GW->>ER: <transaction>
+            ER-->>GW: 
+        GW-->>DV: 
     DV-->>-PM: 
 
     loop additional key/values
         PM->>PM: Fill-up key-value
-        PM->>+DV: Entity.set(entityId, key, value)
-            DV->>ER: setText(entityId, key, value)
-            ER-->>DV: 
+        PM->>+DV: EntityResolver.set(entityId, key, value)
+            DV->>GW: EntityResolver.setText(entityId, key, value)
+                GW->>ER: <transaction>
+                ER-->>GW: 
+            GW-->>DV: 
         DV-->>-PM: 
     end
 
@@ -120,7 +111,7 @@ sequenceDiagram
 
     alt default
         loop
-            DV->>ER: text(entities[i], "vndr.vocdoni.this")
+            DV->>ER: text(entities[i], "vndr.vocdoni.meta")
             ER-->>DV: entityMetadataHash
             DV->>IPFS: Ipfs.get(entityMetadataHash)
             IPFS-->DV: entityMetadata
