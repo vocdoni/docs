@@ -28,28 +28,6 @@
 
 --------------------------------------------------------------------------------
 
-### Contract deployment (Entity)
-
-```mermaid
-sequenceDiagram
-    participant V as Vocdoni 
-    participant B as Blockchain 
-
-    V->>+B: Entity.deploy()
-    B-->>-V: address
-```
-
-### Contract deployment (Process)
-
-```mermaid
-sequenceDiagram
-    participant V as Vocdoni
-    participant B as Blockchain
-
-    V->>+B: Process.deploy()
-    B-->>-V: address
-```
-
 ### Set Entity metadata
 
 The `entityId` is the unique identifier of an entity:
@@ -79,22 +57,30 @@ sequenceDiagram
     PM->>DV: getEntityId(entityAddress)
     DV-->>PM: entityId
 
+    alt has a Gateway
+        Note right of PM: Set Metamask <br/> to the Gateway
+    else
+        Note right of PM: Boot a GW and tell <br/> Metamask to use it
+    end
+
     PM->>DV: getDefaultResolver()
+        Note right of DV: Hardcoded default Entity<br/>Resolver instance
     DV-->>PM: resolverAddress
 
+
     PM->>PM: Fill-up name
-    PM->>+DV: Entity.setName(entityId, name)
+    PM->>+DV: EntityResolver.setName(entityId, name)
         DV->>GW: setText(entityId, "name", name)
-            GW->>ER: setText(entityId, "name", name)
+            GW->>ER: <transaction>
             ER-->>GW: 
         GW-->>DV: 
     DV-->>-PM: 
 
     loop additional key/values
         PM->>PM: Fill-up key-value
-        PM->>+DV: Entity.set(entityId, key, value)
+        PM->>+DV: EntityResolver.set(entityId, key, value)
             DV->>GW: setText(entityId, key, value)
-                GW->>ER: setText(entityId, key, value)
+                GW->>ER: <transaction>
                 ER-->>GW: 
             GW-->>DV: 
         DV-->>-PM: 
@@ -128,13 +114,13 @@ sequenceDiagram
 
     alt default
         loop
-            DV->>GW: text(entities[i], "vndr.vocdoni.this")
-            GW->>ER: text(entities[i], "vndr.vocdoni.this")
-            ER-->>GW: entityMetadataHash
+            DV->>GW: text(entities[i], "vndr.vocdoni.meta")
+                GW->>ER: text(entities[i], "vndr.vocdoni.meta")
+                ER-->>GW: entityMetadataHash
             GW-->>DV: entityMetadataHash
             DV->>GW: fetchFile(entityMetadataHashURI)
-            GW->>IPFS: Ipfs.get(entityMetadataHash)
-            IPFS-->GW: entityMetadata
+                GW->>IPFS: Ipfs.get(entityMetadataHash)
+                IPFS-->GW: entityMetadata
             GW-->DV: entityMetadata
         end
     end

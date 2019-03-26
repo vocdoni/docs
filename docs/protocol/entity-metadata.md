@@ -105,7 +105,6 @@ Storage types:
 | `vndr.vocdoni.feed`                  | `T` | https://liberland.org/feed                           | [Content URI](/protocol/data-schema?id=content-uri) to fetch a [JSON feed](https://jsonfeed.org/)        |
 | `vndr.vocdoni.description`                | `T` | Is a sovereign state...                              | A fallback of a self-descriptive text (used on failure to fetch the JSON localized version)                             |
 | `vndr.vocdoni.avatar`               | `T` | https://liberland.org/logo.png                       | [Content URI](/protocol/data-schema?id=content-uri) of an image file to display next to the entity name                      |
-| `vndr.vocdoni.meta.hash`                       | `T` | 0xaaa                                                | The keccak256() of the JSON metadata                                     |
 | `vndr.vocdoni.keysToDisplay`              | `L` | ["podcast_feed", "vndr.twitter", "constitution_url"] | Keys the user wants to be displayed on its page                            |
 | `vndr.vocdoni.entities.suggested`              | `L` | [{&lt;entityRef&gt;}]                                        | A list of suggested entities.  See [Entities List](#entities-list)        |
 | `vndr.vocdoni.entities.related`              | `L` | [{&lt;entityRef&gt;}]                                        | A list of related entities.  See [Entities List](#entities-list)        |
