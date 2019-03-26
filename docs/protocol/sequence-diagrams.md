@@ -11,7 +11,7 @@
       - [Submit a picture](#submit-a-picture)
       - [Make a payment](#make-a-payment)
       - [Resolve a captcha](#resolve-a-captcha)
-      - [Adding users to a census](#adding-users-to-a-census)
+    - [Adding users to a census](#adding-users-to-a-census)
   - [Voting](#voting)
     - [Voting process creation](#voting-process-creation)
     - [Voting process retrieval](#voting-process-retrieval)
@@ -77,7 +77,7 @@ See [Entity metadata](/protocol/entity-metadata.md) for all the keys and data-sc
 sequenceDiagram
     participant PM as Process Manager
     participant DV as dvote-js
-    participant GW as Gateway
+    participant GW as Gateway/Web3
     participant ER as Entity Resolver contract
 
     PM->>DV: getEntityId(entityAddress)
@@ -88,13 +88,13 @@ sequenceDiagram
 
     PM->>PM: Fill-up name
     PM->>DV: setName(value)
-        DV->>GW: Web3(setText(entityId,"name","Liberland"))
+        DV->>GW: setText(entityId,"name","Liberland")
         GW->>ER: setText(entityId,"name","Liberland")
 
     loop Applies to any key
         PM->>PM: Fill-up key-value
         PM->>DV: set[key](value)
-        DV->>GW: Web3(setText(entityId,key,value)
+        DV->>GW: setText(entityId,key,value)
         GW->>ER: setText(entityId,key,value)
     end
 
@@ -113,20 +113,20 @@ sequenceDiagram
 sequenceDiagram
     participant App
     participant DV as dvote-js
-    participant GW as Gateway
+    participant GW as Gateway/Web3
     participant ER as Entity Resolver contract
     participant IPFS as Ipfs/Swarm
 
     App->>App: get reference entityId/resolver from config
     App->>DV: getBootEntities(resolver, entityId)
-    DV->>GW: Web3(list(entityId, "vndr.vocdoni.entities.boot"))
+    DV->>GW: list(entityId, "vndr.vocdoni.entities.boot")
     GW->>ER: list(entityId, "vndr.vocdoni.entities.boot")
     ER-->>GW: entitiesList[]
     GW-->>DV: entitiesList[]
 
     alt default
         loop
-            DV->>GW: Web3(text(entities[i], "vndr.vocdoni.this"))
+            DV->>GW: text(entities[i], "vndr.vocdoni.this")
             GW->>ER: text(entities[i], "vndr.vocdoni.this")
             ER-->>GW: entityMetadataHash
             GW-->>DV: entityMetadataHash
@@ -139,13 +139,13 @@ sequenceDiagram
 
     alt if default fails
         loop
-            DV->>GW: Web3(text(entities[i], "vndr.vocdoni.name"))
+            DV->>GW: text(entities[i], "vndr.vocdoni.name")
             GW->>ER: text(entities[i], "vndr.vocdoni.name")
             ER-->>GW: entityName
             GW-->>DV: entityName
 
             loop necessary data
-                DV->>GW: Web3(text(entities[i], key))
+                DV->>GW: text(entities[i], key)
                 GW->>ER: text(entities[i], key)
                 ER-->>GW: data
                 GW-->>DV: data
@@ -218,7 +218,7 @@ sequenceDiagram
     participant PM as Process Manager
     participant DB as Internal Database
     participant DV as DVote JS
-    participant GW as Gateway
+    participant GW as Gateway/Web3
     participant CS as Census Service
 
     PM->>DB: getUsers({ pending: true })
@@ -252,7 +252,7 @@ sequenceDiagram
 sequenceDiagram
     participant PM as Process Manager
     participant DV as DVote JS
-    participant GW as Gateway
+    participant GW as Gateway/Web3
     participant CS as Census Service
     participant SW as Swarm
     participant BC as Blockchain Process
@@ -275,7 +275,7 @@ sequenceDiagram
         DV-->GW: addFile(processMetadata) : metadataHash
         GW-->SW: Swarm.put(processMetadata) : metadataHash
 
-        DV->>+GW: Web3(create(entityId, name, metadataOrigin))
+        DV->>+GW: create(entityId, name, metadataOrigin)
         GW->>+BC: create(entityId, name, metadataOrigin)
         BC-->>-GW: txId
         GW-->>-DV: txId
@@ -297,20 +297,20 @@ A user wants to retrieve the voting processes of a given Entity
 sequenceDiagram
     participant App as App user
     participant DV as DVote JS
-    participant GW as Gateway
+    participant GW as Gateway/Web3
     participant BC as Blockchain Process
     participant SW as Swarm
 
     App->>+DV: Process.fetchByEntity(entityAddress)
 
-        DV->>GW: Web3(getProcessesIdByOrganizer(entityAddress))
+        DV->>GW: getProcessesIdByOrganizer(entityAddress)
         GW->>BC: getProcessesIdByOrganizer(entityAddress)
         BC-->>GW: processIDs
         GW-->>DV: processIDs
 
         loop processIDs
 
-            DV->>GW: Web3(getMetadata(processId))
+            DV->>GW: getMetadata(processId)
             GW->>BC: getMetadata(processId)
             BC-->>GW: (name, metadataOrigin, merkleRootHash, relayList, startBlock, endBlock)
             GW-->>DV: (name, metadataOrigin, merkleRootHash, relayList, startBlock, endBlock)
@@ -341,7 +341,7 @@ The request can be sent through HTTP/PSS/PubSub. The response may be fetched by 
 sequenceDiagram
     participant App as App user
     participant DV as DVote JS
-    participant GW as Gateway
+    participant GW as Gateway/Web3
     participant CS as Census Service
 
     App->>+DV: Census.hasClaim(publicKey, censusId, censusOrigin)
@@ -372,7 +372,7 @@ sequenceDiagram
 
     participant App
     participant DV as DVote JS
-    participant GW as Gateway
+    participant GW as Gateway/Web3
     participant CS as Census Service
     participant RL as Relay
 
@@ -426,7 +426,7 @@ sequenceDiagram
 
     participant App
     participant DV as DVote JS
-    participant GW as Gateway
+    participant GW as Gateway/Web3
     participant CS as Census Service
     participant RL as Relay
 
@@ -502,7 +502,7 @@ The sequence diagram applies to both **ZK Snarks** and **LRS** Vote Packages. `n
 sequenceDiagram
     participant App
     participant DV as DVote JS
-    participant GW as Gateway
+    participant GW as Gateway/Web3
     participant RL as Relay
     participant BC as Blockchain Process
     participant SW as Swarm
@@ -520,7 +520,7 @@ sequenceDiagram
 
         alt it does not trust the batchOrigin
 
-            DV->>+GW: Web3(Process.getBatch(batchId))
+            DV->>+GW: Process.getBatch(batchId)
             GW->>+BC: Process.getBatch(batchId)
             BC-->>-GW: (processAddress, batchOrigin)
             GW-->>-DV: (processAddress, batchOrigin)
@@ -552,12 +552,12 @@ sequenceDiagram
 sequenceDiagram
     participant PM as Process Manager
     participant DV as DVote JS
-    participant GW as Gateway
+    participant GW as Gateway/Web3
     participant BC as Blockchain Process
 
     PM->>DV: Process.close(processAddress, privateKey)
 
-        DV->>+GW: Web3(Process.close(processAddress, privateKey))
+        DV->>+GW: Process.close(processAddress, privateKey)
         GW->>+BC: Process.close(processAddress, privateKey)
 
             BC->>BC: checkPrivateKey(privateKey)
@@ -577,13 +577,13 @@ Anyone with internet access can compute the scrutiny of a given processAddress. 
 sequenceDiagram
     participant SC as Scrutinizer
     participant DV as DVote JS
-    participant GW as Gateway
+    participant GW as Gateway/Web3
     participant BC as Blockchain Process
     participant SW as Swarm
 
     SC->>+DV: Process.get(processAddress)
 
-        DV->>+GW: Web3(Process.get(processAddress))
+        DV->>+GW: Process.get(processAddress)
         GW->>+BC: Process.get(processAddress)
         BC-->>-GW: (name, metadataOrigin, privateKey)
         GW-->>-DV: (name, metadataOrigin, privateKey)
@@ -601,7 +601,7 @@ sequenceDiagram
 
     SC->>+DV: Process.getVoteBatchIds(processAddress)
 
-        DV->>+GW: Web3(Process.getVoteBatchIds(processAddress))
+        DV->>+GW: Process.getVoteBatchIds(processAddress)
         GW->>+BC: Process.getVoteBatchIds(processAddress)
         BC-->>-GW: batchIds
         GW-->>-DV: batchIds
@@ -611,7 +611,7 @@ sequenceDiagram
     SC->>+DV: Process.fetchBatches(batchIds)
         loop batchIds
 
-            DV->>+GW: Web3(Process.getBatch(batchId))
+            DV->>+GW: Process.getBatch(batchId)
             GW->>+BC: Process.getBatch(batchId)
             BC-->>-GW: (type, relay, batchOrigin)
             GW-->>-DV: (type, relay, batchOrigin)
