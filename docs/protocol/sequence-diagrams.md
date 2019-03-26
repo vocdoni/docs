@@ -29,22 +29,7 @@
 --------------------------------------------------------------------------------
 
 ### Set Entity metadata
-
-The `entityId` is the unique identifier of an entity:
-
-```solidity
-bytes32 entityId = keccak256 (entityAddress);
-```
-
-An Entity starts existing at the moment it has some metadata stored on the resolver smart contract
-
-Setting any metadata to the entity is done via the the `Storage of text records` or via `Storage of lists of text` interfaces used by the resolver contract:
-
-```solidity
-setText (entityId, key, value);
-
-setListText (entityId, key, index, value);
-```
+An Entity starts existing at the moment it has certain metadata stored on the [EntityResolver](/protocol/entity-metadata?id=entityresolver) smart contract. 
 
 ```mermaid
 

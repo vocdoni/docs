@@ -4,32 +4,13 @@
 
 ## Origins
 
-The metadata of entities and voting process may refer to data origins. Data can come from various origins, including decentralized filesystems as well as traditional HTTPS endpoints. Messaging can also come from PSS or IPFS PubSub nodes.
+Many of the schemas below need to point to external data that may be available through different sources and channels.
 
-The list of potential origins can be as follows:
-
-### Messaging URI
-
-`WIP`: Use [Multicodec](https://github.com/multiformats/multistream) ?
-
-Refered as `<messaging uri>` from now on.
-
-- `pss://<publicKey@address>`
-
-  - Uses Ethereum Swarm/PSS protocol
-  - address can be empty
-
-- `pubsub://<topic>`
-
-  - Uses IPFS pubsub protocol
-
-- `shh://<publicKey>`
-
-  - Uses Ethereum Whisper protocol
+In order to denominate them and provide a prioritized list of fallbacks in a single place, the following format is used, depending on the type of resource. 
 
 ### Content URI
 
-Refered as `<content uri>` from now on.
+Transfering data files may be done through Swarm, Swarm Feeds, IPFS and http/s:
 
 - `bzz://<contentHash>`
 - `bzz-feed://<feedHash>`
@@ -37,11 +18,48 @@ Refered as `<content uri>` from now on.
 - `http://<url>/<route>`
 - `https://<url>/<route>`
 
+Providing fallbacks in a single field can be achieved by using a **comma separated list of URI's** like below:
+
+- `bzz://<content-hash>,https://cloudflare-ipfs.com/ipfs/<your-ipfs-hash-here>`
+    - Attempt to fetch the given content hash from Swarm
+    - In case of error, attempt to use the IPFS gateway provided by CloudFlare
+- `bzz-feed://<feed-hash>,ipfs://<content-hash>,https://<url>/<route>`
+    - Attempt to fetch the given feed from Swarm
+    - In case of error, attempt to fetch the given content hash from IPFS
+    - If both failed, attempt to fetch from a centralized fallback server
+
+URI order matters:
+- Clients are expected to try using the first service from the list
+- Services like Gateways or servers are expected to listen to all protocols defined on the metadata
+
+### Messaging URI
+
+Using decentralized messaging services can be accomplished with PSS, IPFS PubSub or Whisper:
+
+- `pss://<publicKey@address>`
+  - Uses Ethereum Swarm/PSS protocol
+  - address can be empty
+- `pubsub://<topic>`
+  - Uses IPFS pubsub protocol
+- `shh://<publicKey>`
+  - Uses Ethereum Whisper protocol
+
+Providing several fallbacks in a single field can be achieved by using a **comma separated list of URI's** like below:
+
+- `pss://<publicKey@address>,pubsub://<topic>,shh://<publicKey>`
+    - Attempt to use PSS in the first place, sending an encrypted message to the given address using the given public key
+    - In case of error, attempt to post a message to the given topic on IPFS PubSub
+    - If both fail, try to post a message to the given public key using Whisper
+
+URI order matters here too:
+- Clients are expected to try using the first service from the list
+- Services like Gateways are expected to listen to all protocols defined on the metadata
+
 ## Entity metadata
 
 Entities are able to create voting processes. As such, users need to be able to subscribe to them and retrieve basic information about the organization. 
 
-The metadata of an entity is an aggregate of information living on the Blockchain and P2P filesystems. For a complete reference of every section, see the [Data-schema](/protocol/entity-metadata?id=data-schema) on the [Entity metatdata](/protocol/entity-metadata.md) chapter.
+The metadata of an entity is an aggregate of information living on the Blockchain and P2P filesystems. For a complete reference of every section, see the [Entity Resolver](/protocol/entity-metadata?id=entityresolver) and the [Data schema](/protocol/entity-metadata?id=data-schema) on the Entity metatdata chapter.
 
 - [Entity metadata](/protocol/entity-metadata?id=entity-metadata-1)
 - [Gateway boot nodes](/protocol/entity-metadata?id=gateway-boot-nodes)

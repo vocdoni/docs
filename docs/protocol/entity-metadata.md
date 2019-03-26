@@ -33,86 +33,98 @@ We call all this data `Entity-metadata`
 
 ---
 
-## Resolver
+## EntityResolver
 
-The resolver is the smart-contract that stores all the metadata.
+The EntityResolver contract stores all the information about many entities, and it conforms with **Public ENS resolvers** spec's.
 
-Several resolver contracts may exist, they all need to conform with the same interfaces, specified by Vocdoni.
+- https://docs.ens.domains/contract-api-reference/publicresolver#set-text-data
+- https://docs.ens.domains/contract-api-reference/publicresolver#get-text-data
 
-We make use of ENS resolvers interfaces, but not necessarily use ENS domains (see below)
-
-A resolver stores each entity data into a record addressed by an `entityId`.
-
-If we use the ENS domains the `entityId` is the [ENS node](https://docs.ens.domains/terminology), otherwise, the `entityId` is the hash of the address that created the entity.
-
-### Interface: Storage of text records
-
-[EIP 634: Storage of text records in ENS](https://eips.ethereum.org/EIPS/eip-634) is convenient to store arbitrary data. It is used as simple key-value storage.
-
-Vocdoni specific keys (`vndr.vocdoni.key`) are represented as JSON objects.
-
-`WIP` Content-addressed data (hashes) with no specific hash function are referenced using [Mulistream/Multicodec](https://github.com/multiformats/multistream). They use the suffix `.hash`
-
-If there is a specific codec for the hash function (in case we want to provide multiple options to be resolved) it should be suffixed with its protocol `.http`, `.bzz`, `.ipfs` ...
+Domain names are not used at this point. Only `Text` records are used as a key-value storage on the resolver contract of choice by the entity. 
 
 ```solidity
+setText (entityId, key, value);
+```
 
+The `entityId` is the unique identifier of each entity, being a hash of its creator's address:
+
+```solidity
+bytes32 entityId = keccak256 (entityAddress);
+```
+
+- Multiple resolver instances can coexist. 
+  - Enity ID's and their resolver's address need to be provided
+- We make use of ENS resolvers interfaces
+  - ENS domains may be used in the future
+
+If ENS domains are used in the future, the `entityId` would be the [ENS node](https://docs.ens.domains/terminology), otherwise, the `entityId` is the hash of the address that created the entity.
+
+### Interface: Storage of Text records
+
+[EIP 634: Storage of text records in ENS](https://eips.ethereum.org/EIPS/eip-634) is convenient to store arbitrary data as a string.
+
+A Vocdoni compatible entity must define specific keys (listed below), resolving to strings with JSON objects.
+
+```solidity
 function text(bytes32 node, string key) constant returns (string text);
-
 ```
 
-### Interface: Storage of lists of text
+Any valid JSON payload may be stored. This applies to:
+- **Objects**  `JSON.parse('{"keyName":"valueGoesHere"}')` => `{ keyName: "valueGoesHere" }`
+- **Arrays**  `JSON.parse('["0x1234","0x2345","0x3456"]')` => `[ "0x1234", "0x2345", "0x3456" ]`
+- **Strings**  `JSON.parse('"String goes here"')` => `"String goes here"`
+- **Numbers**  `JSON.parse('8')` => `8` 
+- **Booleans**  `JSON.parse('true')` => `true` 
 
-This is necessary in order to minimize the amount of data to write when the metadata can be split.
+**Important:** It is the Entity's responsibility to ensure that the stored data properly parses into a valid JSON object, once retrieved from the blockchain. 
 
-The user is responsible for managing the indexes, the array does not move its elements.
+#### **Do**
+- Use `Text` records to store rather small pieces of data
+- Use `Text` records to store data that may change frequently
 
-> The implementation does not exist yet and the API may differ from the final implementation
+#### **Don't**
+- Use the EntityResolver to store large objects
+  - Instead, define [Content URI](/protocol/data-schema?id=content-uri) links to data that can live on Swarm, IPFS, etc.
+- Use Swarm/IPFS to store data that is already in a `Text` record
+  - An update to one field will need publishing at least three updates
+  - This might introduce divergence between the blockchain and data on Swarm/IPFS
 
-The behaviour wants to mimic `The storage of text records`
+### Storing larger payloads
 
-``` solidity
+To handle arbitrarily long JSON payloads or even images, media, etc., you may definitely want to use a decentralized filesystem to pin a file and keep the pointer to it in the appropriate `Text` record. 
 
-function listText(bytes32 node, string key, uint256 index) constant returns (string text);
-
-function list(bytes32 node, string key) constant returns (string [] text);
-
-```
+See [Content URI](/protocol/data-schema?id=content-uri) for examples. 
 
 ### Naming convention for keys
 
 Below is a table with the proposed standard for key/value denomination. 
 
-Storage types:
-- `T`: Storage of text
-- `L`: Storage of lists of text
+**Important:** Any JSON data stored on the resolver is expected to be **stringified**. For clarity, the examples below are just plain JSON, but actual values should be used [like the examples above](/protocol/entity-metadata?id=interface-storage-of-text-records).
 
-**Important:** Any JSON data stored on the resolver is expected to be **stringified**. For clarity, the examples above are just plain JSON, but actual values would contain escaped double quotes and so on.
-
-| Key                                       | Type   | Example                                                | Description                                                                |
-|-------------------------------------------|-----|--------------------------------------------------------|----------------------------------------------------------------------------|
-| **Required keys**                       |     |                                                        |                                                                            |
-| `name`                                    | `T` | Free Republic of Liberland                             | A fallback of the organization name (used on failure to fetch the JSON localized version) |
-| `vndr.vocdoni.meta`                       | `T` | 0xabc                                                | [Content URI](/protocol/data-schema?id=content-uri) to fetch all the metadata from. See [Entity Metadata](#entity-metadata-1) below.      |
-| **Supported keys**                        |     |                                                        |                                                                            |
-| `vndr.vocdoni.censusRequestUrl`           | `T` | https://liberland.org/en/citizenship                 | Endpoint to navigate to in order to join.                                        |
-| `vndr.vocdoni.processContract`            | `T` | 0xccc                                                | Address of the Processes Smart Contract instance used by the entity                        |
-| `vndr.vocdoni.gatewayBootnodes`           | `L` | [{&lt;gatewayBootnode&gt;}, ...]                             | Data of the boot nodes to query for active gateways. [See below](#gateway-boot-nodes) for more details                         |
-| `vndr.vocdoni.relays`                     | `L` | ["0x123","0x234"]                                    | The public key of the supported relays                                                 |
-| `vndr.vocdoni.processess.active`          | `L` | ["0x987","0x876"]                                    | Processess displayed as available by the client                           |
-| `vndr.vocdoni.processess.past`        | `L` | ["0x887","0x886"]                                    | Processess that already ended                           |
-| `vndr.vocdoni.processess.upcoming`            | `L` | ["0x787","0x776"]                                    | Processess that will become active in the future                           |
-| `vndr.vocdoni.feed`                  | `T` | https://liberland.org/feed                           | [Content URI](/protocol/data-schema?id=content-uri) to fetch a [JSON feed](https://jsonfeed.org/)        |
-| `vndr.vocdoni.description`                | `T` | Is a sovereign state...                              | A fallback of a self-descriptive text (used on failure to fetch the JSON localized version)                             |
-| `vndr.vocdoni.avatar`               | `T` | https://liberland.org/logo.png                       | [Content URI](/protocol/data-schema?id=content-uri) of an image file to display next to the entity name                      |
-| `vndr.vocdoni.keysToDisplay`              | `L` | ["podcast_feed", "vndr.twitter", "constitution_url"] | Keys the user wants to be displayed on its page                            |
-| `vndr.vocdoni.entities.suggested`              | `L` | [{&lt;entityRef&gt;}]                                        | A list of suggested entities.  See [Entities List](#entities-list)        |
-| `vndr.vocdoni.entities.related`              | `L` | [{&lt;entityRef&gt;}]                                        | A list of related entities.  See [Entities List](#entities-list)        |
-| `vndr.vocdoni.entities.fallback.bootnodes` | `L` | [{&lt;entityRef&gt;}]                                         | A [list of entities](#entities-list) to borrow the bootnodes from in the case of failure.                                                             |
-| **Arbitrary keys**                        |     |                                                        |                                                                            |
-| `podcast.feed`                             | `T` | https://liberland.org/podcast.rss                       | (Custom values)                                                                           |
-| `constitution.http`                       | `T` | https://liberland.org/en/constitution                  |  (Custom values)                                                                          |
-| `vndr.twitter`                            | `T` | https://twitter.com/Liberland_org                      |  (Custom values)                                                                          |
+| Key                                       | Example                                                | Description                                                                |
+|-------------------------------------------|--------------------------------------------------------|----------------------------------------------------------------------------|
+| **Required keys**                       |                                                        |                                                                            |
+| `name`                                    | Free Republic of Liberland                             | Fallback of the organization name (used if we fail to fetch the full metadata JSON file) |
+| `vndr.vocdoni.meta`                       | 0xabc                                                | [Content URI](/protocol/data-schema?id=content-uri) to fetch all the metadata from. See [Entity Metadata](#entity-metadata-1) below.      |
+| **Supported keys**                        |                                                        |                                                                            |
+| `vndr.vocdoni.censusRequestUrl`           | https://liberland.org/en/citizenship                 | Endpoint to navigate to in order to join.                                        |
+| `vndr.vocdoni.processContract`            | 0xccc                                                | Address of the Processes Smart Contract instance used by the entity                        |
+| `vndr.vocdoni.gatewayBootnodes`           | [{&lt;gatewayBootnode&gt;}, ...]                             | Data of the boot nodes to query for active gateways. [See below](#gateway-boot-nodes) for more details                         |
+| `vndr.vocdoni.relays`                     | ["0x123","0x234"]                                    | The public key of the supported relays                                                 |
+| `vndr.vocdoni.processess.active`          | ["0x987","0x876"]                                    | Processess displayed as available by the client                           |
+| `vndr.vocdoni.processess.past`        | ["0x887","0x886"]                                    | Processess that already ended                           |
+| `vndr.vocdoni.processess.upcoming`            | ["0x787","0x776"]                                    | Processess that will become active in the future                           |
+| `vndr.vocdoni.feed`                  | https://liberland.org/feed                           | [Content URI](/protocol/data-schema?id=content-uri) to fetch a [JSON feed](https://jsonfeed.org/)        |
+| `vndr.vocdoni.description`                | Is a sovereign state...                              | A fallback of a self-descriptive text (used on failure to fetch the JSON localized version)                             |
+| `vndr.vocdoni.avatar`               | https://liberland.org/logo.png                       | [Content URI](/protocol/data-schema?id=content-uri) of an image file to display next to the entity name                      |
+| `vndr.vocdoni.keysToDisplay`              | ["podcast_feed", "vndr.twitter", "constitution_url"] | Keys the user wants to be displayed on its page                            |
+| `vndr.vocdoni.entities.suggested`              | [{&lt;entityRef&gt;}]                                        | A list of suggested entities.  See [Entities List](#entities-list)        |
+| `vndr.vocdoni.entities.related`              | [{&lt;entityRef&gt;}]                                        | A list of related entities.  See [Entities List](#entities-list)        |
+| `vndr.vocdoni.entities.fallback.bootnodes` | [{&lt;entityRef&gt;}]                                         | A [list of entities](#entities-list) to borrow the bootnodes from in the case of failure.                                                             |
+| **Arbitrary keys**                        |                                                        |                                                                            |
+| `podcast.feed`                             | https://liberland.org/podcast.rss                       | (Custom values)                                                                           |
+| `constitution.http`                       | https://liberland.org/en/constitution                  |  (Custom values)                                                                          |
+| `vndr.twitter`                            | https://twitter.com/Liberland_org                      |  (Custom values)                                                                          |
 
 ## Data-schema
 
