@@ -1,5 +1,19 @@
 # Global architecture
 
+Electronic voting processes represent great tech and social challenges. An official binding vote with full guarantees should at least be able to:
+
++ Enforce vote anonimity
++ Rely on an opensource platform
++ Be 100% transparent, auditable and verifiable
++ Use uncensorable communication channels
++ Ensure that voters from a census can only vote once without revealing their identity
+
+Vocdoni defines an open architechture and protocols that empower large communities into exercising democracy with the features just listed. 
+
+A fully functional implementation of a Vocdoni process will typically be a combination of two types of services. 
+- The public blockchain, Gateways, Relays and decentralized storage systems (open and accessible)
+- Private custom services so that Entities can maintain a census of users (with personal data that should not be disclosed)
+
 ## Service architecture and components
 
 To avoid censorship and to provide resilence, the network architecture should accomplish the following requirements:
@@ -11,7 +25,7 @@ To avoid censorship and to provide resilence, the network architecture should ac
 + Do use static web pages, so they can be replicated
 + Do allow third parties to add infrastructure
 
-To this end, the Vocdoni platform is composed of the following components.
+To this end, a Vocdoni voting process makes use of the following components.
 
 ![Main architecture](./architecture-main.png "Main architecture")
 

@@ -10,7 +10,17 @@ In order to denominate them and provide a prioritized list of fallbacks in a sin
 
 ### Content URI
 
-Transfering data files may be done through Swarm, Swarm Feeds, IPFS and http/s:
+Transfering data files may be done through Swarm, Swarm Feeds, IPFS and http/s. In order to use an ordered list of origins and fallbacks, Vocdoni defines data origins in a single field by using a **comma separated list of URI's** like the examples below:
+
+- `bzz://<content-hash>,https://cloudflare-ipfs.com/ipfs/<your-ipfs-hash-here>`
+    - First, try to fetch the given &lt;content-hash&gt; from Swarm
+    - In case of error, attempt to fetch &lt;your-ipfs-hash-here&gt; from the IPFS gateway provided by CloudFlare
+- `bzz-feed://<feed-hash>,ipfs://<content-hash>,https://<url>/<route>`
+    - First, try to fetch the given feed from Swarm
+    - In case of error, attempt to fetch the given content hash from IPFS
+    - If both failed, attempt to fetch from a centralized fallback server
+
+Supported protocols:
 
 - `bzz://<contentHash>`
 - `bzz-feed://<feedHash>`
@@ -18,23 +28,20 @@ Transfering data files may be done through Swarm, Swarm Feeds, IPFS and http/s:
 - `http://<url>/<route>`
 - `https://<url>/<route>`
 
-Providing fallbacks in a single field can be achieved by using a **comma separated list of URI's** like below:
-
-- `bzz://<content-hash>,https://cloudflare-ipfs.com/ipfs/<your-ipfs-hash-here>`
-    - Attempt to fetch the given content hash from Swarm
-    - In case of error, attempt to use the IPFS gateway provided by CloudFlare
-- `bzz-feed://<feed-hash>,ipfs://<content-hash>,https://<url>/<route>`
-    - Attempt to fetch the given feed from Swarm
-    - In case of error, attempt to fetch the given content hash from IPFS
-    - If both failed, attempt to fetch from a centralized fallback server
-
 URI order matters:
-- Clients are expected to try using the first service from the list
-- Services like Gateways or servers are expected to listen to all protocols defined on the metadata
+- Clients are expected to try using URI's from left to right
+- In the event of a mismatch, the data from the leftmost functional service is used
 
 ### Messaging URI
 
-Using decentralized messaging services can be accomplished with PSS, IPFS PubSub or Whisper:
+Intended for two-way communication between two nodes, a Messaging URI field looks similar to a Content URI:
+
+- `pss://<publicKey@address>,pubsub://<topic>,shh://<publicKey>`
+    - Attempt to use PSS in the first place, sending an encrypted message to the given address using the given public key
+    - In case of error, attempt to post a message to the given topic on IPFS PubSub
+    - If both fail, try to post a message to the given public key using Whisper
+
+The messaging protocols supported are PSS, IPFS PubSub and Whisper:
 
 - `pss://<publicKey@address>`
   - Uses Ethereum Swarm/PSS protocol
@@ -44,22 +51,15 @@ Using decentralized messaging services can be accomplished with PSS, IPFS PubSub
 - `shh://<publicKey>`
   - Uses Ethereum Whisper protocol
 
-Providing several fallbacks in a single field can be achieved by using a **comma separated list of URI's** like below:
-
-- `pss://<publicKey@address>,pubsub://<topic>,shh://<publicKey>`
-    - Attempt to use PSS in the first place, sending an encrypted message to the given address using the given public key
-    - In case of error, attempt to post a message to the given topic on IPFS PubSub
-    - If both fail, try to post a message to the given public key using Whisper
-
 URI order matters here too:
-- Clients are expected to try using the first service from the list
-- Services like Gateways are expected to listen to all protocols defined on the metadata
+- Clients are expected to try using URI's from left to right
+- In the event of a mismatch, the data from the leftmost functional service is used
 
 ## Entity metadata
 
 Entities are able to create voting processes. As such, users need to be able to subscribe to them and retrieve basic information about the organization. 
 
-The metadata of an entity is an aggregate of information living on the Blockchain and P2P filesystems. For a complete reference of every section, see the [Entity Resolver](/protocol/entity-metadata?id=entityresolver) and the [Data schema](/protocol/entity-metadata?id=data-schema) on the Entity metatdata chapter.
+The metadata of an entity is an aggregate of information living on the Blockchain and P2P filesystems. For a complete reference of every section, see the [Entity Resolver](/protocol/entity-metadata?id=entityresolver) contract and the [Data schema](/protocol/entity-metadata?id=data-schema) on the Entity metatdata chapter.
 
 - [Entity metadata](/protocol/entity-metadata?id=entity-metadata-1)
 - [Gateway boot nodes](/protocol/entity-metadata?id=gateway-boot-nodes)
@@ -79,70 +79,70 @@ The metadata of an entity is an aggregate of information living on the Blockchai
 
 --------------------------------------------------------------------------------
 
-## Process metadata
+## Process Metadata
 
-### QuestionDetails
-
-It holds all the details to display so that users can make a choice about a vote.
+It holds all the details to display so that users can make a choice about a vote and allows Relays and Scrutinizers to fetch the technical parameters of a vote.
 
 The creation of this document is critical. Multiple checks should be in place to ensure that the data is choerent (well formatted, all relevant locales present, etc).
 
-The index of the votingOptions is used as identifier.
-
-The hash of this data is stored in the `Voting` contract in `questionDetails` using [multicodec format](https://github.com/multiformats/multistream)
-
-```json
-{
-    "version": "1.0",
-    "questionType": "single-choice", // To be defined.  What logic the UI should follow when choosing the votingOptions.
-    "question": {
-        "default": "Should universal basic income become a human right?",
-        "ca": "Estàs d'acord amb que la renda bàsica universal sigui un dret humà?"
-    },
-    "votingOptions": [
-        {
-            "default": "Yes" ,
-            "ca": "Sí"
-        },
-        {
-            "default": "No",
-            "ca": "No"
-        }
-    ]
-}
-```
-
-The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the metadata of a voting process through a decentralized channel.
+The JSON payload below is typically stored on Swarm or IPFS, so anyone can fetch the metadata of a voting process through a decentralized channel.
 
 ```json
 {
     "version": "1.0",    // Protocol version
-    "name": "Basic income rule", //Human friendly, not an identifier
-    "address": "0x1234...", // on the blockchain
-    "question": "Should basic income be a human right?",
+
+    "name": "Basic income rule", // Human friendly name, not an identifier
+    "address": "0x1234...", // Of the vote on the VotingProcesses smart contract
+    
+    "voteType": "single-choice", // Defines how the UI should allow to choose among the votingOptions.
+    "proofType": "zk-snarks",  // Allowed ["zk-snarks", "lrs"]
+    
+    "question": {
+        "default": "Should universal basic income become a human right?",
+        "ca": "Estàs d'acord amb que la renda bàsica universal sigui un dret humà?"
+    },
     "voteOptions": [
-        { "name": "Yes", "value": 1 },
-        { "name": "No", "value": 2 },
-        { "name": "I don't know", "value": 3 }
+        {
+            "default": "Yes" ,
+            "ca": "Sí",
+            "value": 1
+        },
+        {
+            "default": "No",
+            "ca": "No",
+            "value": 2
+        }
     ],
-    "type": "zk-snarks",  // Allowed ["zk-snarks", "lrs"]
     "startBlock": 10000,
     "endBlock":  11000,
     "meta": {
-        "description": "## Markdown text goes here\n### Abstract",
+        "description": {
+            "default": "## Markdown text goes here\n### Abstract",
+            "ca": "## El markdown va aquí\n### Resum"
+        },
         "images": [ "<content uri>", ... ],
         "organizer": {
             "address": "0x1234...",  // Address of the Entity entry on the blockchain
-            "metadata": "<content uri>" // Organizer's metadata on Swarm
+            "resolver": "0x2345...",  // Address of the EntityResolver smart contract
+            "metadata": "<content uri>" // Organizer's metadata
         }
     },
     "census": {
-        "id": "the-entity-main-census",  // Census ID to use
-        "origin": "<messaging uri>", // Census service to request data from
+        "id": "entity-people-of-legal-age",  // Census ID to use
+        "origin": "<messaging uri>", // Messaging URI of the Census Service to request data from
         "merkleRoot": "0x1234...",
         "modulusSize": 5000  // Only when type="lrs"
     },
-    "publicKey": "0x1234..." // To encrypt vote packages
+    "publicKey": "0x1234...", // To encrypt vote packages
+
+    // Only when voteType == "lrs"
+
+    "modulusGroups": [
+        { "publicKeyModulus": 0, "source": "<content uri>" },  // Resolves to a ModulusGroupArray (see below)
+        { "publicKeyModulus": 1, "source": "<content uri>" },
+        { "publicKeyModulus": 2, "source": "<content uri>" },
+        ...
+    ]
 }
 ```
 
@@ -163,6 +163,26 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 
 - The `type` field indicates the scrutiny method that will be used for the process. Any vote package generated with the wrong type will be discarded.
 - The list of authorized relays is available on the Process smart contract
+
+## Modulus Group Array
+
+Linkable Ring Signatures allow to anonymize a signature within a group of keys. However, signing with the entire census for every single vote would mean storing and transfering very large amounts of data. 
+
+A solution is to break a large census into smaller groups and anonymize signatures within groups of 500~1000 keys instead of any greater values. 
+
+To this end, public keys are grouped by the modulus of dividing them by a predefined number. In order to store and fetch an array of keys from the Process Metadata, the following schema is used:
+
+```json
+{
+    "publicKeyModulus": int,
+    "publicKeys": [
+        "0x1234...",
+        "0x2345...",
+        "0x3456...",
+        ...
+    ]
+}
+```
 
 ## Vote Package
 
@@ -481,6 +501,17 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 
 - [Census service API specs](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
 
+#### Census addBulk
+
+`TODO`
+
+#### Census setParams
+
+`TODO`
+
+Used in LRS to define the processId (useful to derive keys) and the maxSize of a census.
+
+
 ### Census Service response payload
 
 ```json
@@ -490,7 +521,7 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 }
 ```
 
-## Gateway
+## Gateway requests payload
 
 ### Add Census Claim
 ```json
@@ -553,8 +584,8 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 ```
 ```json
 {
-  "error":bool,
-  "response":["iden3MkproofHexString"]
+  "error": bool,
+  "response": ["iden3MkproofHexString"]
 }
 ```
 **Used in:**
@@ -563,14 +594,14 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 ### Fetch Process Ring
 ```json
 {
-  "method": "fetchProcessRing"
+  "method": "fetchProcessRing",
   "processId": "hexString",
   "modulus": int,
 }
 ```
 ```json
 {
-  "error": bool
+  "error": bool,
   "response": ["pubKey1", "pubKey2", ...]
 }
 ```
