@@ -33,9 +33,9 @@ We call all this data `Entity-metadata`
 
 ---
 
-## EntityResolver
+## Entity Resolver
 
-The EntityResolver contract stores all the information about many entities, and it conforms with **Public ENS resolvers** spec's.
+The Entity Resolver contract stores all the information about many entities, and it conforms with **Public ENS resolvers** spec's.
 
 - https://docs.ens.domains/contract-api-reference/publicresolver#set-text-data
 - https://docs.ens.domains/contract-api-reference/publicresolver#get-text-data
@@ -83,7 +83,7 @@ Any valid JSON payload may be stored. This applies to:
 - Use `Text` records to store data that may change frequently
 
 #### **Don't**
-- Use the EntityResolver to store large objects
+- Use the Entity Resolver to store large objects
   - Instead, define [Content URI](/protocol/data-schema?id=content-uri) links to data that can live on Swarm, IPFS, etc.
 - Use Swarm/IPFS to store data that is already in a `Text` record
   - An update to one field will need publishing at least three updates
@@ -190,6 +190,14 @@ This field provides a list of bootnodes with the only goal of serving a list of 
 - They provide Gateways with the necessary information to join the network
 
 This leads to a chicken-and-egg problem. You need a Gateway to fetch data from the Blockchain, but you can't because you don't have a Gateway to fetch from it. The solution is to use a well-known public gateway
+
+
+
+
+**TODO:**   explicar que Vocdoni posa uns defaults => bootstrap + gateways
+Vocdoni o qui sigui que faci l'app
+
+
 
 
 ### Entities list
