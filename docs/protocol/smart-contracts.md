@@ -1,6 +1,6 @@
 # Smart contracts
 
-Voting processes will need to interact with two different Smart Contracts on the Blockchain:
+Voting ecosystems will need to interact with two different Smart Contracts on the Blockchain:
 * **Entity Resolver**
     * Decentralized registry of entities and their corresponding metatada
 * **Voting Process**
@@ -9,8 +9,6 @@ Voting processes will need to interact with two different Smart Contracts on the
 ## Entity Resolver
 
 The Entity Resolver is a standard ENS resolver contract. Its purpose is to provide a key/value store of `Text` records following a naming convention.
-
-Domain name resolution is not used at the time, only Text records.
 
 For reference about **standard ENS Resolvers**:
 - https://docs.ens.domains/contract-api-reference/publicresolver

@@ -1,6 +1,6 @@
 # Entity metadata
 
-An entity can have many roles. For the most part, is the organizer and the ultimate responsible of a voting process.
+An entity can have many roles. For the most part, it is the organizer and the ultimate responsible of a voting process.
 
 But it could not make use of the voting mechanism an instead just be an element of trust:
 

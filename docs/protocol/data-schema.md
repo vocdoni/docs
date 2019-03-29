@@ -1,10 +1,12 @@
 # Data schema
 
-`The current contents are a work in progress`
+Traditional systems like API's present simple scenarios, in which a centralized service defined how data should be encoded.
 
-## Origins
+However, decentralized ecosystems like a distributed vote system need much stronger work on defining every interaction between any two peers on the network.
 
-Many of the schemas below need to point to external data that may be available through different sources and channels.
+## Data origins
+
+Many of the schemas descussed below need to point to external data that may be available through various channels.
 
 In order to denominate them and provide a prioritized list of fallbacks in a single place, the following format is used, depending on the type of resource. 
 
@@ -57,15 +59,15 @@ URI order matters here too:
 
 ## Entity metadata
 
-Entities are able to create voting processes. As such, users need to be able to subscribe to them and retrieve basic information about the organization. 
+Entities are able to create voting processes. As such, users need to be able to subscribe to them and retrieve basic information about the entities they care about. 
 
-The metadata of an entity is an aggregate of information living on the Blockchain and P2P filesystems. For a complete reference of every section, see the [Entity Resolver](/protocol/entity-metadata?id=entityresolver) contract and the [Data schema](/protocol/entity-metadata?id=data-schema) on the Entity metatdata chapter.
+The metadata of an entity is an aggregate of information living on the Blockchain and P2P filesystems. 
+- Data on the blockchain provides durability and ensures integrity checking
+- Data on P2P filesystems allows to transfer larger data objects in a more flexible way
 
-- [Entity metadata](/protocol/entity-metadata?id=entity-metadata-1)
-- [Gateway boot nodes](/protocol/entity-metadata?id=gateway-boot-nodes)
-- [Entities list](/protocol/entity-metadata?id=entities-list)
-- [Feed](/protocol/entity-metadata?id=feed)
-- [Actions](/protocol/entity-metadata?id=actions)
+The starting point is the **[Entity Resolver](/protocol/entity-metadata?id=entity-resolver)** contract, but it is tightly coupled with the **[Entity Metadata](/protocol/entity-metadata?id=data-schema)** living on P2P filesystems.
+
+**Please, refer to the [Entity Metadata](/protocol/entity-metadata?id=entity-metadata) section to get the full details on how an Entity works.**
 
 **Used in:**
 
@@ -81,70 +83,13 @@ The metadata of an entity is an aggregate of information living on the Blockchai
 
 ## Process Metadata
 
-It holds all the details to display so that users can make a choice about a vote and allows Relays and Scrutinizers to fetch the technical parameters of a vote.
+Voting processes are declared on the Blockchain and store the critical information for integrity. However, the metadata of a process lives on a JSON file with the information on which voters can make a choice. It also allows Relays and Scrutinizers to fetch the technical parameters of a vote.
 
-The creation of this document is critical. Multiple checks should be in place to ensure that the data is choerent (well formatted, all relevant locales present, etc).
+The metadata of voting process is also an aggregate of data from the Blockchain and P2P filesystems. 
 
-The JSON payload below is typically stored on Swarm or IPFS, so anyone can fetch the metadata of a voting process through a decentralized channel.
+The starting point is the **[Voting Process](/smart-contracts?id=voting-process)** contract, but it is tightly coupled with the **[Process Metadata](/protocol/process-metadata)** living on P2P filesystems.
 
-```json
-{
-    "version": "1.0",    // Protocol version
-
-    "name": "Basic income rule", // Human friendly name, not an identifier
-    "address": "0x1234...", // Of the vote on the VotingProcesses smart contract
-    
-    "voteType": "single-choice", // Defines how the UI should allow to choose among the votingOptions.
-    "proofType": "zk-snarks",  // Allowed ["zk-snarks", "lrs"]
-    
-    "question": {
-        "default": "Should universal basic income become a human right?",
-        "ca": "Estàs d'acord amb que la renda bàsica universal sigui un dret humà?"
-    },
-    "voteOptions": [
-        {
-            "default": "Yes" ,
-            "ca": "Sí",
-            "value": 1
-        },
-        {
-            "default": "No",
-            "ca": "No",
-            "value": 2
-        }
-    ],
-    "startBlock": 10000,
-    "endBlock":  11000,
-    "meta": {
-        "description": {
-            "default": "## Markdown text goes here\n### Abstract",
-            "ca": "## El markdown va aquí\n### Resum"
-        },
-        "images": [ "<content uri>", ... ],
-        "organizer": {
-            "address": "0x1234...",  // Address of the Entity entry on the blockchain
-            "resolver": "0x2345...",  // Address of the EntityResolver smart contract
-            "metadata": "<content uri>" // Organizer's metadata
-        }
-    },
-    "census": {
-        "id": "entity-people-of-legal-age",  // Census ID to use
-        "origin": "<messaging uri>", // Messaging URI of the Census Service to request data from
-        "merkleRoot": "0x1234...",
-        "modulusSize": 5000  // Only when type="lrs"
-    },
-    "publicKey": "0x1234...", // To encrypt vote packages
-
-    // Only when voteType == "lrs"
-
-    "modulusGroups": [
-        { "publicKeyModulus": 0, "source": "<content uri>" },  // Resolves to a ModulusGroupArray (see below)
-        { "publicKeyModulus": 1, "source": "<content uri>" },
-        { "publicKeyModulus": 2, "source": "<content uri>" },
-        ...
-    ]
-}
-```
+**Please, refer to the [Process Metadata](/protocol/process-metadata) section to get the full details on how a Process works.**
 
 **Used in:**
 
