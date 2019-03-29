@@ -188,16 +188,21 @@ This field provides a list of bootnodes with the only goal of serving a list of 
 - They provide a list of active Gateways to the client
 - They provide Gateways with the necessary information to join the network
 
-This leads to a chicken-and-egg problem. You need a Gateway to fetch data from the Blockchain, but you can't because you don't have a Gateway to fetch from it. The solution is to use a well-known public gateway
+This leads to a chicken-and-egg problem. You need a Gateway to fetch data from the Blockchain, but you can't because you don't know any Gateway to reach the Blockchain from.
 
+To solve that:
 
+* Vocdoni provides initial bootnodes, whose URL's are hardcoded in the `dvote-js` library
+* All they do is to serve a list of Gateway IP addresses via https
+* One of these Gateways is used to query the [Entity Resolver](/protocol/entity-metadata?id=entity-resolver) for the address of the **boot organization**
+  * The initial Entity Resolver address is hardcoded in `dvote-js`
+  * The boot organization of the Entity Resolver above is also hardcoded in `dvote-js`
 
-
-**TODO:**   explicar que Vocdoni posa uns defaults => bootstrap + gateways
-Vocdoni o qui sigui que faci l'app
-
-
-
+Considerations:
+* Any of these can be totally overriden to fit an organization's needs
+* The Gateway servers provided are a best effort starting point
+* Any serious organization should definitely provide its own set of Gateways, in order not to depend on us
+* If you hare hosting your bootnode server and/or your own Gateways, tell us about it and we can include them too
 
 ### Entities list
 
