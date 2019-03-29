@@ -110,7 +110,6 @@ Below is a table with the proposed standard for key/value denomination.
 | `vndr.vocdoni.censusRequestUrl`           | https://liberland.org/en/citizenship                 | Endpoint to navigate to in order to join.                                        |
 | `vndr.vocdoni.processContract`            | 0xccc                                                | Address of the Processes Smart Contract instance used by the entity                        |
 | `vndr.vocdoni.gatewayBootnodes`           | [{&lt;gatewayBootnode&gt;}, ...]                             | Data of the boot nodes to query for active gateways. [See below](#gateway-boot-nodes) for more details                         |
-| `vndr.vocdoni.relays`                     | ["0x123","0x234"]                                    | The public key of the supported relays                                                 |
 | `vndr.vocdoni.processess.active`          | ["0x987","0x876"]                                    | Processess displayed as available by the client                           |
 | `vndr.vocdoni.processess.past`        | ["0x887","0x886"]                                    | Processess that already ended                           |
 | `vndr.vocdoni.processess.upcoming`            | ["0x787","0x776"]                                    | Processess that will become active in the future                           |

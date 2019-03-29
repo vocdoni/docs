@@ -4,7 +4,7 @@ To understand how a decentralized voting process starts, we need to define the s
 
 ### Prior to voting
 
-- Vocdoni deploys the EntityResolver and VotingProcess smart contracts
+- Vocdoni deploys the [Entity Resolver](/protocol/smart-contracts?id=entity-resolver) and [Voting Process](/protocol/smart-contracts?id=voting-process) smart contracts
   - Optionally, other organizations can deploy their own instances
 - The **organizer** registers an Entity to the blockchain
 - The **user** creates a self-sovereign identity on a mobile app
@@ -16,10 +16,10 @@ To understand how a decentralized voting process starts, we need to define the s
 - The **user** subscribes to an Entity
 	- The Entity could be predefined by the parameters of the app
 	- Entities can be fetched from a list of boot entities
-		- The app gets the default EntityResolver address and the Entity ID of Vocdoni from `dvote-js`
+		- The app gets the default [Entity Resolver](/protocol/smart-contracts?id=entity-resolver) address and the Entity ID of Vocdoni from `dvote-js`
 		- The app fetches the boot entities of Vocdoni and displays them
 		- It is also possible to use other instances and fetch the bootnodes of a specific Entity instead
-	- The user can also regsiter to an Entity by following a deep link with the EntityResolver address and the Entity ID
+	- The user can also regsiter to an Entity by following a deep link with the [Entity Resolver](/protocol/smart-contracts?id=entity-resolver) address and the Entity ID
 - The **user** protects his/her identity with a visual pattern or a pin
 <!-- - The **user** unlocks the app to access the content -->
 - The **user** exports an encrypted backup of his/her identity
@@ -63,7 +63,7 @@ To understand how a decentralized voting process starts, we need to define the s
 		- Get the modulus number and the [Content URI](/protocol/data-schema?id=content-uri)'s where the Census Service is pinning every modulus group
 	- Pin the entire [Process Metadata](/protocol/data-schema?id=process-metadata) (Swarm, IPFS, etc)
 	- Send a transaction to the blockchain with the core data of the process and a [Content URI](/protocol/data-schema?id=content-uri) to the[ Process Metadata](/protocol/data-schema?id=process-metadata) file
-	- Update the list of voting processes on the EntityResolver smart contract
+	- Update the list of voting processes on the [Entity Resolver](/protocol/smart-contracts?id=entity-resolver) smart contract
 - The **App user** fetches the active voting processes of an **Entity**
 	- Read the description and review the options to vote
 - The **App user** checks that he/she is part of a process' census
