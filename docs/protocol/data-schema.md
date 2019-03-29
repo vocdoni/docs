@@ -4,6 +4,21 @@ Traditional systems like API's present simple scenarios, in which a centralized 
 
 However, decentralized ecosystems like a distributed vote system need much stronger work on defining every interaction between any two peers on the network.
 
+- [Data origins](#data-origins)
+- [Entity Metadata](#entity-metadata)
+- [Process Metadata](#process-metadata)
+- [Modulus group list](#modulus-group-list)
+- [Vote Package](#vote-package)
+- [Vote Envelope](#vote-envelope)
+- [Vote Batch](#vote-batch)
+- [Vote Summary](#vote-summary)
+- [Vote List](#vote-list)
+- [JSON Feed](#json-feed)
+- [Census Service requests](#census-service-requests)
+- [Gateway requests](#gateway-requests)
+- [](#)
+- [](#)
+
 ## Data origins
 
 Many of the schemas descussed below need to point to external data that may be available through various channels.
@@ -109,7 +124,7 @@ The starting point is the **[Voting Process](/smart-contracts?id=voting-process)
 - The `type` field indicates the scrutiny method that will be used for the process. Any vote package generated with the wrong type will be discarded.
 - The list of authorized relays is available on the Process smart contract
 
-## Modulus Group Array
+## Modulus group list
 
 As [explained here](/protocol/franchise-proof?id=_2-create-census-rings), Linkable Ring Signatures allow to anonymize a signature within a group of keys. However, signing with the entire census for every single vote would mean storing and transfering very large amounts of data. 
 
@@ -320,26 +335,30 @@ It is encrypted within the corresponding [Vote Envelope](#vote-envelope-ring-sig
 
 - The current payload may lead to a size of several Gigabytes of data, which may not be suitable for mobile devices
 
-## Content Data
+## JSON Feed
 
-Used to contain news and data posts. Decentralized content supported by the client app is expected to conform to the specs of a [JSON Feed](https://jsonfeed.org/) and be accessible through a [Content URI](#content-uri).
+Similar to RSS, official news and unidirectional rich content is expected to conform to the specs of a [JSON Feed](https://jsonfeed.org/) and be accessible through a [Content URI](#content-uri). 
 
-## Census Service
-
-### Census Service request payload
+## Census Service requests
 
 Requests sent to the census service may invoke different operations.
 
 Depending on the `method`, certain parameters are expected or optional:
 
-#### Census addClaim
+### Census Service addClaim
 
 ```json
 {
     "method": "addClaim",
-    "censusId": "string",
-    "claimData": "string",
+    "censusId": "string",       // Where to add the claim
+    "claimData": "string",      // Typically, a public key
     "signature": "string"
+}
+```
+```json
+{
+    "error": false,
+    "response": "string"
 }
 ```
 
@@ -347,12 +366,35 @@ Depending on the `method`, certain parameters are expected or optional:
 
 - [Adding users to a census](/protocol/sequence-diagrams?id=adding-users-to-a-census)
 
-#### Census getRoot
+### Census Service addClaimBulk
+
+```json
+{
+    "method": "addClaimBulk",
+    "censusId": "string",       // Where to add the claims
+    "claimData": "string",      // Typically, a comma-separated list of public keys
+    "signature": "string"
+}
+```
+```json
+{
+    "error": false,
+    "response": "string"
+}
+```
+
+### Census Service getRoot
 
 ```json
 {
     "method": "getRoot",
-    "censusId": "string" 
+    "censusId": "string"
+}
+```
+```json
+{
+    "error": false,
+    "response": "string"
 }
 ```
 
@@ -360,7 +402,31 @@ Depending on the `method`, certain parameters are expected or optional:
 
 - [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
 
-#### Census generateProof
+### Census Service setParams
+
+```json
+{
+    "method": "setParams",
+    "censusId": "string",       // Where to apply the new settings
+    "processId": "string",
+    "maxSize": "string",
+    "signature": "string"
+}
+```
+```json
+{
+    "error": false,
+    "response": "string"
+}
+```
+
+Used in LRS only.
+
+**Used in:**
+
+- [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
+
+### Census Service generateProof
 
 ```json
 {
@@ -370,23 +436,19 @@ Depending on the `method`, certain parameters are expected or optional:
     "rootHash": "optional-string"  // from a specific version
 }
 ```
+```json
+{
+    "error": false,
+    "response": "string"
+}
+```
 
 **Used in:**
 
 - [Check census inclusion](/protocol/sequence-diagrams?id=check-census-inclusion)
 <!-- - [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks) -->
 
-#### Census addBulk
-
-`TODO`
-
-#### Census setParams
-
-`TODO`
-
-Used in LRS to define the processId (useful to derive keys) and the maxSize of a census.
-
-<!-- #### Census getChunk
+<!-- ### Census Service getChunk
 
 ```json
 {
@@ -396,13 +458,19 @@ Used in LRS to define the processId (useful to derive keys) and the maxSize of a
     "publicKeyModulus": 4321
 }
 ```
+```json
+{
+    "error": false,
+    "response": "string"
+}
+```
 
 **Used in:**
 
 - [Casting a vote with Linkable Ring Signatures](/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 -->
 
-<!-- #### Census checkProof
+<!-- ### Census Service checkProof
 
 ```json
 {
@@ -413,9 +481,15 @@ Used in LRS to define the processId (useful to derive keys) and the maxSize of a
     "proofData": "string"
 }
 ```
+```json
+{
+    "error": false,
+    "response": "string"
+}
+```
 -->
 
-<!-- #### Census getIdx
+<!-- ### Census Service getIdx
 
 ```json
 {
@@ -425,9 +499,15 @@ Used in LRS to define the processId (useful to derive keys) and the maxSize of a
     "rootHash": "optional-string"
 }
 ```
+```json
+{
+    "error": false,
+    "response": "string"
+}
+```
 -->
 
-#### Census dump
+### Census Service dump
 
 ```json
 {
@@ -435,6 +515,12 @@ Used in LRS to define the processId (useful to derive keys) and the maxSize of a
     "censusId": "string",
     "rootHash": "optional-string",
     "signature": "string"
+}
+```
+```json
+{
+    "error": false,
+    "response": "string"
 }
 ```
 
@@ -449,16 +535,7 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 - [Census service API specs](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
 
 
-### Census Service response payload
-
-```json
-{
-    "error": false,
-    "response": "string"
-}
-```
-
-## Gateway requests payload
+## Gateway requests
 
 ### Add Census Claim
 ```json
@@ -516,10 +593,9 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 {
   "method": "fetchCensusProof",
   "censusRootHash": "hexString",
-  "pubKey": "hexString"
+  "publicKey": "hexString"
 }
 ```
-
 ```json
 {
   "error": bool,
@@ -529,12 +605,12 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 **Used in:**
 - [Voting with zksnarks](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
 
-### Fetch Process Ring
+### Fetch Census Ring
 ```json
 {
-  "method": "fetchProcessRing",
+  "method": "fetchCensusRing",
   "processId": "hexString",
-  "modulus": int,
+  "publicKeyModulus": int
 }
 ```
 ```json
@@ -546,23 +622,23 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 **Used in:**
 - [Voting with LRS](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 
-### Submit Ballot
+### Submit Vote Envelope
 ```json
 {
-  "method": "submitVote",
-  "type": "LRS/Snarks",
+  "method": "submitVoteEnvelope",
+  "type": "zk-snarks-envelope",  // valid: ["zk-snarks-envelope", "lrs-envelope"]
   "processId": "hexString",
   "content": "voteEnvelope",
-  "relayPubKey": "hexString"
+  "relayPublicKey": "hexString"
 }
 ```
-
 ```json
 {
-  "error":bool,
+  "error": bool,
   "response": []
 }
 ```
+
 **Used in:**
 - [Voting with zksnarks](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
 - [Voting with LRS](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)

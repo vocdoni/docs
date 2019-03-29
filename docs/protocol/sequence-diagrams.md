@@ -199,21 +199,25 @@ sequenceDiagram
 
 
     loop pendingUsers
-        PM->>DV: Census.addCensusClaim(censusId, censusOrigin, claimData, web3Provider)
-        activate DV
-        DV->>DV: signRequestPayload(payload, web3Provider)
-        deactivate DV
-        DV->>GW: addCensusClaim(addClaimPayload)
-        GW->>CS: addCensusClaim(addClaimPayload)
-        CS-->>GW: success
-        GW-->>DV: success
+        PM->>DV: Census.addClaim(censusId, censusMessagingURI, claimData, web3Provider)
+            activate DV
+                DV->>DV: signRequestPayload(payload, web3Provider)
+            deactivate DV
+
+            Note right of DV: TO DO: Review calls
+
+            DV->>GW: addCensusClaim(addClaimPayload)
+                GW->>CS: addCensusClaim(addClaimPayload)
+                CS-->>GW: success
+            GW-->>DV: success
         DV-->>PM: success
     end
 ```
 
 **Used schemas:**
 
-- [addClaimPayload](/protocol/data-schema?id=census-addclaim)
+- [Census Service - addClaim](/protocol/data-schema?id=census-service-addclaim)
+- [Census Service - addClaimBulk](/protocol/data-schema?id=census-service-addclaimbulk)
 
 ## Voting
 
@@ -229,6 +233,8 @@ sequenceDiagram
     participant CS as Census Service
     participant SW as Swarm
     participant BC as Blockchain Process
+
+    Note right of DV: TO DO: Review calls
 
     PM->>+DV: Process.create(processDetails)
 
@@ -248,9 +254,9 @@ sequenceDiagram
         DV-->GW: addFile(processMetadata) : metadataHash
         GW-->SW: Swarm.put(processMetadata) : metadataHash
 
-        DV->>+GW: create(entityId, name, metadataOrigin)
-        GW->>+BC: create(entityId, name, metadataOrigin)
-        BC-->>-GW: txId
+        DV->>+GW: Process.create(entityId, name, metadataOrigin)
+            GW->>+BC: <transaction>
+            BC-->>-GW: txId
         GW-->>-DV: txId
 
     DV-->>-PM: success
@@ -258,8 +264,12 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [processMetadata](/protocol/data-schema?id=process-metadata)
-- [getRootPayload](/protocol/data-schema?id=census-getroot)
+- [Process Metadata](/protocol/data-schema?id=process-metadata)
+- [Census Service - getRoot](/protocol/data-schema?id=census-service-addclaimbulk)
+- [Census Service - setParams](/protocol/data-schema?id=census-service-setparams)
+- [Census Service - dump](/protocol/data-schema?id=census-service-dump)
+
+**Note**:
 - The `processDetails` parameter is specified [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
 
 ### Voting process retrieval
@@ -302,7 +312,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [processMetadata](/protocol/data-schema?id=process-metadata)
+- [Process Metadata](/protocol/data-schema?id=process-metadata)
 
 ### Check census inclusion
 
@@ -317,7 +327,9 @@ sequenceDiagram
     participant GW as Gateway/Web3
     participant CS as Census Service
 
-    App->>+DV: Census.hasClaim(publicKey, censusId, censusOrigin)
+    Note right of DV: TO DO: Review calls (LRS)
+
+    App->>+DV: Census.hasClaim(publicKey, censusId, censusMessagingURI)
 
         DV->>+GW: genCensusProof(censusId, publicKey)
         GW->>+CS: genProof(censusId, publicKey)
@@ -329,12 +341,12 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [genProofPayload](/protocol/data-schema?id=census-genproof)
+- [Census Service - generateProof](/protocol/data-schema?id=census-service-generateproof)
 
 **Notes:**
 
-- `genProof` may be replaced with a call to `hasClaim`, for efficiency
-- The `censusId` and `censusOrigin` should have been fetched from a the metadata of a process
+- `generateProof` may be replaced with a call to `hasClaim`, for efficiency
+- The `censusId` and `censusMessagingURI` should have been fetched from the [Process Metadata](/protocol/process-metadata)
 
 ### Casting a vote with ZK Snarks
 
@@ -353,9 +365,9 @@ sequenceDiagram
 
         alt merkleProof not provided
 
-            DV->>+GW: genProof(processMetadata.census.id, publicKey)
+            DV->>+GW: generateProof(processMetadata.census.id, publicKey)
 
-            GW->>+CS: genProofData(censusId, publicKey)
+            GW->>+CS: PSS.broadcast(<generateProofData>)
             CS-->>-GW: merkleProof
 
             GW-->>-DV: merkleProof
@@ -382,8 +394,8 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [processMetadata](/protocol/data-schema?id=process-metadata)
-- [genProofPayload](/protocol/data-schema?id=census-genproof)
+- [Process Metadata](/protocol/data-schema?id=process-metadata)
+- [Census Service - generateProof](/protocol/data-schema?id=census-service-generateproof)
 - [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
 
 **Notes:**
@@ -404,6 +416,8 @@ sequenceDiagram
     participant RL as Relay
 
     App->>+DV: Process.castVote(vote, processMetadata, censusChunk?)
+
+        Note right of DV: TO DO: Review calls
 
         alt censusChunk not provided
 
@@ -434,8 +448,8 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [processMetadata](/protocol/data-schema?id=process-metadata)
-- [getChunk](/protocol/data-schema?id=census-getchunk)
+- [Process Metadata](/protocol/data-schema?id=process-metadata)
+<!-- - [getChunk](/protocol/data-schema?id=census-getchunk) -->
 - [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
 
 **Notes:**
@@ -655,7 +669,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [processMetadata](/protocol/data-schema?id=process-metadata)
+- [Process Metadata](/protocol/data-schema?id=process-metadata)
 - [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
 - [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
 - [Vote Batch](/protocol/data-schema?id=vote-batch)
