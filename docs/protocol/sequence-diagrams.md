@@ -254,7 +254,7 @@ sequenceDiagram
         DV-->GW: addFile(processMetadata) : metadataHash
         GW-->SW: Swarm.put(processMetadata) : metadataHash
 
-        DV->>+GW: Process.create(entityId, name, metadataOrigin)
+        DV->>+GW: Process.create(entityId, name, metadataContentUri)
             GW->>+BC: <transaction>
             BC-->>-GW: txId
         GW-->>-DV: txId
@@ -295,8 +295,8 @@ sequenceDiagram
 
             DV->>GW: getMetadata(processId)
             GW->>BC: getMetadata(processId)
-            BC-->>GW: (name, metadataOrigin, merkleRootHash, relayList, startBlock, endBlock)
-            GW-->>DV: (name, metadataOrigin, merkleRootHash, relayList, startBlock, endBlock)
+            BC-->>GW: (name, metadataContentUri, merkleRootHash, relayList, startBlock, endBlock)
+            GW-->>DV: (name, metadataContentUri, merkleRootHash, relayList, startBlock, endBlock)
 
             alt Process is active or in the future
                 DV->>GW: fetchFile(metadataHash)
@@ -382,7 +382,7 @@ sequenceDiagram
 
         DV->>DV: encryptVotePackage(package, relay.publicKey)
 
-        DV->>GW: submitVote(encryptedVotePackage, relay.origin)
+        DV->>GW: submitVote(encryptedVotePackage, relay.messagingUri)
 
             GW->>RL: transmitVoteEnvelope(encryptedVotePackage)
             RL-->>GW: ACK
@@ -436,7 +436,7 @@ sequenceDiagram
 
         DV->>DV: encryptVotePackage(package, relay.publicKey)
 
-        DV->>GW: submitVote(encryptedVotePackage, relay.origin)
+        DV->>GW: submitVote(encryptedVotePackage, relay.messagingUri)
 
             GW->>RL: transmitVoteEnvelope(encryptedVotePackage)
             RL-->>GW: ACK
@@ -471,7 +471,7 @@ sequenceDiagram
 
     RL-->SW: Swarm.put(voteBatch) : batchHash
 
-    RL->>+BC: Process.registerBatch(batchOrigin)
+    RL->>+BC: Process.registerBatch(batchContentUri)
     BC-->>-RL: txId
 ```
 
@@ -494,23 +494,23 @@ sequenceDiagram
     participant BC as Blockchain Process
     participant SW as Swarm
 
-    App->>DV: checkVoteStatus(processAddress, relayOrigin)
+    App->>DV: checkVoteStatus(processAddress, relayMessagingUri)
 
         DV->>DV: computeNullifierOrSignature()
 
-        DV->>+GW: getVoteStatus(processAddress, nullifierOrSignature, relayOrigin)
+        DV->>+GW: getVoteStatus(processAddress, nullifierOrSignature, relayMessagingUri)
 
             GW-->>RL: requestVoteStatus(processAddress, nullifierOrSignature)
-            RL-->>GW: (batchId?, batchOrigin?)
+            RL-->>GW: (batchId?, batchContentUri?)
 
-        GW-->>-DV: (batchId?, batchOrigin?)
+        GW-->>-DV: (batchId?, batchContentUri?)
 
-        alt it does not trust the batchOrigin
+        alt it does not trust the batchContentUri
 
             DV->>+GW: Process.getBatch(batchId)
             GW->>+BC: Process.getBatch(batchId)
-            BC-->>-GW: (processAddress, batchOrigin)
-            GW-->>-DV: (processAddress, batchOrigin)
+            BC-->>-GW: (processAddress, batchContentUri)
+            GW-->>-DV: (processAddress, batchContentUri)
 
         end
 
@@ -572,10 +572,10 @@ sequenceDiagram
 
         DV->>+GW: Process.get(processAddress)
         GW->>+BC: Process.get(processAddress)
-        BC-->>-GW: (name, metadataOrigin, privateKey)
-        GW-->>-DV: (name, metadataOrigin, privateKey)
+        BC-->>-GW: (name, metadataContentUri, privateKey)
+        GW-->>-DV: (name, metadataContentUri, privateKey)
 
-    DV-->>-SC: (name, metadataOrigin)
+    DV-->>-SC: (name, metadataContentUri)
 
     SC->>+DV: Swarm.get(metadataHash)
 
@@ -600,8 +600,8 @@ sequenceDiagram
 
             DV->>+GW: Process.getBatch(batchId)
             GW->>+BC: Process.getBatch(batchId)
-            BC-->>-GW: (type, relay, batchOrigin)
-            GW-->>-DV: (type, relay, batchOrigin)
+            BC-->>-GW: (type, relay, batchContentUri)
+            GW-->>-DV: (type, relay, batchContentUri)
 
             DV->>+GW: fetchFile(batchHash)
             GW->>+SW: Swarm.get(batchHash)

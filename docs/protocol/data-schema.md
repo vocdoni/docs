@@ -537,6 +537,7 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 ## Gateway requests
 
 ### Add Census Claim
+
 ```json
 {
   "method": "addCensusClaim",
@@ -550,6 +551,23 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
   "error": bool
 }
 ```
+
+### Add Census Claim Bulk
+
+```json
+{
+  "method": "addCensusClaimBulk",
+  "censusId": "hexString",
+  "censusOrigin": "hexString",
+  "claimData": "hexString"
+}
+```
+```json
+{
+  "error": bool
+}
+```
+
 **Used in:**
 - [Adding users to a census](vocdoni.io/docs/#/protocol/sequence-diagrams?id=adding-users-to-a-census)
 
@@ -665,14 +683,14 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 ```json
 {
   "method": "fetchFile",
-  "uri": "uri"
+  "uri": "<content uri>"
 }
 ```
 
 ```json
 {
   "error": bool,
-  "response": ["base64File"]
+  "response": ["base64Payload"]
 }
 ```
 **Used in:**
@@ -682,19 +700,19 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 - [Vote scrutiny](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=vote-scrutiny)
 
 ### Add File
+
 Available only post-auth on trusted gateways
 ```json
 {
   "method": "addFile",
-  "type": "ipfs/swarm",
-  "content": "base64File"
+  "type": "swarm",         // Valid: ["ipfs", "swarm"]
+  "content": "base64Payload"
 }
 ```
-
 ```json
 {
   "error": bool,
-  "response": ["uri"]
+  "response": ["<content uri>"]
 }
 ```
 **Used in:**
