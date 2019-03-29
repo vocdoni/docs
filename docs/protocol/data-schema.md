@@ -8,7 +8,7 @@ However, decentralized ecosystems like a distributed vote system need much stron
 
 Many of the schemas descussed below need to point to external data that may be available through various channels.
 
-In order to denominate them and provide a prioritized list of fallbacks in a single place, the following format is used, depending on the type of resource. 
+In order to denominate them and provide a prioritized list of fallbacks in a single place, **Content URI's** or **Messaging URI's** are used, depending on the type of resource. 
 
 ### Content URI
 
@@ -27,8 +27,8 @@ Supported protocols:
 - `bzz://<contentHash>`
 - `bzz-feed://<feedHash>`
 - `ipfs://<contentHash>`
-- `http://<url>/<route>`
 - `https://<url>/<route>`
+- `http://<url>/<route>`
 
 URI order matters:
 - Clients are expected to try using URI's from left to right
@@ -65,7 +65,7 @@ The metadata of an entity is an aggregate of information living on the Blockchai
 - Data on the blockchain provides durability and ensures integrity checking
 - Data on P2P filesystems allows to transfer larger data objects in a more flexible way
 
-The starting point is the **[Entity Resolver](/protocol/entity-metadata?id=entity-resolver)** contract, but it is tightly coupled with the **[Entity Metadata](/protocol/entity-metadata?id=data-schema)** living on P2P filesystems.
+The starting point is the **[Entity Resolver](/protocol/entity-metadata?id=entity-resolver)** contract, but it is tightly coupled with the **[JSON Entity Metadata](/protocol/entity-metadata?id=data-schema)** living on P2P filesystems.
 
 **Please, refer to the [Entity Metadata](/protocol/entity-metadata?id=entity-metadata) section to get the full details on how an Entity works.**
 
@@ -87,7 +87,7 @@ Voting processes are declared on the Blockchain and store the critical informati
 
 The metadata of voting process is also an aggregate of data from the Blockchain and P2P filesystems. 
 
-The starting point is the **[Voting Process](/smart-contracts?id=voting-process)** contract, but it is tightly coupled with the **[Process Metadata](/protocol/process-metadata)** living on P2P filesystems.
+The starting point is the **[Voting Process](/smart-contracts?id=voting-process)** contract, but it is tightly coupled with the **[JSON Process Metadata](/protocol/process-metadata)** living on P2P filesystems.
 
 **Please, refer to the [Process Metadata](/protocol/process-metadata) section to get the full details on how a Process works.**
 
@@ -111,11 +111,11 @@ The starting point is the **[Voting Process](/smart-contracts?id=voting-process)
 
 ## Modulus Group Array
 
-Linkable Ring Signatures allow to anonymize a signature within a group of keys. However, signing with the entire census for every single vote would mean storing and transfering very large amounts of data. 
+As [explained here](/protocol/franchise-proof?id=_2-create-census-rings), Linkable Ring Signatures allow to anonymize a signature within a group of keys. However, signing with the entire census for every single vote would mean storing and transfering very large amounts of data. 
 
-A solution is to break a large census into smaller groups and anonymize signatures within groups of 500~1000 keys instead of any greater values. 
+A solution is to break a large census into smaller groups and anonymize signatures within groups of 800~1000 keys instead of any greater values. 
 
-To this end, public keys are grouped by the modulus of dividing them by a predefined number. In order to store and fetch an array of keys from the Process Metadata, the following schema is used:
+To this end, public keys are grouped by the modulus of dividing them by a predefined number. To store and fetch a specific array of keys from the Process Metadata, the following schema is used:
 
 ```json
 {
@@ -143,7 +143,7 @@ To this end, public keys are grouped by the modulus of dividing them by a predef
 }
 ```
 
-It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?id=vote-envelope-zk-snarks)
+It is encrypted within the corresponding [Vote Envelope](#vote-envelope-zk-snarks)
 
 **Used in:**
 
@@ -162,7 +162,7 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
 }
 ```
 
-It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?id=vote-envelope-ring-signature)
+It is encrypted within the corresponding [Vote Envelope](#vote-envelope-ring-signature)
 
 **Used in:**
 
@@ -178,7 +178,7 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
     "version": "1.0",    // Protocol version
     "type": "zk-snarks-envelope",
     "processAddress": "0x1234...",
-    "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the vote package JSON
+    "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the JSON Vote Package
     "nullifier": "0x1234...",
     "proof": "01234...",
     "censusMerkleRoot": "0x1234..."
@@ -197,7 +197,7 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
     "version": "1.0",    // Protocol version
     "type": "lrs-envelope",
     "processAddress": "0x1234...",
-    "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the vote package JSON
+    "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the JSON Vote Package
     "signature": "0x1234...", // The ring signature over the processAdress
     "publicKeyModulus": 4321,
     "censusMerkleRoot": "0x1234..."  // To identify the census version used
@@ -322,18 +322,7 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
 
 ## Content Data
 
-Used to contain news and data posts.
-
-```json
-[{
-    "guid": "123",
-    "title": "New voting process available",
-    "description": "Universal Basic Income announced",
-    "pubDate": "2019-01-01T10:00:00.000Z",
-    "content": "<h2>Universal Basic Income</h2><p>HTML content goes here</p>",
-    "language": "en"
-}]
-```
+Used to contain news and data posts. Decentralized content supported by the client app is expected to conform to the specs of a [JSON Feed](https://jsonfeed.org/) and be accessible through a [Content URI](#content-uri).
 
 ## Census Service
 
@@ -371,11 +360,11 @@ Depending on the `method`, certain parameters are expected or optional:
 
 - [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
 
-#### Census genProof
+#### Census generateProof
 
 ```json
 {
-    "method": "genProof",
+    "method": "generateProof",
     "censusId": "string",
     "claimData": "string",
     "rootHash": "optional-string"  // from a specific version
@@ -385,9 +374,19 @@ Depending on the `method`, certain parameters are expected or optional:
 **Used in:**
 
 - [Check census inclusion](/protocol/sequence-diagrams?id=check-census-inclusion)
-- [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
+<!-- - [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks) -->
 
-#### Census getChunk
+#### Census addBulk
+
+`TODO`
+
+#### Census setParams
+
+`TODO`
+
+Used in LRS to define the processId (useful to derive keys) and the maxSize of a census.
+
+<!-- #### Census getChunk
 
 ```json
 {
@@ -401,8 +400,9 @@ Depending on the `method`, certain parameters are expected or optional:
 **Used in:**
 
 - [Casting a vote with Linkable Ring Signatures](/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
+-->
 
-#### Census checkProof
+<!-- #### Census checkProof
 
 ```json
 {
@@ -413,8 +413,9 @@ Depending on the `method`, certain parameters are expected or optional:
     "proofData": "string"
 }
 ```
+-->
 
-#### Census getIdx
+<!-- #### Census getIdx
 
 ```json
 {
@@ -424,6 +425,7 @@ Depending on the `method`, certain parameters are expected or optional:
     "rootHash": "optional-string"
 }
 ```
+-->
 
 #### Census dump
 
@@ -446,16 +448,6 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 
 - [Census service API specs](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
 
-#### Census addBulk
-
-`TODO`
-
-#### Census setParams
-
-`TODO`
-
-Used in LRS to define the processId (useful to derive keys) and the maxSize of a census.
-
 
 ### Census Service response payload
 
@@ -476,6 +468,7 @@ Used in LRS to define the processId (useful to derive keys) and the maxSize of a
   "pubKey": "hexString"
 }
 ```
+
 ```json
 {
   "error": bool,
@@ -566,7 +559,7 @@ Available only post-auth on trusted gateways
 ```json
 {
   "method": "addFile",
-  "type": "ipfs/swarm"
+  "type": "ipfs/swarm",
   "content": "base64File"
 }
 ```

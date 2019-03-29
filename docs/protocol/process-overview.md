@@ -1,6 +1,6 @@
-# Voting Process
+# Process overview
 
-The voting process can be decoupled in three steps.
+From a component's perspective, the system can also be decoupled in three steps.
 
 ## Starting a vote
 Given the current user database, the organizer builds a census Merkle tree with the public keys that are eligible to vote. 
@@ -18,10 +18,10 @@ CS[<center>Census Service<br/><br/><i class='fa fa-2x fa-address-book'/></center
 
 OG --> PM
 
-PM -->|fetch census Id's|CS
-PM -->|<center>fetch the Merkle<br/>root hash</center>|CS
-PM -.-|<center>pin process metatada<br/>+ pin census</center>| DATA
-PM --> |send creation transaction| BP
+PM -->|1 Fetch census Id's|CS
+PM -->|<center>2 Fetch the Merkle<br/>root hash</center>|CS
+PM -.-|<center>3 Pin process metatada<br/>+ pin census</center>| DATA
+PM --> |4 Cend creation transaction| BP
 
 subgraph 
 	BP
@@ -82,10 +82,10 @@ DATA[<center>Swarm or IPFS<br/><br/><i class='fa fa-2x fa-database'/></center>]
 BP[<center>Blockchain Process<br/><br/><i class='fab fa-2x fa-ethereum'/></center>]
 
 
-OG -->|publish vote private key|PM
-PM -->|publish vote private key|BP
-SC -->|<center>get process info<br/>get private key<br/>get batch origins</center>| BP
-SC -->|<center>fetch process metadata<br/>fetch census chunks<br/>fetch vote batches</center>| DATA
+OG -->|1 Publish vote private key|PM
+PM -->|2 Publish vote private key|BP
+SC -->|<center>3 Get process info<br/>4 Get private key<br/>5 Get batch origins</center>| BP
+SC -->|<center>6 Fetch process metadata<br/>7 Fetch census chunks<br/>8 Fetch vote batches</center>| DATA
 
 
 subgraph 
