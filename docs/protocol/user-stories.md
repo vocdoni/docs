@@ -1,6 +1,6 @@
 # User stories
 
-To understand how a decentralized voting process starts, we need to define the sequence of actions that are expected to happen.
+To understand how a decentralized voting process works, we need to define the sequence of actions that are expected to happen.
 
 ### Prior to voting
 
