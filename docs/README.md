@@ -2,6 +2,9 @@
 
 A decentralized voting system. Cryptography and distributed P2P systems have brought a new, revolutionary digital technology which might change the way society organizes: the BLOCKCHAIN.
 
-Vocdoni is a fully verifiable, censorship-resistant, and anonymous Ethereum-based voting system, designed with the scalability and ease-of-use to power national elections.
+Vocdoni is a fully verifiable, censorship-resistant, and anonymous Ethereum-based voting system, designed with the scalability and ease-of-use to support national elections.
 
-To get started, you can have a look at the [Global Architecture](/protocol/architecture).
+Get started by checking the [Global Architecture](/protocol/architecture) section.
+
+
+<img src="http://vocdoni.io/assets/images/ballotTransparent.png" alt="Vocdoni" style="position: absolute; top: 0; z-index: -10; opacity: 0.7;">
