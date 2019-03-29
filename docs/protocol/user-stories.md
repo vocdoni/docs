@@ -6,29 +6,29 @@ To understand how a decentralized voting process starts, we need to define the s
 
 - Vocdoni deploys the [Entity Resolver](/protocol/smart-contracts?id=entity-resolver) and [Voting Process](/protocol/smart-contracts?id=voting-process) smart contracts
   - Optionally, other organizations can deploy their own instances
-- The **organizer** registers an Entity to the blockchain
+- The **organizer** registers an [Entity](/protocol/entity-metadata) to the blockchain
 - The **user** creates a self-sovereign identity on a mobile app
   - Identified by a friendly name
-  - Optionally, he/she adds a second identity
+  - Optionally, he/she created additional identities
 - The **user** restores an identity
 	- Importing a recovery mnemonic
 	- Using an encrypted back up (QR)
-- The **user** subscribes to an Entity
-	- The Entity could be predefined by the parameters of the app
-	- Entities can be fetched from a list of boot entities
+- The **user** subscribes to an [Entity](/protocol/entity-metadata)
+	- The [Entity](/protocol/entity-metadata) could be predefined in the parameters of the app in compile time
+	- Entities can also be fetched from a list of boot entities
 		- The app gets the default [Entity Resolver](/protocol/smart-contracts?id=entity-resolver) address and the Entity ID of Vocdoni from `dvote-js`
 		- The app fetches the boot entities of Vocdoni and displays them
 		- It is also possible to use other instances and fetch the bootnodes of a specific Entity instead
-	- The user can also regsiter to an Entity by following a deep link with the [Entity Resolver](/protocol/smart-contracts?id=entity-resolver) address and the Entity ID
+	- The user can also subscribe to an Entity by following a deep link with the [Entity Resolver](/protocol/smart-contracts?id=entity-resolver) address and the Entity ID
 - The **user** protects his/her identity with a visual pattern or a pin
 <!-- - The **user** unlocks the app to access the content -->
 - The **user** exports an encrypted backup of his/her identity
 - The **app** checks the pending actions of the user
 	- For every Entity's action on the metadata, it fetches their visibility status
-- The **user** performs custom requests to the Entity
+- The **user** performs custom requests with the Entity's backend
 	- Sign up
-	  - Proove that the user owns the private/public key
-		- Provide personal default
+		- Proove that the user owns the private/public key
+		- Provide personal information
 	- Submit a picture
 		- Run a KYC process with a selfie and ID card pictures
 	- Make a payment
@@ -38,12 +38,11 @@ To understand how a decentralized voting process starts, we need to define the s
 - The **organizer** manages the user registry
 	- View and edit personal details
 	- Manage the attributes of a public key or account
-	- Revoke attributes
 	- Trigger a census update when a user's flags are changed
 - The **organizer** manages a certain census
 	- Manage a census
-		- Define the filters that a user must satisfy to be included in a census
-		- Send a transaction to the Entity Resolver, stating that the Census Service has to manage a certain Census Id and allowing certain public keys to alter it
+		- Define the filters that a user must satisfy to be included in such census
+		- Send a transaction to the [Entity Resolver](/protocol/smart-contracts?id=entity-resolver), stating that the [Census Service](/protocol/architecture?id=census-service) has to manage a certain Census Id and allowing certain public keys to alter it
 	- Dropping census
 - The **organizer** manages public content to be consumed on the client app
 - The **user** accesses the public content of the Entity
@@ -56,11 +55,11 @@ To understand how a decentralized voting process starts, we need to define the s
 	- Get the Merkle Root Hash
 	<!-- - Publish the Merkle Tree to Swarm -->
 	- On ZK Snarks processes:
-		- Push the eligible public keys to the Census Service
+		- Push the eligible public keys to the [Census Service](/protocol/architecture?id=census-service)
 	- With Linkable Rring Signatures:
-		- Push the eligible public keys to the Census Service
+		- Push the eligible public keys to the [Census Service](/protocol/architecture?id=census-service)
 		- Push the settings of the new census so that group modulus can be created (process Id and maximum group size)
-		- Get the modulus number and the [Content URI](/protocol/data-schema?id=content-uri)'s where the Census Service is pinning every modulus group
+		- Get the modulus number and the [Content URI](/protocol/data-schema?id=content-uri)'s where the [Census Service](/protocol/architecture?id=census-service) is pinning every [modulus group](/protocol/franchise-proof?id=_2-create-census-rings)
 	- Pin the entire [Process Metadata](/protocol/data-schema?id=process-metadata) (Swarm, IPFS, etc)
 	- Send a transaction to the blockchain with the core data of the process and a [Content URI](/protocol/data-schema?id=content-uri) to the[ Process Metadata](/protocol/data-schema?id=process-metadata) file
 	- Update the list of voting processes on the [Entity Resolver](/protocol/smart-contracts?id=entity-resolver) smart contract
@@ -69,8 +68,8 @@ To understand how a decentralized voting process starts, we need to define the s
 - The **App user** checks that he/she is part of a process' census
 - The **App user** casts a vote
 	- Using **ZK Snarks**
-		- The app requests the census proof to the **Census Service**
-			- The **Census service** replies with the merkle proof
+		- The app requests the census proof to the **[Census Service](/protocol/architecture?id=census-service)**
+			- The **[Census service](/protocol/architecture?id=census-service)** replies with the merkle proof
 		- The app computes the nullifier
 		- The app encrypts the **Vote Value** and a nonce with the public key of the voting process
 		- The app fetches the proving and verification keys and generates the **Zero-Knowledge Proof** that he/she is eligible to cast a valid vote
@@ -82,7 +81,7 @@ To understand how a decentralized voting process starts, we need to define the s
 		- The **Gateway** broadcasts the [Vote Envelope](/protocol/data-schema?id=vote-envelope-zk-snarks) to the Relay's public key
 		- The **Relay** receives the **Gateway** message and sends back an ACK message
 	- Using **Ring Signatures**
-		- The app requests the chunk of census (Modulus group) where he/she belongs from the given [Content URI](/protocol/data-schema?id=content-uri) defined on the metadata
+		- The app requests the chunk of census ([modulus group](/protocol/franchise-proof?id=_2-create-census-rings)) where he/she belongs from the given [Content URI](/protocol/data-schema?id=content-uri) defined on the metadata
 		- The app encrypts the **Vote Value** and a nonce with the public key of the voting process
 		- The app signs the [Vote Package](/protocol/data-schema?id=vote-package-ring-signature) with the **Ring Signature**
 		<!-- - ~POW~ -->
@@ -96,7 +95,7 @@ To understand how a decentralized voting process starts, we need to define the s
 	- The **Relay** checks that none if its batches includes the current nullifier or none of the previous signatures is linked to the  new one
 	- The **Relay** checks that the current timestamp is within the start/end blocks
 	- If the [Vote Package](/protocol/data-schema?id=vote-package) contains a **ZK Proof**, the **Relay** checks that the proof is valid
-	- If the [Vote Package](/protocol/data-schema?id=vote-package) contains a **Ring Signature**, the **Relay** checks that the signature belongs to the modulus group, and the modulus grouop belongs to the census
+	- If the [Vote Package](/protocol/data-schema?id=vote-package) contains a **Ring Signature**, the **Relay** checks that the signature belongs to the [modulus group](/protocol/franchise-proof?id=_2-create-census-rings), and the modulus grouop belongs to the census
 	- The **Relay** adds the [Vote Package](/protocol/data-schema?id=vote-package) into its next batch
 - A **Relay** registers a [Vote Batch](/protocol/data-schema?id=vote-batch)
 	- The **Relay** adds a set of [Vote Packages](/protocol/data-schema?id=vote-package) on Swarm/IPFS
@@ -115,18 +114,18 @@ To understand how a decentralized voting process starts, we need to define the s
 - A **Scrutinizer** does the vote count
 	- The **Scrutinizer** fetches the [Process Metadata](/protocol/data-schema?id=process-metadata) and the private key
 	- The **Scrutinizer** fetches the list of batchId's from the `processAddress` on the Blockchain
-	- The **Scrutinizer** fetches the data of every batch registered
+	- The **Scrutinizer** fetches the data of every [Vote Batch](/protocol/data-schema?id=vote-batch) registered
 	- The **Scrutinizer** ensures that [Vote Batches](/protocol/data-schema?id=vote-batch) come from trusted Relays, correspond to the given processAddress and contain votes with the right `type` of verification
 	- The **Scrutinizer** merges the batch votes into a single list
 	- The **Scrutinizer** detects duplicate nullifiers or singatures
 		- It only keeps the vote submitted in the latest batch
 	- On ZK votes:
-		- The **Scrutinizer** validates the given ZK Snark proof and checks that the given censusMerkleRoot matches the process' metadata
+		- The **Scrutinizer** validates the given ZK Snark proof and checks that the given censusMerkleRoot matches the one in the [Process Metadata](/protocol/data-schema?id=process-metadata)
 	- On LRS votes: 
-		- The **Scrutinizer** groups the votePackages by their publicKeyModulus
+		- The **Scrutinizer** groups the [Vote Packages](/protocol/data-schema?id=vote-package) by their [publicKeyModulus](/protocol/franchise-proof?id=_2-create-census-rings)
 		- For every group, the **Scrutinizer** checks the given ring signature against the rest of the group's votes
 	- The **Scrutinizer** decrypts the encrypted vote of the valid votes and computes the sum of appearences of every Vote Value
-		- Any non-valid Vote Values is considered as a null vote
+		- Any Vote Value other than the ones defined in the [Process Metadata](/protocol/data-schema?id=process-metadata) is counted as a **null vote**
 - The **organizer** broadcasts the results of the voting process and the actual Vote Values
 
 **Potential alternatives:**
