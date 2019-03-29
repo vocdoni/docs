@@ -16,8 +16,7 @@ However, decentralized ecosystems like a distributed vote system need much stron
 - [JSON Feed](#json-feed)
 - [Census Service requests](#census-service-requests)
 - [Gateway requests](#gateway-requests)
-- [](#)
-- [](#)
+- [Relay requests](#relay-requests)
 
 ## Data origins
 
@@ -540,7 +539,7 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 ### Add Census Claim
 ```json
 {
-  "method": "addCensusClaim
+  "method": "addCensusClaim",
   "censusId": "hexString",
   "censusOrigin": "hexString",
   "claimData": "hexString"
@@ -557,7 +556,7 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 ### Get Census Root
 ```json
 {
-  "method": "getCensusRoot"
+  "method": "getCensusRoot",
   "censusId": "hexString"
 }
 ```
@@ -596,6 +595,7 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
   "publicKey": "hexString"
 }
 ```
+
 ```json
 {
   "error": bool,
@@ -704,7 +704,7 @@ Available only post-auth on trusted gateways
 
 ...
 
-## Relay requests payload
+## Relay requests
 
 `Work in progress`
 
