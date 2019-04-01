@@ -77,9 +77,45 @@ sequenceDiagram
 
 - [Entity metadata](/protocol/entity-metadata.md)
 
-<!-- ### Identity creation -->
-
 ### Entity subscription
+
+#### Initial discovery
+
+A user wants to locate an initial list of entities without any prior information.
+
+```mermaid
+
+sequenceDiagram
+    participant App
+    participant DV as dvote-js
+    participant BS as Bootstrap Server
+    participant GW as Gateway/Web3
+    participant ER as Entity Resolver contract
+
+    alt has predefined entityId and resolver
+        App->>App: readConfigParams()
+    else 
+        App->>DV: getBootGateways()
+        DV->>BS: GET /gateways
+        note right of BS: Hardcoded addresses<br/>Provided by Vocdoni
+        BS-->>DV: gatewayRef[]
+        DV-->>App: gatewayRef[]
+
+        App->>DV: getBootSettings()
+        DV-->>App: (entityId, resolver)
+    end
+    App->>DV: getBootEntities(resolver, entityId)
+        DV->>GW: text(entityId, "vndr.vocdoni.entities.boot")
+            GW->>ER: text(entityId, "vndr.vocdoni.entities.boot")
+            ER-->>GW: entityRef[]
+        GW-->>DV: entityRef[]
+    DV-->>App: 
+
+```
+
+#### Listing boot entities
+
+A user wants to visualize a list of entities so he/she can eventually subscribe to one.
 
 ```mermaid
 
@@ -90,54 +126,50 @@ sequenceDiagram
     participant ER as Entity Resolver contract
     participant IPFS as Ipfs/Swarm
 
-    App->>App: get reference entityId/resolver from config
-    App->>DV: getBootEntities(resolver, entityId)
-    DV->>GW: list(entityId, "vndr.vocdoni.entities.boot")
-    GW->>ER: list(entityId, "vndr.vocdoni.entities.boot")
-    ER-->>GW: entitiesList[]
-    GW-->>DV: entitiesList[]
-
-    alt default
-        loop
-            DV->>GW: text(entities[i], "vndr.vocdoni.meta")
-                GW->>ER: text(entities[i], "vndr.vocdoni.meta")
-                ER-->>GW: entityMetadataHash
-            GW-->>DV: entityMetadataHash
-            DV->>GW: fetchFile(entityMetadataHashURI)
-                GW->>IPFS: Ipfs.get(entityMetadataHash)
-                IPFS-->GW: entityMetadata
-            GW-->DV: entityMetadata
-        end
-    end
-
-    alt if default fails
-        loop
+    loop entityRef[]
+        App->>DV: Entity.fetch(entityId, resolver)
+        alt Blockchain and Swarm respond
+            loop
+                DV->>GW: text(entities[i], "vndr.vocdoni.meta")
+                    GW->>ER: text(entities[i], "vndr.vocdoni.meta")
+                    ER-->>GW: metadataContentUri
+                GW-->>DV: metadataContentUri
+                DV->>GW: fetchFile(metadataContentUri)
+                    GW->>IPFS: Ipfs.get(metadataContentUri)
+                    IPFS-->>GW: entityMetadata
+                GW-->>DV: entityMetadata
+            end
+        else P2P fetching fails
             DV->>GW: text(entities[i], "vndr.vocdoni.name")
             GW->>ER: text(entities[i], "vndr.vocdoni.name")
             ER-->>GW: entityName
             GW-->>DV: entityName
 
-            loop necessary data
+            loop core values
                 DV->>GW: text(entities[i], key)
                 GW->>ER: text(entities[i], key)
                 ER-->>GW: data
                 GW-->>DV: data
             end
         end
+        DV-->>App:  entityMetadata
     end
 
-    DV-->>App:  entitiesMetadata []
-    App->>App: Displays Entites
-    App->>App: User subscribes
+    App->>App: Display Entites
+    App->>App: Subscribe
 ```
 
 **Used schemas:**
 
 - [Entity metadata](/protocol/entity-metadata.md)
 
+**Related:**
+
+- [Gateway Boot Nodes](/protocol/entity-metadata?id=gateway-boot-nodes)
+
 **Notes:**
 
-- In the case of React Native apps, DVote JS will need to run on the WebRuntime component
+- In the case of React Native apps, DVote JS will need to run on the [Web Runtime component](/protocol/architecture?id=web-runtime-for-react-native)
 
 ### Custom requests to an Entity
 
