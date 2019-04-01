@@ -165,16 +165,22 @@ This could create two sources of truth. The metadata in the contract itself and 
     "fr": "Dans un état souverain"
   },
   "votingProcessInstance": "0xccc",
-  "gatewayBootnodes": [
+  "bootnodes": [  // Bootnodes providing a list of active Gateways
     {
-      // Client targeted fields
-      "uri": "https://hostname:port/route/name",    // Where to perform an HTTP GET to fetch a Gateway IP list
-
-      // Gateway targeted fields
-      "hearbeatMessagingUri": "pss://<publicKey@address>,shh://<publicKey>",   // Messaging URI to confirm that the Gateway is active
-      "heartbeatTimeout": 60000,  // Milliseconds after which a Gateway is considered to be down
-      "difficulty": integer
-    }
+      "update": "pss://publicKey@0x0",
+      "fetch": "https://hostname:port/route"
+    },
+  ],
+  // List of currently active Relays. This list is just for informational purposes.
+  // The effective list of relays for a voting process is within the Process Metadata
+  // and the Voting Process smart contract
+  "relays": [
+      {
+          "address": "0x1234...",     // PSS adress to help routing messages
+          "publicKey": "0x23456...",  // Key to encrypt data sent to it
+          "uri": "<messaging-uri>"    // Where to send messages. See Data origins > Messaging URI
+      }, 
+      ...
   ],
   "actions": [ <actions> ], // See Entity Actions below
   "avatar": "https://liberland.org/logo.png,bzz://12345,ipfs://12345",
@@ -227,7 +233,7 @@ Considerations:
 * Any serious organization should definitely provide its own set of Gateways, in order not to depend on us
 * If you hare hosting your bootnode server and/or your own Gateways, tell us about it and we can include them too
 
-The `vndr.vocdoni.bootnodes` text field provides a data structure with the currently active bootnodes:
+The `vndr.vocdoni.gateway.bootnodes` text field provides a data structure with the currently active bootnodes:
 
 ```json
 [

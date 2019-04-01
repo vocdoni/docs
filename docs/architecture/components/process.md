@@ -167,6 +167,17 @@ The JSON payload below is typically stored on Swarm or IPFS, so anyone can fetch
             "metadata": "<content uri>" // Organizer's metadata
         }
     },
+    // List of currently active Relays. This saves a query from the user to the blockchain, once a
+    // process has been already fetched.
+    // The actually binding list of relays for Voting Process is within the smart contract
+    "relays": [
+        {
+            "address": "0x1234...",     // PSS adress to help routing messages
+            "publicKey": "0x23456...",  // Key to encrypt data sent to it
+            "uri": "<messaging-uri>"    // Where to send messages. See Data origins > Messaging URI
+        }, 
+        ...
+    ],
     "census": {
         "id": "entity-people-of-legal-age",  // Census ID to use
         "origin": "<messaging uri>", // Messaging URI of the Census Service to request data from
@@ -202,4 +213,3 @@ The JSON payload below is typically stored on Swarm or IPFS, so anyone can fetch
 **Notes:**
 
 - The `voteType` field indicates the scrutiny method that will be used for the process. Any vote package generated with an invalid voteType will be discarded.
-- The list of authorized relays is available on the Process smart contract
