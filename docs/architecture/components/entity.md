@@ -122,6 +122,7 @@ Below is a table with the proposed standard for key/value denomination.
 |-------------------------------------------|--------------------------------------------------------|----------------------------------------------------------------|
 | `vndr.vocdoni.process.instance`            | 0xccc                                                | Address of the Processes Smart Contract instance used by the entity                        |
 | `vndr.vocdoni.gateway.bootnodes`           | [{&lt;gatewayBootnode&gt;}, ...]                             | Data of the boot nodes to ask for active gateways. [See below](#gateway-boot-nodes) for more details                         |
+| `vndr.vocdoni.bootnodes.update`           | {&lt;bootnodeUpdateParams&gt;}                             | Parameters for Gateways to report availability to boot nodes. [See below](#boot-nodes-gateway-updates) for more details                         |
 | `vndr.vocdoni.processess.active`          | ["0x987","0x876"]                                    | List of Process Id's displayed as available by the client                           |
 | `vndr.vocdoni.processess.ended`        | ["0x887","0x886"]                                    | List of Process Id's that already ended                           |
 | `vndr.vocdoni.processess.upcoming`            | ["0x787","0x776"]                                    | List of Process Id's that will become active in the future                           |
@@ -225,6 +226,35 @@ Considerations:
 * The Gateway servers provided are a best effort starting point
 * Any serious organization should definitely provide its own set of Gateways, in order not to depend on us
 * If you hare hosting your bootnode server and/or your own Gateways, tell us about it and we can include them too
+
+The `vndr.vocdoni.bootnodes` text field provides a data structure with the currently active bootnodes:
+
+```json
+[
+  {
+    "update": "pss://publicKey@0x0",        // Messaging URI to use for notifying updates to the bootnode
+    "fetch": "https://hostname:port/route"  // URL to use for fetching the list of Gateways
+  },
+  ...
+]
+```
+
+#### Boot nodes Gateway updates
+
+Bootnode servers provide the list of available gateways at the time of requesting. In order to keep an accurate state, Gateways need to notify events to the Bootnodes.
+
+To this end, the `vndr.vocdoni.bootnodes.update` text field provides the details that Gateways need to use:
+
+```json
+{
+  "timeout": 60000, // milliseconds after which a Gateway is marked as down
+  "topic": "vocdoni-gatways-update",  // Topic used for the messaging protocol
+  "difficulty": 1000                  // Difficulty of the proof of work, to prevent spammers
+}
+```
+
+This value is global and affects all the Gateways of the Entity.
+
 
 ### Entities list
 
