@@ -28,49 +28,8 @@
 
 --------------------------------------------------------------------------------
 
-### Contract deployment (Entity)
-
-```mermaid
-sequenceDiagram
-    participant V as Vocdoni 
-    participant B as Blockchain 
-
-    V->>+B: Entity.deploy()
-    B-->>-V: address
-```
-
-### Contract deployment (Process)
-
-```mermaid
-sequenceDiagram
-    participant V as Vocdoni
-    participant B as Blockchain
-
-    V->>+B: Process.deploy()
-    B-->>-V: address
-```
-
 ### Set Entity metadata
-
-The `entityId` is the unique identifier of an entity:
-
-```solidity
-bytes32 entityId = keccak256(entityAddress);
-```
-
-An Entity starts existing at the moment it has some metadata stored in the resolver smart contract
-
-Setting any metadata to the entity is done via the the `Storage of text records` or via `Storage of lists of text` interfaces used by the resolver contract:
-
-```solidity
-
-setText(entityId, key, value);
-
-setListText(entityId, key, index, value);
-
-```
-
-See [Entity metadata](/protocol/entity-metadata.md) for all the keys and data-schemas.
+An Entity starts existing at the moment it has certain metadata stored on the [EntityResolver](/protocol/entity-metadata?id=entityresolver) smart contract. 
 
 ```mermaid
 
@@ -83,19 +42,33 @@ sequenceDiagram
     PM->>DV: getEntityId(entityAddress)
     DV-->>PM: entityId
 
+    alt has a Gateway
+        Note right of PM: Set Metamask <br/> to the Gateway
+    else
+        Note right of PM: Boot a GW and tell <br/> Metamask to use it
+    end
+
     PM->>DV: getDefaultResolver()
+        Note right of DV: Hardcoded default Entity<br/>Resolver instance
     DV-->>PM: resolverAddress
 
-    PM->>PM: Fill-up name
-    PM->>DV: setName(value)
-        DV->>GW: setText(entityId,"name","Liberland")
-        GW->>ER: setText(entityId,"name","Liberland")
 
-    loop Applies to any key
+    PM->>PM: Fill-up name
+    PM->>+DV: EntityResolver.setName(entityId, name)
+        DV->>GW: setText(entityId, "name", name)
+            GW->>ER: <transaction>
+            ER-->>GW: 
+        GW-->>DV: 
+    DV-->>-PM: 
+
+    loop additional key/values
         PM->>PM: Fill-up key-value
-        PM->>DV: set[key](value)
-        DV->>GW: setText(entityId,key,value)
-        GW->>ER: setText(entityId,key,value)
+        PM->>+DV: EntityResolver.set(entityId, key, value)
+            DV->>GW: setText(entityId, key, value)
+                GW->>ER: <transaction>
+                ER-->>GW: 
+            GW-->>DV: 
+        DV-->>-PM: 
     end
 
 ```
@@ -104,9 +77,45 @@ sequenceDiagram
 
 - [Entity metadata](/protocol/entity-metadata.md)
 
-<!-- ### Identity creation -->
-
 ### Entity subscription
+
+#### Initial discovery
+
+A user wants to locate an initial list of entities without any prior information.
+
+```mermaid
+
+sequenceDiagram
+    participant App
+    participant DV as dvote-js
+    participant BS as Bootstrap Server
+    participant GW as Gateway/Web3
+    participant ER as Entity Resolver contract
+
+    alt has predefined entityId and resolver
+        App->>App: readConfigParams()
+    else 
+        App->>DV: getBootGateways()
+        DV->>BS: GET /gateways
+        note right of BS: Hardcoded addresses<br/>Provided by Vocdoni
+        BS-->>DV: gatewayRef[]
+        DV-->>App: gatewayRef[]
+
+        App->>DV: getBootSettings()
+        DV-->>App: (entityId, resolver)
+    end
+    App->>DV: getBootEntities(resolver, entityId)
+        DV->>GW: text(entityId, "vndr.vocdoni.entities.boot")
+            GW->>ER: text(entityId, "vndr.vocdoni.entities.boot")
+            ER-->>GW: entityRef[]
+        GW-->>DV: entityRef[]
+    DV-->>App: 
+
+```
+
+#### Listing boot entities
+
+A user wants to visualize a list of entities so he/she can eventually subscribe to one.
 
 ```mermaid
 
@@ -117,54 +126,50 @@ sequenceDiagram
     participant ER as Entity Resolver contract
     participant IPFS as Ipfs/Swarm
 
-    App->>App: get reference entityId/resolver from config
-    App->>DV: getBootEntities(resolver, entityId)
-    DV->>GW: list(entityId, "vndr.vocdoni.entities.boot")
-    GW->>ER: list(entityId, "vndr.vocdoni.entities.boot")
-    ER-->>GW: entitiesList[]
-    GW-->>DV: entitiesList[]
-
-    alt default
-        loop
-            DV->>GW: text(entities[i], "vndr.vocdoni.this")
-            GW->>ER: text(entities[i], "vndr.vocdoni.this")
-            ER-->>GW: entityMetadataHash
-            GW-->>DV: entityMetadataHash
-            DV->>GW: fetchFile(entityMetadataHashURI)
-            GW->>IPFS: Ipfs.get(entityMetadataHash)
-            IPFS-->GW: entityMetadata
-            GW-->DV: entityMetadata
-        end
-    end
-
-    alt if default fails
-        loop
+    loop entityRef[]
+        App->>DV: Entity.fetch(entityId, resolver)
+        alt Blockchain and Swarm respond
+            loop
+                DV->>GW: text(entities[i], "vndr.vocdoni.meta")
+                    GW->>ER: text(entities[i], "vndr.vocdoni.meta")
+                    ER-->>GW: metadataContentUri
+                GW-->>DV: metadataContentUri
+                DV->>GW: fetchFile(metadataContentUri)
+                    GW->>IPFS: Ipfs.get(metadataContentUri)
+                    IPFS-->>GW: entityMetadata
+                GW-->>DV: entityMetadata
+            end
+        else P2P fetching fails
             DV->>GW: text(entities[i], "vndr.vocdoni.name")
             GW->>ER: text(entities[i], "vndr.vocdoni.name")
             ER-->>GW: entityName
             GW-->>DV: entityName
 
-            loop necessary data
+            loop core values
                 DV->>GW: text(entities[i], key)
                 GW->>ER: text(entities[i], key)
                 ER-->>GW: data
                 GW-->>DV: data
             end
         end
+        DV-->>App:  entityMetadata
     end
 
-    DV-->>App:  entitiesMetadata []
-    App->>App: Displays Entites
-    App->>App: User subscribes
+    App->>App: Display Entites
+    App->>App: Subscribe
 ```
 
 **Used schemas:**
 
 - [Entity metadata](/protocol/entity-metadata.md)
 
+**Related:**
+
+- [Gateway Boot Nodes](/protocol/entity-metadata?id=gateway-boot-nodes)
+
 **Notes:**
 
-- In the case of React Native apps, DVote JS will need to run on the WebRuntime component
+- In the case of React Native apps, DVote JS will need to run on the [Web Runtime component](/protocol/architecture?id=web-runtime-for-react-native)
 
 ### Custom requests to an Entity
 
@@ -181,10 +186,10 @@ The user selects an action from the entityMetadata > actions available.
 ```mermaid
 sequenceDiagram
     participant App
-    participant UR as User Registry
+    participant UR as WebView<br/>User Registry
     participant DB as Internal Database
 
-    App->>UR: Navigate to: ACTION-URL?publicKey=0x1234&censusId=0x4321
+    App->>UR: Go to: <action-url>?publicKey=0x1234&censusId=0x4321
         activate UR
             Note right of UR: Fill the form
         deactivate UR
@@ -226,25 +231,29 @@ sequenceDiagram
 
 
     loop pendingUsers
-        PM->>DV: Census.addCensusClaim(censusId, censusOrigin, claimData, web3Provider)
-        activate DV
-        DV->>DV: signRequestPayload(payload, web3Provider)
-        deactivate DV
-        DV->>GW: addCensusClaim(addClaimPayload)
-        GW->>CS: addCensusClaim(addClaimPayload)
-        CS-->>GW: success
-        GW-->>DV: success
+        PM->>DV: Census.addClaim(censusId, censusMessagingURI, claimData, web3Provider)
+            activate DV
+                DV->>DV: signRequestPayload(payload, web3Provider)
+            deactivate DV
+
+            Note right of DV: TO DO: Review calls
+
+            DV->>GW: addCensusClaim(addClaimPayload)
+                GW->>CS: addClaim(claimPayload)
+                CS-->>GW: success
+            GW-->>DV: success
         DV-->>PM: success
     end
 ```
 
 **Used schemas:**
 
-- [addClaimPayload](/protocol/data-schema?id=census-addclaim)
-
-## Voting
+- [Census Service - addClaim](/protocol/data-schema?id=census-service-addclaim)
+- [Census Service - addClaimBulk](/protocol/data-schema?id=census-service-addclaimbulk)
 
 --------------------------------------------------------------------------------
+
+## Voting
 
 ### Voting process creation
 
@@ -255,29 +264,46 @@ sequenceDiagram
     participant GW as Gateway/Web3
     participant CS as Census Service
     participant SW as Swarm
-    participant BC as Blockchain Process
+    participant BC as Blockchain
+
+    Note right of DV: TO DO: Review calls
 
     PM->>+DV: Process.create(processDetails)
 
         DV->>+GW: censusDump(censusId, signature)
-        GW->>+CS: dump(censusId, signature)
-        CS-->>-GW: merkleTree
+            GW->>+CS: dump(censusId, signature)
+            CS-->>-GW: merkleTree
         GW-->>-DV: merkleTree
 
-        DV-->>+GW: addFile(merkleTree) : merkleTreeHash
-        GW-->>+SW: Swarm.put(merkleTree) : merkleTreeHash
+        alt Linkable Ring Signatures
+            loop modulusGroups
+                DV-->>GW: addFile(modulusGroup) : modulusGroupHash
+                    GW-->SW: Swarm.put(modulusGroup) : modulusGroupHash
+                GW-->>DV: 
+            end
+        else ZK-Snarks
+            DV-->>GW: addFile(merkleTree) : merkleTreeHash
+                GW-->SW: Swarm.put(merkleTree) : merkleTreeHash
+            GW-->>DV: 
+        end
 
         DV->>+GW: getCensusRoot(censusId)
         GW->>+CS: getRoot(censusId)
         CS-->>-GW: rootHash
         GW-->>-DV: rootHash
 
-        DV-->GW: addFile(processMetadata) : metadataHash
-        GW-->SW: Swarm.put(processMetadata) : metadataHash
+        DV-->>GW: addFile(processMetadata) : metadataHash
+            GW-->SW: Swarm.put(processMetadata) : metadataHash
+        GW-->>DV: 
 
-        DV->>+GW: create(entityId, name, metadataOrigin)
-        GW->>+BC: create(entityId, name, metadataOrigin)
-        BC-->>-GW: txId
+        DV->>+GW: Process.create(entityId, name, metadataContentUri)
+            GW->>+BC: <transaction>
+            BC-->>-GW: txId
+        GW-->>-DV: txId
+
+        DV->>+GW: EntityResolver.set(entityId, 'vndr.vocdoni.processess.active', activeProcesses)
+            GW->>+BC: <transaction>
+            BC-->>-GW: txId
         GW-->>-DV: txId
 
     DV-->>-PM: success
@@ -285,9 +311,11 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [processMetadata](/protocol/data-schema?id=process-metadata)
-- [getRootPayload](/protocol/data-schema?id=census-getroot)
-- The `processDetails` parameter is specified [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
+- [Process Metadata](/protocol/data-schema?id=process-metadata)
+- [Census Service - getRoot](/protocol/data-schema?id=census-service-addclaimbulk)
+- [Census Service - setParams](/protocol/data-schema?id=census-service-setparams)
+- [Census Service - dump](/protocol/data-schema?id=census-service-dump)
+
 
 ### Voting process retrieval
 
@@ -298,22 +326,22 @@ sequenceDiagram
     participant App as App user
     participant DV as DVote JS
     participant GW as Gateway/Web3
-    participant BC as Blockchain Process
+    participant BC as Blockchain
     participant SW as Swarm
 
-    App->>+DV: Process.fetchByEntity(entityAddress)
+    App->>+DV: Process.fetchByEntity(entityAddress, resolver)
 
-        DV->>GW: getProcessesIdByOrganizer(entityAddress)
-        GW->>BC: getProcessesIdByOrganizer(entityAddress)
-        BC-->>GW: processIDs
-        GW-->>DV: processIDs
+        DV->>GW: EntityResolver.text(entityId, "vndr.vocdoni.processes.active")
+            GW->>BC: text(entityId, "vndr.vocdoni.processes.active")
+            BC-->>GW: processId[]
+        GW-->>DV: processId[]
 
         loop processIDs
 
             DV->>GW: getMetadata(processId)
-            GW->>BC: getMetadata(processId)
-            BC-->>GW: (name, metadataOrigin, merkleRootHash, relayList, startBlock, endBlock)
-            GW-->>DV: (name, metadataOrigin, merkleRootHash, relayList, startBlock, endBlock)
+                GW->>BC: getMetadata(processId)
+                BC-->>GW: (name, metadataContentUri, merkleRootHash, relayList, startBlock, endBlock)
+            GW-->>DV: (name, metadataContentUri, merkleRootHash, relayList, startBlock, endBlock)
 
             alt Process is active or in the future
                 DV->>GW: fetchFile(metadataHash)
@@ -321,7 +349,6 @@ sequenceDiagram
                 SW-->>GW: processMetadata
                 GW-->>DV: processMetadata
             end
-
         end
 
     DV-->>-App: processesMetadata
@@ -329,7 +356,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [processMetadata](/protocol/data-schema?id=process-metadata)
+- [Process Metadata](/protocol/data-schema?id=process-metadata)
 
 ### Check census inclusion
 
@@ -344,7 +371,9 @@ sequenceDiagram
     participant GW as Gateway/Web3
     participant CS as Census Service
 
-    App->>+DV: Census.hasClaim(publicKey, censusId, censusOrigin)
+    Note right of DV: TO DO: Review calls (LRS)
+
+    App->>+DV: Census.hasClaim(publicKey, censusId, censusMessagingURI)
 
         DV->>+GW: genCensusProof(censusId, publicKey)
         GW->>+CS: genProof(censusId, publicKey)
@@ -356,12 +385,12 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [genProofPayload](/protocol/data-schema?id=census-genproof)
+- [Census Service - generateProof](/protocol/data-schema?id=census-service-generateproof)
 
 **Notes:**
 
-- `genProof` may be replaced with a call to `hasClaim`, for efficiency
-- The `censusId` and `censusOrigin` should have been fetched from a the metadata of a process
+- `generateProof` may be replaced with a call to `hasClaim`, for efficiency
+- The `censusId` and `censusMessagingURI` should have been fetched from the [Process Metadata](/protocol/process-metadata)
 
 ### Casting a vote with ZK Snarks
 
@@ -380,9 +409,9 @@ sequenceDiagram
 
         alt merkleProof not provided
 
-            DV->>+GW: genProof(processMetadata.census.id, publicKey)
+            DV->>+GW: generateProof(processMetadata.census.id, publicKey)
 
-            GW->>+CS: genProofData(censusId, publicKey)
+            GW->>+CS: PSS.broadcast(<generateProofData>)
             CS-->>-GW: merkleProof
 
             GW-->>-DV: merkleProof
@@ -397,7 +426,7 @@ sequenceDiagram
 
         DV->>DV: encryptVotePackage(package, relay.publicKey)
 
-        DV->>GW: submitVote(encryptedVotePackage, relay.origin)
+        DV->>GW: submitVote(encryptedVotePackage, relay.messagingUri)
 
             GW->>RL: transmitVoteEnvelope(encryptedVotePackage)
             RL-->>GW: ACK
@@ -409,8 +438,8 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [processMetadata](/protocol/data-schema?id=process-metadata)
-- [genProofPayload](/protocol/data-schema?id=census-genproof)
+- [Process Metadata](/protocol/data-schema?id=process-metadata)
+- [Census Service - generateProof](/protocol/data-schema?id=census-service-generateproof)
 - [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
 
 **Notes:**
@@ -432,6 +461,8 @@ sequenceDiagram
 
     App->>+DV: Process.castVote(vote, processMetadata, censusChunk?)
 
+        Note right of DV: TO DO: Review calls
+
         alt censusChunk not provided
 
             DV->>+GW: getChunk(publicKeyModulus)
@@ -449,7 +480,7 @@ sequenceDiagram
 
         DV->>DV: encryptVotePackage(package, relay.publicKey)
 
-        DV->>GW: submitVote(encryptedVotePackage, relay.origin)
+        DV->>GW: submitVote(encryptedVotePackage, relay.messagingUri)
 
             GW->>RL: transmitVoteEnvelope(encryptedVotePackage)
             RL-->>GW: ACK
@@ -461,8 +492,8 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [processMetadata](/protocol/data-schema?id=process-metadata)
-- [getChunk](/protocol/data-schema?id=census-getchunk)
+- [Process Metadata](/protocol/data-schema?id=process-metadata)
+<!-- - [getChunk](/protocol/data-schema?id=census-getchunk) -->
 - [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
 
 **Notes:**
@@ -484,7 +515,7 @@ sequenceDiagram
 
     RL-->SW: Swarm.put(voteBatch) : batchHash
 
-    RL->>+BC: Process.registerBatch(batchOrigin)
+    RL->>+BC: Process.registerBatch(batchContentUri)
     BC-->>-RL: txId
 ```
 
@@ -507,23 +538,23 @@ sequenceDiagram
     participant BC as Blockchain Process
     participant SW as Swarm
 
-    App->>DV: checkVoteStatus(processAddress, relayOrigin)
+    App->>DV: checkVoteStatus(processAddress, relayMessagingUri)
 
         DV->>DV: computeNullifierOrSignature()
 
-        DV->>+GW: getVoteStatus(processAddress, nullifierOrSignature, relayOrigin)
+        DV->>+GW: getVoteStatus(processAddress, nullifierOrSignature, relayMessagingUri)
 
             GW-->>RL: requestVoteStatus(processAddress, nullifierOrSignature)
-            RL-->>GW: (batchId?, batchOrigin?)
+            RL-->>GW: (batchId?, batchContentUri?)
 
-        GW-->>-DV: (batchId?, batchOrigin?)
+        GW-->>-DV: (batchId?, batchContentUri?)
 
-        alt it does not trust the batchOrigin
+        alt it does not trust the batchContentUri
 
             DV->>+GW: Process.getBatch(batchId)
             GW->>+BC: Process.getBatch(batchId)
-            BC-->>-GW: (processAddress, batchOrigin)
-            GW-->>-DV: (processAddress, batchOrigin)
+            BC-->>-GW: (processAddress, batchContentUri)
+            GW-->>-DV: (processAddress, batchContentUri)
 
         end
 
@@ -585,10 +616,10 @@ sequenceDiagram
 
         DV->>+GW: Process.get(processAddress)
         GW->>+BC: Process.get(processAddress)
-        BC-->>-GW: (name, metadataOrigin, privateKey)
-        GW-->>-DV: (name, metadataOrigin, privateKey)
+        BC-->>-GW: (name, metadataContentUri, privateKey)
+        GW-->>-DV: (name, metadataContentUri, privateKey)
 
-    DV-->>-SC: (name, metadataOrigin)
+    DV-->>-SC: (name, metadataContentUri)
 
     SC->>+DV: Swarm.get(metadataHash)
 
@@ -613,8 +644,8 @@ sequenceDiagram
 
             DV->>+GW: Process.getBatch(batchId)
             GW->>+BC: Process.getBatch(batchId)
-            BC-->>-GW: (type, relay, batchOrigin)
-            GW-->>-DV: (type, relay, batchOrigin)
+            BC-->>-GW: (type, relay, batchContentUri)
+            GW-->>-DV: (type, relay, batchContentUri)
 
             DV->>+GW: fetchFile(batchHash)
             GW->>+SW: Swarm.get(batchHash)
@@ -682,7 +713,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [processMetadata](/protocol/data-schema?id=process-metadata)
+- [Process Metadata](/protocol/data-schema?id=process-metadata)
 - [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
 - [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
 - [Vote Batch](/protocol/data-schema?id=vote-batch)

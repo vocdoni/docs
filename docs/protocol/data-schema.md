@@ -1,49 +1,91 @@
 # Data schema
 
-`The current contents are a work in progress`
+Traditional systems like API's present simple scenarios, in which a centralized service defined how data should be encoded.
 
-## Origins
+However, decentralized ecosystems like a distributed vote system need much stronger work on defining every interaction between any two peers on the network.
 
-The metadata of entities and voting process may refer to data origins. Data can come from various origins, including decentralized filesystems as well as traditional HTTPS endpoints. Messaging can also come from PSS or IPFS PubSub nodes.
+- [Data origins](#data-origins)
+- [Entity Metadata](#entity-metadata)
+- [Process Metadata](#process-metadata)
+- [Modulus group list](#modulus-group-list)
+- [Vote Package](#vote-package)
+- [Vote Envelope](#vote-envelope)
+- [Vote Batch](#vote-batch)
+- [Vote Summary](#vote-summary)
+- [Vote List](#vote-list)
+- [JSON Feed](#json-feed)
+- [Census Service requests](#census-service-requests)
+- [Gateway requests](#gateway-requests)
+- [Relay requests](#relay-requests)
 
-The list of potential origins can be as follows:
+## Data origins
 
-### Messaging URI
+Many of the schemas descussed below need to point to external data that may be available through various channels.
 
-`WIP`: Use [Multicodec](https://github.com/multiformats/multistream) ?
-
-Refered as `<messaging uri>` from now on.
-
-- `pss://<publicKey@address>`
-
-  - Uses Ethereum Swarm/PSS protocol
-  - address can be empty
-
-- `pubsub://<topic>`
-
-  - Uses IPFS pubsub protocol
-
-- `shh://<publicKey>`
-
-  - Uses Ethereum Whisper protocol
+In order to denominate them and provide a prioritized list of fallbacks in a single place, **Content URI's** or **Messaging URI's** are used, depending on the type of resource. 
 
 ### Content URI
 
-Refered as `<content uri>` from now on.
+Transfering data files may be done through Swarm, Swarm Feeds, IPFS and http/s. In order to use an ordered list of origins and fallbacks, Vocdoni defines data origins in a single field by using a **comma separated list of URI's** like the examples below:
+
+- `bzz://<content-hash>,https://cloudflare-ipfs.com/ipfs/<your-ipfs-hash-here>`
+    - First, try to fetch the given &lt;content-hash&gt; from Swarm
+    - In case of error, attempt to fetch &lt;your-ipfs-hash-here&gt; from the IPFS gateway provided by CloudFlare
+- `bzz-feed://<feed-hash>,ipfs://<content-hash>,https://<url>/<route>`
+    - First, try to fetch the given feed from Swarm
+    - In case of error, attempt to fetch the given content hash from IPFS
+    - If both failed, attempt to fetch from a centralized fallback server
+
+Supported protocols:
 
 - `bzz://<contentHash>`
 - `bzz-feed://<feedHash>`
 - `ipfs://<contentHash>`
-- `http://<url>/<route>`
 - `https://<url>/<route>`
+- `http://<url>/<route>`
+
+URI order matters:
+- Clients are expected to try using URI's from left to right
+- In the event of a mismatch, the data from the leftmost functional service is used
+
+### Messaging URI
+
+Intended for two-way communication between two nodes, a Messaging URI field looks similar to a Content URI:
+
+- `pss://<publicKey@address>,pubsub://<topic>,shh://<publicKey>`
+    - Attempt to use PSS in the first place, sending an encrypted message to the given address using the given public key
+    - In case of error, attempt to post a message to the given topic on IPFS PubSub
+    - If both fail, try to post a message to the given public key using Whisper
+
+The messaging protocols supported are PSS, IPFS PubSub and Whisper:
+
+- `pss://<publicKey@address>`
+  - Uses Ethereum Swarm/PSS protocol
+  - address can be empty
+- `pubsub://<topic>`
+  - Uses IPFS pubsub protocol
+- `shh://<publicKey>`
+  - Uses Ethereum Whisper protocol
+
+URI order matters here too:
+- Clients are expected to try using URI's from left to right
+- In the event of a mismatch, the data from the leftmost functional service is used
 
 ## Entity metadata
 
-See [Entity metatdata](/protocol/entity-metadata.md)
+Entities are able to create voting processes. As such, users need to be able to subscribe to them and retrieve basic information about the entities they care about. 
+
+The metadata of an entity is an aggregate of information living on the Blockchain and P2P filesystems. 
+- Data on the blockchain provides durability and ensures integrity checking
+- Data on P2P filesystems allows to transfer larger data objects in a more flexible way
+
+The starting point is the **[Entity Resolver](/protocol/entity-metadata?id=entity-resolver)** contract, but it is tightly coupled with the **[JSON Entity Metadata](/protocol/entity-metadata?id=data-schema)** living on P2P filesystems.
+
+**Please, refer to the [Entity Metadata](/protocol/entity-metadata?id=entity-metadata) section to get the full details on how an Entity works.**
 
 **Used in:**
 
-- [Entity creation](/protocol/sequence-diagrams?id=entity-creation)
+- [Set Entity metadata](/protocol/sequence-diagrams?id=set-entity-metadata)
 - [Entity subscription](/protocol/sequence-diagrams?id=entity-subscription)
 
 **Related:**
@@ -53,73 +95,15 @@ See [Entity metatdata](/protocol/entity-metadata.md)
 
 --------------------------------------------------------------------------------
 
-## Process metadata
+## Process Metadata
 
-### QuestionDetails
+Voting processes are declared on the Blockchain and store the critical information for integrity. However, the metadata of a process lives on a JSON file with the information on which voters can make a choice. It also allows Relays and Scrutinizers to fetch the technical parameters of a vote.
 
-It holds all the details to present to the user in order to make cast her vote.
+The metadata of voting process is also an aggregate of data from the Blockchain and P2P filesystems. 
 
-The creation of this document is critical. Multiple checks should be in place to guarantee that the data is choeren (well formatted, not missing locales...).
+The starting point is the **[Voting Process](/smart-contracts?id=voting-process)** contract, but it is tightly coupled with the **[JSON Process Metadata](/protocol/process-metadata)** living on P2P filesystems.
 
-The index of the votingOptions is used as identifier.
-
-The hash of this data is stored in the `Voting` contract in `questionDetails` using [multicodec format](https://github.com/multiformats/multistream)
-
-```json
-{
-    "version":"1.0",
-    "defaultLocal":"en", // Will default to this local if it doesn't match user's preferences
-    "questionType":"exclusive", //To be defined.  What logic the UI should follow when choosing the votingOptions.
-    "question":{
-        "en": "Should basic income be a human right?",
-        "ca": "La renda básica universal hauria de ser un dret humà?"
-    },
-    "votingOptions":[
-        {
-            {"en": "Yes"},
-            {"cat": "Sí"}
-        },
-        {
-            {"en": "No"},
-            {"cat": "No"}
-        }
-    ]
-}
-```
-
-The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the metadata of a voting process through a decentralized channel.
-
-```json
-{
-    "version": "1.0",    // Protocol version
-    "name": "Basic income rule", //Human friendly, not an identifier
-    "address": "0x1234...", // on the blockchain
-    "question": "Should basic income be a human right?",
-    "voteOptions": [
-        { "name": "Yes", "value": 1 },
-        { "name": "No", "value": 2 },
-        { "name": "I don't know", "value": 3 }
-    ],
-    "type": "zk-snarks",  // Allowed ["zk-snarks", "lrs"]
-    "startBlock": 10000,
-    "endBlock":  11000,
-    "meta": {
-        "description": "## Markdown text goes here\n### Abstract",
-        "images": [ "<content uri>", ... ],
-        "organizer": {
-            "address": "0x1234...",  // Address of the Entity entry on the blockchain
-            "metadata": "<content uri>" // Organizer's metadata on Swarm
-        }
-    },
-    "census": {
-        "id": "the-entity-main-census",  // Census ID to use
-        "origin": "<messaging uri>", // Census service to request data from
-        "merkleRoot": "0x1234...",
-        "modulusSize": 5000  // Only when type="lrs"
-    },
-    "publicKey": "0x1234..." // To encrypt vote packages
-}
-```
+**Please, refer to the [Process Metadata](/protocol/process-metadata) section to get the full details on how a Process works.**
 
 **Used in:**
 
@@ -139,6 +123,26 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 - The `type` field indicates the scrutiny method that will be used for the process. Any vote package generated with the wrong type will be discarded.
 - The list of authorized relays is available on the Process smart contract
 
+## Modulus group list
+
+As [explained here](/protocol/franchise-proof?id=_2-create-census-rings), Linkable Ring Signatures allow to anonymize a signature within a group of keys. However, signing with the entire census for every single vote would mean storing and transfering very large amounts of data. 
+
+A solution is to break a large census into smaller groups and anonymize signatures within groups of 800~1000 keys instead of any greater values. 
+
+To this end, public keys are grouped by the modulus of dividing them by a predefined number. To store and fetch a specific array of keys from the Process Metadata, the following schema is used:
+
+```json
+{
+    "publicKeyModulus": int,
+    "publicKeys": [
+        "0x1234...",
+        "0x2345...",
+        "0x3456...",
+        ...
+    ]
+}
+```
+
 ## Vote Package
 
 ### Vote Package - ZK Snarks
@@ -153,7 +157,7 @@ The JSON payload below is to be stored on Swarm or IPFS, so anyone can fetch the
 }
 ```
 
-It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?id=vote-envelope-zk-snarks)
+It is encrypted within the corresponding [Vote Envelope](#vote-envelope-zk-snarks)
 
 **Used in:**
 
@@ -172,7 +176,7 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
 }
 ```
 
-It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?id=vote-envelope-ring-signature)
+It is encrypted within the corresponding [Vote Envelope](#vote-envelope-ring-signature)
 
 **Used in:**
 
@@ -188,7 +192,7 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
     "version": "1.0",    // Protocol version
     "type": "zk-snarks-envelope",
     "processAddress": "0x1234...",
-    "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the vote package JSON
+    "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the JSON Vote Package
     "nullifier": "0x1234...",
     "proof": "01234...",
     "censusMerkleRoot": "0x1234..."
@@ -207,7 +211,7 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
     "version": "1.0",    // Protocol version
     "type": "lrs-envelope",
     "processAddress": "0x1234...",
-    "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the vote package JSON
+    "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the JSON Vote Package
     "signature": "0x1234...", // The ring signature over the processAdress
     "publicKeyModulus": 4321,
     "censusMerkleRoot": "0x1234..."  // To identify the census version used
@@ -330,37 +334,30 @@ It is encrypted within the corresponding [Vote Envelope](/protocol/data-schema?i
 
 - The current payload may lead to a size of several Gigabytes of data, which may not be suitable for mobile devices
 
-## Content Data
+## JSON Feed
 
-Used to contain news and data posts.
+Similar to RSS, official news and unidirectional rich content is expected to conform to the specs of a [JSON Feed](https://jsonfeed.org/) and be accessible through a [Content URI](#content-uri). 
 
-```json
-[{
-    "guid": "123",
-    "title": "New voting process available",
-    "description": "Universal Basic Income announced",
-    "pubDate": "2019-01-01T10:00:00.000Z",
-    "content": "<h2>Universal Basic Income</h2><p>HTML content goes here</p>",
-    "language": "en"
-}]
-```
-
-## Census Service
-
-### Census Service request payload
+## Census Service requests
 
 Requests sent to the census service may invoke different operations.
 
 Depending on the `method`, certain parameters are expected or optional:
 
-#### Census addClaim
+### Census Service addClaim
 
 ```json
 {
     "method": "addClaim",
-    "censusId": "string",
-    "claimData": "string",
+    "censusId": "string",       // Where to add the claim
+    "claimData": "string",      // Typically, a public key
     "signature": "string"
+}
+```
+```json
+{
+    "error": false,
+    "response": "string"
 }
 ```
 
@@ -368,12 +365,35 @@ Depending on the `method`, certain parameters are expected or optional:
 
 - [Adding users to a census](/protocol/sequence-diagrams?id=adding-users-to-a-census)
 
-#### Census getRoot
+### Census Service addClaimBulk
+
+```json
+{
+    "method": "addClaimBulk",
+    "censusId": "string",       // Where to add the claims
+    "claimData": "string",      // Typically, a comma-separated list of public keys
+    "signature": "string"
+}
+```
+```json
+{
+    "error": false,
+    "response": "string"
+}
+```
+
+### Census Service getRoot
 
 ```json
 {
     "method": "getRoot",
-    "censusId": "string" 
+    "censusId": "string"
+}
+```
+```json
+{
+    "error": false,
+    "response": "string"
 }
 ```
 
@@ -381,23 +401,53 @@ Depending on the `method`, certain parameters are expected or optional:
 
 - [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
 
-#### Census genProof
+### Census Service setParams
 
 ```json
 {
-    "method": "genProof",
+    "method": "setParams",
+    "censusId": "string",       // Where to apply the new settings
+    "processId": "string",
+    "maxSize": "string",
+    "signature": "string"
+}
+```
+```json
+{
+    "error": false,
+    "response": "string"
+}
+```
+
+Used in LRS only.
+
+**Used in:**
+
+- [Voting process creation](/protocol/sequence-diagrams?id=voting-process-creation)
+
+### Census Service generateProof
+
+```json
+{
+    "method": "generateProof",
     "censusId": "string",
     "claimData": "string",
     "rootHash": "optional-string"  // from a specific version
+}
+```
+```json
+{
+    "error": false,
+    "response": "string"
 }
 ```
 
 **Used in:**
 
 - [Check census inclusion](/protocol/sequence-diagrams?id=check-census-inclusion)
-- [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
+<!-- - [Casting a vote with ZK Snarks](/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks) -->
 
-#### Census getChunk
+<!-- ### Census Service getChunk
 
 ```json
 {
@@ -407,12 +457,19 @@ Depending on the `method`, certain parameters are expected or optional:
     "publicKeyModulus": 4321
 }
 ```
+```json
+{
+    "error": false,
+    "response": "string"
+}
+```
 
 **Used in:**
 
 - [Casting a vote with Linkable Ring Signatures](/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
+-->
 
-#### Census checkProof
+<!-- ### Census Service checkProof
 
 ```json
 {
@@ -423,8 +480,15 @@ Depending on the `method`, certain parameters are expected or optional:
     "proofData": "string"
 }
 ```
+```json
+{
+    "error": false,
+    "response": "string"
+}
+```
+-->
 
-#### Census getIdx
+<!-- ### Census Service getIdx
 
 ```json
 {
@@ -434,8 +498,15 @@ Depending on the `method`, certain parameters are expected or optional:
     "rootHash": "optional-string"
 }
 ```
+```json
+{
+    "error": false,
+    "response": "string"
+}
+```
+-->
 
-#### Census dump
+### Census Service dump
 
 ```json
 {
@@ -443,6 +514,12 @@ Depending on the `method`, certain parameters are expected or optional:
     "censusId": "string",
     "rootHash": "optional-string",
     "signature": "string"
+}
+```
+```json
+{
+    "error": false,
+    "response": "string"
 }
 ```
 
@@ -456,21 +533,14 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 
 - [Census service API specs](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
 
-### Census Service response payload
 
-```json
-{
-    "error": false,
-    "response": "string"
-}
-```
-
-## Gateway
+## Gateway requests
 
 ### Add Census Claim
+
 ```json
 {
-  "method": "addCensusClaim
+  "method": "addCensusClaim",
   "censusId": "hexString",
   "censusOrigin": "hexString",
   "claimData": "hexString"
@@ -481,13 +551,30 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
   "error": bool
 }
 ```
+
+### Add Census Claim Bulk
+
+```json
+{
+  "method": "addCensusClaimBulk",
+  "censusId": "hexString",
+  "censusOrigin": "hexString",
+  "claimData": "hexString"
+}
+```
+```json
+{
+  "error": bool
+}
+```
+
 **Used in:**
 - [Adding users to a census](vocdoni.io/docs/#/protocol/sequence-diagrams?id=adding-users-to-a-census)
 
 ### Get Census Root
 ```json
 {
-  "method": "getCensusRoot"
+  "method": "getCensusRoot",
   "censusId": "hexString"
 }
 ```
@@ -523,52 +610,53 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 {
   "method": "fetchCensusProof",
   "censusRootHash": "hexString",
-  "pubKey": "hexString"
+  "publicKey": "hexString"
 }
 ```
+
 ```json
 {
-  "error":bool,
-  "response":["iden3MkproofHexString"]
+  "error": bool,
+  "response": ["iden3MkproofHexString"]
 }
 ```
 **Used in:**
 - [Voting with zksnarks](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
 
-### Fetch Process Ring
+### Fetch Census Ring
 ```json
 {
-  "method": "fetchProcessRing"
+  "method": "fetchCensusRing",
   "processId": "hexString",
-  "modulus": int,
+  "publicKeyModulus": int
 }
 ```
 ```json
 {
-  "error": bool
+  "error": bool,
   "response": ["pubKey1", "pubKey2", ...]
 }
 ```
 **Used in:**
 - [Voting with LRS](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 
-### Submit Ballot
+### Submit Vote Envelope
 ```json
 {
-  "method": "submitVote",
-  "type": "LRS/Snarks",
+  "method": "submitVoteEnvelope",
+  "type": "zk-snarks-envelope",  // valid: ["zk-snarks-envelope", "lrs-envelope"]
   "processId": "hexString",
   "content": "voteEnvelope",
-  "relayPubKey": "hexString"
+  "relayPublicKey": "hexString"
 }
 ```
-
 ```json
 {
-  "error":bool,
+  "error": bool,
   "response": []
 }
 ```
+
 **Used in:**
 - [Voting with zksnarks](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
 - [Voting with LRS](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
@@ -595,14 +683,14 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 ```json
 {
   "method": "fetchFile",
-  "uri": "uri"
+  "uri": "<content uri>"
 }
 ```
 
 ```json
 {
   "error": bool,
-  "response": ["base64File"]
+  "response": ["base64Payload"]
 }
 ```
 **Used in:**
@@ -612,29 +700,29 @@ Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 - [Vote scrutiny](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=vote-scrutiny)
 
 ### Add File
+
 Available only post-auth on trusted gateways
 ```json
 {
   "method": "addFile",
-  "type": "ipfs/swarm"
-  "content": "base64File"
+  "type": "swarm",         // Valid: ["ipfs", "swarm"]
+  "content": "base64Payload"
 }
 ```
-
 ```json
 {
   "error": bool,
-  "response": ["uri"]
+  "response": ["<content uri>"]
 }
 ```
 **Used in:**
-- [Entity creation](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=entity-creation)
+- [Set Entity metadata](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=set-entity-metadata)
 - [Voting process creation](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=voting-process-creation)
 - [Vote scrutiny](https://vocdoni.io/docs/#/protocol/sequence-diagrams?id=vote-scrutiny)
 
 ...
 
-## Relay requests payload
+## Relay requests
 
 `Work in progress`
 

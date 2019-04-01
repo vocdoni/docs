@@ -1,46 +1,62 @@
 # Global architecture
 
+Electronic voting processes represent a great tech and social challenge. An official binding vote with standard requirements should at least be able to:
+
++ Enforce vote anonimity
++ Rely on an opensource platform
++ Be 100% transparent, auditable and verifiable
++ Use uncensorable communication channels
++ Ensure that voters from a census can only vote once without revealing anyone's identity
+
+Vocdoni defines an open architechture and the protocols to empower large communities to exercise full democracy with the aforementioned guarantees. 
+
+A fully functional implementation of Vocdoni will typically involve a combination of two types of services. 
+- The public blockchain, Gateways, Relays and decentralized storage systems (open and accessible)
+- Private custom services so that Entities can maintain a census of users (with personal data that should not be disclosed)
+
 ## Service architecture and components
 
-To avoid censorship and to provide resilence, the network architecture should accomplish the following requirements:
+To provide resilence and avoid any kind of censorship, the network architecture should accomplish the following requirements:
 
 + Do not rely on DNS
 + Do not depend on specific IPs
 + Do not depend on any specific company or cloud infrastructure
-+ Do use P2P network connections when possible
-+ Do use static web pages, so they can be replicated
-+ Do allow third parties to add infrastructure
++ Use P2P network connections when possible
++ Use static web pages, so they can be replicated
++ Allow third parties to add infrastructure
 
-To this end, the Vocdoni platform is composed of the following components.
+A Vocdoni voting process makes use of the following components:
 
 ![Main architecture](./architecture-main.png "Main architecture")
 
-+ The data integrity is provided by a public BlockChain such as Ethereum main net.
++ Data integrity is provided by a public BlockChain such as the Ethereum main net.
 
-+ The data availability is provided by a distributed filesystem such as Swarm or IPFS.
++ Data availability is provided by a distributed filesystem such as Swarm or IPFS.
 
-+ The messaging protocol is provided by a distributed message protocol such as Whisper, IPFS/PubSub or Swarm/PSS.
++ Peer messaging is provided by a distributed message protocol such as Whisper, IPFS/PubSub or Swarm/PSS.
 
-+ The client interface (app or webapp) interacts with the P2P network and the Blockchain through gateways (using WebSockets or HTTP/RPC). 
++ The client interface (app or webapp) interacts with the P2P network and the Blockchain through Gateways (using WebSockets or HTTP/RPC). 
 
-* Gateways are neutral/agnostic, as the cryptography layer is to be done on the client side. The only intent of gateways is forwarding requests from clients that can't open sockets by themselves (typically web browsers).
+* Gateways are neutral/agnostic, since the cryptographic layer happens on the peer side. The only intent of a Gateway is about forwarding requests from clients that can't open a socket by themselves (typically web browsers).
 
 ## Components
 
 ### Relay
 
-The relay pool is a group of nodes which are responsible for handling votes, verifying their validity, publishing them to the BlockChain and keeping their data pinned on the P2P filesystem.
+The relay pool is a group of nodes which are responsible for handling votes, validating their content, pinning them on P2P filesystems and registering them on the BlockChain. At the moment, only relays whitelisted by the vote organizer Entity will be able to add valid votes. 
 
 ### Gateway/Web3
 Gateways provide an entry point to the P2P network. They allow clients to reach decentralized services (census, relays, etc.) through a WebSocket or an HTTP interface.
 
 ### Census Service
-A server handling the public census of an Entity. It stores Merkle trees with user claims, it allows the organizer to trigger updates (using asymmetric key signature authentication) and allows clients to ask for data on a particular Merkle tree.
+A server handling the public census of an Entity. It stores Merkle trees with user claims, it allows an Entity to trigger updates (using asymmetric key signature authentication) and allows clients to ask for data on a particular Merkle tree.
 
 The Census Service is a critical piece of the overall platform, so its real IP/location should be hidden as much as possible. Ideally, it should only be reachable through the P2P messaging protocol.
 
+Census Service's have to be started with a predefined Entity Resolver instance address, as well as an Entity Address so they know what configuration they need to apply.
+
 ### Census Registry
-A web site provided by the Entity typically used to validate a user before adding him/her to a Census. This web site is loaded on a webview from the client app, once the user decides to register to an Entity. The required steps to pass a validation are dependent on every Entity and need a custom integration.
+A custom web site provided by the Entity typically used to validate a user before adding him/her to a Census. This web site is loaded on a webview from the client app, once the user decides to register to an Entity. The required steps to pass a validation are dependent on every Entity and need a custom integration.
 
 ### Census Manager
 A private server allowing Entity administrators to manage the attributes (age, payment status, etc.) of users registered to it. Data from this service typically lives on a private database that will produce updated versions of specific census on demand.

@@ -2,13 +2,14 @@
 - Protocol
     - [Global architecture](/protocol/architecture.md)
     - [User stories](/protocol/user-stories.md)
+        - [Process overview](/protocol/process-overview.md)
     - [Sequence diagrams](/protocol/sequence-diagrams.md)
-    - [Data schema](/protocol/data-schema.md)
     - [Smart contracts](/protocol/smart-contracts.md)
-    - [Voting process](/protocol/voting-process.md)
+    - [Data schema](/protocol/data-schema.md)
+        - [Entity metadata](/protocol/entity-metadata.md)
+        - [Process metadata](/protocol/process-metadata.md)
     - [Franchise proof](/protocol/franchise-proof.md)
     - [Messaging protocol](/protocol/messaging.md)
-    - [Entity metadata](/protocol/entity-metadata.md)
 <!-- - Integrating Vocdoni -->
 <!--    - [Overview](/integration/overview.md) -->
 <!--    - [DVote JS library](/integration/dvote-js.md) -->
