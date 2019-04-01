@@ -1,5 +1,9 @@
 # Sequence diagrams
 
+Traditional systems like API's present simple scenarios, in which a centralized service defined how data should be encoded.
+
+However, decentralized ecosystems like a distributed vote system need much stronger work on defining every interaction between any two peers on the network.
+
 - [Sequence diagrams](#sequence-diagrams)
   - [Prior to voting](#prior-to-voting)
     - [Contract deployment (Entity)](#contract-deployment-entity)
@@ -24,12 +28,14 @@
     - [Closing a Voting Process](#closing-a-voting-process)
     - [Vote Scrutiny](#vote-scrutiny)
 
+---
+
 ## Prior to voting
 
 --------------------------------------------------------------------------------
 
 ### Set Entity metadata
-An Entity starts existing at the moment it has certain metadata stored on the [EntityResolver](/protocol/entity-metadata?id=entityresolver) smart contract. 
+An Entity starts existing at the moment it has certain metadata stored on the [EntityResolver](/architecture/components/entity?id=entityresolver) smart contract. 
 
 ```mermaid
 
@@ -75,7 +81,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Entity metadata](/protocol/entity-metadata.md)
+- [Entity metadata](/architecture/components/entity.md)
 
 ### Entity subscription
 
@@ -161,15 +167,15 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Entity metadata](/protocol/entity-metadata.md)
+- [Entity metadata](/architecture/components/entity.md)
 
 **Related:**
 
-- [Gateway Boot Nodes](/protocol/entity-metadata?id=gateway-boot-nodes)
+- [Gateway Boot Nodes](/architecture/components/entity?id=gateway-boot-nodes)
 
 **Notes:**
 
-- In the case of React Native apps, DVote JS will need to run on the [Web Runtime component](/protocol/architecture?id=web-runtime-for-react-native)
+- In the case of React Native apps, DVote JS will need to run on the [Web Runtime component](/architecture/general?id=web-runtime-for-react-native)
 
 ### Custom requests to an Entity
 
@@ -202,7 +208,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Entity metadata](/protocol/data-schema.md?id=entity-metadata)
+- [Entity metadata](/architecture/components/entity?id=entity-metadata)
 
 **Notes:**
 
@@ -248,8 +254,8 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Census Service - addClaim](/protocol/data-schema?id=census-service-addclaim)
-- [Census Service - addClaimBulk](/protocol/data-schema?id=census-service-addclaimbulk)
+- [Census Service - addClaim](/architecture/components/census-service?id=census-service-addclaim)
+- [Census Service - addClaimBulk](/architecture/components/census-service?id=census-service-addclaimbulk)
 
 --------------------------------------------------------------------------------
 
@@ -311,10 +317,12 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/protocol/data-schema?id=process-metadata)
-- [Census Service - getRoot](/protocol/data-schema?id=census-service-addclaimbulk)
-- [Census Service - setParams](/protocol/data-schema?id=census-service-setparams)
-- [Census Service - dump](/protocol/data-schema?id=census-service-dump)
+- [Process Metadata](/architecture/components/process?id=process-metadata-json)
+- [Modulus group list](/architecture/components/census-service?id=modulus-group-list)
+- [Census Service - addClaimBulk](/architecture/components/census-service?id=census-service-addclaimbulk)
+- [Census Service - getRoot](/architecture/components/census-service?id=census-service-getroot)
+- [Census Service - setParams](/architecture/components/census-service?id=census-service-setparams)
+- [Census Service - dump](/architecture/components/census-service?id=census-service-dump)
 
 
 ### Voting process retrieval
@@ -356,7 +364,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/protocol/data-schema?id=process-metadata)
+- [Process Metadata](/architecture/components/process?id=process-metadata-json)
 
 ### Check census inclusion
 
@@ -385,12 +393,12 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Census Service - generateProof](/protocol/data-schema?id=census-service-generateproof)
+- [Census Service - generateProof](/architecture/components/census-service?id=census-service-generateproof)
 
 **Notes:**
 
 - `generateProof` may be replaced with a call to `hasClaim`, for efficiency
-- The `censusId` and `censusMessagingURI` should have been fetched from the [Process Metadata](/protocol/process-metadata)
+- The `censusId` and `censusMessagingURI` should have been fetched from the [Process Metadata](/architecture/components/process)
 
 ### Casting a vote with ZK Snarks
 
@@ -438,9 +446,9 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/protocol/data-schema?id=process-metadata)
-- [Census Service - generateProof](/protocol/data-schema?id=census-service-generateproof)
-- [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
+- [Process Metadata](/architecture/components/process?id=process-metadata-json)
+- [Census Service - generateProof](/architecture/components/census-service?id=census-service-generateproof)
+- [Vote Package - ZK Snarks](/architecture/components/relay?id=vote-package-zk-snarks)
 
 **Notes:**
 
@@ -492,9 +500,9 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/protocol/data-schema?id=process-metadata)
-<!-- - [getChunk](/protocol/data-schema?id=census-getchunk) -->
-- [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
+- [Process Metadata](/architecture/components/process?id=process-metadata-json)
+<!-- - [getChunk](/architecture/components/census-service?id=census-service-getchunk) -->
+- [Vote Package - Ring Signature](/architecture/components/relay?id=vote-package-ring-signature)
 
 **Notes:**
 
@@ -521,7 +529,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Vote Batch](/protocol/data-schema?id=vote-batch)
+- [Vote Batch](/architecture/components/relay?id=vote-batch)
 
 ## After voting
 
@@ -570,7 +578,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Vote Batch](/protocol/data-schema?id=vote-batch)
+- [Vote Batch](/architecture/components/relay?id=vote-batch)
 
 **Notes:**
 
@@ -713,9 +721,9 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/protocol/data-schema?id=process-metadata)
-- [Vote Package - ZK Snarks](/protocol/data-schema?id=vote-package-zk-snarks)
-- [Vote Package - Ring Signature](/protocol/data-schema?id=vote-package-ring-signature)
-- [Vote Batch](/protocol/data-schema?id=vote-batch)
-- [Vote Summary](/protocol/data-schema?id=vote-summary)
-- [Vote List](/protocol/data-schema?id=vote-list)
+- [Process Metadata](/architecture/components/process?id=process-metadata-json)
+- [Vote Package - ZK Snarks](/architecture/components/relay?id=vote-package-zk-snarks)
+- [Vote Package - Ring Signature](/architecture/components/relay?id=vote-package-ring-signature)
+- [Vote Batch](/architecture/components/relay?id=vote-batch)
+- [Vote Summary](/architecture/components/relay?id=vote-summary)
+- [Vote List](/architecture/components/relay?id=vote-list)

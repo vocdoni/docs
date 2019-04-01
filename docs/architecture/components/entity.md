@@ -1,44 +1,53 @@
-# Entity metadata
+# Entity
 
-An entity can have many roles. For the most part, it is the organizer and the ultimate responsible of a voting process.
+An entity can have many roles. For the most part, it is the organizer and the ultimate responsible of a voting process. As such, users need to be able to subscribe to them and retrieve basic information about the entities they care about. 
 
-But it could not make use of the voting mechanism an instead just be an element of trust:
+## Index
+- [Entity Resolver](#entity-resolver)
+  - [Storage of Text records](#storage-of-text-records)
+  <!-- - [Storage of lists of text](#storage-of-lists-of-text) -->
+  - [Naming convention for Resolver keys](#naming-convention-for-resolver-keys)
+- [Data schema](#data-schema)
+  - [Entity metadata](#entity-metadata)
+  - [Gateway boot nodes](#gateway-boot-nodes)
+  - [Entities list](#entities-list)
+  - [Feed](#feed)
+  - [Actions](#actions)
+- [ENS](#ens)
+  - [Overview](#overview)
+  - [No Mainnet](#no-mainnet)
+  - [ENS domain authentication](#ens-domain-authentication)
+  - [Comparison](#comparison)
 
-- Can publish news/information via the [Feed](#feed)
-- Can provide pointers to trusted/related [Entities](#entities-list)
-- Can provide [Gateway boot nodes](#gateway-boot-nodes) or relays
+---
+
+The metadata of an Entity is an aggregate of information living on the Blockchain and P2P filesystems. 
+- Data on the Blockchain provides durability and enables integrity checking
+- Data on P2P filesystems allows to transfer larger data objects in a more flexible way
+
+The starting point is the **[Entity Resolver](#entity-resolver)** contract, but it is tightly coupled with the **[JSON Entity Metadata](#data-schema)** living on P2P filesystems.
+
+However, an Entity could make no use of the voting infrastructure and just be an source of trust:
+
+- Publishing news/information via the [Feed](#feed)
+- Providing pointers to trusted/related [Entities](#entities-list)
+- Providing [Gateway boot nodes](#gateway-boot-nodes) or Relays
 
 For the most part, all this data lives in the blockchain. Alternatively, it is indexed in the blockchain and retrieved using P2P communication.
 
 We refer to this data aggregate as the Entity Metadata.
 
-## Index
-- [Entity metadata](#entity-metadata)
-  - [Index](#index)
-  - [Resolver](#entity-resolver)
-    - [Interface: Storage of text records](#interface-storage-of-text-records)
-    - [Interface: Storage of lists of text](#interface-storage-of-lists-of-text)
-    - [Naming convention for keys](#naming-convention-for-keys)
-  - [Data schema](#data-schema)
-    - [Entity metadata](#entity-metadata-1)
-    - [Gateway boot nodes](#gateway-boot-nodes)
-    - [Entities list](#entities-list)
-    - [Feed](#feed)
-    - [Actions](#actions)
-  - [ENS](#ens)
-    - [Overview](#overview)
-    - [No Mainnet](#no-mainnet)
-    - [ENS domain authentication](#ens-domain-authentication)
-    - [Comparison](#comparison)
-
 ---
 
 ## Entity Resolver
 
-The Entity Resolver contract stores all the information about many entities, and it conforms with **Public ENS resolvers** spec's.
+The Entity Resolver is a standard ENS resolver contract. Its purpose is to provide a key/value store of `Text` records following a naming convention.
 
+For reference about standard ENS Resolvers:
 - https://docs.ens.domains/contract-api-reference/publicresolver#set-text-data
 - https://docs.ens.domains/contract-api-reference/publicresolver#get-text-data
+
+For reference about the naming convention of Text records within an Entity Resolver see [Naming convention for Resolver keys](#naming-convention-for-resolver-keys).
 
 Domain names are not used at this point. Only `Text` records are used as a key-value storage on the resolver contract of choice by the entity. 
 
@@ -59,9 +68,9 @@ bytes32 entityId = keccak256 (entityAddress);
 
 If ENS domains are used in the future, the `entityId` would be the [ENS node](https://docs.ens.domains/terminology), otherwise, the `entityId` is the hash of the address that created the entity.
 
-### Interface: Storage of Text records
+### Storage of Text records
 
-[EIP 634: Storage of text records in ENS](https://eips.ethereum.org/EIPS/eip-634) is convenient to store arbitrary data as a string.
+[EIP 634: Storage of Text records in ENS](https://eips.ethereum.org/EIPS/eip-634) is convenient to store arbitrary data as a string.
 
 A Vocdoni compatible entity must define specific keys (listed below), resolving to strings with JSON objects.
 
@@ -84,29 +93,27 @@ Any valid JSON payload may be stored. This applies to:
 
 #### **Don't**
 - Use the Entity Resolver to store large objects
-  - Instead, define [Content URI](/protocol/data-schema?id=content-uri) links to data that can live on Swarm, IPFS, etc.
+  - Instead, define [Content URI](/architecture/protocol/data-origins?id=content-uri) links to data that can live on Swarm, IPFS, etc.
 - Use Swarm/IPFS to store data that is already in a `Text` record
   - An update to one field will need publishing at least three updates
   - This might introduce divergence between the blockchain and data on Swarm/IPFS
 
-### Storing larger payloads
-
 To handle arbitrarily long JSON payloads or even images, media, etc., you may definitely want to use a decentralized filesystem to pin a file and keep the pointer to it in the appropriate `Text` record. 
 
-See [Content URI](/protocol/data-schema?id=content-uri) for examples. 
+See [Content URI](/architecture/protocol/data-origins?id=content-uri) for examples. 
 
-### Naming convention for keys
+### Naming convention for Resolver keys
 
 Below is a table with the proposed standard for key/value denomination. 
 
-**Important:** Any JSON data stored on the resolver is expected to be **stringified**. For clarity, the examples below appear as plain JSON, but actual values should be used [like the examples above](/protocol/entity-metadata?id=interface-storage-of-text-records).
+**Important:** Any JSON data stored on the resolver is expected to be **stringified**. For clarity, the examples below appear as plain JSON, but actual values should be used [like the examples above](/architecture/components/entity?id=storage-of-text-records).
 
 **Required keys**
 
 | Key                                       | Example                                                | Description                                                                |
 |-------------------------------------------|--------------------------------------------------------|----------------------------------------------------------------------------|
 | `name`                                    | Free Republic of Liberland                             | A single-language version of the Entity's name (used as a fallback of the JSON metadata version) |
-| `vndr.vocdoni.meta`                       | bzz://12345,ipfs://12345                                        | [Content URI](/protocol/data-schema?id=content-uri) to fetch the JSON metadata. <br/>See [Entity Metadata](#entity-metadata-1) below.      |
+| `vndr.vocdoni.meta`                       | bzz://12345,ipfs://12345                                        | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the JSON metadata. <br/>See [Entity Metadata](#entity-metadata-1) below.      |
 
 
 **Supported keys**
@@ -118,13 +125,12 @@ Below is a table with the proposed standard for key/value denomination.
 | `vndr.vocdoni.processess.active`          | ["0x987","0x876"]                                    | List of Process Id's displayed as available by the client                           |
 | `vndr.vocdoni.processess.ended`        | ["0x887","0x886"]                                    | List of Process Id's that already ended                           |
 | `vndr.vocdoni.processess.upcoming`            | ["0x787","0x776"]                                    | List of Process Id's that will become active in the future                           |
-| `vndr.vocdoni.feed`                  | bzz-feed://23456,ipfs://23456,https://liberland.org/feed                           | Fallback version of the [JSON feed](#feed) in the default language. See [Content URI](/protocol/data-schema?id=content-uri).         |
+| `vndr.vocdoni.feed`                  | bzz-feed://23456,ipfs://23456,https://liberland.org/feed                           | Fallback version of the [JSON feed](#feed) in the default language. See [Content URI](/architecture/protocol/data-origins?id=content-uri).         |
 | `vndr.vocdoni.description`                | Is a sovereign state...                              | A single-language version of a short description (used as a fallback of the JSON metadata version)                             |
-| `vndr.vocdoni.avatar`               | https://liberland.org/logo.png                       | [Content URI](/protocol/data-schema?id=content-uri) of an image file to display next to the entity name                      |
+| `vndr.vocdoni.avatar`               | https://liberland.org/logo.png                       | [Content URI](/architecture/protocol/data-origins?id=content-uri) of an image file to display next to the entity name                      |
 | `vndr.vocdoni.entities.boot`              | [{&lt;entityRef&gt;}]                                        | A starting point of entities list to allow users to browser from a curated list. Only used in "boot" entities like the case of Vocdoni itself.  See [Entities List](#entities-list)        |
 | `vndr.vocdoni.entities.trusted`              | [{&lt;entityRef&gt;}]                                        | A list of entities that the own entity trusts.  See [Entities List](#entities-list)        |
 | `vndr.vocdoni.entities.fallback.bootnodes` | [{&lt;entityRef&gt;}]                                         | A [list of entities](#entities-list) to borrow the bootnodes from in case of failure.                                                             |
-
 
 **Arbitrary keys**
 
@@ -133,6 +139,8 @@ Below is a table with the proposed standard for key/value denomination.
 | `vndr.liberland.podcast`                   | https://liberland.org/json-feed/                       | (Custom values)                                                                           |
 | `vndr.liberland.constitution`              | https://liberland.org/en/constitution                  |  (Custom values)                                                                          |
 | `vndr.twitter.username`                    | @Liberland_org                      |  (Custom values)                                                                          |
+
+---
 
 ## Data schema
 
@@ -183,6 +191,16 @@ This could create two sources of truth. The metadata in the contract itself and 
 }
 ```
 
+**Sequence diagrams:**
+
+- [Set Entity metadata](/architecture/sequence-diagrams?id=set-entity-metadata)
+- [Entity subscription](/architecture/sequence-diagrams?id=entity-subscription)
+
+**Related:**
+
+- [Entity Smart Contract](https://github.com/vocdoni/dvote-solidity/blob/master/contracts/VotingEntity.sol)
+- [Entity JS methods](https://github.com/vocdoni/dvote-js/blob/master/src/dvote/entity.ts)
+
 ### Gateway boot nodes
 
 Client apps will normally be unable to join P2P networks by themselves, so Vocdoni makes use of Gateways to enable decentralized transactions over HTTP/S. However, a decentralized system has no guarantee of what Gateways will be up at the current time.
@@ -198,7 +216,7 @@ To solve that:
 
 * Vocdoni provides initial bootnodes, whose URL's are hardcoded in the `dvote-js` library
 * All they do is to serve a list of Gateway IP addresses via https
-* One of these Gateways is used to query the [Entity Resolver](/protocol/entity-metadata?id=entity-resolver) for the address of the **boot organization**
+* One of these Gateways is used to query the [Entity Resolver](/architecture/components/entity?id=entity-resolver) for the address of the **boot organization**
   * The initial Entity Resolver address is hardcoded in `dvote-js`
   * The boot organization of the Entity Resolver above is also hardcoded in `dvote-js`
 
@@ -210,7 +228,7 @@ Considerations:
 
 ### Entities list
 
-Entities lists have several purposes.
+Entity lists have several purposes.
 
 - `vndr.vocdoni.entities.boot` : Entry point for the user to subscribe to new entities.
 - `vndr.vocdoni.entities.trusted`: Reputation/whitelisting mechanism for entities to express a relationship with other entities
@@ -230,9 +248,10 @@ Each element on the list contains an `Entity Reference` entry
 
 The `Feed` serves the purpose of having a uni-directional censorship-resistant communication channel between the `Entity` and the `user`.
 
+Content feeds are expected to conform to the specs of a [JSON Feed](https://jsonfeed.org/) and be accessible through a [Content URI](/architecture/protocol/data-origins?id=content-uri). 
+
 See:
 - [JSON feed specification](https://jsonfeed.org/version/1)
-- [JSON Feed](/protocol/data-schema?id=json-feed)
 
 ### Entity Actions
 
@@ -371,7 +390,7 @@ Vocdoni may be used in different networks other than the Ethereum Mainnet.
 
 This presents a potential attack vector where a malicious entity supplanting a Mainnet domain in an alternative network. This is is very relevant to us because we will have users that are not illiterate about it, and communicating the difference between networks is very hard.
 
-Therefore, we understand that we should only make use of ENS domains in the Ethereum Mainnet, independently from the network where the rest of Vocdoni smart-contracts are deployed.
+Therefore, we understand that we should only make use of ENS domains in the Ethereum Mainnet, independently from the network where the rest of Vocdoni smart contracts are deployed.
 
 At the same time, we understand that some implementations of Vocdoni may not have a use for ENS, therefore we should not rely on it for any fundamental architectural design.
 

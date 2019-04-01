@@ -1,15 +1,21 @@
 <!-- - [White paper](/whitepaper.md) -->
-- Protocol
-    - [Global architecture](/protocol/architecture.md)
-    - [User stories](/protocol/user-stories.md)
-        - [Process overview](/protocol/process-overview.md)
-    - [Sequence diagrams](/protocol/sequence-diagrams.md)
-    - [Smart contracts](/protocol/smart-contracts.md)
-    - [Data schema](/protocol/data-schema.md)
-        - [Entity metadata](/protocol/entity-metadata.md)
-        - [Process metadata](/protocol/process-metadata.md)
-    - [Franchise proof](/protocol/franchise-proof.md)
-    - [Messaging protocol](/protocol/messaging.md)
+- Architecture
+    - [General](/architecture/general.md)
+    - [Process overview](/architecture/process-overview.md)
+    - [User stories](/architecture/user-stories.md)
+    - [Components](/architecture/components.md)
+        - [Entity](/architecture/components/entity.md)
+        - [Voting Process](/architecture/components/process.md)
+        - [Relay](/architecture/components/relay.md)
+        - [Census Service](/architecture/components/census-service.md)
+        - [Gateway](/architecture/components/gateway.md)
+        - [Boot node](/architecture/components/bootnode.md)
+    - [Sequence diagrams](/architecture/sequence-diagrams.md)
+    - [Platform tools](/architecture/platform-tools.md)
+    - Protocol
+        - [Data origins](/architecture/protocol/data-origins.md)
+        - [Franchise proof](/architecture/protocol/franchise-proof.md)
+        - [Messaging protocol](/architecture/protocol/messaging.md)
 <!-- - Integrating Vocdoni -->
 <!--    - [Overview](/integration/overview.md) -->
 <!--    - [DVote JS library](/integration/dvote-js.md) -->

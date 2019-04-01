@@ -1,6 +1,6 @@
 # Process overview
 
-From a component's perspective, the system can also be decoupled in three steps.
+From a component's perspective, the system can be decoupled in three stages.
 
 ## Starting a vote
 Given the current user database, the organizer builds a census Merkle tree with the public keys that are eligible to vote. 
