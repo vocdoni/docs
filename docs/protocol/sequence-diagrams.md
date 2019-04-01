@@ -186,10 +186,10 @@ The user selects an action from the entityMetadata > actions available.
 ```mermaid
 sequenceDiagram
     participant App
-    participant UR as User Registry
+    participant UR as WebView<br/>User Registry
     participant DB as Internal Database
 
-    App->>UR: Navigate to: ACTION-URL?publicKey=0x1234&censusId=0x4321
+    App->>UR: Go to: <action-url>?publicKey=0x1234&censusId=0x4321
         activate UR
             Note right of UR: Fill the form
         deactivate UR
@@ -239,7 +239,7 @@ sequenceDiagram
             Note right of DV: TO DO: Review calls
 
             DV->>GW: addCensusClaim(addClaimPayload)
-                GW->>CS: addCensusClaim(addClaimPayload)
+                GW->>CS: addClaim(claimPayload)
                 CS-->>GW: success
             GW-->>DV: success
         DV-->>PM: success
@@ -251,9 +251,9 @@ sequenceDiagram
 - [Census Service - addClaim](/protocol/data-schema?id=census-service-addclaim)
 - [Census Service - addClaimBulk](/protocol/data-schema?id=census-service-addclaimbulk)
 
-## Voting
-
 --------------------------------------------------------------------------------
+
+## Voting
 
 ### Voting process creation
 
@@ -264,29 +264,44 @@ sequenceDiagram
     participant GW as Gateway/Web3
     participant CS as Census Service
     participant SW as Swarm
-    participant BC as Blockchain Process
+    participant BC as Blockchain
 
     Note right of DV: TO DO: Review calls
 
     PM->>+DV: Process.create(processDetails)
 
         DV->>+GW: censusDump(censusId, signature)
-        GW->>+CS: dump(censusId, signature)
-        CS-->>-GW: merkleTree
+            GW->>+CS: dump(censusId, signature)
+            CS-->>-GW: merkleTree
         GW-->>-DV: merkleTree
 
-        DV-->>+GW: addFile(merkleTree) : merkleTreeHash
-        GW-->>+SW: Swarm.put(merkleTree) : merkleTreeHash
+        alt Linkable Ring Signatures
+            loop modulusGroups
+                DV-->>GW: addFile(modulusGroup) : modulusGroupHash
+                    GW-->SW: Swarm.put(modulusGroup) : modulusGroupHash
+                GW-->>DV: 
+            end
+        else ZK-Snarks
+            DV-->>GW: addFile(merkleTree) : merkleTreeHash
+                GW-->SW: Swarm.put(merkleTree) : merkleTreeHash
+            GW-->>DV: 
+        end
 
         DV->>+GW: getCensusRoot(censusId)
         GW->>+CS: getRoot(censusId)
         CS-->>-GW: rootHash
         GW-->>-DV: rootHash
 
-        DV-->GW: addFile(processMetadata) : metadataHash
-        GW-->SW: Swarm.put(processMetadata) : metadataHash
+        DV-->>GW: addFile(processMetadata) : metadataHash
+            GW-->SW: Swarm.put(processMetadata) : metadataHash
+        GW-->>DV: 
 
         DV->>+GW: Process.create(entityId, name, metadataContentUri)
+            GW->>+BC: <transaction>
+            BC-->>-GW: txId
+        GW-->>-DV: txId
+
+        DV->>+GW: EntityResolver.set(entityId, 'vndr.vocdoni.processess.active', activeProcesses)
             GW->>+BC: <transaction>
             BC-->>-GW: txId
         GW-->>-DV: txId
