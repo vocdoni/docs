@@ -316,8 +316,6 @@ sequenceDiagram
 - [Census Service - setParams](/protocol/data-schema?id=census-service-setparams)
 - [Census Service - dump](/protocol/data-schema?id=census-service-dump)
 
-**Note**:
-- The `processDetails` parameter is specified [on the dvote-js library](https://github.com/vocdoni/dvote-client/blob/master/src/dvote/process.ts)
 
 ### Voting process retrieval
 
@@ -328,21 +326,21 @@ sequenceDiagram
     participant App as App user
     participant DV as DVote JS
     participant GW as Gateway/Web3
-    participant BC as Blockchain Process
+    participant BC as Blockchain
     participant SW as Swarm
 
-    App->>+DV: Process.fetchByEntity(entityAddress)
+    App->>+DV: Process.fetchByEntity(entityAddress, resolver)
 
-        DV->>GW: getProcessesIdByOrganizer(entityAddress)
-        GW->>BC: getProcessesIdByOrganizer(entityAddress)
-        BC-->>GW: processIDs
-        GW-->>DV: processIDs
+        DV->>GW: EntityResolver.text(entityId, "vndr.vocdoni.processes.active")
+            GW->>BC: text(entityId, "vndr.vocdoni.processes.active")
+            BC-->>GW: processId[]
+        GW-->>DV: processId[]
 
         loop processIDs
 
             DV->>GW: getMetadata(processId)
-            GW->>BC: getMetadata(processId)
-            BC-->>GW: (name, metadataContentUri, merkleRootHash, relayList, startBlock, endBlock)
+                GW->>BC: getMetadata(processId)
+                BC-->>GW: (name, metadataContentUri, merkleRootHash, relayList, startBlock, endBlock)
             GW-->>DV: (name, metadataContentUri, merkleRootHash, relayList, startBlock, endBlock)
 
             alt Process is active or in the future
@@ -351,7 +349,6 @@ sequenceDiagram
                 SW-->>GW: processMetadata
                 GW-->>DV: processMetadata
             end
-
         end
 
     DV-->>-App: processesMetadata
