@@ -1,7 +1,26 @@
 # Gateway
 
-`Abstract here`
+Gateways provide an entry point to the P2P networks. They allow clients to reach decentralized services (census, relays, blockchain, etc.) through a WebSocket or an HTTP API interface.
 
+```mermaid
+graph LR
+
+CA(<center>Client APP<br/><br/><i class='fa fa-2x fa-user'/></center>)
+GW(<center>Gateway<br/><br/><i class='fa fa-2x fa-dungeon'/></center>)
+DA[<center>Filesystem p2p<br/><br/><i class='fa fa-2x fa-database'/></center>]
+BP[<center>Blockchain<br/><br/><i class='fab fa-2x fa-ethereum'/></center>]
+CS[<center>Census<br/><br/><i class='fa fa-2x fa-address-book'/></center>]
+MS[<center>Messaging p2p<br/><br/><i class='fa fa-2x fa-envelope-open-text'/></center>]
+RE[<center>Vote Relay<br/><br/><i class='fa fa-2x fa-dove'/></center>]
+
+
+CA-->|HTTP/WS|GW
+GW-->BP
+GW-->MS
+GW-->DA
+MS-->CS
+MS-->RE
+```
 
 ## Request and response schemas
 
