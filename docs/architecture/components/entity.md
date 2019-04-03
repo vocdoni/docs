@@ -14,7 +14,6 @@ An entity can have many roles. For the most part, it is the organizer and the ul
   - [Naming convention for Resolver keys](#naming-convention-for-resolver-keys)
 - [Entity](#entity)
   - [Index](#index)
-  - [//The contract, but it is tightly coupled with the **JSON Entity Metadata** living on P2P filesystems.](#the-contract-but-it-is-tightly-coupled-with-the-json-entity-metadata-living-on-p2p-filesystems)
   - [Entity Resolver](#entity-resolver)
     - [Storage of Text records](#storage-of-text-records)
     - [Storage of lists of text records](#storage-of-lists-of-text-records)
@@ -24,8 +23,8 @@ An entity can have many roles. For the most part, it is the organizer and the ul
   - [Data schema](#data-schema)
     - [Meta](#meta)
     - [Gateway boot node](#gateway-boot-node)
-      - [Relay](#relay)
-      - [GatewayUpdate](#gatewayupdate)
+    - [Relay](#relay)
+    - [GatewayUpdate](#gatewayupdate)
     - [EntitiyReference](#entitiyreference)
     - [Feed](#feed)
     - [Entity Actions](#entity-actions)
@@ -44,7 +43,6 @@ For the most part, the entity metadata lives in the blockchain. Alternatively, i
 
 We refer to this data aggregate as the Entity Metadata.
 
-//The  contract, but it is tightly coupled with the **[JSON Entity Metadata](#data-schema)** living on P2P filesystems.
 ---
 
 ## Entity Resolver
@@ -57,29 +55,35 @@ The `entityId` is the unique identifier of each entity, being a hash of its crea
 bytes32 entityId = keccak256 (entityAddress);
 ```
 
-An Entity Resolver implements several interfaces
+An Entity Resolver implements the following interfaces
 
-- Storage of Text records
+- Storage of text records
 - Storage of list text records
-- Interface resolver
 
 ### Storage of Text records
 
 We make use of [EIP 634: Storage of Text records in ENS](https://eips.ethereum.org/EIPS/eip-634). It is a convenient way to store arbitrary data as a string following a key-value store model.
 
-- [Implementation](https://github.com/vocdoni/dvote-solidity/blob/master/contracts/profiles/TextResolver.sol)
+[Implementation](https://github.com/vocdoni/dvote-solidity/blob/master/contracts/profiles/TextResolver.sol)
   
 ### Storage of lists of text records
 
 This is necessary in order to minimize the amount of data to write when the metadata can be split.
 
-The user is responsible for managing the indexes, the array does not move its elements.
+The client is responsible for managing the indexes, the array does not move its elements.
 
-The behaviour wants to mimic `The storage of text records`
+The behaviour wants to mimic the `storage of text records`
 
-- [Implementation](https://github.com/vocdoni/dvote-solidity/blob/master/contracts/profiles/TextListResolver.sol)
+Guidlines for processing a retrieved list:
 
+- Ignore records with an empty value
+- Assume records are not sorted
+
+[Implementation](https://github.com/vocdoni/dvote-solidity/blob/master/contracts/profiles/TextListResolver.sol)
+  
 ### Record guidelines
+
+>This guidlines apply to [Storage of Text records](#storage-of-text-records) as well as  [Storage of lists of text records](#storage-of-lists-of-text-records).
 
 Content URIs are formated using the [Content URI specification](/architecture/protocol/data-origins?id=content-uri).
 
@@ -91,16 +95,12 @@ Any other record stored under Vocdoni's key convention is formatted as stringifi
 - **Numbers**  `JSON.parse('8')` => `8` 
 - **Booleans**  `JSON.parse('true')` => `true`
 
-This applies to [Storage of Text records](#storage-of-text-records) as well as  [Storage of lists of text records](#storage-of-lists-of-text-records).
-
->**Important:** It is the Entity's responsibility to ensure that the stored data properly parses into a valid JSON object, once retrieved from the blockchain.
-
 ### Resolver keys
 
 [EIP 634](https://eips.ethereum.org/EIPS/eip-634) convention:
 > Keys must be made up of lowercase letters, numbers and the hyphen (-). Vendor specific services must be prefixed with vnd.
 
-This is the suggested convention:
+Because of the extensive use we make of the keys we extend the convention like such:
 
 `<prefix>.<type>.<purpose>.<attribute>`
 
@@ -152,6 +152,22 @@ Its purpose is to minimize the retrival of metadata requests.
 This creates two sources of truth. The metadata in the contract itself and the one in this object.
 
 >In the event of a mismatch, the metadata on the blockchain is used.
+
+**Usage**
+
+`vnd.vocdoni.meta` is the content URI where the JSON is stored.
+
+The retrival of `vnd.vocdoni.meta` is prioertized, and for the most part the client wont have the need to retrieve other keys. This makes the query of this data quite critical.
+
+The retrival via `http` is not allowed.
+
+The fields in the JSON replicate the same exact structure that the keys in the resolver, with some caveats:
+- The prefix `vnd.vocdoni.` is ommited
+- Dots (`.`) indicate object indentation
+- If it is a `list of text record` it is represented as an array of the records
+- It can include more fields than the ones in the blockchain, but not less.
+
+The client should guarantee that this file matches the metadata in the blockcain, and suggest the necessary actions when it does not.
 
 **Schema**
 
@@ -243,7 +259,7 @@ GatewayBootNode
   }
 ```
 
-#### Relay
+### Relay
 
 ```json
 {
@@ -253,7 +269,7 @@ GatewayBootNode
 }
 ```
 
-#### GatewayUpdate
+### GatewayUpdate
 
 Bootnode servers provide the list of available gateways at the time of requesting. In order to keep an accurate state, Gateways need to notify events to the Bootnodes.
 
