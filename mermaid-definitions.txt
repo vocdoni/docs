@@ -1,0 +1,8 @@
+CA(<center>Client APP<br/><br/><i class='fa fa-2x fa-user'/></center>)
+GW(<center>Gateway<br/><br/><i class='fa fa-2x fa-archway'/></center>)
+DA[<center>Filesystem p2p<br/><br/><i class='fa fa-2x fa-database'/></center>]
+BC[<center>Blockchain<br/><br/><i class='fab fa-2x fa-ethereum'/></center>]
+CS[<center>Census<br/><br/><i class='fa fa-2x fa-address-book'/></center>]
+MS[<center>Messaging p2p<br/><br/><i class='fa fa-2x fa-envelope-open-text'/></center>]
+RE[<center>Vote Relay<br/><br/><i class='fa fa-2x fa-dove'/></center>]
+BO[<center>Bootnode<br/><br/><i class='fa fa-2x fa-book'/></center>]
