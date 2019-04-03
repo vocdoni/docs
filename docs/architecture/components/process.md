@@ -15,43 +15,55 @@ Used as a registry of voting processes, associated to the entity with the same E
 ```solidity
 struct Process {
     address entityResolver;    // A pointer to the Entity's resolver instance to fetch metadata
-    address entityAddress;     // The address of the creator's Entity
+    address entityAddress;     // The address of the Entity's creator
     string processName;
     string metadataContentUri; // Content URI to fetch the JSON metadata from
     uint startBlock;
     uint endBlock;
+    
+    address[] relayList;       // Address list to let users fetch the Relay data
+    mapping (address => Relay) relays;
+    
     bytes32 voteEncryptionPublicKey;
     mapping (uint64 => string) voteBatches;  // Array of Content URI's to fetch the vote batches
     uint64 voteBatchCount;
 }
 
+struct Relay {
+    bool active;
+    string publicKey;
+    string relayMessagingUri;
+}
 
-mapping (bytes32 => Process) public processes;
-mapping (address => uint) public processIndexes;
+mapping (bytes32 => Process) public processes;   // processId => process data
+mapping (address => uint) public processCount;   // Amount of processes created by an address
 
 ```
 
-Processes are indexed by the `processId`
+Processes are referenced by their `processId`
 
 ```solidity
-bytes32 processId = keccak256(abi.encodePacked(entityAddress, processIndex))
+function getNextProcessId(address entityAddress) public view returns (bytes32){
+    uint idx = processCount[entityAddress] + 1;
+    return keccak256(abi.encodePacked(entityAddress, idx));
+}
 ```
 
-where `processIndex` is an auto-incremental nonce per `entityAddress`.
+where `processCount` is an auto-incremental nonce per `entityAddress`.
 
 ### Methods
 
 **`constructor(bool developmentMode)`**
 
 * Deploys a new instance
-* When `developmentMode` is true, timestamps checks will be skipped
+* When `developmentMode` is true, timestamp checks will be skipped
 
-**`create(address entityResolver, string memory processName, string memory metadataContentUri, uint startBlock, uint endBlock, string memory voteEncryptionPublicKey)`**
+**`create(address entityResolver, address entityAddress, string processName, string metadataContentUri, uint startBlock, uint endBlock, string voteEncryptionPublicKey)`**
 
 * The `processName` expects a single language version of the process name. Localized versions for every relevant language must be included within the metadata content
-* A new and unique sequential `processId` will be assigned to the voting process
+* A new and unique `processId` will be assigned to the voting process
 * `metadataContentUri` is expected to contain a valid [Content URI](/architecture/protocol/data-origins?id=content-uri)
-* The actual content behind the `metadataContentUri` is expected to conform to the given [data schema](/architecture/components/process?id=process-metadata-json)
+* The actual content behind the `metadataContentUri` is expected to conform to the [data schema below](#process-metadata-json)
 
 **`get(uint processId)`**
 
@@ -59,38 +71,20 @@ where `processIndex` is an auto-incremental nonce per `entityAddress`.
 
 **`cancel(uint processId)`**
 
-* Only usable by the organizer before `startBlock`
+* Usable by the organizer until `startBlock - 1000`
 
-**`setMetadata(uint processId, string memory metadataContentUri)`**
-
-* Usable until `startblock` has been reached
-* Updates the metadata field to point to a new [Content URI](/architecture/protocol/data-origins?id=content-uri)
-
-**`setEncryptionPublicKey(uint processId, string memory publicKey)`**
-
-* Usable until `startBlock`
-* Changes the public key that voters must use to encrypt his/her vote
-
-**`setEncryptionPrivateKey(uint processId, string memory privateKey)`**
-
-* Usable after `endBlock`
-* Used by the organizer so that the count process can start and votes can be decrypted
-
-<!-- **`getIndexByOrganizer(address entity)`** -->
-<!-- * Get the list of processId's for a given entity -->
-
-**`whitelistRelay(uint processId, address relayAddress, string memory publicKey, string memory relayMessagingUri)`**
+**`addRelay(uint processId, address relayAddress, string publicKey, string relayMessagingUri)`**
 
 * Usable only by the organizer
 * `relayAddress` is the Ethereum address that will be allowed to register vote batches
-* `publicKey` will be used for vote packages to be encrypted uwing this key
+* `publicKey` will be used for vote packages to be encrypted using this key
 * `relayMessagingUri` is expected to be a valid [Messaging URI](/architecture/protocol/data-origins?id=messaging-uri)
 
-**`removeRelay(uint processId, address relayAddress)`**
+**`disableRelay(uint processId, address relayAddress)`**
 
 * Usable only by the organizer
 
-**`isWhitelisted(uint processId, address relayAddress)`**
+**`isActiveRelay(uint processId, address relayAddress)`**
 
 *  Confirms whether a relay is allowed to register vote batches on a process or not
 
@@ -102,7 +96,7 @@ where `processIndex` is an auto-incremental nonce per `entityAddress`.
 
 * Returns the public key and the [Messaging URI](/architecture/protocol/data-origins?id=messaging-uri) for the given relay
 
-**`registerBatch(uint processId, string memory dataContentUri)`**
+**`registerBatch(uint processId, string dataContentUri)`**
 
 * Usable by whitelisted relays only
 * Adds a [Content URI](/architecture/protocol/data-origins?id=content-uri) pointing to a vote batch to the given process
@@ -115,6 +109,14 @@ where `processIndex` is an auto-incremental nonce per `entityAddress`.
 **`getBatch(uint processId)`**
 
 * Returns the [Content URI](/architecture/protocol/data-origins?id=content-uri) on which the vote batch can be fetched
+
+**`revealPrivateKey(uint processId, string privateKey)`**
+
+* Usable after `endBlock`
+* Used by the organizer so that the count process can start and votes can be decrypted
+
+<!-- **`getIndexByOrganizer(address entity)`** -->
+<!-- * Get the list of processId's for a given entity -->
 
 
 ## Data schema
@@ -167,17 +169,6 @@ The JSON payload below is typically stored on Swarm or IPFS, so anyone can fetch
             "metadata": "<content uri>" // Organizer's metadata
         }
     },
-    // List of currently active Relays. This saves a query from the user to the blockchain, once a
-    // process has been already fetched.
-    // The actually binding list of relays for Voting Process is within the smart contract
-    "relays": [
-        {
-            "address": "0x1234...",     // PSS adress to help routing messages
-            "publicKey": "0x23456...",  // Key to encrypt data sent to it
-            "uri": "<messaging-uri>"    // Where to send messages. See Data origins > Messaging URI
-        }, 
-        ...
-    ],
     "census": {
         "id": "entity-people-of-legal-age",  // Census ID to use
         "origin": "<messaging uri>", // Messaging URI of the Census Service to request data from
