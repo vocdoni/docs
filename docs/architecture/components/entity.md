@@ -16,9 +16,10 @@ An entity can have many roles. For the most part, it is the organizer and the ul
   - [Index](#index)
   - [//The contract, but it is tightly coupled with the **JSON Entity Metadata** living on P2P filesystems.](#the-contract-but-it-is-tightly-coupled-with-the-json-entity-metadata-living-on-p2p-filesystems)
   - [Entity Resolver](#entity-resolver)
-    - [Record guidelines](#record-guidelines)
     - [Storage of Text records](#storage-of-text-records)
-    - [Naming convention for Resolver keys](#naming-convention-for-resolver-keys)
+    - [Storage of lists of text records](#storage-of-lists-of-text-records)
+    - [Record guidelines](#record-guidelines)
+    - [Resolver keys](#resolver-keys)
   - [Data schema](#data-schema)
     - [Entity metadata](#entity-metadata)
       - [**JSON metadata**](#json-metadata)
@@ -61,6 +62,22 @@ An Entity Resolver implements several interfaces
 - Storage of list text records
 - Interface resolver
 
+### Storage of Text records
+
+We make use of [EIP 634: Storage of Text records in ENS](https://eips.ethereum.org/EIPS/eip-634). It is a convenient way to store arbitrary data as a string following a key-value store model.
+
+- [Implementation](https://github.com/vocdoni/dvote-solidity/blob/master/contracts/profiles/TextResolver.sol)
+  
+### Storage of lists of text records
+
+This is necessary in order to minimize the amount of data to write when the metadata can be split.
+
+The user is responsible for managing the indexes, the array does not move its elements.
+
+The behaviour wants to mimic `The storage of text records`
+
+- [Implementation](https://github.com/vocdoni/dvote-solidity/blob/master/contracts/profiles/TextListResolver.sol)
+
 ### Record guidelines
 
 Any record stored under Vocdoni's key convention is formatted as stringified JSON object
@@ -69,57 +86,36 @@ Any record stored under Vocdoni's key convention is formatted as stringified JSO
 - **Arrays**  `JSON.parse('["0x1234","0x2345","0x3456"]')` => `[ "0x1234", "0x2345", "0x3456" ]`
 - **Strings**  `JSON.parse('"String goes here"')` => `"String goes here"`
 - **Numbers**  `JSON.parse('8')` => `8` 
-- **Booleans**  `JSON.parse('true')` => `true` 
+- **Booleans**  `JSON.parse('true')` => `true`
+
+This applies to [Storage of Text records](#storage-of-text-records) as well as  [Storage of lists of text records](#storage-of-lists-of-text-records).
 
 >**Important:** It is the Entity's responsibility to ensure that the stored data properly parses into a valid JSON object, once retrieved from the blockchain.
 
-See [Content URI](/architecture/protocol/data-origins?id=content-uri) for examples.
+[Content URI](/architecture/protocol/data-origins?id=content-uri) for examples.
 
-### Storage of Text records
+### Resolver keys
 
-[EIP 634: Storage of Text records in ENS](https://eips.ethereum.org/EIPS/eip-634) is convenient to store arbitrary data as a string following a key-value store model.
-
-```solidity
-function text(bytes32 node, string key) constant returns (string text);
-```
-
-### Naming convention for Resolver keys
-
-Below is a table with the proposed standard for key/value denomination. 
-
-**Important:** Any JSON data stored on the resolver is expected to be **stringified**. For clarity, the examples below appear as plain JSON, but actual values should be used [like the examples above](/architecture/components/entity?id=storage-of-text-records).
+Below is a table with the proposed standard for key/value denomination.
 
 **Required keys**
 
-| Key                 | Example                    | Description                                                                                                                                         |
-|---------------------|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`              | Free Republic of Liberland | A single-language version of the Entity's name (used as a fallback of the JSON metadata version)                                                    |
-| `vndr.vocdoni.meta` | bzz://12345,ipfs://12345   | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the JSON metadata. <br/>See [Entity Metadata](#entity-metadata-1) below. |
-
-**Supported keys**
-
 | Key                                        | Example                                                  | Description                                                                                                                                                                         |
 |--------------------------------------------|----------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `vndr.vocdoni.process.instance`            | 0xccc                                                    | Address of the Processes Smart Contract instance used by the entity                                                                                                                 |
-| `vndr.vocdoni.gateway.bootnodes`           | [{&lt;gatewayBootnode&gt;}, ...]                         | Data of the boot nodes to ask for active gateways. [See below](#gateway-boot-nodes) for more details                                                                                |
-| `vndr.vocdoni.bootnodes.update`            | {&lt;bootnodeUpdateParams&gt;}                           | Parameters for Gateways to report availability to boot nodes. [See below](#boot-nodes-gateway-updates) for more details                                                             |
-| `vndr.vocdoni.processess.active`           | ["0x987","0x876"]                                        | List of Process Id's displayed as available by the client                                                                                                                           |
-| `vndr.vocdoni.processess.ended`            | ["0x887","0x886"]                                        | List of Process Id's that already ended                                                                                                                                             |
-| `vndr.vocdoni.processess.upcoming`         | ["0x787","0x776"]                                        | List of Process Id's that will become active in the future                                                                                                                          |
-| `vndr.vocdoni.feed`                        | bzz-feed://23456,ipfs://23456,https://liberland.org/feed | Fallback version of the [JSON feed](#feed) in the default language. See [Content URI](/architecture/protocol/data-origins?id=content-uri).                                          |
-| `vndr.vocdoni.description`                 | Is a sovereign state...                                  | A single-language version of a short description (used as a fallback of the JSON metadata version)                                                                                  |
-| `vndr.vocdoni.avatar`                      | https://liberland.org/logo.png                           | [Content URI](/architecture/protocol/data-origins?id=content-uri) of an image file to display next to the entity name                                                               |
-| `vndr.vocdoni.entities.boot`               | [{&lt;entityRef&gt;}]                                    | A starting point of entities list to allow users to browser from a curated list. Only used in "boot" entities like the case of Vocdoni itself.  See [Entities List](#entities-list) |
-| `vndr.vocdoni.entities.trusted`            | [{&lt;entityRef&gt;}]                                    | A list of entities that the own entity trusts.  See [Entities List](#entities-list)                                                                                                 |
-| `vndr.vocdoni.entities.fallback.bootnodes` | [{&lt;entityRef&gt;}]                                    | A [list of entities](#entities-list) to borrow the bootnodes from in case of failure.                                                                                               |
+| `vndr.vocdoni.name`                        | 'Free Republic of Liberland'                             | A single-language version of the Entity's name (used as a fallback of the JSON metadata version)                                                                                    |
+| `vndr.vocdoni.meta`                        | 'bzz://12345,ipfs://12345'                               | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the JSON metadata. <br/>See [Entity Metadata](#entity-metadata-1) below.                                 |
+| `vndr.vocdoni.votingSmartContract`         | '0xccc'                                                  | Address of the Processes Smart Contract instance used by the entity                                                                                                                 |
+| `vndr.vocdoni.gateway.bootnodes`           | '[{&lt;gatewayBootnode&gt;}, ...]'                       | Data of the boot nodes to ask for active gateways. [See below](#gateway-boot-nodes) for more details                                                                                |
+| `vndr.vocdoni.bootnodes.update`            | '{&lt;bootnodeUpdateParams&gt;}'                           | Parameters for Gateways to report availability to boot nodes. [See below](#boot-nodes-gateway-updates) for more details                                                             |
+| `vndr.vocdoni.processess.active`           | '["0x987","0x876"]'                                        | List of Process Id's displayed as available by the client                                                                                                                           |
+| `vndr.vocdoni.processess.ended`            | '["0x887","0x886"]'                                        | List of Process Id's that already ended                                                                                                                                             |
+| `vndr.vocdoni.feed`                        | 'bzz-feed://23456,ipfs://23456,https://liberland.org/feed' | Fallback version of the [JSON feed](#feed) in the default language. See [Content URI](/architecture/protocol/data-origins?id=content-uri).                                          |
+| `vndr.vocdoni.description`                 | 'Is a sovereign state...'                                  | A single-language version of a short description (used as a fallback of the JSON metadata version)                                                                                  |
+| `vndr.vocdoni.avatar`                      | 'https://liberland.org/logo.png'                           | [Content URI](/architecture/protocol/data-origins?id=content-uri) of an image file to display next to the entity name                                                               |
+| `vndr.vocdoni.entities.boot`               | '[{&lt;entityRef&gt;}]'                                    | A starting point of entities list to allow users to browser from a curated list. Only used in "boot" entities like the case of Vocdoni itself.  See [Entities List](#entities-list) |
+| `vndr.vocdoni.entities.trusted`            | '[{&lt;entityRef&gt;}]'                                    | A list of entities that the own entity trusts.  See [Entities List](#entities-list)                                                                                                 |
+| `vndr.vocdoni.entities.fallback.bootnodes` | '[{&lt;entityRef&gt;}]'                                    | A [list of entities](#entities-list) to borrow the bootnodes from in case of failure.                                                                                               |
 
-**Arbitrary keys**
-
-| Key                           | Example                               | Description     |
-|-------------------------------|---------------------------------------|-----------------|
-| `vndr.liberland.podcast`      | https://liberland.org/json-feed/      | (Custom values) |
-| `vndr.liberland.constitution` | https://liberland.org/en/constitution | (Custom values) |
-| `vndr.twitter.username`       | @Liberland_org                        | (Custom values) |
 
 ---
 
