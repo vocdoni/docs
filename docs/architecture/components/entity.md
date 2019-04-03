@@ -24,7 +24,7 @@ An entity can have many roles. For the most part, it is the organizer and the ul
     - [Meta](#meta)
     - [Gateway boot node](#gateway-boot-node)
     - [Relay](#relay)
-    - [GatewayUpdate](#gatewayupdate)
+    - [Gateway update](#gateway-update)
     - [EntitiyReference](#entitiyreference)
     - [Feed](#feed)
     - [Entity Actions](#entity-actions)
@@ -115,6 +115,7 @@ Below is a table with the proposed standard for key/value denomination.
 | Key                                 | Example                                                       | Description                                                                                                                                         |
 |-------------------------------------|---------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | `vnd.vocdoni.entity-name`           | 'Free Republic of Liberland'                                  | Entity's name                                                                                                                                       |
+| `vnd.vocdoni.supported-locales`     | '["en", "fr"]'                                                | Languages supported by the entity. Used to know what `description` or `feed` to retrieve.                                                           |
 | `vnd.vocdoni.meta`                  | 'bzz://12345,ipfs://12345'                                    | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the JSON metadata. <br/>See [Entity Metadata](#entity-metadata-1) below. |
 | `vnd.vocdoni.voting-contract`       | '0xccc'                                                       | Address of the Processes Smart Contract instance used by the entity                                                                                 |
 | `vnd.vocdoni.gateway-update`        | '&lt;gatewayUpdate&gt;'                                       | Parameters for Gateways to report availability to boot nodes. [See GatewayUpdate](#gatewayupdate)                                                   |
@@ -165,13 +166,13 @@ The fields in the JSON replicate the same exact structure that the keys in the r
 - The prefix `vnd.vocdoni.` is ommited
 - Dots (`.`) indicate object indentation
 - If it is a `list of text record` it is represented as an array of the records
-- It can include more fields than the ones in the blockchain, but not less.
+- It can include more fields than the ones in the blockchain, but not less. `actions` is a relevant one.
 
 The client should guarantee that this file matches the metadata in the blockcain, and suggest the necessary actions when it does not.
 
 **Schema**
 
-Meta
+meta
 ```json
 {
   //text records
@@ -216,7 +217,6 @@ Meta
       ...
   ],
   "actions": [ <actions> ], // See Entity Actions below
-  
   ...
 }
 ```
@@ -225,11 +225,6 @@ Meta
 
 - [Set Entity metadata](/architecture/sequence-diagrams?id=set-entity-metadata)
 - [Entity subscription](/architecture/sequence-diagrams?id=entity-subscription)
-
-**Related:**
-
-- [Entity Smart Contract](https://github.com/vocdoni/dvote-solidity/blob/master/contracts/VotingEntity.sol)
-- [Entity JS methods](https://github.com/vocdoni/dvote-js/blob/master/src/dvote/entity.ts)
 
 ### Gateway boot node
 
@@ -241,17 +236,18 @@ A gateway-boot-node is a server trusted by the Entity whoes goal is to provide a
 
 Considerations:
 
-- Initial bootnodes are hardcoded into the client App to prevent the chicken and the egg problem of an App unable to find a an active gateway in the blockchain because it does not have a gateway in the first place. 
 - A gateway-boot-node is a best effort starting point
 - To minimize censorship attacks organizations should should provide their own set of Gateways.
 
-**Usages**
+**Usage**
 
 `vocdoni.gateway-boot-nodes` provides a list of currently active boot-nodes.
 
+Aditionally, initial bootnodes are hardcoded into the client App to prevent the chicken and the egg problem of an App unable to find a an active gateway in the blockchain because it does not have a gateway in the first place.
+
 **Schema**
 
-GatewayBootNode
+gatewayBootNode
 ```json
   {
     "update": "pss://publicKey@0x0",        // Messaging URI to use for notifying updates to the bootnode
@@ -269,12 +265,23 @@ GatewayBootNode
 }
 ```
 
-### GatewayUpdate
+### Gateway update
 
-Bootnode servers provide the list of available gateways at the time of requesting. In order to keep an accurate state, Gateways need to notify events to the Bootnodes.
+**Description**
 
-To this end, the `vocdoni.gateway-update` text field provides the details that Gateways need to use:
+Boot-node servers provide the list of available gateways at the time of requesting. In order to keep an accurate state, `gateways` need to notifiy specific events to show that they are still alive.
 
+This data schema provides the necessary params for the Gateways to communicate with the boot-nodes.
+
+**Usage**
+
+`vocdoni.gateway-update` text record provides the details that Gateways need to use.
+
+This value is global and effects all the Gateways of the Entity.
+
+**schema**
+
+gatewayUpdate
 ```json
 {
   "timeout": 60000,                   // milliseconds after which a Gateway is marked as down
@@ -283,20 +290,22 @@ To this end, the `vocdoni.gateway-update` text field provides the details that G
 }
 ```
 
-This value is global and effects all the Gateways of the Entity.
-
 ### EntitiyReference
 
-It represents a specific entity
+**Description**
+
+It is a pointer to the metadata of a specific entity.
+
+**Usage**
+
 Lists of `EntityReference`s have several purposes.
 
-- `vocdoni.entities.boot` : Entry point for the user to subscribe to new entities.
-- `vocdoni.entities.trusted`: Reputation/whitelisting mechanism for entities to express a relationship with other entities
+- `vnd.vocdoni.boot-entities`: Entry point for the user to subscribe to new entities.
+- `vnd.vocdoni.fallback-bootnodes-entities`: If the can' reach the boot-nodes it will use the `vocdoni.gateway-boot-nodes` from these entities
+- `vnd.vocdoni.trusted-entities`: Aimed for the end-user as a simple discovery mechanism for entities trusted by the current one.
+- `vnd.vocdoni.census-service-authorized-entities`: Entities controlling a `census-service` can define here what external entites are allowed to make use of the service.
 
-Each element on the list contains an `Entity Reference` entry
-- `resolverInstance`: The contract instance address, where the Entity's metadata lives
-- `entityAddress`: The address of an entity
-
+**Schema**
 
 ```json
 {
@@ -307,15 +316,29 @@ Each element on the list contains an `Entity Reference` entry
 
 ### Feed
 
+**Description**
 The `Feed` serves the purpose of having a uni-directional censorship-resistant communication channel between the `Entity` and the `user`.
 
-Content feeds are expected to conform to the specs of a [JSON Feed](https://jsonfeed.org/) and be accessible through a [Content URI](/architecture/protocol/data-origins?id=content-uri). 
+It serves a similar purpose of RSS or Atom feed.
 
-See:
-- [JSON feed specification](https://jsonfeed.org/version/1)
+**Usage**
+
+Currently only a `news-feed` is supported but multiple feeds could cohexist.
+
+It is localized using the locale key. The specific locale to retrive is decided on the client based on `vnd.vocdoni.supported-locales`
+
+It is referenced with a [Content URI](/architecture/protocol/data-origins?id=content-uri).
+
+`vnd.vocdoni.news-feed.en`
+`vnd.vocdoni.news-feed.fr`
+
+**Schema**
+
+Content feeds are expected to conform to the specs of the [JSON feed specification](https://jsonfeed.org/version/1)
 
 ### Entity Actions
 
+**Description**
 Entity Actions are custom operations that clients will be offered to perform. Their definition is stored within the [JSON metadata](#json-metadata).
 
 Below is a reference of suported use cases:
@@ -330,7 +353,7 @@ Below is a reference of suported use cases:
 
         // Localized Call To Action to appear on the app
         "name": {
-            "default": "Sign up to The Entity",  // used if none of the languages matches
+            "en": "Sign up to The Entity",  // first is used if none of the languages matches
             "fr": "S'inscrire à l'organisation"
         },
 
@@ -351,7 +374,7 @@ Below is a reference of suported use cases:
 
         // Localized Call To Action to appear on the app
         "name": {
-            "default": "Verify my identity",  // used if none of the languages matches
+            "en": "Verify my identity",  // used if none of the languages matches
             "fr": "Vérifier mon identité"
         },
 
@@ -379,7 +402,7 @@ Below is a reference of suported use cases:
                 "orientation": "landscape",
                 "overlay": "id-card-front",
                 "caption": {
-                    "default": "...",
+                    "en": "...",
                     "fr": "..."
                 }
             },
@@ -389,7 +412,7 @@ Below is a reference of suported use cases:
                 "orientation": "landscape",
                 "overlay": "id-card-back",
                 "caption": {
-                    "default": "...",
+                    "en": "...",
                     "fr": "..."
                 }
             },
@@ -399,7 +422,7 @@ Below is a reference of suported use cases:
                 "type": "gallery",
                 "name": "custom-1",
                 "caption": {
-                    "default": "...",
+                    "ens": "...",
                     "fr": "..."
                 }
             }
