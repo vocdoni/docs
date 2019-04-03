@@ -96,7 +96,8 @@ It is encrypted within the corresponding [Vote Envelope](#vote-envelope-ring-sig
     "version": "1.0",    // Protocol version
     "type": "lrs", // or zk-snarks
     "relay": {
-        "publicKey": "0x1234..."
+        "publicKey": "0x1234...",
+        "signature": "0x2345..."   // signed hash of the strinfigied array data from "votes"
     },
     "votes": [ // Vote Package, see above
         { ... },
