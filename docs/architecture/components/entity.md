@@ -19,13 +19,12 @@ An entity can have many roles. For the most part, it is the organizer and the ul
     - [Storage of lists of text records](#storage-of-lists-of-text-records)
     - [Record guidelines](#record-guidelines)
     - [Resolver keys](#resolver-keys)
-  - [| `vnd.vocdoni.relays.active` | '&lt;relay&gt;' | Relays public keys |](#vndvocdonirelaysactive--ltrelaygt--relays-public-keys)
   - [Data schema](#data-schema)
     - [Meta](#meta)
     - [Gateway boot node](#gateway-boot-node)
     - [Relay](#relay)
     - [Gateway update](#gateway-update)
-    - [EntitiyReference](#entitiyreference)
+    - [Entity reference](#entity-reference)
     - [Feed](#feed)
     - [Entity Actions](#entity-actions)
   - [ENS](#ens)
@@ -112,33 +111,33 @@ Below is a table with the proposed standard for key/value denomination.
 
 **Text record keys**
 
-| Key                                 | Example                                                       | Description                                                                                                                                         |
-|-------------------------------------|---------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| `vnd.vocdoni.entity-name`           | 'Free Republic of Liberland'                                  | Entity's name                                                                                                                                       |
-| `vnd.vocdoni.supported-locales`     | '["en", "fr"]'                                                | Languages supported by the entity. Used to know what `description` or `feed` to retrieve.                                                           |
-| `vnd.vocdoni.meta`                  | 'bzz://12345,ipfs://12345'                                    | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the JSON metadata. <br/>See [Entity Metadata](#entity-metadata-1) below. |
-| `vnd.vocdoni.voting-contract`       | '0xccc'                                                       | Address of the Processes Smart Contract instance used by the entity                                                                                 |
-| `vnd.vocdoni.gateway-update`        | '&lt;gatewayUpdate&gt;'                                       | Parameters for Gateways to report availability to boot nodes. [See GatewayUpdate](#gatewayupdate)                                                   |
-| `vnd.vocdoni.process-ids.active`    | '["0x987","0x876"]'                                           | List of `processId`'s displayed as available by the client                                                                                          |
-| `vnd.vocdoni.process-ids.ended`     | '["0x887","0x886"]'                                           | List of `processId`'s displayed as unavailable by the client                                                                                        |
-| `vnd.vocdoni.news-feed.en`          | 'bzz-feed://23457,ipfs://23457,https://liberland.org/feed'    | [Content URI](/architecture/protocol/data-origins?id=content-uri) of the feed in an specific language.                                              |
-| `vnd.vocdoni.news-feed.fr`          | 'bzz-feed://23456,ipfs://23456,https://liberland.org/feed/fr' | [Content URI](/architecture/protocol/data-origins?id=content-uri) of the feed in an specific language.                                              |
-| `vnd.vocdoni.entity-description.en` | 'Is a sovereign state...'                                     | Entity description in the default language                                                                                                          |
-| `vnd.vocdoni.entity-description.fr` | 'Dans un état souverain...'                                   | Entity description in the specific locale )                                                                                                         |
-| `vnd.vocdoni.avatar`                | 'https://liberland.org/logo.png'                              | [Content URI](/architecture/protocol/data-origins?id=content-uri) of an image file to display next to the entity name                               |
+| Key                                 | Example                                                       | Description                                                                                                           |
+|-------------------------------------|---------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| `vnd.vocdoni.entity-name`           | 'Free Republic of Liberland'                                  | Entity's name                                                                                                         |
+| `vnd.vocdoni.supported-locales`     | '["en", "fr"]'                                                | Languages supported by the entity. Used to know what `description` or `feed` to retrieve.                             |
+| `vnd.vocdoni.meta`                  | 'bzz://12345,ipfs://12345'                                    | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the JSON metadata. <br/>See [Meta](#meta). |
+| `vnd.vocdoni.voting-contract`       | '0xccc'                                                       | Address of the Processes Smart Contract instance used by the entity                                                   |
+| `vnd.vocdoni.gateway-update`        | '&lt;GatewayUpdate&gt;'                                       | Parameters for Gateways to report availability to boot nodes. See [Gateway update](#gateway-update)                   |
+| `vnd.vocdoni.process-ids.active`    | '["0x987","0x876"]'                                           | List of `processId`'s displayed as available by the client                                                            |
+| `vnd.vocdoni.process-ids.ended`     | '["0x887","0x886"]'                                           | List of `processId`'s displayed as unavailable by the client                                                          |
+| `vnd.vocdoni.news-feed.en`          | 'bzz-feed://23457,ipfs://23457,https://liberland.org/feed'    | [Content URI](/architecture/protocol/data-origins?id=content-uri) of the feed in an specific language.                |
+| `vnd.vocdoni.news-feed.fr`          | 'bzz-feed://23456,ipfs://23456,https://liberland.org/feed/fr' | [Content URI](/architecture/protocol/data-origins?id=content-uri) of the feed in an specific language.                |
+| `vnd.vocdoni.entity-description.en` | 'Is a sovereign state...'                                     | Entity description in an specific language                                                                            |
+| `vnd.vocdoni.entity-description.fr` | 'Dans un état souverain...'                                   | Entity description in an specific language                                                                            |
+| `vnd.vocdoni.avatar`                | 'https://liberland.org/logo.png'                              | [Content URI](/architecture/protocol/data-origins?id=content-uri) of an image file to display next to the entity name |
 
 **List of Text record keys**
 
-| Key                                              | Record example            | Description                                                                                                                                                                         |
-|--------------------------------------------------|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `vnd.vocdoni.gateway-boot-nodes`                 | '&lt;gatewayBootNode&gt;' | Data of the boot nodes to ask for active gateways. [See below](#gateway-boot-nodes) for more details                                                                                |
-| `vnd.vocdoni.boot-entities`                      | '&lt;entityReference&gt;' | A starting point of entities list to allow users to browser from a curated list. Only used in "boot" entities like the case of Vocdoni itself.  See [Entities List](#entities-list) |
-| `vnd.vocdoni.fallback-bootnodes-entities`        | '&lt;entityReference&gt;' | A [list of entities](#entities-list) to borrow the bootnodes from in case of failure.                                                                                               |
-| `vnd.vocdoni.trusted-entities`                   | '&lt;entityReference&gt;' | A list of entities that the own entity trusts.  See [Entities List](#entities-list)                                                                                                 |
-| `vnd.vocdoni.census-service-authorized-entities` | '&lt;entityReference&gt;' | Census-service uses it to authorize entities to write on it. Only entities with a census-service use it                                                                             |
-| `vnd.vocdoni.census-ids.active`                  | '0xccc'                   | CensusIds that the census-service keeps alive                                                                                                                                       |
-| `vnd.vocdoni.relays.active`                      | '&lt;relay&gt;'           | Relays public keys                                                                                                                                                                  |
----
+| Key                                              | Record example            | Description                                                                                             |
+|--------------------------------------------------|---------------------------|---------------------------------------------------------------------------------------------------------|
+| `vnd.vocdoni.gateway-boot-nodes`                 | '&lt;GatewayBootNode&gt;' | Data of the boot nodes to ask for active gateways. [See below](#gateway-boot-nodes) for more details    |
+| `vnd.vocdoni.boot-entities`                      | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s suggestions for the user to subscribe                   |
+| `vnd.vocdoni.fallback-bootnodes-entities`        | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s to borrow the bootnodes from in case of failure.        |
+| `vnd.vocdoni.trusted-entities`                   | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s that the current entity trusts.                          |
+| `vnd.vocdoni.census-service-authorized-entities` | '&lt;EntityReference&gt;' | Census-service uses it to authorize entities to write on it. Only entities with a census-service use it |
+| `vnd.vocdoni.census-ids.active`                  | '0xccc'                   | CensusIds that the census-service keeps alive                                                           |
+| `vnd.vocdoni.relays.active`                      | '&lt;Relay&gt;'           | Relays public keys                                                                                      |
+
 
 ## Data schema
 
@@ -172,7 +171,8 @@ The client should guarantee that this file matches the metadata in the blockcain
 
 **Schema**
 
-meta
+Name: Meta
+
 ```json
 {
   //text records
@@ -247,7 +247,7 @@ Aditionally, initial bootnodes are hardcoded into the client App to prevent the 
 
 **Schema**
 
-gatewayBootNode
+Name: GatewayBootNode
 ```json
   {
     "update": "pss://publicKey@0x0",        // Messaging URI to use for notifying updates to the bootnode
@@ -256,6 +256,8 @@ gatewayBootNode
 ```
 
 ### Relay
+
+`WIP`
 
 ```json
 {
@@ -281,7 +283,8 @@ This value is global and effects all the Gateways of the Entity.
 
 **schema**
 
-gatewayUpdate
+Name: GatewayUpdate
+
 ```json
 {
   "timeout": 60000,                   // milliseconds after which a Gateway is marked as down
@@ -290,7 +293,7 @@ gatewayUpdate
 }
 ```
 
-### EntitiyReference
+### Entity reference
 
 **Description**
 
@@ -307,6 +310,7 @@ Lists of `EntityReference`s have several purposes.
 
 **Schema**
 
+Name: EntityReference
 ```json
 {
   "resolverAddress": "0xaaa", //contract address of the smart-contract
@@ -343,6 +347,7 @@ Entity Actions are custom operations that clients will be offered to perform. Th
 
 Below is a reference of suported use cases:
 
+Name: EntityActions
 ```json
 {
     ...
