@@ -37,7 +37,7 @@
             if (lang === "mermaid") {
               return (
                 '<div class="mermaid">' + mermaid.render('mermaid-svg-' + num++, code) + "</div>"
-              );
+                );
             }
             return this.origin.code.apply(this, arguments);
           }
@@ -48,12 +48,13 @@
           'https://github.com/vocdoni/docs/edit/master/docs/',
           'https://github.com/vocdoni/docs/edit/master/docs/',
           '🖉'
-        )
-      ]
-    }
-
-  </script>
+          )
+        ]
+      }
+      
+      </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="https://unpkg.com/prismjs/components/prism-json.js"></script>
 </body>
 
 </html>
