@@ -64,52 +64,52 @@ where `processCount` is an auto-incremental nonce per `entityAddress`.
 * `metadataContentUri` is expected to contain a valid [Content URI](/architecture/protocol/data-origins?id=content-uri)
 * The actual content behind the `metadataContentUri` is expected to conform to the [data schema below](#process-metadata-json)
 
-**`get(uint processId)`**
+**`get(bytes32 processId)`**
 
 * Fetch the current data from `processId`
 
-**`cancel(uint processId)`**
+**`cancel(bytes32 processId)`**
 
 * Usable by the organizer until `startTime - 1000`
 
-**`addRelay(uint processId, address relayAddress, string publicKey, string messagingUri)`**
+**`addRelay(bytes32 processId, address relayAddress, string publicKey, string messagingUri)`**
 
 * Usable only by the organizer
 * `relayAddress` is the Ethereum address that will be allowed to register vote batches
 * `publicKey` will be used for vote packages to be encrypted using this key
 * `messagingUri` is expected to be a valid [Messaging URI](/architecture/protocol/data-origins?id=messaging-uri)
 
-**`disableRelay(uint processId, address relayAddress)`**
+**`disableRelay(bytes32 processId, address relayAddress)`**
 
 * Usable only by the organizer
 
-**`isActiveRelay(uint processId, address relayAddress)`**
+**`isActiveRelay(bytes32 processId, address relayAddress)`**
 
 *  Confirms whether a relay is allowed to register vote batches on a process or not
 
-**`getRelayIndex(uint processId)`**
+**`getRelayIndex(bytes32 processId)`**
 
 * Provides a list of relay addresses authorized to work on a process
 
-**`getRelay(uint processId, address relayAddress)`**
+**`getRelay(bytes32 processId, address relayAddress)`**
 
 * Returns the public key and the [Messaging URI](/architecture/protocol/data-origins?id=messaging-uri) for the given relay
 
-**`registerBatch(uint processId, string dataContentUri)`**
+**`registerBatch(bytes32 processId, string dataContentUri)`**
 
 * Usable by whitelisted relays only
 * Adds a [Content URI](/architecture/protocol/data-origins?id=content-uri) pointing to a vote batch to the given process
 * The content behind the [Content URI](/architecture/protocol/data-origins?id=content-uri) is expected to conform to a valid [Vote Batch](/architecture/components/relay?id=vote-batch)
 
-**`getBatchIndex(uint processId)`**
+**`getBatchIndex(bytes32 processId)`**
 
 * Returns an array with the vote batches registered for the given processId
 
-**`getBatch(uint processId)`**
+**`getBatch(bytes32 processId, uint64 batchNumber)`**
 
 * Returns the [Content URI](/architecture/protocol/data-origins?id=content-uri) on which the vote batch can be fetched
 
-**`revealPrivateKey(uint processId, string privateKey)`**
+**`revealPrivateKey(bytes32 processId, string privateKey)`**
 
 * Usable after `endTime`
 * Used by the organizer so that the count process can start and votes can be decrypted
