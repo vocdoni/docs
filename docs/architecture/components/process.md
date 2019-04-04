@@ -19,7 +19,7 @@ struct Process {
     string processName;
     string metadataContentUri; // Content URI to fetch the JSON metadata from
     uint256 startTime;         // block.timestamp after which votes can be registered
-    uint256 endTime;           // block.timestamp after which votes can be registered
+    uint256 endTime;           // block.timestamp until which votes can be registered
     
     address[] relayList;       // Relay addresses to let users fetch the Relay data
     mapping (address => Relay) relays;
@@ -154,8 +154,8 @@ The JSON payload below is typically stored on Swarm or IPFS, so anyone can fetch
             "value": 2
         }
     ],
-    "startTime": 10000,   // current block timestamp as seconds since unix epoch
-    "endTime":  11000,    // current block timestamp as seconds since unix epoch
+    "startTime": 10000,   // block timestamp as seconds since unix epoch
+    "endTime":  11000,    // block timestamp as seconds since unix epoch
     "meta": {
         "description": {
             "default": "## Markdown text goes here\n### Abstract",
