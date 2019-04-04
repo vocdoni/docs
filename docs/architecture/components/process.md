@@ -18,15 +18,15 @@ struct Process {
     address entityAddress;     // The address of the Entity's creator
     string processName;
     string metadataContentUri; // Content URI to fetch the JSON metadata from
-    uint startBlock;
-    uint endBlock;
+    uint256 startTime;         // block.timestamp after which votes can be registered
+    uint256 endTime;           // block.timestamp after which votes can be registered
     
-    address[] relayList;       // Address list to let users fetch the Relay data
+    address[] relayList;       // Relay addresses to let users fetch the Relay data
     mapping (address => Relay) relays;
     
     bytes32 voteEncryptionPublicKey;
-    mapping (uint64 => string) voteBatches;  // Array of Content URI's to fetch the vote batches
-    uint64 voteBatchCount;
+    mapping (uint64 => string) voteBatches;  // Mapping from [0..N-1] to Content URI's to fetch the vote batches
+    uint64 voteBatchCount;                   // N vote batches registered
 }
 
 struct Relay {
@@ -53,12 +53,11 @@ where `processCount` is an auto-incremental nonce per `entityAddress`.
 
 ### Methods
 
-**`constructor(bool developmentMode)`**
+**`constructor()`**
 
 * Deploys a new instance
-* When `developmentMode` is true, timestamp checks will be skipped
 
-**`create(address entityResolver, address entityAddress, string processName, string metadataContentUri, uint startBlock, uint endBlock, string voteEncryptionPublicKey)`**
+**`create(address entityResolver, address entityAddress, string processName, string metadataContentUri, uint startTime, uint endTime, string voteEncryptionPublicKey)`**
 
 * The `processName` expects a single language version of the process name. Localized versions for every relevant language must be included within the metadata content
 * A new and unique `processId` will be assigned to the voting process
@@ -71,7 +70,7 @@ where `processCount` is an auto-incremental nonce per `entityAddress`.
 
 **`cancel(uint processId)`**
 
-* Usable by the organizer until `startBlock - 1000`
+* Usable by the organizer until `startTime - 1000`
 
 **`addRelay(uint processId, address relayAddress, string publicKey, string relayMessagingUri)`**
 
@@ -112,7 +111,7 @@ where `processCount` is an auto-incremental nonce per `entityAddress`.
 
 **`revealPrivateKey(uint processId, string privateKey)`**
 
-* Usable after `endBlock`
+* Usable after `endTime`
 * Used by the organizer so that the count process can start and votes can be decrypted
 
 <!-- **`getIndexByOrganizer(address entity)`** -->
@@ -155,8 +154,8 @@ The JSON payload below is typically stored on Swarm or IPFS, so anyone can fetch
             "value": 2
         }
     ],
-    "startBlock": 10000,
-    "endBlock":  11000,
+    "startTime": 10000,   // current block timestamp as seconds since unix epoch
+    "endTime":  11000,    // current block timestamp as seconds since unix epoch
     "meta": {
         "description": {
             "default": "## Markdown text goes here\n### Abstract",

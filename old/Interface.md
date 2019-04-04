@@ -14,8 +14,8 @@
 + censusUrl //Where is the census Merkle-tree
 + censusRoot //Merkle-root of census
 + votingOptions //string that has an inmutable reference to the voting options
-+ startBlock
-+ endBlock
++ startTime
++ endTime
 + voteEncryptionKeys
 + status
 + trustedGateways
