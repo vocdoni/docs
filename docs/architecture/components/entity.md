@@ -10,13 +10,13 @@ An entity can have many roles. For the most part, it is the organizer and the ul
 
 - [Entity Resolver](#entity-resolver)
   - [Storage of Text records](#storage-of-text-records)
-  <!-- - [Storage of lists of text](#storage-of-lists-of-text) -->
+  <!-- - [Storage of lists of text](#storage-of-text-list) -->
   - [Naming convention for Resolver keys](#naming-convention-for-resolver-keys)
 - [Entity](#entity)
   - [Index](#index)
   - [Entity Resolver](#entity-resolver)
     - [Storage of Text records](#storage-of-text-records)
-    - [Storage of lists of text records](#storage-of-lists-of-text-records)
+    - [Storage of Text List records](#storage-of-text-list-records)
     - [Record guidelines](#record-guidelines)
     - [Resolver keys](#resolver-keys)
   - [Data schema](#data-schema)
@@ -56,8 +56,8 @@ bytes32 entityId = keccak256 (entityAddress);
 
 An Entity Resolver implements the following interfaces
 
-- Storage of text records
-- Storage of list text records
+- Storage of Text records
+- Storage of Text List records
 
 ### Storage of Text records
 
@@ -65,7 +65,7 @@ We make use of [EIP 634: Storage of Text records in ENS](https://eips.ethereum.o
 
 [Implementation](https://github.com/vocdoni/dvote-solidity/blob/master/contracts/profiles/TextResolver.sol)
   
-### Storage of lists of text records
+### Storage of Text List records
 
 This is necessary in order to minimize the amount of data to write when the metadata can be split.
 
@@ -73,16 +73,13 @@ The client is responsible for managing the indexes, the array does not move its 
 
 The behaviour wants to mimic the `storage of text records`
 
-Guidelines for processing a retrieved list:
-
-- Ignore records with an empty value
-- Assume records are not sorted
+Assume records are not sorted
 
 [Implementation](https://github.com/vocdoni/dvote-solidity/blob/master/contracts/profiles/TextListResolver.sol)
   
 ### Record guidelines
 
->This guidlines apply to [Storage of Text records](#storage-of-text-records) as well as  [Storage of lists of text records](#storage-of-lists-of-text-records).
+>This guidlines apply to [Storage of Text records](#storage-of-text-records) as well as  [Storage of lists of text records](#storage-of-text-list-records).
 
 Content URIs are formatted using the [Content URI specification](/architecture/protocol/data-origins?id=content-uri).
 
@@ -91,7 +88,7 @@ Any other record stored under Vocdoni's key convention is formatted as a stringi
 - **Objects**  `JSON.parse('{"keyName":"valueGoesHere"}')` => `{ keyName: "valueGoesHere" }`
 - **Arrays**  `JSON.parse('["0x1234","0x2345","0x3456"]')` => `[ "0x1234", "0x2345", "0x3456" ]`
 - **Strings**  `JSON.parse('"String goes here"')` => `"String goes here"`
-- **Numbers**  `JSON.parse('8')` => `8` 
+- **Numbers**  `JSON.parse('8')` => `8`
 - **Booleans**  `JSON.parse('true')` => `true`
 
 ### Resolver keys
@@ -112,9 +109,9 @@ Below is a table with the proposed standard for key/value denomination.
 **Text record keys**
 
 | Key                                 | Example                                                       | Description                                                                                                           |
-|-------------------------------------|---------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `vnd.vocdoni.entity-name`           | 'Free Republic of Liberland'                                  | Entity's name                                                                                                         |
-| `vnd.vocdoni.supported-locales`     | '["en", "fr"]'                                                | Languages supported by the entity. Used to know what `description` or `feed` to retrieve.                             |
+| `vnd.vocdoni.languages`             | '["en", "fr"]'                                                | Languages supported by the entity. Used to know what `description` or `feed` to retrieve.                             |
 | `vnd.vocdoni.meta`                  | 'bzz://12345,ipfs://12345'                                    | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the JSON metadata. <br/>See [Meta](#meta). |
 | `vnd.vocdoni.voting-contract`       | '0xccc'                                                       | Address of the Processes Smart Contract instance used by the entity                                                   |
 | `vnd.vocdoni.gateway-update`        | '&lt;GatewayUpdate&gt;'                                       | Parameters for Gateways to report availability to boot nodes. See [Gateway update](#gateway-update)                   |
@@ -125,19 +122,20 @@ Below is a table with the proposed standard for key/value denomination.
 | `vnd.vocdoni.entity-description.en` | 'Is a sovereign state...'                                     | Entity description in an specific language                                                                            |
 | `vnd.vocdoni.entity-description.fr` | 'Dans un état souverain...'                                   | Entity description in an specific language                                                                            |
 | `vnd.vocdoni.avatar`                | 'https://liberland.org/logo.png'                              | [Content URI](/architecture/protocol/data-origins?id=content-uri) of an image file to display next to the entity name |
+| `vnd.vocdoni.census-service`        | 'pss://12345'                                                 | [Content URI](/architecture/protocol/data-origins?id=content-uri) to find the census-service via swarm                |
 
-**List of Text record keys**
+**Text List record keys**
 
-| Key                                              | Record example            | Description                                                                                             |
-|--------------------------------------------------|---------------------------|---------------------------------------------------------------------------------------------------------|
-| `vnd.vocdoni.gateway-boot-nodes`                 | '&lt;GatewayBootNode&gt;' | Data of the boot nodes to ask for active gateways. [See below](#gateway-boot-nodes) for more details    |
-| `vnd.vocdoni.boot-entities`                      | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s suggestions for the user to subscribe                   |
-| `vnd.vocdoni.fallback-bootnodes-entities`        | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s to borrow the bootnodes from in case of failure.        |
-| `vnd.vocdoni.trusted-entities`                   | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s that the current entity trusts.                          |
-| `vnd.vocdoni.census-service-authorized-entities` | '&lt;EntityReference&gt;' | Census-service uses it to authorize entities to write on it. Only entities with a census-service use it |
-| `vnd.vocdoni.census-ids.active`                  | '0xccc'                   | CensusIds that the census-service keeps alive                                                           |
-| `vnd.vocdoni.relays.active`                      | '&lt;Relay&gt;'           | Relays public keys                                                                                      |
-
+| Key                                          | Record example            | Description                                                                                          |
+| -------------------------------------------- | ------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `vnd.vocdoni.gateway-boot-nodes`             | '&lt;GatewayBootNode&gt;' | Data of the boot nodes to ask for active gateways. [See below](#gateway-boot-nodes) for more details |
+| `vnd.vocdoni.boot-entities`                  | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s suggestions for the user to subscribe                 |
+| `vnd.vocdoni.fallback-bootnodes-entities`    | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s to borrow the bootnodes from in case of failure.      |
+| `vnd.vocdoni.trusted-entities`               | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s that the current entity trusts.                       |
+| `vnd.vocdoni.census-service-source-entities` | '&lt;EntityReference&gt;' | Tells the entity's census service which resolver+entities to get the settings from.                  |
+| `vnd.vocdoni.census-ids`                     | '0xcc1'                   | CensusIds that the census-service keeps alive                                                        |
+| `vnd.vocdoni.census-managers`                | '0xcc2'                   | Public keys that can control the census-service. Currently any key can control any census-id         |
+| `vnd.vocdoni.relays`                         | '&lt;Relay&gt;'           | Relays public keys                                                                                   |
 
 ## Data schema
 
@@ -145,7 +143,7 @@ Below is a table with the proposed standard for key/value denomination.
 
 **Description**
 
-It replicates the entire data of the Entity metadata stored in the resolved in a single JSON object.
+It replicates the entire data of the Entity metadata stored in the resolver in a single JSON object.
 
 Its purpose is to minimize the retrival of metadata requests.
 
@@ -159,15 +157,16 @@ This creates two sources of truth. The metadata in the contract itself and the o
 
 The retrieval of `vnd.vocdoni.meta` is prioritized, and for the most part, the client won't have the need to retrieve other keys. This makes the query of this data quite critical.
 
-The retrieval via `HTTP` is not allowed.
+The retrieval via `HTTP` is discouraged.
 
 The fields in the JSON replicate the same exact structure that the keys in the resolver, with some caveats:
-- The prefix `vnd.vocdoni.` is omitted
-- Dots (`.`) indicate object indentation
-- If it is a `list of text record` it is represented as an array of the records
-- It can include more fields than the ones in the blockchain, but not less. `actions` is a relevant one.
 
-The client should guarantee that this file matches the metadata in the blockchain, and suggest the necessary actions when it does not.
+- The prefix `vnd.vocdoni.` is omitted
+- Dots (`.`) indicate object hierachy
+- If it is a `Text List record` it is represented as an array of the records
+- It may extend the fields from the blockchain, but never contain less. `EntityActions` is a relevant one.
+
+The client should ensure that this file matches the metadata in the blockchain.
 
 **Schema**
 
@@ -177,6 +176,7 @@ Name: Meta
 {
   //text records
   "version": "1.0",    // Protocol version
+  "languages": ["en", "fr"],
   "entity-name": "Free Republic of Liberland",
   "entity-description": {
     "ca": "In a sovereign state...",
@@ -198,7 +198,7 @@ Name: Meta
   },
   "avatar": "https://liberland.org/logo.png,bzz://12345,ipfs://12345",
   ...
-  // list of text records
+  // Text List records
   "gateway-boot-nodes": [  // Bootnodes providing a list of active Gateways
     {
       "update": "pss://publicKey@0x0",
@@ -210,10 +210,9 @@ Name: Meta
   // and the Voting Process smart contract
   "relays": [
       {
-          "address": "0x1234...",     // PSS adress to help routing messages
-          "publicKey": "0x23456...",  // Key to encrypt data sent to it
-          "uri": "<messaging-uri>"    // Where to send messages. See Data origins > Messaging URI
-      }, 
+        "publicKey": "0x23456...",  // Key to encrypt data sent to it
+        "messagingUri": "<messaging-uri>"    // Where to send messages. See Data origins > Messaging URI
+      },
       ...
   ],
   "actions": [ <actions> ], // See Entity Actions below
@@ -230,9 +229,9 @@ Name: Meta
 
 **Description**
 
-Client apps will normally be unable to join P2P networks by themselves, so Vocdoni makes use of Gateways to enable decentralized transactions over HTTP/https.
+Client apps will normally be unable to join P2P networks by themselves, so Vocdoni makes use of Gateways to enable decentralized transactions over HTTP/HTTPS.
 
-A gateway-boot-node is a server trusted by the Entity whose goal is to provide a list of active gateway IP addresses via https
+A gateway-boot-node is a server trusted by the Entity whose goal is to provide a list of active gateway IP addresses via HTTPS
 
 Considerations:
 
@@ -248,6 +247,7 @@ Additionally, initial boot nodes are hardcoded into the client App to prevent th
 **Schema**
 
 Name: GatewayBootNode
+
 ```json
   {
     "update": "pss://publicKey@0x0",        // Messaging URI to use for notifying updates to the bootnode
@@ -261,9 +261,8 @@ Name: GatewayBootNode
 
 ```json
 {
-  "address": "0x1234...",     // PSS adress to help routing messages
   "publicKey": "0x23456...",  // Key to encrypt data sent to it
-  "uri": "<messaging-uri>"    // Where to send messages. See Data origins > Messaging URI
+  "messagingUri": "<messaging-uri>"    // Where to send messages. See Data origins > Messaging URI
 }
 ```
 
@@ -277,7 +276,7 @@ This data schema provides the necessary params for the Gateways to communicate w
 
 **Usage**
 
-`vocdoni.gateway-update` text record provides the details that Gateways need to use.
+`vnd.vocdoni.gateway-update` Text record provides the details that Gateways need to use.
 
 This value is global and affects all the Gateways of the Entity.
 
@@ -306,7 +305,7 @@ Lists of `EntityReference`s have several purposes.
 - `vnd.vocdoni.boot-entities`: An entry point for the user to subscribe to new entities.
 - `vnd.vocdoni.fallback-boot-nodes-entities`: If the can' reach the boot-nodes it will use the `vocdoni.gateway-boot-nodes` from these entities
 - `vnd.vocdoni.trusted-entities`: Aimed for the end-user as a simple discovery mechanism for entities trusted by the current one.
-- `vnd.vocdoni.census-service-authorized-entities`: Entities controlling a `census-service` can define here what external entities are allowed to make use of the service.
+- `vnd.vocdoni.census-service-source-entities`: Tells the entity's census service which resolver+entities to get the settings from. Useful to allow census services to operate for more than one entity.
 
 **Schema**
 
@@ -329,7 +328,7 @@ It serves a similar purpose of RSS or Atom feed.
 
 Currently, only a `news-feed` is supported but multiple feeds could coexist.
 
-It is localized using the locale key. The specific locale to retrieve is decided on the client based on `vnd.vocdoni.supported-locales`
+It is localized using the language key. The specific language to retrieve is decided on the client based on `vnd.vocdoni.languages`
 
 It is referenced with a [Content URI](/architecture/protocol/data-origins?id=content-uri).
 
@@ -439,7 +438,7 @@ Name: EntityActions
         //   name2: "base64-image-payload",
         //   ...
         // }
-        // 
+        //
         // The URL will receive the following query string parameters:
         // - signature = sign(hash(jsonBody), privateKey)
         // - publicKey
@@ -498,7 +497,7 @@ We mostly make use of ENS resolvers to store metadata.
 Some implementations may decide to make use of ENS domains
 
 |                                   | Minimal             | ENS support |
-|-----------------------------------|---------------------|-------------|
+| --------------------------------- | ------------------- | ----------- |
 | On Mainnet                        |                     | ✓           |
 | Usage of ENS domains              |                     | ✓           |
 | **Resolver**                      |                     |             |

@@ -2,7 +2,7 @@
 
 Voting processes are declared on the Blockchain and store the critical information for integrity. However, the metadata of a process lives on a JSON file with the information on which voters can make a choice. It also allows Relays and Scrutinizers to fetch the technical parameters of a vote.
 
-The metadata of voting process is also an aggregate of data from the Blockchain and P2P filesystems. 
+The metadata of voting process is also an aggregate of data from the Blockchain and P2P filesystems.
 
 The starting point is the **[Voting Process](#smart-contract)** contract, but it is tightly coupled with the **[JSON Process Metadata](#data-schema)** living on P2P filesystems.
 
@@ -32,7 +32,7 @@ struct Process {
 struct Relay {
     bool active;
     string publicKey;
-    string relayMessagingUri;
+    string messagingURI;
 }
 
 mapping (bytes32 => Process) public processes;   // processId => process data
@@ -72,12 +72,12 @@ where `processCount` is an auto-incremental nonce per `entityAddress`.
 
 * Usable by the organizer until `startTime - 1000`
 
-**`addRelay(uint processId, address relayAddress, string publicKey, string relayMessagingUri)`**
+**`addRelay(uint processId, address relayAddress, string publicKey, string messagingUri)`**
 
 * Usable only by the organizer
 * `relayAddress` is the Ethereum address that will be allowed to register vote batches
 * `publicKey` will be used for vote packages to be encrypted using this key
-* `relayMessagingUri` is expected to be a valid [Messaging URI](/architecture/protocol/data-origins?id=messaging-uri)
+* `messagingUri` is expected to be a valid [Messaging URI](/architecture/protocol/data-origins?id=messaging-uri)
 
 **`disableRelay(uint processId, address relayAddress)`**
 

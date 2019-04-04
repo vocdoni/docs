@@ -2,7 +2,6 @@
 
 Gateways provide an entry point to the P2P networks. They allow clients to reach decentralized services (census, relays, blockchain, etc.) through a WebSocket or an HTTP API interface.
 
-
 ```mermaid
 graph LR
 
@@ -13,7 +12,6 @@ BC[<center>Blockchain<br/><br/><i class='fab fa-2x fa-ethereum'/></center>]
 CS[<center>Census<br/><br/><i class='fa fa-2x fa-address-book'/></center>]
 MS[<center>Messaging p2p<br/><br/><i class='fa fa-2x fa-envelope-open-text'/></center>]
 RE[<center>Vote Relay<br/><br/><i class='fa fa-2x fa-dove'/></center>]
-
 CA-->|HTTP/WS|GW
 GW-->BC
 GW-->MS
@@ -30,18 +28,15 @@ To this end, Gateways participate in an automathic discovery mechanism through a
 
 ```mermaid
 graph TD
-
 GW1(<center>Gateway<br/><br/><i class='fa fa-2x fa-archway'/></center>)
 BC[<center>Blockchain<br/><br/><i class='fab fa-2x fa-ethereum'/></center>]
 MS[<center>Messaging p2p<br/><br/><i class='fa fa-2x fa-envelope-open-text'/></center>]
 BO1[<center>Bootnode<br/><br/><i class='fa fa-2x fa-book'/></center>]
 BO2[<center>Bootnode<br/><br/><i class='fa fa-2x fa-book'/></center>]
-
 GW1-->|fetch Bootnodes info|BC
 GW1-->|send update packet|MS
 MS-->BO1
 MS-->BO2
-
 ```
 ---
 
@@ -49,76 +44,42 @@ MS-->BO2
 
 A Gateway provides access to one or several APIs to allow access to one or several peer-to-peer networks. The currently possible API schemes are the following:
 
-+ `vocdoniVote API` access to specific vocdoni platform methods for voting
-+ `vocdoniAdmin API` access to specific vocdoni platform methods for administration
++ `vote API` access to specific vocdoni platform methods for voting
++ `census API` access to the census service API
++ `file API` access to specific vocdoni platform methods for administration
 + `web3 API` access to the Ethereum compatible blockchain
-+ `ipfs API` access to the Interplanetary FileSystem
-+ `pss API` access to the distributed PSS messagning network
-+ `swarm API` access to the distributed Ethereum Filesystem
 
-All APIs, in exception of the `vocdoni`'s one, have their own specification. The Gateway just implement a bridge to them.
+For example, the Gateway can be executed as follows, letting the user choose which APIs should be enabled:
 
-For example, the Gateway binary can be executed as follows, letting the Gateway choose which APIs should be enabled:
-
-`./gateway --port=8001 --vocdoni --web3 --ipfs`
+`./gateway --port=8001 --vote --census --web3`
 
 Then the APIs ara available to the client via HTTP/WS using the API name as route/path, for instance `http://gatewayIP:8001/web3`.
 
-## VocdoniVote's API
-
 In general, if `error` is `true`, then `response` contains the error message.
 
-### Get Census Root
+## Census API
 
-Get the census merkleTree root hash of a given `censusId`.
+The census API is inherited from the [Census Service API](/docs/#/architecture/components/census-service). 
+
+To only extra field is the specific `uri` used to reach the census service. Example for `getRoot` method:
 
 ```json
 {
-  "method": "getCensusRoot",
-  "censusId": "hexString"
-}
-```
-```json
-{
-  "error": bool,
-  "response": ["rootHashHexString"]
+    "censusUri": "<uri>",
+    "method": "getRoot",
+    "censusId": "string"
 }
 ```
 
-**Used in:**
-- [Voting process creation](http://vocdoni.io/docs/#/architecture/sequence-diagrams?id=voting-process-creation)
+## Vote API
 
+### Get Voting Ring
 
-### Get Census Proof
-
-Get the census merkle proof of a leaf publicKey for a given root hash. The proof can be used to demostrate the pubkey is part of the census merkle tree.
-This method is mainly used for a ZK-snarks based election process.
+Get the public key list for creating a ring signature for a specific election process id.
 
 ```json
 {
-  "method": "getCensusProof",
-  "censusRootHash": "hexString",
-  "publicKey": "hexString"
-}
-```
-
-```json
-{
-  "error": bool,
-  "response": ["mkProofHexString"]
-}
-```
-
-**Used in:**
-- [Voting with zksnarks](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
-
-### Get Census Ring
-
-Get the public key list for creating a ring signature.
-
-```json
-{
-  "method": "getCensusRing",
+  "method": "getVotingRing",
   "processId": "hexString",
   "publicKeyModulus": int
 }
@@ -156,7 +117,7 @@ Send a vote envelope for an election process to the relay pool. The `voteEnvelop
 - [Voting with zksnarks](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
 - [Voting with LRS](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 
-### Check Vote Status
+### Get Vote Status
 
 Check the status of an already submited vote envelope. The `voteId` can be either the `nullifier` used in Zk-snarks or the hash of the ring signature.
 
@@ -177,9 +138,11 @@ Check the status of an already submited vote envelope. The `voteId` can be eithe
 **Used in:**
 - [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 
+## File API
+
 ### Fetch File
 
-Fetch a file from the p2p network (ipfs or swarm).
+Fetch a file from the p2p network (currently ipfs or swarm/bzz).
 
 ```json
 {
@@ -200,71 +163,18 @@ Fetch a file from the p2p network (ipfs or swarm).
 - [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 - [Vote scrutiny](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=vote-scrutiny)
 
-## VocdoniAdmin's API
 
-This API is aimed to be used by the election organizer. Usually the Gateway running this API is a private server which is only used by the administrators of the organization entity.
-
-### Add Census Claim
-
-```json
-{
-  "method": "addCensusClaim",
-  "censusId": "hexString",
-  "censusOrigin": "hexString",
-  "claimData": "hexString"
-}
-```
-```json
-{
-  "error": bool
-}
-```
-
-### Add Census Claim Bulk
-
-```json
-{
-  "method": "addCensusClaimBulk",
-  "censusId": "hexString",
-  "censusOrigin": "hexString",
-  "claimData": "hexString"
-}
-```
-```json
-{
-  "error": bool
-}
-```
-
-### Census Dump
-```json
-{
-  "method":"censusDump",
-  "censusId": "hexString",
-  "signature": "hexString"
-}
-```
-```json
-{
-  "error": bool,
-  "merkleTree": "hexString"
-}
-```
-**Used in:**
-- [Voting process creation](http://vocdoni.io/docs/#/architecture/sequence-diagrams?id=voting-process-creation)
-
-
-**Used in:**
-- [Adding users to a census](vocdoni.io/docs/#/architecture/sequence-diagrams?id=adding-users-to-a-census)
 
 ### Add File
 
-Available only post-auth on trusted gateways
+This method is aimed to be used by the election organizer. Usually the Gateway running this API is a private server which is only used by the administrators of the organization entity. This method is only available if option `--allow-private` is enabled.
+
+
 ```json
 {
   "method": "addFile",
-  "type": "swarm",         // Valid: ["ipfs", "swarm"]
-  "content": "base64Payload"
+  "type": "swarm|ipfs",
+  "content": "base64Payload",
 }
 ```
 ```json
