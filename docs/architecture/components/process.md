@@ -21,6 +21,7 @@ struct Process {
     uint256 startTime;         // block.timestamp after which votes can be registered
     uint256 endTime;           // block.timestamp until which votes can be registered
     bytes32 voteEncryptionPublicKey;
+    bool canceled;
     
     address[] relayList;       // Relay addresses to let users fetch the Relay data
     mapping (address => Relay) relays;
@@ -37,6 +38,13 @@ struct Relay {
 
 mapping (bytes32 => Process) public processes;   // processId => process data
 mapping (address => uint) public processCount;   // Amount of processes created by an address
+
+event ProcessCreated(bytes32 indexed processId);
+event ProcessCanceled(bytes32 indexed processId);
+event RelayAdded(bytes32 indexed processId, address relayAddress);
+event RelayDisabled(bytes32 indexed processId, address relayAddress);
+event BatchRegistered(bytes32 indexed processId, uint64 batchNumber);
+event PrivateKeyRevealed(bytes32 indexed processId);
 
 ```
 
