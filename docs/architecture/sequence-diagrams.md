@@ -348,8 +348,8 @@ sequenceDiagram
 
             DV->>GW: getMetadata(processId)
                 GW->>BC: getMetadata(processId)
-                BC-->>GW: (name, metadataContentUri, merkleRootHash, relayList, startBlock, endBlock)
-            GW-->>DV: (name, metadataContentUri, merkleRootHash, relayList, startBlock, endBlock)
+                BC-->>GW: (name, metadataContentUri, merkleRootHash, relayList, startTime, endTime)
+            GW-->>DV: (name, metadataContentUri, merkleRootHash, relayList, startTime, endTime)
 
             alt Process is active or in the future
                 DV->>GW: fetchFile(metadataHash)

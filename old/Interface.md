@@ -11,11 +11,11 @@
 # Data structs
 
 ## ProcessMetadata
-+ censusUrl //Where is the census Merkle-tree
-+ censusRoot //Merkle-root of census
-+ votingOptions //string that has an inmutable reference to the voting options
-+ startBlock
-+ endBlock
++ censusUrl // Where is the census Merkle-tree
++ censusRoot // Merkle-root of census
++ votingOptions // string that has an inmutable reference to the voting options
++ startTime  // block timestamp as seconds since unix epoch
++ endTime    // block timestamp as seconds since unix epoch
 + voteEncryptionKeys
 + status
 + trustedGateways
