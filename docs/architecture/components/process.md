@@ -20,11 +20,11 @@ struct Process {
     string metadataContentUri; // Content URI to fetch the JSON metadata from
     uint256 startTime;         // block.timestamp after which votes can be registered
     uint256 endTime;           // block.timestamp until which votes can be registered
+    bytes32 voteEncryptionPublicKey;
     
     address[] relayList;       // Relay addresses to let users fetch the Relay data
     mapping (address => Relay) relays;
     
-    bytes32 voteEncryptionPublicKey;
     mapping (uint64 => string) voteBatches;  // Mapping from [0..N-1] to Content URI's to fetch the vote batches
     uint64 voteBatchCount;                   // N vote batches registered
 }
@@ -132,33 +132,36 @@ The JSON payload below is typically stored on Swarm or IPFS, so anyone can fetch
 {
     "version": "1.0",    // Protocol version
 
-    "name": "Basic income rule", // Human friendly name, not an identifier
     "address": "0x1234...", // Of the vote on the VotingProcesses smart contract
     
     "voteType": "single-choice", // Defines how the UI should allow to choose among the votingOptions.
     "proofType": "zk-snarks",  // Allowed ["zk-snarks", "lrs"]
     
+    "name": {
+        "en": "Universal Basic Income",
+        "ca": "Renda Bàsica Universal"
+    },
     "question": {
-        "default": "Should universal basic income become a human right?",
+        "en": "Should universal basic income become a human right?",
         "ca": "Estàs d'acord amb que la renda bàsica universal sigui un dret humà?"
     },
     "voteOptions": [
         {
-            "default": "Yes" ,
+            "en": "Yes" ,
             "ca": "Sí",
-            "value": 1
+            "value": "1"
         },
         {
-            "default": "No",
+            "en": "No",
             "ca": "No",
-            "value": 2
+            "value": "2"
         }
     ],
     "startTime": 10000,   // block timestamp as seconds since unix epoch
     "endTime":  11000,    // block timestamp as seconds since unix epoch
     "meta": {
         "description": {
-            "default": "## Markdown text goes here\n### Abstract",
+            "en": "## Markdown text goes here\n### Abstract",
             "ca": "## El markdown va aquí\n### Resum"
         },
         "images": [ "<content uri>", ... ],
@@ -169,12 +172,11 @@ The JSON payload below is typically stored on Swarm or IPFS, so anyone can fetch
         }
     },
     "census": {
-        "id": "entity-people-of-legal-age",  // Census ID to use
-        "origin": "<messaging uri>", // Messaging URI of the Census Service to request data from
+        "id": "0x1234...",  // Census ID to use
+        "uri": ["<messaging uri>", "..."], // Messaging URI of the Census Services to request data from
         "merkleRoot": "0x1234...",
         "modulusSize": 5000  // Only when type="lrs"
     },
-    "publicKey": "0x1234...", // To encrypt vote packages
 
     // Only when voteType == "lrs"
 
