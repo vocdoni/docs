@@ -173,7 +173,7 @@ The JSON payload below is typically stored on Swarm or IPFS, so anyone can fetch
     },
     "census": {
         "id": "0x1234...",  // Census ID to use
-        "uri": ["<messaging uri>", "..."], // Messaging URI of the Census Services to request data from
+        "messagingUris": ["<messaging uri>", "..."], // Messaging URI of the Census Services to request data from
         "merkleRoot": "0x1234...",
         "modulusSize": 5000  // Only when type="lrs"
     },
