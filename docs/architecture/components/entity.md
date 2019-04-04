@@ -122,6 +122,7 @@ Below is a table with the proposed standard for key/value denomination.
 | `vnd.vocdoni.entity-description.en` | 'Is a sovereign state...'                                     | Entity description in an specific language                                                                            |
 | `vnd.vocdoni.entity-description.fr` | 'Dans un état souverain...'                                   | Entity description in an specific language                                                                            |
 | `vnd.vocdoni.avatar`                | 'https://liberland.org/logo.png'                              | [Content URI](/architecture/protocol/data-origins?id=content-uri) of an image file to display next to the entity name |
+| `vnd.vocdoni.census-service`        | 'pss://12345'                                                 | [Content URI](/architecture/protocol/data-origins?id=content-uri) to find the census-service via swarm                |
 
 **Text List record keys**
 
