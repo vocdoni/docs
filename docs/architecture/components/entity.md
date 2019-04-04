@@ -1,6 +1,6 @@
 # Entity
 
-An entity can have many roles. For the most part, it is the organizer and the ultimate responsible of a voting process. However, an Entity could make no use of the voting system and instead be used as a trusted actor by
+An entity can have many roles. For the most part, it is the organizer and the ultimate responsibility of a voting process. However, an Entity could make no use of the voting system and instead be used as a trusted actor by
 
 - Publishing news/information via the [Feed](#feed)
 - Providing pointers to trusted/related [Entities](#entities-list)
@@ -38,7 +38,7 @@ An entity can have many roles. For the most part, it is the organizer and the ul
 For the most part, the entity metadata lives in the blockchain. Alternatively, it is indexed in the blockchain and retrieved using P2P communication.
 
 - Data on the Blockchain provides durability and enables integrity checking
-- Data on content-addressed filesystems allows to transfer larger data objects at the expense of a higher risk of data aviability problems.
+- Data on content-addressed filesystems allows transferring of larger data objects at the expense of a higher risk of data availability problems.
 
 We refer to this data aggregate as the Entity Metadata.
 
@@ -46,7 +46,7 @@ We refer to this data aggregate as the Entity Metadata.
 
 ## Entity Resolver
 
-An **[Entity Resolver](#entity-resolver)** is the smart-contract where the Entity metadat is stored/indexd. It follows the same architecture as a ENS resolver contract, but currently does not make use of ENS domains.
+An **[Entity Resolver](#entity-resolver)** is the smart-contract where the Entity metadata is stored/indexed. It follows the same architecture as an ENS resolver contract but currently does not make use of ENS domains.
 
 The `entityId` is the unique identifier of each entity, being a hash of its creator's address:
 
@@ -73,7 +73,7 @@ The client is responsible for managing the indexes, the array does not move its 
 
 The behaviour wants to mimic the `storage of text records`
 
-Guidlines for processing a retrieved list:
+Guidelines for processing a retrieved list:
 
 - Ignore records with an empty value
 - Assume records are not sorted
@@ -84,9 +84,9 @@ Guidlines for processing a retrieved list:
 
 >This guidlines apply to [Storage of Text records](#storage-of-text-records) as well as  [Storage of lists of text records](#storage-of-lists-of-text-records).
 
-Content URIs are formated using the [Content URI specification](/architecture/protocol/data-origins?id=content-uri).
+Content URIs are formatted using the [Content URI specification](/architecture/protocol/data-origins?id=content-uri).
 
-Any other record stored under Vocdoni's key convention is formatted as stringified JSON object
+Any other record stored under Vocdoni's key convention is formatted as a stringified JSON object
 
 - **Objects**  `JSON.parse('{"keyName":"valueGoesHere"}')` => `{ keyName: "valueGoesHere" }`
 - **Arrays**  `JSON.parse('["0x1234","0x2345","0x3456"]')` => `[ "0x1234", "0x2345", "0x3456" ]`
@@ -97,14 +97,14 @@ Any other record stored under Vocdoni's key convention is formatted as stringifi
 ### Resolver keys
 
 [EIP 634](https://eips.ethereum.org/EIPS/eip-634) convention:
-> Keys must be made up of lowercase letters, numbers and the hyphen (-). Vendor specific services must be prefixed with vnd.
+> Keys must be made up of lowercase letters, numbers and the hyphen (-). Vendor-specific services must be prefixed with vnd.
 
-Because of the extensive use we make of the keys we extend the convention like such:
+Because of the extensive use, we make of the keys we extend the convention like such:
 
-`<prefix>.<type>.<purpose>.<attribute>`
+`<prefix>.<purpose>.<attribute>`
 
-- `prefix`: **mandatory**. To not kidnap ENS keys. In our case this is always `vnd.vocdoni`
-- `purpose`:  **mandatory**. what is this key used for.
+- `prefix`: **mandatory**. To not kidnap ENS keys. In our case, this is always `vnd.vocdoni`
+- `purpose`:  **mandatory**. what is this key used for?
 - `attribute`: **optional**. What is special about key compared to other keys with the same `purpose` (active/ended, trusted, locale)
 
 Below is a table with the proposed standard for key/value denomination.
@@ -157,17 +157,17 @@ This creates two sources of truth. The metadata in the contract itself and the o
 
 `vnd.vocdoni.meta` is the content URI where the JSON is stored.
 
-The retrival of `vnd.vocdoni.meta` is prioertized, and for the most part the client wont have the need to retrieve other keys. This makes the query of this data quite critical.
+The retrieval of `vnd.vocdoni.meta` is prioritized, and for the most part, the client won't have the need to retrieve other keys. This makes the query of this data quite critical.
 
-The retrival via `http` is not allowed.
+The retrieval via `HTTP` is not allowed.
 
 The fields in the JSON replicate the same exact structure that the keys in the resolver, with some caveats:
-- The prefix `vnd.vocdoni.` is ommited
+- The prefix `vnd.vocdoni.` is omitted
 - Dots (`.`) indicate object indentation
 - If it is a `list of text record` it is represented as an array of the records
 - It can include more fields than the ones in the blockchain, but not less. `actions` is a relevant one.
 
-The client should guarantee that this file matches the metadata in the blockcain, and suggest the necessary actions when it does not.
+The client should guarantee that this file matches the metadata in the blockchain, and suggest the necessary actions when it does not.
 
 **Schema**
 
@@ -230,20 +230,20 @@ Name: Meta
 
 **Description**
 
-Client apps will normally be unable to join P2P networks by themselves, so Vocdoni makes use of Gateways to enable decentralized transactions over http/https.
+Client apps will normally be unable to join P2P networks by themselves, so Vocdoni makes use of Gateways to enable decentralized transactions over HTTP/https.
 
-A gateway-boot-node is a server trusted by the Entity whoes goal is to provide a list of active gateway IP addresses via https
+A gateway-boot-node is a server trusted by the Entity whose goal is to provide a list of active gateway IP addresses via https
 
 Considerations:
 
 - A gateway-boot-node is a best effort starting point
-- To minimize censorship attacks organizations should should provide their own set of Gateways.
+- To minimize censorship attacks organizations should provide their own set of Gateways.
 
 **Usage**
 
 `vocdoni.gateway-boot-nodes` provides a list of currently active boot-nodes.
 
-Aditionally, initial bootnodes are hardcoded into the client App to prevent the chicken and the egg problem of an App unable to find a an active gateway in the blockchain because it does not have a gateway in the first place.
+Additionally, initial boot nodes are hardcoded into the client App to prevent the chicken and the egg problem of an App unable to find an active gateway in the blockchain because it does not have a gateway in the first place.
 
 **Schema**
 
@@ -271,7 +271,7 @@ Name: GatewayBootNode
 
 **Description**
 
-Boot-node servers provide the list of available gateways at the time of requesting. In order to keep an accurate state, `gateways` need to notifiy specific events to show that they are still alive.
+Boot-node servers provide the list of available gateways at the time of requesting. In order to keep an accurate state, `gateways` need to notify specific events to show that they are still alive.
 
 This data schema provides the necessary params for the Gateways to communicate with the boot-nodes.
 
@@ -279,7 +279,7 @@ This data schema provides the necessary params for the Gateways to communicate w
 
 `vocdoni.gateway-update` text record provides the details that Gateways need to use.
 
-This value is global and effects all the Gateways of the Entity.
+This value is global and affects all the Gateways of the Entity.
 
 **schema**
 
@@ -303,10 +303,10 @@ It is a pointer to the metadata of a specific entity.
 
 Lists of `EntityReference`s have several purposes.
 
-- `vnd.vocdoni.boot-entities`: Entry point for the user to subscribe to new entities.
-- `vnd.vocdoni.fallback-bootnodes-entities`: If the can' reach the boot-nodes it will use the `vocdoni.gateway-boot-nodes` from these entities
+- `vnd.vocdoni.boot-entities`: An entry point for the user to subscribe to new entities.
+- `vnd.vocdoni.fallback-boot-nodes-entities`: If the can' reach the boot-nodes it will use the `vocdoni.gateway-boot-nodes` from these entities
 - `vnd.vocdoni.trusted-entities`: Aimed for the end-user as a simple discovery mechanism for entities trusted by the current one.
-- `vnd.vocdoni.census-service-authorized-entities`: Entities controlling a `census-service` can define here what external entites are allowed to make use of the service.
+- `vnd.vocdoni.census-service-authorized-entities`: Entities controlling a `census-service` can define here what external entities are allowed to make use of the service.
 
 **Schema**
 
@@ -327,9 +327,9 @@ It serves a similar purpose of RSS or Atom feed.
 
 **Usage**
 
-Currently only a `news-feed` is supported but multiple feeds could cohexist.
+Currently, only a `news-feed` is supported but multiple feeds could coexist.
 
-It is localized using the locale key. The specific locale to retrive is decided on the client based on `vnd.vocdoni.supported-locales`
+It is localized using the locale key. The specific locale to retrieve is decided on the client based on `vnd.vocdoni.supported-locales`
 
 It is referenced with a [Content URI](/architecture/protocol/data-origins?id=content-uri).
 
@@ -345,7 +345,7 @@ Content feeds are expected to conform to the specs of the [JSON feed specificati
 **Description**
 Entity Actions are custom operations that clients will be offered to perform. Their definition is stored within the [JSON metadata](#json-metadata).
 
-Below is a reference of suported use cases:
+Below is a reference to supported use cases:
 
 Name: EntityActions
 ```json
