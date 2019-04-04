@@ -181,9 +181,9 @@ The JSON payload below is typically stored on Swarm or IPFS, so anyone can fetch
     // Only when voteType == "lrs"
 
     "modulusGroups": [
-        { "publicKeyModulus": 0, "source": "<content uri>" },  // Resolves to a ModulusGroupArray (see below)
-        { "publicKeyModulus": 1, "source": "<content uri>" },
-        { "publicKeyModulus": 2, "source": "<content uri>" },
+        { "publicKeyModulus": 0, "uri": "<content uri>" },  // Resolves to a ModulusGroupArray (see below)
+        { "publicKeyModulus": 1, "uri": "<content uri>" },
+        { "publicKeyModulus": 2, "uri": "<content uri>" },
         ...
     ]
 }
