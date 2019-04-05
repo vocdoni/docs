@@ -33,4 +33,3 @@ In a sequence diagram some characters don't work with the plugin:
 
 - Use `&lt;` instead of `<`
 - Use `&#62;` instead of `>`
-- If an "arrow" do not have an associated text, leaving it empty or with space  will crash the plugin. Instead use `-`.
