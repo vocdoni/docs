@@ -31,5 +31,5 @@ Should render as...
 ### Special characters
 In a sequence diagram some characters don't work with the plugin:
 
-- Use `&lt;` instead of `<`
+- Use `&#60;` instead of `<`
 - Use `&#62;` instead of `>`

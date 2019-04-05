@@ -63,7 +63,7 @@ sequenceDiagram
     PM->>PM: Fill-up name
     PM->>+DV: EntityResolver.setName(entityId, name)
         DV->>GW: setText(entityId, "name", name)
-            GW->>ER: &lt; transaction &#62;
+            GW->>ER: &#60; transaction &#62;
             ER-->>GW: 
         GW-->>DV: 
     DV-->>-PM: 
@@ -72,7 +72,7 @@ sequenceDiagram
         PM->>PM: Fill-up key-value
         PM->>+DV: EntityResolver.set(entityId, key, value)
             DV->>GW: setText(entityId, key, value)
-                GW->>ER: &lt; transaction &#62;
+                GW->>ER: &#60; transaction &#62;
                 ER-->>GW: 
             GW-->>DV: 
         DV-->>-PM: 
@@ -197,7 +197,7 @@ sequenceDiagram
     participant UR as WebView<br/>User Registry
     participant DB as Internal Database
 
-    App->>UR: Go to: &lt;action-url&#62;?publicKey=0x1234&censusId=0x4321
+    App->>UR: Go to: &#60;action-url&#62;?publicKey=0x1234&censusId=0x4321
         activate UR
             Note right of UR: Fill the form
         deactivate UR
@@ -244,31 +244,31 @@ sequenceDiagram
     CE->>EM: Fill External Entity resolver and entityId
     EM->>DV: addCensusServiceSourceEntity(entityResolver, CsEntityId)
     DV->>DV: getEntityReference(resolverAddress, EXEntityId)
-    DV->>GW: setListText(CsEntityId, "vnd.vocdoni.census-service-source-entities", index,  &lt;externalEntityReference&#62;)
-    GW->>ER: &lt;transaction&#62;
+    DV->>GW: setListText(CsEntityId, "vnd.vocdoni.census-service-source-entities", index,  &#60;externalEntityReference&#62;)
+    GW->>ER: &#60;transaction&#62;
 
     loop to all census ids
         EE->>EM:Fill censusId
         EM->>DV:addCensusId(resolverAddress, ExEntityId, censusId)
         DV->>GW:setListText(ExEntityId, "vnd.vocdoni.census-ids", index,  censusId)
-        GW->>ER:&lt;transaction&#62;
+        GW->>ER:&#60;transaction&#62;
     end
 
     loop to all keys
         EE->>EM:Fill the public key that will publish to the Census Service
         EM->>DV:addCensusManagerKey(resolverAddress, ExEntityId, publicKey)
         DV->>GW:setListText(ExEntityId, "vnd.vocdoni.census-manager-keys", index,  publicKey)
-        GW->>ER:&lt;transaction&#62;
+        GW->>ER:&#60;transaction&#62;
     end
 
     EE->>SW: Arbirary request to Census Service
     SW-->>CS: Arbitrary request from External Entity
     CS->>ER: List(CsEntityId, "vnd.vocdoni.census-service-source-entities")
-    ER-->>CS:[&lt;entityReference&#62;]
-    CS->>CS: Check externalEntityId is in [&lt;entityReference&#62;]
+    ER-->>CS:[&#60;entityReference&#62;]
+    CS->>CS: Check externalEntityId is in [&#60;entityReference&#62;]
     CS->>ER: List(ExEntityId, "vnd.vocdoni.census-manager-keys")
-    ER-->>CS:[&lt;publicKey&#62;]
-    CS->>CS: Check Arbirary request is signed by one of [&lt;publicKey&#62;]
+    ER-->>CS:[&#60;publicKey&#62;]
+    CS->>CS: Check Arbirary request is signed by one of [&#60;publicKey&#62;]
     CS->>CS: Execute arbitrary request
 
 ```
@@ -355,12 +355,12 @@ sequenceDiagram
         GW-->>DV: 
 
         DV->>+GW: Process.create(entityId, name, metadataContentUri)
-            GW->>+BC: &lt; transaction &#62;
+            GW->>+BC: &#60; transaction &#62;
             BC-->>-GW: txId
         GW-->>-DV: txId
 
         DV->>+GW: EntityResolver.set(entityId, 'vndr.vocdoni.processess.active', activeProcesses)
-            GW->>+BC: &lt; transaction &#62;
+            GW->>+BC: &#60; transaction &#62;
             BC-->>-GW: txId
         GW-->>-DV: txId
 
@@ -470,7 +470,7 @@ sequenceDiagram
 
             DV->>+GW: generateProof(processMetadata.census.id, publicKey)
 
-            GW->>+CS: PSS.broadcast(&lt;generateProofData&#62;)
+            GW->>+CS: PSS.broadcast(&#60;generateProofData&#62;)
             CS-->>-GW: merkleProof
 
             GW-->>-DV: merkleProof
