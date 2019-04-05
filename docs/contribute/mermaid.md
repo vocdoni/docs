@@ -27,3 +27,10 @@ Should render as...
 ## Preview in editor
 
 [VS Code extension for Mermaid preview](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
+
+### Special characters
+In a sequence diagram some characters don't work with the plugin:
+
+- Use `&lt;` instead of `<`
+- Use `&#62;` instead of `>`
+- If an "arrow" do not have an associated text, leaving it empty or with space  will crash the plugin. Instead use `-`.
