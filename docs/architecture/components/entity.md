@@ -134,7 +134,7 @@ Below is a table with the proposed standard for key/value denomination.
 | `vnd.vocdoni.census-services`                | 'pss://12345'             | [Messaging URI](/architecture/protocol/data-origins?id=messsaging-uri) to use to reach a given census-service |
 | `vnd.vocdoni.census-service-source-entities` | '&lt;EntityReference&gt;' | Tells the entity's census service which resolver+entities to get the settings from.                           |
 | `vnd.vocdoni.census-ids`                     | '0xcc1'                   | CensusIds that the census-service keeps alive                                                                 |
-| `vnd.vocdoni.census-managers`                | '0xcc2'                   | Public keys that can control the census-service. Currently any key can control any census-id                  |
+| `vnd.vocdoni.census-manager-keys`            | '0xcc2'                   | Public keys that can control the census-service. Currently any key can control any census-id                  |
 | `vnd.vocdoni.relays`                         | '&lt;Relay&gt;'           | Relays public keys                                                                                            |
 
 ## Data schema
