@@ -225,7 +225,9 @@ sequenceDiagram
 #### External Entity to make use of Census Service
 
 - `Census Service Entity` and `External Entity` can be the same entity
-- A request to the `Census Service` must include the <entityReference> in the payload for the `Census Service` to know where i can find if the `censusId` or the `entityId` are valid ones.
+- A request to the `Census Service` must include the <entityReference> in the payload for the `Census Service Entity` to know where i can find if the `censusId` or the `entityId` are valid ones.
+
+>Prefix `ex` and `cs` on `entityId` and `resolverAddress` are used to represent `External Entity` and `Census Service` respectively.
 
 ```mermaid
 
@@ -241,37 +243,41 @@ sequenceDiagram
 
     Note right of CE: Agree about the usage of the <br/>Census Service through external channels
     CE-->EE: 
-    CE->>EM: Fill External Entity resolver and entityId
-    EM->>DV: addCensusServiceSourceEntity(entityResolver, CsEntityId)
-    DV->>DV: getEntityReference(resolverAddress, EXEntityId)
-    DV->>GW: setListText(CsEntityId, "vnd.vocdoni.census-service-source-entities", index,  &#60;externalEntityReference&#62;)
+    CE->>EM: Fill External Entity resolver and externalEntityId
+    EM->>DV: addCensusServiceSourceEntity(csEntityResolver, csEntityId, exResolver,exEntityId)
+    DV->>DV: getEntityReference(exResolverAddress, exEntityId)
+    DV->>GW: setListText(csEntityId, "vnd.vocdoni.census-service-source-entities", index,  &#60;exEntityReference&#62;)
     GW->>ER: &#60;transaction&#62;
 
     loop to all census ids
         EE->>EM:Fill censusId
-        EM->>DV:addCensusId(resolverAddress, ExEntityId, censusId)
-        DV->>GW:setListText(ExEntityId, "vnd.vocdoni.census-ids", index,  censusId)
+        EM->>DV:addCensusId(exResolverAddress, exEntityId, censusId)
+        DV->>GW:setListText(exEntityId, "vnd.vocdoni.census-ids", index,  censusId)
         GW->>ER:&#60;transaction&#62;
     end
 
     loop to all keys
         EE->>EM:Fill the public key that will publish to the Census Service
-        EM->>DV:addCensusManagerKey(resolverAddress, ExEntityId, publicKey)
-        DV->>GW:setListText(ExEntityId, "vnd.vocdoni.census-manager-keys", index,  publicKey)
+        EM->>DV:addCensusManagerKey(exResolverAddress, exEntityId, publicKey)
+        DV->>GW:setListText(exEntityId, "vnd.vocdoni.census-manager-keys", index,  publicKey)
         GW->>ER:&#60;transaction&#62;
     end
 
     EE->>SW: Arbirary request to Census Service
     SW-->>CS: Arbitrary request from External Entity
-    CS->>ER: List(CsEntityId, "vnd.vocdoni.census-service-source-entities")
+    CS->>CS: Get its own resolver and entityId
+    CS->>ER: List(csEntityId, "vnd.vocdoni.census-service-source-entities")
     ER-->>CS:[&#60;entityReference&#62;]
-    CS->>CS: Check externalEntityId is in [&#60;entityReference&#62;]
-    CS->>ER: List(ExEntityId, "vnd.vocdoni.census-manager-keys")
+    CS->>CS: Check exEntityId is in [&#60;entityReference&#62;]
+    CS->>ER: List(exEntityId, "vnd.vocdoni.census-manager-keys")
     ER-->>CS:[&#60;publicKey&#62;]
     CS->>CS: Check Arbirary request is signed by one of [&#60;publicKey&#62;]
     CS->>CS: Execute arbitrary request
 
 ```
+
+**Used schemas:**
+- [Entity reference](/architecture/components/census-service?id=entity-reference)
 
 #### Adding users to a census
 
