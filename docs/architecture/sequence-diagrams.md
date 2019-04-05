@@ -15,6 +15,7 @@ However, decentralized ecosystems like a distributed vote system need much stron
       - [Submit a picture](#submit-a-picture)
       - [Make a payment](#make-a-payment)
       - [Resolve a captcha](#resolve-a-captcha)
+      - [External Entity to make use of Census Service](#external-entity-to-make-use-of-census-service)
       - [Adding users to a census](#adding-users-to-a-census)
   - [Voting](#voting)
     - [Voting process creation](#voting-process-creation)
@@ -221,6 +222,57 @@ sequenceDiagram
 
 #### Resolve a captcha
 
+#### External Entity to make use of Census Service
+
+- `Census Service Entity` and `External Entity` can be the same entity
+- A request to the `Census Service` must include the <entityReference> in the payload for the `Census Service` to know where i can find if the `censusId` or the `entityId` are valid ones.
+
+```mermaid
+
+sequenceDiagram
+    participant CE as Census Service Entity
+    participant EE as External Entity
+    participant EM as Entity Manager
+    participant DV as dvote-js
+    participant GW as Gateway/Web3
+    participant ER as Entity Resolver
+    participant CS as Census Service
+    participant SW as Swarm
+
+    Note right of CE: Agree about the usage of the <br/>Census Service through external channels
+    CE-->EE: 
+    CE->>EM: Fill External Entity resolver and entityId
+    EM->>DV: addCensusServiceSourceEntity(entityResolver, CsEntityId)
+    DV->>DV: getEntityReference(resolverAddress, EXEntityId)
+    DV->>GW: setListText(CsEntityId, "vnd.vocdoni.census-service-source-entities", index,  &lt;externalEntityReference&#62;)
+    GW->>ER: &lt;transaction&#62;
+
+    loop to all census ids
+        EE->>EM:Fill censusId
+        EM->>DV:addCensusId(resolverAddress, ExEntityId, censusId)
+        DV->>GW:setListText(ExEntityId, "vnd.vocdoni.census-ids", index,  censusId)
+        GW->>ER:&lt;transaction&#62;
+    end
+
+    loop to all keys
+        EE->>EM:Fill the public key that will publish to the Census Service
+        EM->>DV:addCensusManagerKey(resolverAddress, ExEntityId, publicKey)
+        DV->>GW:setListText(ExEntityId, "vnd.vocdoni.census-manager-keys", index,  publicKey)
+        GW->>ER:&lt;transaction&#62;
+    end
+
+    EE->>SW: Arbirary request to Census Service
+    SW-->>CS: Arbitrary request from External Entity
+    CS->>ER: List(CsEntityId, "vnd.vocdoni.census-service-source-entities")
+    ER-->>CS:[&lt;entityReference&#62;]
+    CS->>CS: Check externalEntityId is in [&lt;entityReference&#62;]
+    CS->>ER: List(ExEntityId, "vnd.vocdoni.census-manager-keys")
+    ER-->>CS:[&lt;publicKey&#62;]
+    CS->>CS: Check Arbirary request is signed by one of [&lt;publicKey&#62;]
+    CS->>CS: Execute arbitrary request
+
+```
+
 #### Adding users to a census
 
 Depending on the activity of users, an **Entity** may decide to add public keys to one or more census.
@@ -235,7 +287,6 @@ sequenceDiagram
 
     PM->>DB: getUsers({ pending: true })
     DB-->>PM: pendingUsers
-
 
     loop pendingUsers
         PM->>DV: Census.addClaim(censusId, censusMessagingURI, claimData, web3Provider)
@@ -258,7 +309,7 @@ sequenceDiagram
 - [Census Service - addClaim](/architecture/components/census-service?id=census-service-addclaim)
 - [Census Service - addClaimBulk](/architecture/components/census-service?id=census-service-addclaimbulk)
 
---------------------------------------------------------------------------------
+---
 
 ## Voting
 
@@ -286,12 +337,12 @@ sequenceDiagram
             loop modulusGroups
                 DV-->>GW: addFile(modulusGroup) : modulusGroupHash
                     GW-->SW: Swarm.put(modulusGroup) : modulusGroupHash
-                GW-->>DV: .
+                GW-->>DV: 
             end
         else ZK-Snarks
             DV-->>GW: addFile(merkleTree) : merkleTreeHash
                 GW-->SW: Swarm.put(merkleTree) : merkleTreeHash
-            GW-->>DV: -
+            GW-->>DV: 
         end
 
         DV->>+GW: getCensusRoot(censusId)
@@ -301,7 +352,7 @@ sequenceDiagram
 
         DV-->>GW: addFile(processMetadata) : metadataHash
             GW-->SW: Swarm.put(processMetadata) : metadataHash
-        GW-->>DV: -
+        GW-->>DV: 
 
         DV->>+GW: Process.create(entityId, name, metadataContentUri)
             GW->>+BC: &lt; transaction &#62;
@@ -575,7 +626,6 @@ sequenceDiagram
 
     DV-->>App: isRegistered
 ```
-
 **Used schemas:**
 
 - [Vote Batch](/architecture/components/relay?id=vote-batch)
