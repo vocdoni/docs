@@ -6,16 +6,16 @@ However, decentralized ecosystems like a distributed vote system need much stron
 
 - [Sequence diagrams](#sequence-diagrams)
   - [Prior to voting](#prior-to-voting)
-    - [Contract deployment (Entity)](#contract-deployment-entity)
-    - [Contract deployment (Process)](#contract-deployment-process)
     - [Set Entity metadata](#set-entity-metadata)
     - [Entity subscription](#entity-subscription)
+      - [Initial discovery](#initial-discovery)
+      - [Listing boot entities](#listing-boot-entities)
     - [Custom requests to an Entity](#custom-requests-to-an-entity)
       - [Sign up](#sign-up)
       - [Submit a picture](#submit-a-picture)
       - [Make a payment](#make-a-payment)
       - [Resolve a captcha](#resolve-a-captcha)
-    - [Adding users to a census](#adding-users-to-a-census)
+      - [Adding users to a census](#adding-users-to-a-census)
   - [Voting](#voting)
     - [Voting process creation](#voting-process-creation)
     - [Voting process retrieval](#voting-process-retrieval)
@@ -62,7 +62,7 @@ sequenceDiagram
     PM->>PM: Fill-up name
     PM->>+DV: EntityResolver.setName(entityId, name)
         DV->>GW: setText(entityId, "name", name)
-            GW->>ER: <transaction>
+            GW->>ER: &lt; transaction &#62;
             ER-->>GW: 
         GW-->>DV: 
     DV-->>-PM: 
@@ -71,7 +71,7 @@ sequenceDiagram
         PM->>PM: Fill-up key-value
         PM->>+DV: EntityResolver.set(entityId, key, value)
             DV->>GW: setText(entityId, key, value)
-                GW->>ER: <transaction>
+                GW->>ER: &lt; transaction &#62;
                 ER-->>GW: 
             GW-->>DV: 
         DV-->>-PM: 
@@ -100,7 +100,7 @@ sequenceDiagram
 
     alt has predefined entityId and resolver
         App->>App: readConfigParams()
-    else 
+    else
         App->>DV: getBootGateways()
         DV->>BS: GET /gateways
         note right of BS: Hardcoded addresses<br/>Provided by Vocdoni
@@ -110,12 +110,13 @@ sequenceDiagram
         App->>DV: getBootSettings()
         DV-->>App: (entityId, resolver)
     end
+
     App->>DV: getBootEntities(resolver, entityId)
         DV->>GW: text(entityId, "vndr.vocdoni.entities.boot")
             GW->>ER: text(entityId, "vndr.vocdoni.entities.boot")
             ER-->>GW: entityRef[]
         GW-->>DV: entityRef[]
-    DV-->>App: 
+    DV-->>App:  entityRef[]
 
 ```
 
@@ -158,7 +159,7 @@ sequenceDiagram
                 GW-->>DV: data
             end
         end
-        DV-->>App:  entityMetadata
+        DV-->>App: entityMetadata
     end
 
     App->>App: Display Entites
@@ -195,7 +196,7 @@ sequenceDiagram
     participant UR as WebView<br/>User Registry
     participant DB as Internal Database
 
-    App->>UR: Go to: <action-url>?publicKey=0x1234&censusId=0x4321
+    App->>UR: Go to: &lt;action-url&#62;?publicKey=0x1234&censusId=0x4321
         activate UR
             Note right of UR: Fill the form
         deactivate UR
@@ -285,12 +286,12 @@ sequenceDiagram
             loop modulusGroups
                 DV-->>GW: addFile(modulusGroup) : modulusGroupHash
                     GW-->SW: Swarm.put(modulusGroup) : modulusGroupHash
-                GW-->>DV: 
+                GW-->>DV: .
             end
         else ZK-Snarks
             DV-->>GW: addFile(merkleTree) : merkleTreeHash
                 GW-->SW: Swarm.put(merkleTree) : merkleTreeHash
-            GW-->>DV: 
+            GW-->>DV: -
         end
 
         DV->>+GW: getCensusRoot(censusId)
@@ -300,15 +301,15 @@ sequenceDiagram
 
         DV-->>GW: addFile(processMetadata) : metadataHash
             GW-->SW: Swarm.put(processMetadata) : metadataHash
-        GW-->>DV: 
+        GW-->>DV: -
 
         DV->>+GW: Process.create(entityId, name, metadataContentUri)
-            GW->>+BC: <transaction>
+            GW->>+BC: &lt; transaction &#62;
             BC-->>-GW: txId
         GW-->>-DV: txId
 
         DV->>+GW: EntityResolver.set(entityId, 'vndr.vocdoni.processess.active', activeProcesses)
-            GW->>+BC: <transaction>
+            GW->>+BC: &lt; transaction &#62;
             BC-->>-GW: txId
         GW-->>-DV: txId
 
@@ -323,7 +324,6 @@ sequenceDiagram
 - [Census Service - getRoot](/architecture/components/census-service?id=census-service-getroot)
 - [Census Service - setParams](/architecture/components/census-service?id=census-service-setparams)
 - [Census Service - dump](/architecture/components/census-service?id=census-service-dump)
-
 
 ### Voting process retrieval
 
@@ -419,7 +419,7 @@ sequenceDiagram
 
             DV->>+GW: generateProof(processMetadata.census.id, publicKey)
 
-            GW->>+CS: PSS.broadcast(<generateProofData>)
+            GW->>+CS: PSS.broadcast(&lt;generateProofData&#62;)
             CS-->>-GW: merkleProof
 
             GW-->>-DV: merkleProof
