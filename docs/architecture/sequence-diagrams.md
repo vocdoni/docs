@@ -236,7 +236,7 @@ sequenceDiagram
     participant EE as External Entity
     participant EM as Entity Manager
     participant DV as dvote-js
-    participant GW as Gateway/Web3
+    participant GW as Gateway/Web3/Swarm
     participant ER as Entity Resolver
     participant CS as Census Service
     participant SW as Swarm
@@ -263,7 +263,8 @@ sequenceDiagram
         GW->>ER:#60;transaction#62;
     end
 
-    EE->>SW: Arbirary request to Census Service
+    EE->>GW: Arbirary request to Census Service
+    GW->>SW: #60;request message#62;
     SW-->>CS: Arbitrary request from External Entity
     CS->>CS: Get its own resolver and entityId
     CS->>ER: List(csEntityId, "vnd.vocdoni.census-service-source-entities")
