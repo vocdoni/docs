@@ -113,8 +113,8 @@ sequenceDiagram
     end
 
     App->>DV: getBootEntities(resolver, entityId)
-        DV->>GW: text(entityId, "vnd.vocdoni.boot-entities")
-            GW->>ER: text(entityId, "vnd.vocdoni.boot-entities")
+        DV->>GW: list(entityId, "vnd.vocdoni.boot-entities")
+            GW->>ER: list(entityId, "vnd.vocdoni.boot-entities")
             ER-->>GW: entityRef[]
         GW-->>DV: entityRef[]
     DV-->>App:  entityRef[]
