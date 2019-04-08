@@ -39,7 +39,7 @@ struct Relay {
 mapping (bytes32 => Process) public processes;   // processId => process data
 mapping (address => uint) public processCount;   // Amount of processes created by an address
 
-event ProcessCreated(bytes32 indexed processId);
+event ProcessCreated(address indexed entityAddress, bytes32 processId);
 event ProcessCanceled(bytes32 indexed processId);
 event RelayAdded(bytes32 indexed processId, address relayAddress);
 event RelayDisabled(bytes32 indexed processId, address relayAddress);
