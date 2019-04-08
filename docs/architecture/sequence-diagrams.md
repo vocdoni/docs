@@ -113,8 +113,8 @@ sequenceDiagram
     end
 
     App->>DV: getBootEntities(resolver, entityId)
-        DV->>GW: text(entityId, "vndr.vocdoni.entities.boot")
-            GW->>ER: text(entityId, "vndr.vocdoni.entities.boot")
+        DV->>GW: text(entityId, "vnd.vocdoni.boot-entities")
+            GW->>ER: text(entityId, "vnd.vocdoni.boot-entities")
             ER-->>GW: entityRef[]
         GW-->>DV: entityRef[]
     DV-->>App:  entityRef[]
@@ -138,8 +138,8 @@ sequenceDiagram
         App->>DV: Entity.fetch(entityId, resolver)
         alt Blockchain and Swarm respond
             loop
-                DV->>GW: text(entities[i], "vndr.vocdoni.meta")
-                    GW->>ER: text(entities[i], "vndr.vocdoni.meta")
+                DV->>GW: text(entities[i], "vnd.vocdoni.meta")
+                    GW->>ER: text(entities[i], "vnd.vocdoni.meta")
                     ER-->>GW: metadataContentUri
                 GW-->>DV: metadataContentUri
                 DV->>GW: fetchFile(metadataContentUri)
@@ -148,8 +148,8 @@ sequenceDiagram
                 GW-->>DV: entityMetadata
             end
         else P2P fetching fails
-            DV->>GW: text(entities[i], "vndr.vocdoni.name")
-            GW->>ER: text(entities[i], "vndr.vocdoni.name")
+            DV->>GW: text(entities[i], "vnd.vocdoni.entity-name")
+            GW->>ER: text(entities[i], "vnd.vocdoni.entity-name")
             ER-->>GW: entityName
             GW-->>DV: entityName
 
@@ -366,7 +366,7 @@ sequenceDiagram
             BC-->>-GW: txId
         GW-->>-DV: txId
 
-        DV->>+GW: EntityResolver.set(entityId, 'vndr.vocdoni.processess.active', activeProcesses)
+        DV->>+GW: EntityResolver.set(entityId, 'vnd.vocdoni.process-ids.active', activeProcesses)
             GW->>+BC: #60; transaction #62;
             BC-->>-GW: txId
         GW-->>-DV: txId
@@ -397,8 +397,8 @@ sequenceDiagram
 
     App->>+DV: Process.fetchByEntity(entityAddress, resolver)
 
-        DV->>GW: EntityResolver.text(entityId, "vndr.vocdoni.processes.active")
-            GW->>BC: text(entityId, "vndr.vocdoni.processes.active")
+        DV->>GW: EntityResolver.text(entityId, "vnd.vocdoni.process-ids.active")
+            GW->>BC: text(entityId, "vnd.vocdoni.process-ids.active")
             BC-->>GW: processId[]
         GW-->>DV: processId[]
 
