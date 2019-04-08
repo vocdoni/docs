@@ -232,48 +232,59 @@ sequenceDiagram
 ```mermaid
 
 sequenceDiagram
-    participant CE as Census Service Entity
-    participant EE as External Entity
-    participant EM as Entity Manager
+    participant ENTCS as Entity's Census Service
+    participant EXENT as External Entity
+    participant EMGR as Entity Manager
     participant DV as dvote-js
     participant GW as Gateway/Web3/Swarm
     participant ER as Entity Resolver
-    participant CS as Census Service
+    participant CSRV as Census Service
     participant SW as Swarm
 
-    Note right of CE: Agree about the usage of the <br/>Census Service through external channels
-    CE-->EE: 
-    CE->>EM: Fill External Entity resolver and externalEntityId
-    EM->>DV: addCensusServiceSourceEntity(csEntityResolver, csEntityId, exResolver,exEntityId)
+    Note right of ENTCS: Agree on using <br/>the Census Service<br/>from an external <br/>channel
+    ENTCS-->EXENT: 
+    ENTCS->>EMGR: Fill External Entity resolver and externalEntityId
+    EMGR->>DV: addCensusServiceSourceEntity(csEntityResolver, csEntityId, exResolver,exEntityId)
     DV->>DV: getEntityReference(exResolverAddress, exEntityId)
     DV->>GW: setListText(csEntityId, "vnd.vocdoni.census-service-source-entities", index, &#60;exEntityReference#62;)
     GW->>ER: #60;transaction#62;
 
     loop to all census ids
-        EE->>EM:Fill censusId
-        EM->>DV:addCensusId(exResolverAddress, exEntityId, censusId)
+        EXENT->>EMGR:Fill censusId
+        EMGR->>DV:addCensusId(exResolverAddress, exEntityId, censusId)
         DV->>GW:setListText(exEntityId, "vnd.vocdoni.census-ids", index,  censusId)
         GW->>ER:#60;transaction#62;
     end
 
     loop to all keys
-        EE->>EM:Fill the public key that will publish to the Census Service
-        EM->>DV:addCensusManagerKey(exResolverAddress, exEntityId, publicKey)
+        EXENT->>EMGR:Fill the public key that will publish to the Census Service
+        EMGR->>DV:addCensusManagerKey(exResolverAddress, exEntityId, publicKey)
         DV->>GW:setListText(exEntityId, "vnd.vocdoni.census-manager-keys", index,  publicKey)
         GW->>ER:#60;transaction#62;
     end
 
-    EE->>GW: Arbirary request to Census Service
-    GW->>SW: #60;request message#62;
-    SW-->>CS: Arbitrary request from External Entity
-    CS->>CS: Get its own resolver and entityId
-    CS->>ER: List(csEntityId, "vnd.vocdoni.census-service-source-entities")
-    ER-->>CS:[#60;entityReference#62;]
-    CS->>CS: Check exEntityId is in [#60;entityReference#62;]
-    CS->>ER: List(exEntityId, "vnd.vocdoni.census-manager-keys")
-    ER-->>CS:[#60;publicKey#62;]
-    CS->>CS: Check Arbirary request is signed by one of [#60;publicKey#62;]
-    CS->>CS: Execute arbitrary request
+    Note left of CSRV: Eventually, the <br/>Census Service <br/>refreshes its config
+
+    CSRV->>ER: List(csEntityId, "vnd.vocdoni.census-service-source-entities")
+    ER-->>CSRV:[#60;entityReference#62;]
+
+    loop source entities
+        CSRV->>ER: List(exEntityId, "vnd.vocdoni.census-ids")
+        ER-->>CSRV:[#60;census-id#62;, ...]
+        CSRV->>ER: List(exEntityId, "vnd.vocdoni.census-manager-keys")
+        ER-->>CSRV:[#60;publicKey#62;, ...]
+    end
+
+    Note right of EXENT: Finally, an Entity<br/>requests a census<br/>operation
+    
+    EXENT->>GW: addClaimBulk(censusId, payload)
+    GW->>SW: #60;request data#62;
+    SW-->>CSRV: #60;request data#62;
+    # CSRV->>CSRV: Get its own resolver and entityId
+    CSRV->>CSRV: Check exEntityId is within "census-service-source-entities"
+    CSRV->>CSRV: Check the censusId belongs to "census-ids"
+    CSRV->>CSRV: Check the signer belongs to "census-manager-keys"
+    CSRV->>CSRV: addClaimBulk(censusId, payload)
 
 ```
 
