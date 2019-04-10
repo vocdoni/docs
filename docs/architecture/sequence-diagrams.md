@@ -95,18 +95,20 @@ The app wants to get initial connectivity with the available gateways.
 sequenceDiagram
     participant App
     participant DV as dvote-js
-    participant GW as Web3 / Gateway
+    participant RPC as Ethereum RPC
     participant ER as Entity Resolver contract
     participant BN as BootNode
 
-    App->>DV: getCurrentGateways()
+    App->>App: getBootstrapParams()
 
-        Note right of DV: Use predefined<br/>- webGateway,<br/>- resolverAddress,<br/>- entityId
+    Note left of DV: Use predefined<br/>- webGateway,<br/>- resolverAddress,<br/>- entityId
 
-        DV->>GW: Resolver.text(resolverAddress, entityId, "vnd.vocdoni.gateway-boot-nodes")
-            GW->>ER: <request>
-            ER-->>GW: bootNode[]
-        GW-->DV: bootNode[]
+    App->>DV: Gateway.getActive(webGateway, resolverAddress, entityId)
+
+        DV->>RPC: Resolver.text(resolverAddress, entityId, "vnd.vocdoni.gateway-boot-nodes")
+            RPC->>ER: <request>
+            ER-->>RPC: bootNode[]
+        RPC-->DV: bootNode[]
     
         DV->>BN: GET /gateways
         BN-->>DV: gateway[]
