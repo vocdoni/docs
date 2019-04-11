@@ -225,7 +225,7 @@ sequenceDiagram
 #### External Entity to make use of Census Service
 
 - `Census Service Entity` and `External Entity` can be the same entity
-- A request to the `Census Service` must include the <entityReference> in the payload for the `Census Service Entity` to know where i can find if the `censusId` or the `entityId` are valid ones.
+- A request to the `Census Service` must include the <entityReference> in the payload for the `Census Service Entity` to know where it can find whether the `censusId` or the `entityId` are valid ones.
 
 >Prefix `ex` and `cs` on `entityId` and `resolverAddress` are used to represent `External Entity` and `Census Service` respectively.
 
