@@ -8,7 +8,7 @@ However, decentralized ecosystems like a distributed vote system need much stron
   - [Prior to voting](#prior-to-voting)
     - [Set Entity metadata](#set-entity-metadata)
     - [Entity subscription](#entity-subscription)
-      - [Initial discovery](#initial-discovery)
+      - [Initial Gateway discovery](#initial-gateway-discovery)
       - [Listing boot entities](#listing-boot-entities)
     - [Custom requests to an Entity](#custom-requests-to-an-entity)
       - [Sign up](#sign-up)
@@ -86,39 +86,33 @@ sequenceDiagram
 
 ### Entity subscription
 
-#### Initial discovery
+#### Initial Gateway discovery
 
-A user wants to locate an initial list of entities without any prior information.
+The app wants to get initial connectivity with the available gateways.
 
 ```mermaid
 
 sequenceDiagram
     participant App
     participant DV as dvote-js
-    participant BS as Bootstrap Server
-    participant GW as Gateway/Web3
+    participant RPC as Ethereum RPC
     participant ER as Entity Resolver contract
+    participant BN as BootNode
 
-    alt has predefined entityId and resolver
-        App->>App: readConfigParams()
-    else
-        App->>DV: getBootGateways()
-        DV->>BS: GET /gateways
-        note right of BS: Hardcoded addresses<br/>Provided by Vocdoni
-        BS-->>DV: gatewayRef[]
-        DV-->>App: gatewayRef[]
+    App->>App: getBootstrapParams()
 
-        App->>DV: getBootSettings()
-        DV-->>App: (entityId, resolver)
-    end
+    Note left of DV: Use predefined<br/>- webGateway,<br/>- resolverAddress,<br/>- entityId
 
-    App->>DV: getBootEntities(resolver, entityId)
-        DV->>GW: text(entityId, "vndr.vocdoni.entities.boot")
-            GW->>ER: text(entityId, "vndr.vocdoni.entities.boot")
-            ER-->>GW: entityRef[]
-        GW-->>DV: entityRef[]
-    DV-->>App:  entityRef[]
+    App->>DV: Gateway.getActive(webGateway, resolverAddress, entityId)
 
+        DV->>RPC: Resolver.text(resolverAddress, entityId, "vnd.vocdoni.gateway-boot-nodes")
+            RPC->>ER: <request>
+            ER-->>RPC: bootNode[]
+        RPC-->DV: bootNode[]
+    
+        DV->>BN: GET /gateways
+        BN-->>DV: gateway[]
+    DV-->>App: gateway[]
 ```
 
 #### Listing boot entities
@@ -138,8 +132,8 @@ sequenceDiagram
         App->>DV: Entity.fetch(entityId, resolver)
         alt Blockchain and Swarm respond
             loop
-                DV->>GW: text(entities[i], "vndr.vocdoni.meta")
-                    GW->>ER: text(entities[i], "vndr.vocdoni.meta")
+                DV->>GW: text(entities[i], "vnd.vocdoni.meta")
+                    GW->>ER: text(entities[i], "vnd.vocdoni.meta")
                     ER-->>GW: metadataContentUri
                 GW-->>DV: metadataContentUri
                 DV->>GW: fetchFile(metadataContentUri)
@@ -148,8 +142,8 @@ sequenceDiagram
                 GW-->>DV: entityMetadata
             end
         else P2P fetching fails
-            DV->>GW: text(entities[i], "vndr.vocdoni.name")
-            GW->>ER: text(entities[i], "vndr.vocdoni.name")
+            DV->>GW: text(entities[i], "vnd.vocdoni.entity-name")
+            GW->>ER: text(entities[i], "vnd.vocdoni.entity-name")
             ER-->>GW: entityName
             GW-->>DV: entityName
 
@@ -185,27 +179,34 @@ An Entity may have specific requirements on what users have to accomplish in ord
 
 Some may require filling a simple form. Some others may ask to log in from an existing HTTP service. Uploading ID pictures, selfies or even making payments need custom implementations that decide that a user must eventually be added to a census.
 
-Below are some examples:
+Below are some examples of a user selecting an action from the entityMetadata > actions available.
 
 #### Sign up
 
-The user selects an action from the entityMetadata > actions available.
+The user fills a form with personal data and submits it to the entity.
 
 ```mermaid
 sequenceDiagram
     participant App
     participant UR as WebView<br/>User Registry
-    participant DB as Internal Database
+    participant BK as Private Backend
 
-    App->>UR: Go to: #60;action-url#62;?publicKey=0x1234&censusId=0x4321
-        activate UR
-            Note right of UR: Fill the form
-        deactivate UR
+    Note right of App: Selected action:<br/>Browse #60;action-url#62;
+
+    App->>UR: GET /#60;action-url#62;
+        alt Needs the public key
+            UR->>App: sendMessage('authenticate')
+            App-->>UR: (publicKey, signature, timestamp)
+
+        end
+        UR->>UR: Fill the form
 
         UR->>UR: signUp(name, lastName, publicKey, censusId)
 
-        UR->>DB: insert(name, lastName, publicKey, censusId)
-    UR-->>App: success
+        UR->>BK: insert(name, lastName, publicKey, censusId)
+            Note right of BK: validate the request
+        BK-->>UR: 
+    UR-->>App: 
 ```
 
 **Used schemas:**
@@ -214,7 +215,7 @@ sequenceDiagram
 
 **Notes:**
 
-- `ACTION-URL` is defined on the metadata of the contract. It is expected to be a full URL to which GET parameters will be appended (`publicKey` and optionally `censusId`)
+- `ACTION-URL` is defined on the metadata of the contract. It is expected to be a full URL that can be navigated through a traditional HTTP/S request.
 
 #### Submit a picture
 
@@ -377,7 +378,7 @@ sequenceDiagram
             BC-->>-GW: txId
         GW-->>-DV: txId
 
-        DV->>+GW: EntityResolver.set(entityId, 'vndr.vocdoni.processess.active', activeProcesses)
+        DV->>+GW: EntityResolver.set(entityId, 'vnd.vocdoni.process-ids.active', activeProcesses)
             GW->>+BC: #60; transaction #62;
             BC-->>-GW: txId
         GW-->>-DV: txId
@@ -408,8 +409,8 @@ sequenceDiagram
 
     App->>+DV: Process.fetchByEntity(entityAddress, resolver)
 
-        DV->>GW: EntityResolver.text(entityId, "vndr.vocdoni.processes.active")
-            GW->>BC: text(entityId, "vndr.vocdoni.processes.active")
+        DV->>GW: EntityResolver.text(entityId, "vnd.vocdoni.process-ids.active")
+            GW->>BC: text(entityId, "vnd.vocdoni.process-ids.active")
             BC-->>GW: processId[]
         GW-->>DV: processId[]
 
