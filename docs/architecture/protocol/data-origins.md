@@ -22,7 +22,6 @@ Supported protocols:
 - `bzz-feed://<feedHash>`
 - `ipfs://<contentHash>`
 - `https://<url>/<route>`
-- `http://<url>/<route>`
 
 URI order matters:
 - Clients are expected to try using URI's from left to right

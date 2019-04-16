@@ -6,7 +6,7 @@ Thanks for wanting to help improve this documentation :)
 
 The content of this documentation lives in the `/docs` directory in [Vocdoni's `docs` repository](https://github.com/vocdoni/docs)
 
-Any edit on `origin/master` will be reflected on [vocdoni.io/docs](http://vocdoni.io/docs/#/)
+Any edit on `origin/master` will be reflected on [vocdoni.io/docs](https://vocdoni.io/docs/#/)
 
 ## Docsify
 
@@ -27,9 +27,9 @@ Simple edits can be done on the browser (via Github) by clicking the pencil icon
 
 You can simply create a `.md` file anywhere under the `/docs` directory.
 
-A file in `/docs/whitepaper.md` is accessible via [/#/whitepaper](http://vocdoni.io/docs/#/whitepaper).
+A file in `/docs/whitepaper.md` is accessible via [/#/whitepaper](https://vocdoni.io/docs/#/whitepaper).
 
-A file in `/docs/documentation/contribute.md` is accessible via [/#/documentation/contribute.md](http://vocdoni.io/docs/#/documentation/contribute).
+A file in `/docs/documentation/contribute.md` is accessible via [/#/documentation/contribute.md](https://vocdoni.io/docs/#/documentation/contribute).
 
 ### Sidebar menu
 
