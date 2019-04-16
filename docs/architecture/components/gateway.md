@@ -162,6 +162,8 @@ Fetch a file from the p2p network (currently ipfs or swarm/bzz).
 - [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 - [Vote scrutiny](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=vote-scrutiny)
 
+**Related:**
+- [Content URI](/architecture/protocol/data-origins?id=content-uri)
 
 
 ### Add File
@@ -186,3 +188,6 @@ This method is aimed to be used by the election organizer. Usually the Gateway r
 - [Set Entity metadata](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=set-entity-metadata)
 - [Voting process creation](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=voting-process-creation)
 - [Vote scrutiny](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=vote-scrutiny)
+
+**Related:**
+- [Content URI](/architecture/protocol/data-origins?id=content-uri)
