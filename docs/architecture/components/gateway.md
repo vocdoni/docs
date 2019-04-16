@@ -95,15 +95,14 @@ Get the public key list for creating a ring signature for a specific election pr
 
 ### Submit Vote Envelope
 
-Send a vote envelope for an election process to the relay pool. The `voteEnvelope` content might be encrypted with a specific relay public key. The `relayAddr` might be provided or leave empty (`0x`) depending on the privacy decision of the client.
+Send a vote envelope for an election process to the relay pool. The `voteEnvelope` content might be encrypted with a specific relay public key. The `relayAddress` might be provided or leave empty (`0x`) depending on the privacy decision of the client.
 
 ```json
 {
   "method": "submitVoteEnvelope",
-  "type": "zk-snarks|lrs",
   "processId": "hexString",
-  "content": "voteEnvelope",
-  "relayAddr": "hexString"
+  "encryptedEnvelope": "voteEnvelope",
+  "relayAddress": "hexString"
 }
 ```
 ```json

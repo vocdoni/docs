@@ -17,7 +17,7 @@ The following are data payloads that are packaged by a client app and be eventua
 {
     "version": "1.0",    // Protocol version
     "type": "zk-snarks-vote",
-    "processAddress": "0x1234...",
+    "processId": "0x1234...",
     "nullifier": "0x1234...",
     "vote": "2"
 }
@@ -36,7 +36,7 @@ It is encrypted within the corresponding [Vote Envelope](#vote-envelope-zk-snark
 {
     "version": "1.0",    // Protocol version
     "type": "lrs-vote",
-    "processAddress": "0x1234...",
+    "processId": "0x1234...",
     "nullifier": "0x1234...",
     "vote": "1"
 }
@@ -57,7 +57,7 @@ It is encrypted within the corresponding [Vote Envelope](#vote-envelope-ring-sig
 {
     "version": "1.0",    // Protocol version
     "type": "zk-snarks-envelope",
-    "processAddress": "0x1234...",
+    "processId": "0x1234...",
     "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the JSON Vote Package
     "nullifier": "0x1234...",
     "proof": "01234...",
@@ -76,7 +76,7 @@ It is encrypted within the corresponding [Vote Envelope](#vote-envelope-ring-sig
 {
     "version": "1.0",    // Protocol version
     "type": "lrs-envelope",
-    "processAddress": "0x1234...",
+    "processId": "0x1234...",
     "encryptedPackage": "0x1234...",  // Serialized + encrypted payload of the JSON Vote Package
     "signature": "0x1234...", // The ring signature over the processAdress
     "publicKeyModulus": 4321,

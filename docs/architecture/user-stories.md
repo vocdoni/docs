@@ -113,9 +113,9 @@ To understand how a decentralized voting process works, we need to define the se
 - The organizing **Entity** publishes the private key to the blockchain so that the vote count can start and newer batch submissions are rejected
 - A **Scrutinizer** does the vote count
 	- The **Scrutinizer** fetches the [Process Metadata](/architecture/components/process?id=process-metadata-json) and the private key
-	- The **Scrutinizer** fetches the list of batchId's from the `processAddress` on the Blockchain
+	- The **Scrutinizer** fetches the list of batchId's from the `processId` on the Blockchain
 	- The **Scrutinizer** fetches the data of every [Vote Batch](/architecture/components/relay?id=vote-batch) registered
-	- The **Scrutinizer** ensures that [Vote Batches](/architecture/components/relay?id=vote-batch) come from trusted Relays, correspond to the given processAddress and contain votes with the right `type` of verification
+	- The **Scrutinizer** ensures that [Vote Batches](/architecture/components/relay?id=vote-batch) come from trusted Relays, correspond to the given processId and contain votes with the right `type` of verification
 	- The **Scrutinizer** merges the batch votes into a single list
 	- The **Scrutinizer** detects duplicate nullifiers or singatures
 		- It only keeps the vote submitted in the latest batch
