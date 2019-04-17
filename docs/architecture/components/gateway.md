@@ -65,9 +65,10 @@ To only extra field is the specific `uri` used to reach the census service. Exam
 
 ```json
 {
-    "censusUri": "<uri>",
-    "method": "getRoot",
-    "censusId": "string"
+  "censusUri": "<uri>",
+  "requestId": "hexString",   // unique hash for the request so that clients can match incoming responses to their original request messages
+  "method": "getRoot",
+  "censusId": "string"
 }
 ```
 
@@ -80,6 +81,7 @@ Get the public key list for creating a ring signature for a specific election pr
 ```json
 {
   "method": "getVotingRing",
+  "requestId": "hexString",   // unique hash for the request so that clients can match incoming responses to their original request messages
   "processId": "hexString",
   "publicKeyModulus": int
 }
@@ -100,6 +102,7 @@ Send a vote envelope for an election process to the relay pool. The `voteEnvelop
 ```json
 {
   "method": "submitVoteEnvelope",
+  "requestId": "hexString",   // unique hash for the request so that clients can match incoming responses to their original request messages
   "type": "zk-snarks|lrs",
   "processId": "hexString",
   "content": "voteEnvelope",
@@ -119,13 +122,14 @@ Send a vote envelope for an election process to the relay pool. The `voteEnvelop
 
 ### Get Vote Status
 
-Check the status of an already submited vote envelope. The `voteId` can be either the `nullifier` used in Zk-snarks or the hash of the ring signature.
+Check the status of an already submited vote envelope. 
 
 ```json
 {
   "method": "getVoteStatus",
+  "requestId": "hexString",   // unique hash for the request so that clients can match incoming responses to their original request messages
   "processId": "hexString",
-  "voteId": "hexString"
+  "nullifier": "hexString"
 }
 ```
 
@@ -147,6 +151,7 @@ Fetch a file from the p2p network (currently ipfs or swarm/bzz).
 ```json
 {
   "method": "fetchFile",
+  "requestId": "hexString",   // unique hash for the request so that clients can match incoming responses to their original request messages
   "uri": "<content uri>"
 }
 ```
@@ -173,6 +178,7 @@ This method is aimed to be used by the election organizer. Usually the Gateway r
 ```json
 {
   "method": "addFile",
+  "requestId": "hexString",   // unique hash for the request so that clients can match incoming responses to their original request messages
   "type": "swarm|ipfs",
   "content": "base64Payload",
 }
