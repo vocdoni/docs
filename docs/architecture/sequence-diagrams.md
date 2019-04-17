@@ -226,7 +226,7 @@ sequenceDiagram
 #### External Entity to make use of Census Service
 
 - `Census Service Entity` and `External Entity` can be the same entity
-- A request to the `Census Service` must include the <entityReference> in the payload for the `Census Service Entity` to know where i can find if the `censusId` or the `entityId` are valid ones.
+- A request to the `Census Service` must include the <entityReference> in the payload for the `Census Service Entity` to know where it can find whether the `censusId` or the `entityId` are valid ones.
 
 >Prefix `ex` and `cs` on `entityId` and `resolverAddress` are used to represent `External Entity` and `Census Service` respectively.
 
@@ -616,13 +616,13 @@ sequenceDiagram
     participant BC as Blockchain Process
     participant SW as Swarm
 
-    App->>DV: checkVoteStatus(processAddress, relayMessagingUri)
+    App->>DV: checkVoteStatus(processId, relayMessagingUri)
 
         DV->>DV: computeNullifierOrSignature()
 
-        DV->>+GW: getVoteStatus(processAddress, nullifierOrSignature, relayMessagingUri)
+        DV->>+GW: getVoteStatus(processId, nullifierOrSignature, relayMessagingUri)
 
-            GW-->>RL: requestVoteStatus(processAddress, nullifierOrSignature)
+            GW-->>RL: requestVoteStatus(processId, nullifierOrSignature)
             RL-->>GW: (batchId?, batchContentUri?)
 
         GW-->>-DV: (batchId?, batchContentUri?)
@@ -631,8 +631,8 @@ sequenceDiagram
 
             DV->>+GW: Process.getBatch(batchId)
             GW->>+BC: Process.getBatch(batchId)
-            BC-->>-GW: (processAddress, batchContentUri)
-            GW-->>-DV: (processAddress, batchContentUri)
+            BC-->>-GW: (processId, batchContentUri)
+            GW-->>-DV: (processId, batchContentUri)
 
         end
 
@@ -663,13 +663,13 @@ sequenceDiagram
     participant GW as Gateway/Web3
     participant BC as Blockchain Process
 
-    PM->>DV: Process.close(processAddress, privateKey)
+    PM->>DV: Process.close(processId, privateKey)
 
-        DV->>+GW: Process.close(processAddress, privateKey)
-        GW->>+BC: Process.close(processAddress, privateKey)
+        DV->>+GW: Process.close(processId, privateKey)
+        GW->>+BC: Process.close(processId, privateKey)
 
             BC->>BC: checkPrivateKey(privateKey)
-            BC->>BC: closeProcess(processAddress)
+            BC->>BC: closeProcess(processId)
 
         BC-->>-GW: success
         GW-->>-DV: success
@@ -679,7 +679,7 @@ sequenceDiagram
 
 ### Vote Scrutiny
 
-Anyone with internet access can compute the scrutiny of a given processAddress. However, the vote batch data needs to be pinned online for a certain period of time.
+Anyone with internet access can compute the scrutiny of a given processId. However, the vote batch data needs to be pinned online for a certain period of time.
 
 ```mermaid
 sequenceDiagram
@@ -689,10 +689,10 @@ sequenceDiagram
     participant BC as Blockchain Process
     participant SW as Swarm
 
-    SC->>+DV: Process.get(processAddress)
+    SC->>+DV: Process.get(processId)
 
-        DV->>+GW: Process.get(processAddress)
-        GW->>+BC: Process.get(processAddress)
+        DV->>+GW: Process.get(processId)
+        GW->>+BC: Process.get(processId)
         BC-->>-GW: (name, metadataContentUri, privateKey)
         GW-->>-DV: (name, metadataContentUri, privateKey)
 
@@ -707,10 +707,10 @@ sequenceDiagram
 
     DV-->>-SC: processMetadata
 
-    SC->>+DV: Process.getVoteBatchIds(processAddress)
+    SC->>+DV: Process.getVoteBatchIds(processId)
 
-        DV->>+GW: Process.getVoteBatchIds(processAddress)
-        GW->>+BC: Process.getVoteBatchIds(processAddress)
+        DV->>+GW: Process.getVoteBatchIds(processId)
+        GW->>+BC: Process.getVoteBatchIds(processId)
         BC-->>-GW: batchIds
         GW-->>-DV: batchIds
 
@@ -755,7 +755,7 @@ sequenceDiagram
         SC->>SC: groupByModulus(uniqueVotePackages)
         loop voteGroups
 
-            SC->>+DV: LRS.check(signature, voteGroup.pubKeys, processAddress)
+            SC->>+DV: LRS.check(signature, voteGroup.pubKeys, processId)
             DV-->>-SC: isWithinGroup
 
             SC->>+DV: LRS.isUnseen(signature, processedVotes.signature)

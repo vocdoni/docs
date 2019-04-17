@@ -19,10 +19,11 @@ struct Process {
     string processName;
     string metadataContentUri; // Content URI to fetch the JSON metadata from
     uint256 startTime;         // block.timestamp after which votes can be registered
-    uint256 endTime;           // block.timestamp until which votes can be registered
-    bytes32 voteEncryptionPublicKey;
+    uint256 endTime;           // block.timestamp after which votes can be registered
+    string voteEncryptionPublicKey;
+    string voteEncryptionPrivateKey;  // Key revealed after the vote ends so that scrutiny can start
     bool canceled;
-    
+
     address[] relayList;       // Relay addresses to let users fetch the Relay data
     mapping (address => Relay) relays;
     
@@ -37,7 +38,7 @@ struct Relay {
 }
 
 mapping (bytes32 => Process) public processes;   // processId => process data
-mapping (address => uint) public processCount;   // Amount of processes created by an address
+mapping (address => uint) public entityProcessCount;   // Amount of processes created by an address
 
 event ProcessCreated(address indexed entityAddress, bytes32 processId);
 event ProcessCanceled(bytes32 indexed processId);
@@ -52,12 +53,13 @@ Processes are referenced by their `processId`
 
 ```solidity
 function getNextProcessId(address entityAddress) public view returns (bytes32){
-    uint idx = processCount[entityAddress] + 1;
+    // From 0 to N-1, the next index is N
+    uint idx = entityProcessCount[entityAddress];
     return keccak256(abi.encodePacked(entityAddress, idx));
 }
 ```
 
-where `processCount` is an auto-incremental nonce per `entityAddress`.
+where `entityProcessCount` is an auto-incremental nonce per `entityAddress`.
 
 ### Methods
 

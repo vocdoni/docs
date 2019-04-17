@@ -97,7 +97,7 @@ Get the public key list for creating a ring signature for a specific election pr
 
 ### Submit Vote Envelope
 
-Send a vote envelope for an election process to the relay pool. The `voteEnvelope` content might be encrypted with a specific relay public key. The `relayAddr` might be provided or leave empty (`0x`) depending on the privacy decision of the client.
+Send a vote envelope for an election process to the relay pool. The `voteEnvelope` content might be encrypted with a specific relay public key. The `relayAddress` might be provided or leave empty (`0x`) depending on the privacy decision of the client.
 
 ```json
 {
@@ -105,8 +105,8 @@ Send a vote envelope for an election process to the relay pool. The `voteEnvelop
   "requestId": "hexString",   // unique hash for the request so that clients can match incoming responses to their original request messages
   "type": "zk-snarks|lrs",
   "processId": "hexString",
-  "content": "voteEnvelope",
-  "relayAddr": "hexString"
+  "encryptedEnvelope": "voteEnvelope",
+  "relayAddress": "hexString"
 }
 ```
 ```json
@@ -168,6 +168,8 @@ Fetch a file from the p2p network (currently ipfs or swarm/bzz).
 - [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 - [Vote scrutiny](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=vote-scrutiny)
 
+**Related:**
+- [Content URI](/architecture/protocol/data-origins?id=content-uri)
 
 
 ### Add File
@@ -193,3 +195,6 @@ This method is aimed to be used by the election organizer. Usually the Gateway r
 - [Set Entity metadata](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=set-entity-metadata)
 - [Voting process creation](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=voting-process-creation)
 - [Vote scrutiny](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=vote-scrutiny)
+
+**Related:**
+- [Content URI](/architecture/protocol/data-origins?id=content-uri)

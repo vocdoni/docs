@@ -7,4 +7,4 @@ Vocdoni is a fully verifiable, censorship-resistant, and anonymous Ethereum-base
 Get started by checking the [Global Architecture](/architecture/general) section.
 
 
-<img src="http://vocdoni.io/assets/images/ballotTransparent.png" alt="Vocdoni" style="position: absolute; top: 0; z-index: -10; opacity: 0.7;">
+<img src="https://vocdoni.io/assets/images/ballotTransparent.png" alt="Vocdoni" style="position: absolute; top: 0; z-index: -10; opacity: 0.7;">
