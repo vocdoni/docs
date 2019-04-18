@@ -361,10 +361,9 @@ Name: EntityActions
             "fr": "S'inscrire à l'organisation"
         },
 
-        // The URL to open with query string parameters:
-        // - signature = sign(hash(timestamp), privateKey)
-        // - publicKey
-        // - timestamp (UNIX timestamp)
+        // The URL to open
+        // - The embedded web site can send messages to the host app
+        // - Messages can request the public key, or a signature
         "url": "https://census-register.cloud/sign-up/",
 
         // Endpoint to POST to with publicKey and signature+timestamp JSON fields
@@ -426,7 +425,7 @@ Name: EntityActions
                 "type": "gallery",
                 "name": "custom-1",
                 "caption": {
-                    "ens": "...",
+                    "en": "...",
                     "fr": "..."
                 }
             }
