@@ -89,6 +89,7 @@ Get the public key list for creating a ring signature for a specific election pr
 ```json
 {
   "error": bool,
+  "requestId": "hexString",      // The requestId that the client sent
   "response": ["pubKey1", "pubKey2", ...]
 }
 ```
@@ -112,6 +113,7 @@ Send a vote envelope for an election process to the relay pool. The `voteEnvelop
 ```json
 {
   "error": bool,
+  "requestId": "hexString",      // The requestId that the client sent
   "response": []
 }
 ```
@@ -136,6 +138,7 @@ Check the status of an already submited vote envelope.
 ```json
 {
   "error": bool,
+  "requestId": "hexString",      // The requestId that the client sent
   "response": ["status"]
 }
 ```
@@ -159,6 +162,7 @@ Fetch a file from the p2p network (currently ipfs or swarm/bzz).
 ```json
 {
   "error": bool,
+  "requestId": "hexString",      // The requestId that the client sent
   "response": ["base64Payload"]
 }
 ```
@@ -183,11 +187,15 @@ This method is aimed to be used by the election organizer. Usually the Gateway r
   "requestId": "hexString",   // Arbitrary value given by the client, so that it can match incoming responses to the originating request. Ideally a hash of the timestamp.
   "type": "swarm|ipfs",
   "content": "base64Payload",
+  "name": "string",           // Human readable name to help identify the content in the future
+  "address": "hexAddress",    // Address of the user signing the message
+  "signature": "hexString"    // Signature of the base64 content with the sender's private key
 }
 ```
 ```json
 {
   "error": bool,
+  "requestId": "hexString",      // The requestId that the client sent
   "response": ["<content uri>"]
 }
 ```
@@ -195,6 +203,54 @@ This method is aimed to be used by the election organizer. Usually the Gateway r
 - [Set Entity metadata](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=set-entity-metadata)
 - [Voting process creation](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=voting-process-creation)
 - [Vote scrutiny](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=vote-scrutiny)
+
+**Related:**
+- [Content URI](/architecture/protocol/data-origins?id=content-uri)
+
+### List pinned files
+
+This method provides administrators of a Gateway with a list of resources that have been uploaded and are still pinned on Swarm or IPFS.
+
+```json
+{
+  "method": "pinList",
+  "requestId": "hexString",   // Arbitrary value given by the client, so that it can match incoming responses to the originating request. Ideally a hash of the timestamp.
+  "address": "hexAddress",    // Address of the user signing the message
+  "signature": "hexString"    // Signature of the base64 content with the sender's private key
+}
+```
+```json
+{
+  "error": bool,
+  "requestId": "hexString",      // The requestId that the client sent
+  "response": ["{\"name\": \"string\", \"uri\": \"<content uri>\"}"]
+}
+```
+
+**Related:**
+- [Content URI](/architecture/protocol/data-origins?id=content-uri)
+
+### Unpin File
+
+This method is the counterpart of `addFile`. It allows administrators to unpin content from a Gateway so it doesn't eventually run out of space.
+
+
+```json
+{
+  "method": "unpinFile",
+  "requestId": "hexString",   // Arbitrary value given by the client, so that it can match incoming responses to the originating request. Ideally a hash of the timestamp.
+  "uri": "<content uri>",     // Multiple origins can be unpinned at once
+  "address": "hexAddress",    // Address of the user signing the message
+  "signature": "hexString"    // Signature of the base64 content with the sender's private key
+}
+```
+```json
+{
+  "error": bool,
+  "requestId": "hexString",      // The requestId that the client sent
+  "response": ["<content uri>"]
+}
+```
 
 **Related:**
 - [Content URI](/architecture/protocol/data-origins?id=content-uri)
