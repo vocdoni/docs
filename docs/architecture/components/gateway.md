@@ -58,18 +58,38 @@ Then the APIs ara available to the client via HTTP/WS using the API name as rout
 
 ## Census API
 
-The census API is inherited from the [Census Service API](/docs/#/architecture/components/census-service)
+The Census API inherits directly frmo the methods defined in the [Census Service API](/docs/#/architecture/components/census-service). 
 
-To only extra field is the specific `uri` used to reach the census service. Example for `getRoot` method:
+The only difference is that this API is to be used by mobile and web clients needing the aid of a Gateway. To tell the Gateway where the Census Service can be reached, the field `messaging-uri` is added as a parameter.
+
+In the case of the `getRoot` method.
 
 ```json
 {
-  "method": "getRoot",
-  "requestId": "hexString",
-  "censusUri": "<uri>",
-  "censusId": "string"
+  "id": "req-12345678",
+  "request": {
+    "method": "getRoot",
+    "censusUri": "<messaging-uri>",   <<<
+    "censusId": "string",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
+
+```json
+{
+  "id": "req-12345678",
+  "response": {
+    "censusId": "string",        // The census ID we requested, for integrity checking
+    "root": "0x1234...",         // The root hash
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+The same applies to the rest of operations.
 
 ## Vote API
 
@@ -79,19 +99,29 @@ Get the public key list for creating a ring signature for a specific election pr
 
 ```json
 {
-  "method": "getVotingRing",
-  "requestId": "hexString",
-  "processId": "hexString",
-  "publicKeyModulus": int
+  "id": "req-2345679",
+  "request": {
+    "method": "getVotingRing",
+    "processId": "hexString",
+    "publicKeyModulus": int,
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",
-  "response": ["pubKey1", "pubKey2", ...]
+  "id": "req-2345679",
+  "response": {
+    "ring": ["pubKey1", "pubKey2", ...],
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+  
 }
 ```
+
 **Used in:**
 - [Voting with LRS](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 
@@ -101,19 +131,28 @@ Send a vote envelope for an election process to the relay pool. The `voteEnvelop
 
 ```json
 {
-  "method": "submitVoteEnvelope",
-  "requestId": "hexString",
-  "type": "zk-snarks|lrs",
-  "processId": "hexString",
-  "encryptedEnvelope": "voteEnvelope",
-  "relayAddress": "hexString"
+  "id": "req-2345679",
+  "request": {
+    "method": "submitVoteEnvelope",
+    "type": "zk-snarks|lrs",
+    "processId": "hexString",
+    "encryptedEnvelope": "voteEnvelope",
+    "relayAddress": "hexString",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
+
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",
-  "response": []
+  "id": "req-2345679",
+  "response": {
+    "ok": true,
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
 }
 ```
 
@@ -127,18 +166,26 @@ Check the status of an already submited vote envelope.
 
 ```json
 {
-  "method": "getVoteStatus",
-  "requestId": "hexString",
-  "processId": "hexString",
-  "nullifier": "hexString"
+  "id": "req-2345679",
+  "request": {
+    "method": "getVoteStatus",
+    "processId": "hexString",
+    "nullifier": "hexString",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
 
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",
-  "response": ["status"]
+  "id": "req-2345679",
+  "response": {
+    "registered": true,          // Whether the vote is registered in a vote batch on the Blockchain
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
 }
 ```
 **Used in:**
@@ -148,21 +195,30 @@ Check the status of an already submited vote envelope.
 
 ### Fetch File
 
-Fetch a file from the p2p network (currently ipfs or swarm/bzz).
+Fetch a file from the P2P network (currently IPFS or Swarm/BZZ).
 
 ```json
 {
-  "method": "fetchFile",
-  "requestId": "hexString",
-  "uri": "<content uri>"
+  "id": "req-2345679",
+  "request": {
+    "method": "fetchFile",
+    "uri": "<content uri>",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
 
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",
-  "response": ["base64Payload"]
+  "id": "req-2345679",
+  "response": {
+    "content": "base64Payload",  // The contents of the file
+    "request": "req-2345679",      // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+  
 }
 ```
 **Used in:**
@@ -184,20 +240,31 @@ Ideally, this methods require authentication following the rules described [in t
 
 ```json
 {
-  "method": "addFile",
-  "requestId": "hexString",
-  "type": "swarm|ipfs",
-  "content": "base64Payload",
-  "name": "string",  // Human readable name to help identify the content in the future
+  "id": "req-2345679",
+  "request": {
+    "method": "addFile",
+    "type": "swarm|ipfs",
+    "content": "base64Payload",  // File contents
+    "name": "string",            // Human readable name to help identify the content in the future
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
+
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",
-  "response": ["<content uri>"]
+  "id": "req-2345679",
+  "response": {
+    "uri": "<content uri>",
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+  
 }
 ```
+
 **Used in:**
 - [Set Entity metadata](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=set-entity-metadata)
 - [Voting process creation](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=voting-process-creation)
@@ -212,58 +279,88 @@ This method provides administrators of a Gateway with a list of resources that h
 
 ```json
 {
-  "method": "pinList",
-  "requestId": "hexString",
+  "id": "req-2345679",
+  "request": {
+    "method": "pinList",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
+
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",
-  "response": ["{\"name\": \"string\", \"uri\": \"<content uri>\"}", ...]
+  "id": "req-2345679",
+  "response": {
+    "files": [
+      { "name": "census-ring-1.txt", "uri": "<content-uri>" },
+      { "name": "census-ring-2.txt", "uri": "<content-uri>" },
+      { "name": "census-ring-3.txt", "uri": "<content-uri>" },
+      ...
+    ],
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
 }
 ```
 
 **Related:**
 - [Content URI](/architecture/protocol/data-origins?id=content-uri)
 
-### Pin File
+### Pin a file
 
-This method allows administrators to pin remote content so it is available directly through the Gateway itself. 
+This method allows administrators to pin already existing remote content, so it is available through the Gateway itself. 
 
 ```json
 {
-  "method": "pinFile",
-  "requestId": "hexString",
-  "uri": ["<content uri>"],  // Multiple origins can be pinned at once
+  "id": "req-2345679",
+  "request": {
+    "method": "pinFile",
+    "uri": "<content-uri>",  // Multiple origins can be pinned at once
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",
-  "response": []
+  "id": "req-2345679",
+  "response": {
+    "ok": true,
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
 }
 ```
 
 
-### Unpin File
+### Unpin  a file
 
-This method is the counterpart of `pin` and `addFile`. It allows administrators to unpin or remove content from a Gateway so it doesn't eventually run out of space.
+This method is the counterpart of `pin` and `addFile`. It allows administrators to unpin and drop content from a Gateway so it doesn't eventually run out of space.
 
 
 ```json
 {
-  "method": "unpinFile",
-  "requestId": "hexString",
-  "uri": ["<content uri>"],  // Multiple origins can be unpinned at once
+  "id": "req-2345679",
+  "request": {
+    "method": "unpinFile",
+    "uri": "<content-uri>",  // Multiple origins can be unpinned at once
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",
-  "response": []
+  "id": "req-2345679",
+  "response": {
+    "ok": true,
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
 }
 ```
 

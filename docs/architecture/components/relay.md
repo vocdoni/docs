@@ -3,7 +3,7 @@
 `Abstract here`
 
 - [Data Schemas](#data-schemas)
-- [Request and response schemas](#request-and-response-schemas)
+- [JSON API schemas](#json-api-schemas)
 
 ## Data Schemas
 
@@ -203,6 +203,6 @@ It is encrypted within the corresponding [Vote Envelope](#vote-envelope-ring-sig
 
 ---
 
-## Request and response schemas
+## JSON API schemas
 
 `TODO: Define the format of incoming requests`

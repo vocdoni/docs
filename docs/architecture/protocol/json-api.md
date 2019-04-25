@@ -29,33 +29,30 @@ The response API calls take two shapes depending on the result of the request.
 
 ### Success
 
-+ `id` The same value given in the request `id`
 + `response` A JSON object with the response fields provided by the method
++ `response.request` The value given in the request `id` field
 
 ```json
 {
-  "id": "req-12345678",
   "response": {
-    "publicKeyModulus": 123,
-    "publicKeys": [
-        "0x1234...",
-        "0x2345...",
-        "0x3456..."
-    ]
+    "request": "req-12345678",          // ID of the originating request
+
+    // any additional values returned by the method
   }
 }
 ```
 
 ### Error
 
-+ `id` The same value given in the request `id`
 + `error` A string with information of why a request failed
++ `error.request` The value given in the request `id` field
++ `error.message` Explanation of what went wrong
 
 ```json
 {
-  "id": "req-12345678",
   "error": {
-    "message": "Unknown method"
+    "request": "req-12345678",          // ID of the originating request
+    "message": "Unknown method"         // What went wrong
   }
 }
 ```
@@ -81,9 +78,11 @@ In the following example, the payload is:
 {
   "id": "req-12345678",
   "request": {
-    "timestamp": 1556110671,   <<<
     "method": "method-name",
-    "key": "value",
+
+    // any additional values required by the method
+
+    "timestamp": 1556110671   <<<
   },
   "signature": "0x1234..."   <<<
 }
@@ -101,15 +100,12 @@ Response messages can also be signed. Keeping the examples above:
 
 ```json
 {
-  "id": "req-12345678",
   "response": {
-    "timestamp": 1556110671,   <<<
-    "publicKeyModulus": 123,
-    "publicKeys": [
-        "0x1234...",
-        "0x2345...",
-        "0x3456..."
-    ]
+    "request": "req-12345678",
+
+    // any additional values returned by the method
+
+    "timestamp": 1556110671   <<<
   },
   "signature": "0x1234..."   <<<
 }
@@ -123,10 +119,10 @@ And also:
 
 ```json
 {
-  "id": "req-12345678",
   "error": {
-    "timestamp": 1556110671,   <<<
-    "message": "Unknown method"
+    "request": "req-12345678",           // ID of the originating request
+    "message": "Unknown method",         // What went wrong
+    "timestamp": 1556110671   <<<
   },
   "signature": "0x1234..."   <<<
 }
