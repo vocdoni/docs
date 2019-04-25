@@ -179,7 +179,7 @@ Fetch a file from the p2p network (currently ipfs or swarm/bzz).
 
 This method is aimed to be used by the election organizer. Usually the Gateway running this API is a private server which is only used by the administrators of the organization entity. This method is only available if option `--allow-private` is enabled.
 
-Ideally, this methods require authentication following the rules described [in the API standard page](/architecture/protocol/api-standard?id=Authentication).
+Ideally, this methods require authentication following the rules described [in the API standard page](/architecture/protocol/json-api?id=Authentication).
 
 
 ```json
