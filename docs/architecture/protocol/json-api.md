@@ -29,13 +29,21 @@ The response API calls take two shapes depending on the result of the request.
 
 ### Success
 
++ `id` The value given in the request `id` field
 + `response` A JSON object with the response fields provided by the method
 + `response.request` The value given in the request `id` field
 
+**Why is the Request ID present twice?**
+
+- When the response field becomes encrypted, the Request ID would become unavailable
+- This would prevent clients from matching incoming responses
+- However, keeping the request ID out of the `request` payload (signed) would leave request ID's out of the signature
+
 ```json
 {
+  "id": "req-12345678",          // ID of the originating request
   "response": {
-    "request": "req-12345678",          // ID of the originating request
+    "request": "req-12345678",   // Request ID here as well
 
     // any additional values returned by the method
   }
@@ -50,8 +58,9 @@ The response API calls take two shapes depending on the result of the request.
 
 ```json
 {
+  "id": "req-12345678",          // ID of the originating request
   "error": {
-    "request": "req-12345678",          // ID of the originating request
+    "request": "req-12345678",          // Request ID here as well
     "message": "Unknown method"         // What went wrong
   }
 }

@@ -115,8 +115,8 @@ Requests sent to a Census Service may invoke different operations. Depending on 
 {
   "id": "req-12345678",
   "response": {
-    "censusId": "string",        // The census ID we requested, for integrity checking
     "root": "0x1234...",         // The root hash
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
     "timestamp": 1556110672
   },
   "signature": "0x1234..."
@@ -268,6 +268,7 @@ Used in LRS only.
   "signature": "string"
 }
 ```
+
 ```json
 {
   "id": "req-12345678",
