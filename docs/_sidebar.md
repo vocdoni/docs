@@ -23,6 +23,9 @@
 <!--    - [Client set up](/integration/client-set-up.md) -->
 <!--    - [Relay set up](/integration/relay-set-up.md) -->
 <!--    - [Vote scrutiny](/integration/scrutiny.md) -->
+- Design
+  - [UI prototype](/design/ui-prototype.md)
+  - [Sketch.systems convention](/design/sketch-systems-convention.md)
 - About us
   - [Vision](/about-us/vision.md)
   - [Problem and solution](/about-us/problem-solution.md)
