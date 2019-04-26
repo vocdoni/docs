@@ -1,9 +1,7 @@
 # Census Service
 
-`Abstract here`
-
 - [Data Schemas](#data-schemas)
-- [Request and response schemas](#request-and-response-schemas)
+- [JSON API schemas](#json-api-schemas)
 
 ## Data Schemas
 
@@ -32,24 +30,36 @@ To this end, public keys are grouped by the modulus of dividing them by a predef
 
 ---
 
-## Request and response schemas
+## JSON API schemas
 
-Requests sent to the census service may invoke different operations. Depending on the `method`, certain parameters are expected or optional:
+Census Service interactions follow the [JSON API](/architecture/protocol/json-api) foundation.
+
+Requests sent to a Census Service may invoke different operations. Depending on the `method`, certain parameters are expected or optional:
 
 ### Census Service addClaim
 
 ```json
 {
+  "id": "req-12345678",
+  "request": {
     "method": "addClaim",
     "censusId": "string",       // Where to add the claim
     "claimData": "string",      // Typically, a public key
-    "signature": "string"
+    "timestamp": 1556110671
+  },
+  "signature": "string"
 }
 ```
+
 ```json
 {
-    "error": false,
-    "response": "string"
+  "id": "req-12345678",
+  "response": {
+    "ok": true,
+    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
 }
 ```
 
@@ -61,16 +71,29 @@ Requests sent to the census service may invoke different operations. Depending o
 
 ```json
 {
+  "id": "req-2345679",
+  "request": {
     "method": "addClaimBulk",
     "censusId": "string",       // Where to add the claims
-    "claimData": "string",      // Typically, a comma-separated list of public keys
-    "signature": "string"
+    "claimsData": [             // Typically, a list of public keys
+        "string",
+        "string",
+        "string"
+    ],
+    "timestamp": 1556110671
+  },
+  "signature": "string"
 }
 ```
 ```json
 {
-    "error": false,
-    "response": "string"
+  "id": "req-2345679",
+  "response": {
+    "ok": true,
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
 }
 ```
 
@@ -78,14 +101,25 @@ Requests sent to the census service may invoke different operations. Depending o
 
 ```json
 {
+  "id": "req-12345678",
+  "request": {
     "method": "getRoot",
-    "censusId": "string"
+    "censusId": "string",
+    "timestamp": 1556110671
+  },
+  "signature": "string"
 }
 ```
+
 ```json
 {
-    "error": false,
-    "response": "string"
+  "id": "req-12345678",
+  "response": {
+    "root": "0x1234...",         // The root hash
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
 }
 ```
 
@@ -97,17 +131,27 @@ Requests sent to the census service may invoke different operations. Depending o
 
 ```json
 {
+  "id": "req-2345679",
+  "request": {
     "method": "setParams",
     "censusId": "string",       // Where to apply the new settings
     "processId": "string",
-    "maxSize": "string",
-    "signature": "string"
+    "maxSize": "string",        // The max size of modulus groups
+    "timestamp": 1556110671
+  },
+  "signature": "string"
 }
 ```
+
 ```json
 {
-    "error": false,
-    "response": "string"
+  "id": "req-2345679",
+  "response": {
+    "ok": true,
+    "request": "req-2345679",    // Request ID here as well, to check its integrity as well
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
 }
 ```
 
@@ -121,16 +165,27 @@ Used in LRS only.
 
 ```json
 {
+  "id": "req-12345678",
+  "request": {
     "method": "generateProof",
     "censusId": "string",
-    "claimData": "string",
-    "rootHash": "optional-string"  // from a specific version
+    "claimData": "string",          // The claim for which data is requested
+    "rootHash": "optional-string",  // From a specific version
+    "timestamp": 1556110671
+  },
+  "signature": "string"
 }
 ```
+
 ```json
 {
-    "error": false,
-    "response": "string"
+  "id": "req-12345678",
+  "response": {
+    "siblings": ["root-hash", "hash-1", "hash-2", ...],
+    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
 }
 ```
 
@@ -202,16 +257,31 @@ Used in LRS only.
 
 ```json
 {
+  "id": "req-12345678",
+  "request": {
     "method": "dump",
     "censusId": "string",
-    "rootHash": "optional-string",
-    "signature": "string"
+    "claimData": "string",          // The claim for which data is requested
+    "rootHash": "optional-string",  // From a specific version
+    "timestamp": 1556110671
+  },
+  "signature": "string"
 }
 ```
+
 ```json
 {
-    "error": false,
-    "response": "string"
+  "id": "req-12345678",
+  "response": {
+    "claimsData": [
+        "string",
+        "string",
+        "string"
+    ],
+    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
 }
 ```
 

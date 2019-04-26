@@ -14,6 +14,7 @@
     - [Platform tools](/architecture/platform-tools.md)
     - Protocol
         - [Data origins](/architecture/protocol/data-origins.md)
+        - [JSON API](/architecture/protocol/json-api.md)
         - [Franchise proof](/architecture/protocol/franchise-proof.md)
         - [Messaging protocol](/architecture/protocol/messaging.md)
 <!-- - Integrating Vocdoni -->

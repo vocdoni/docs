@@ -1,5 +1,5 @@
 # Boot node
 
-## Request and response schemas
+## JSON API schemas
 
 `TODO: Define the format of incoming requests`

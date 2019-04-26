@@ -55,22 +55,41 @@ For example, the Gateway can be executed as follows, letting the user choose whi
 
 Then the APIs ara available to the client via HTTP/WS using the API name as route/path, for instance `http://gatewayIP:8001/web3`.
 
-In general, if `error` is `true`, then `response` contains the error message.
 
 ## Census API
 
-The census API is inherited from the [Census Service API](/docs/#/architecture/components/census-service). 
+The Census API inherits directly frmo the methods defined in the [Census Service API](/docs/#/architecture/components/census-service). 
 
-To only extra field is the specific `uri` used to reach the census service. Example for `getRoot` method:
+The only difference is that this API is to be used by mobile and web clients needing the aid of a Gateway. To tell the Gateway where the Census Service can be reached, the field `messaging-uri` is added as a parameter.
+
+In the case of the `getRoot` method.
 
 ```json
 {
-  "censusUri": "<uri>",
-  "requestId": "hexString",   // Arbitrary value given by the client, so that it can match incoming responses to the originating request. Ideally a hash of the timestamp.
-  "method": "getRoot",
-  "censusId": "string"
+  "id": "req-12345678",
+  "request": {
+    "method": "getRoot",
+    "censusUri": "<messaging-uri>",   <<<
+    "censusId": "string",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
+
+```json
+{
+  "id": "req-12345678",
+  "response": {
+    "censusId": "string",        // The census ID we requested, for integrity checking
+    "root": "0x1234...",         // The root hash
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+The same applies to the rest of operations.
 
 ## Vote API
 
@@ -80,19 +99,29 @@ Get the public key list for creating a ring signature for a specific election pr
 
 ```json
 {
-  "method": "getVotingRing",
-  "requestId": "hexString",   // Arbitrary value given by the client, so that it can match incoming responses to the originating request. Ideally a hash of the timestamp.
-  "processId": "hexString",
-  "publicKeyModulus": int
+  "id": "req-2345679",
+  "request": {
+    "method": "getVotingRing",
+    "processId": "hexString",
+    "publicKeyModulus": int,
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",      // The requestId that the client sent
-  "response": ["pubKey1", "pubKey2", ...]
+  "id": "req-2345679",
+  "response": {
+    "ring": ["pubKey1", "pubKey2", ...],
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+  
 }
 ```
+
 **Used in:**
 - [Voting with LRS](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 
@@ -102,19 +131,28 @@ Send a vote envelope for an election process to the relay pool. The `voteEnvelop
 
 ```json
 {
-  "method": "submitVoteEnvelope",
-  "requestId": "hexString",   // Arbitrary value given by the client, so that it can match incoming responses to the originating request. Ideally a hash of the timestamp.
-  "type": "zk-snarks|lrs",
-  "processId": "hexString",
-  "encryptedEnvelope": "voteEnvelope",
-  "relayAddress": "hexString"
+  "id": "req-2345679",
+  "request": {
+    "method": "submitVoteEnvelope",
+    "type": "zk-snarks|lrs",
+    "processId": "hexString",
+    "encryptedEnvelope": "voteEnvelope",
+    "relayAddress": "hexString",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
+
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",      // The requestId that the client sent
-  "response": []
+  "id": "req-2345679",
+  "response": {
+    "ok": true,
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
 }
 ```
 
@@ -128,18 +166,26 @@ Check the status of an already submited vote envelope.
 
 ```json
 {
-  "method": "getVoteStatus",
-  "requestId": "hexString",   // Arbitrary value given by the client, so that it can match incoming responses to the originating request. Ideally a hash of the timestamp.
-  "processId": "hexString",
-  "nullifier": "hexString"
+  "id": "req-2345679",
+  "request": {
+    "method": "getVoteStatus",
+    "processId": "hexString",
+    "nullifier": "hexString",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
 
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",      // The requestId that the client sent
-  "response": ["status"]
+  "id": "req-2345679",
+  "response": {
+    "registered": true,          // Whether the vote is registered in a vote batch on the Blockchain
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
 }
 ```
 **Used in:**
@@ -149,21 +195,30 @@ Check the status of an already submited vote envelope.
 
 ### Fetch File
 
-Fetch a file from the p2p network (currently ipfs or swarm/bzz).
+Fetch a file from the P2P network (currently IPFS or Swarm/BZZ).
 
 ```json
 {
-  "method": "fetchFile",
-  "requestId": "hexString",   // Arbitrary value given by the client, so that it can match incoming responses to the originating request. Ideally a hash of the timestamp.
-  "uri": "<content uri>"
+  "id": "req-2345679",
+  "request": {
+    "method": "fetchFile",
+    "uri": "<content uri>",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
 
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",      // The requestId that the client sent
-  "response": ["base64Payload"]
+  "id": "req-2345679",
+  "response": {
+    "content": "base64Payload",  // The contents of the file
+    "request": "req-2345679",      // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+  
 }
 ```
 **Used in:**
@@ -180,25 +235,36 @@ Fetch a file from the p2p network (currently ipfs or swarm/bzz).
 
 This method is aimed to be used by the election organizer. Usually the Gateway running this API is a private server which is only used by the administrators of the organization entity. This method is only available if option `--allow-private` is enabled.
 
+Ideally, this methods require authentication following the rules described [in the API standard page](/architecture/protocol/json-api?id=Authentication).
+
 
 ```json
 {
-  "method": "addFile",
-  "requestId": "hexString",   // Arbitrary value given by the client, so that it can match incoming responses to the originating request. Ideally a hash of the timestamp.
-  "type": "swarm|ipfs",
-  "content": "base64Payload",
-  "name": "string",           // Human readable name to help identify the content in the future
-  "address": "hexAddress",    // Address of the user signing the message
-  "signature": "hexString"    // Signature of the base64 content with the sender's private key
+  "id": "req-2345679",
+  "request": {
+    "method": "addFile",
+    "type": "swarm|ipfs",
+    "content": "base64Payload",  // File contents
+    "name": "string",            // Human readable name to help identify the content in the future
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
+
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",      // The requestId that the client sent
-  "response": ["<content uri>"]
+  "id": "req-2345679",
+  "response": {
+    "uri": "<content uri>",
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+  
 }
 ```
+
 **Used in:**
 - [Set Entity metadata](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=set-entity-metadata)
 - [Voting process creation](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=voting-process-creation)
@@ -209,46 +275,92 @@ This method is aimed to be used by the election organizer. Usually the Gateway r
 
 ### List pinned files
 
-This method provides administrators of a Gateway with a list of resources that have been uploaded and are still pinned on Swarm or IPFS.
+This method provides administrators of a Gateway with a list of resources that have been uploaded and or pinned remotelly and are still available on Swarm or IPFS.
 
 ```json
 {
-  "method": "pinList",
-  "requestId": "hexString",   // Arbitrary value given by the client, so that it can match incoming responses to the originating request. Ideally a hash of the timestamp.
-  "address": "hexAddress",    // Address of the user signing the message
-  "signature": "hexString"    // Signature of the base64 content with the sender's private key
+  "id": "req-2345679",
+  "request": {
+    "method": "pinList",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
+
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",      // The requestId that the client sent
-  "response": ["{\"name\": \"string\", \"uri\": \"<content uri>\"}"]
+  "id": "req-2345679",
+  "response": {
+    "files": [
+      { "name": "census-ring-1.txt", "uri": "<content-uri>" },
+      { "name": "census-ring-2.txt", "uri": "<content-uri>" },
+      { "name": "census-ring-3.txt", "uri": "<content-uri>" },
+      ...
+    ],
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
 }
 ```
 
 **Related:**
 - [Content URI](/architecture/protocol/data-origins?id=content-uri)
 
-### Unpin File
+### Pin a file
 
-This method is the counterpart of `addFile`. It allows administrators to unpin content from a Gateway so it doesn't eventually run out of space.
-
+This method allows administrators to pin already existing remote content, so it is available through the Gateway itself. 
 
 ```json
 {
-  "method": "unpinFile",
-  "requestId": "hexString",   // Arbitrary value given by the client, so that it can match incoming responses to the originating request. Ideally a hash of the timestamp.
-  "uri": "<content uri>",     // Multiple origins can be unpinned at once
-  "address": "hexAddress",    // Address of the user signing the message
-  "signature": "hexString"    // Signature of the base64 content with the sender's private key
+  "id": "req-2345679",
+  "request": {
+    "method": "pinFile",
+    "uri": "<content-uri>",  // Multiple origins can be pinned at once
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
 }
 ```
 ```json
 {
-  "error": bool,
-  "requestId": "hexString",      // The requestId that the client sent
-  "response": ["<content uri>"]
+  "id": "req-2345679",
+  "response": {
+    "ok": true,
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+
+### Unpin  a file
+
+This method is the counterpart of `pin` and `addFile`. It allows administrators to unpin and drop content from a Gateway so it doesn't eventually run out of space.
+
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "unpinFile",
+    "uri": "<content-uri>",  // Multiple origins can be unpinned at once
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
+}
+```
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "ok": true,
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
 }
 ```
 
