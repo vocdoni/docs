@@ -1,4 +1,4 @@
-# A game of trust
+# Entities reputation mechanisms
 
 In a decentralized environment, there is no authority that can silence, add or remove participants.
 
