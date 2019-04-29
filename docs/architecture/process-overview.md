@@ -19,7 +19,7 @@ CS[<center>Census Service<br/><br/><i class='fa fa-2x fa-address-book'/></center
 OG --> PM
 
 PM -->|1 Fetch census Id's|CS
-PM -->|<center>2 Fetch the Merkle<br/>root hash</center>|CS
+PM -->|<center>2 Fetch the census proof</center>|CS
 PM -.-|<center>3 Pin process metatada<br/>+ pin census</center>| DATA
 PM --> |4 Cend creation transaction| BP
 
@@ -49,14 +49,14 @@ PSS[<center>PSS or IPFS<br/>pub sub<br/><br/><i class='fa fa-2x fa-comments'/></
 CS[<center>Census Service<br/><br/><i class='fa fa-2x fa-address-book'/></center>]
 RL[<center>Relay<br/><br/><i class='fa fa-2x fa-address-book'/></center>]
 
-APP --> |<center>fetch entity <br/>voting processes</center>| BP
-APP -->|<center>1 check census inclusion<br/>2 fetch process metadata<br/>3 fetch census chunk<br/>4 submit voting package</center>| GW
-GW -->|<center>2 fetch metadata<br/>3 census chunk</center>|DATA
-GW -.- |<center>1 check census inclusion<br/>4 forward voting package</center>|PSS
-PSS -.-|1 check census inclusion|CS
-PSS -.-|4 deliver voting package|RL
-RL -.-|pin vote batch data|DATA
-RL -->|submit vote batch|BP
+APP --> |<center>Fetch entity <br/>voting processes</center>| BP
+APP -->|<center>1 Check census inclusion<br/>2 Fetch process metadata<br/>3 Fetch census chunk<br/>4 Submit voting package</center>| GW
+GW -->|<center>2 Fetch metadata<br/>3 Census chunk</center>|DATA
+GW -.- |<center>1 Check census inclusion<br/>4 Forward voting package</center>|PSS
+PSS -.-|1 Check census inclusion|CS
+PSS -.-|4 Deliver voting package|RL
+RL -.-|Pin vote batch data|DATA
+RL -->|Submit vote batch|BP
 
 subgraph 
 	BP

@@ -27,7 +27,10 @@ To provide resilence and avoid any kind of censorship, the network architecture 
 
 A Vocdoni voting process makes use of the following components:
 
-![Main architecture](./architecture-main.png "Main architecture")
+<!-- ![Main architecture](./architecture-main.svg "Main architecture") -->
+<div style="padding: 20px; background-color: white;">
+	<img src="/docs/architecture/architecture-main.svg" alt="Main architecture"/>
+</div>
 
 + Data integrity is provided by a public BlockChain such as the Ethereum main net.
 
