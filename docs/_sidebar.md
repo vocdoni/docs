@@ -26,6 +26,7 @@
 <!--    - [Vote scrutiny](/integration/scrutiny.md) -->
 - Design
   - [UI prototype](/design/ui-prototype.md)
+  - [Reputation mechanisms](/design/entities-reputation-mechanisms.md)
   - [Sketch.systems convention](/design/sketch-systems-convention.md)
 - About us
   - [Vision](/about-us/vision.md)
