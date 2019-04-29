@@ -26,7 +26,7 @@ Vocdoni inherits these properties.
 
 This has important consequences.
 
-> How do you prevent the user from falling victim of a malicious entity that has supplanted an organization.
+> How do you prevent the user from falling victim of a malicious entity that is pretending to be another organization.
 
 > How do you find the entity you are looking for when thousands of entities can exist with similar names
 
@@ -56,14 +56,14 @@ In the same fashion, an entity can provide a search index of entities as a disco
 
 There are two main mechanisms that the user can use to find a specific entity.
 
-1. Deep links: Through an entity media account (website, twitter...) it finds its reference to the entity resolver.
-2. Entities browsing: Within the app entities can point to other entities, the user can browse and find the ones she is looking for. In this case, we should provide proper filtering and searching tools.
+1. Deep linking: On a website or social account of the Entity, a link can be used to drive users to the right Resolver + Entity on the mobile app.
+2. Entities browsing: Within the app, entities can point to other entities. The user can browse and find the ones she is looking for. In this case, we should provide propper filtering and searching tools.
 
 ### User choice
 
-In the end, the choice to decide the trustworthiness of an entity is the user.
+In the end, evaluating the trustworthiness of an entity is up to the user.
 
-The job of the app and the underlining system is to provide enough information for the user to make an informed decision.
+The mission of the platform is to provide enough information for him/her to make an informed decision.
 
 ### Alternative reputation mechanisms
 
@@ -71,7 +71,7 @@ Additional mechanisms that can be used to decide for the trustworthiness on an e
 
 - Creation time. When was the first information about an entity `X` added? If it's very recent is highly suspicious.
 - ENS. An ENS domain can help a lot to guarantee the legitimacy of an entity.
-- Media accounts. An entity exists that exists outside Vocdoni can use their alternative accounts (website, twitter...) to point to the legitimate Vocdoni entity.
+- Media accounts. An entity existing out of Vocdoni can use any alternative accounts (website, twitter...) to point to the legitimate Resolver + Entity on Vocdoni.
 
 ## Vocdoni for bootstrapping
 
@@ -88,7 +88,7 @@ Given an Entity `X`,  we can use the entities that the user has subscribed to (`
 
 ### Prototypes
 
-The mechanism that the reference app will use to inform the user is exemplified in the following mockups.
+The mechanism that the reference app will use to inform the user is showcased in the mockups below.
 
 - [Entity details page](https://www.figma.com/proto/e0KoX2m1aHM14sd6rLtPynRU/Vocdoni-App?node-id=454%3A387&scaling=scale-down). See `Trust report` button on the top left.
 - [Trust report page.](https://www.figma.com/proto/e0KoX2m1aHM14sd6rLtPynRU/Vocdoni-App?node-id=111%3A164&scaling=scale-down&redirected=1)
