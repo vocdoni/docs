@@ -53,7 +53,10 @@ For example, the Gateway can be executed as follows, letting the user choose whi
 
 `./gateway --port=8001 --vote --census --web3`
 
-Then the APIs ara available to the client via HTTP/WS using the API name as route/path, for instance `http://gatewayIP:8001/web3`.
+The APIs ara available to the client via HTTP/WS using two endpoints:
+
++ `/web3` for the raw web3 API
++ `/dvote` for the vote, census and file API
 
 
 ## Census API
