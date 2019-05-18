@@ -79,7 +79,7 @@ Any method enforcing authentication needs to provide two additional fields:
 + `request.timestamp`  The current UNIX timestamp, in seconds. Used to avoid replay attacks and to add randomless.
 + `signature`  The ECDSA signature of the message, which proves that the sender is the owner of the whitelisted address
 
-The signature is a sha256 hash of payload's `request` field stringified. 
+The signature is a sha256 hash of payload's `request` field stringified.
 
 In the following example, the payload is:
 
@@ -102,6 +102,26 @@ Then:
 `payload.signature` = `ECDSA.SIGN` ( `sha256` ( `stringify` ( `payload.request` ) ) )
 
 The verificator will verify the signature, extract the ECDSA public key from the signature, convert it to Ethereum like address and finally compare it with the list of allowed addresses.
+
+**Important**: To avoid signature mismatches, the stringified data of the `request` has to be computed always the JSON fields **sorted alphabetically**.
+
+So, given a `request` field like:
+
+```json
+{
+  "fullName": "John Smith",
+  "alias": "John"
+}
+```
+
+Its signature should be computed from:
+
+```json
+{
+  "alias": "John",
+  "fullName": "John Smith"
+}
+```
 
 ### Authenticated Responses
 
