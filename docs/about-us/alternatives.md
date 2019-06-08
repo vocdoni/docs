@@ -14,9 +14,9 @@ These close alternatives that we're aware of, compared at a feature level.
 | Censorship resistant  |   ✔️    |        ❌        |    ❌     |     ❌     |  ✔️   |        ❌         |   ❌   |
 | Soverign identity     |   ✔️    |       ✔️        |    ❌     |    ✔️     |  ✔️   |        ❌         |   ❌   |
 | Vote from smartphone  |   ✔️    |       ✔️        |    ❌     |     ❌     |  ✔️   |        ❌         |  ✔️   |
-| End to end verifiable |   ✔️    |       ✔️        |    -     |    ✔️     |  ✔️   |        ❌         |  ✔️   |
+| End to end verifiable |   ✔️    |       ✔️        |    -     |    ✔️     |  ✔️   |        ❌         |  ❌   |
 | No trusted parties    |   ✔️    |       ✔️        |    ❌     |    ✔️     |  ✔️   |        ❌         |   -   |
-| Open source           |   ✔️    |       ✔️        |    ✔️    |    ✔️     |   ❌   |        ❌         |  ✔️   |
+| Open source           |   ✔️    |       ✔️        |    ✔️    |    ✔️     |   ❌   |        ❌         |  ❌   |
 | Nation size suport    |   ✔️    |       ✔️        |    ❌     |     ❌     |  ✔️   |        ✔️        |  ✔️   |
 | Voter IP obfuscation  |   ✔️    |        ❌        |    ❌     |     ❌     |   ❌   |        ❌         |   -   |
 | No I.C.O.             |   ✔️    |        ❌        |    ✔️    |    ✔️     |   ❌   |     ️️️️️✔️      |  ✔️   |
