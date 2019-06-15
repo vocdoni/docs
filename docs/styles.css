@@ -7,12 +7,14 @@ body {
 
 .anchor span {
     color:#444;
+    line-height: 1.2em;
 }
 
 .markdown-section {
     letter-spacing: -0.02rem;
     line-height: 1.2rem;
     max-width: 800px;
+    padding:40px;
 }
 
 .markdown-section a {
@@ -90,7 +92,7 @@ section tr:nth-child(2n) {
 
 .sidebar {
     border: 1px;
-    padding: 40px 30px;
+    padding:64px 48px;
     background-color: #F3F0ED;
     padding-right: 0px;
 }
@@ -102,14 +104,28 @@ section tr:nth-child(2n) {
 }
 
 .sidebar-toggle {
+    background-color: #f3f0ede8;
     bottom: inherit;
-    background-color: #F3F0ED;
-    padding:48px;
+    border-radius: 26px;
+    margin: 10px;
+    width: 52px;
+    height: 52px;
+    align-items: center;
+    padding: 10px;
 }
 
 .sidebar-toggle span {
     background-color: #444;
 }
+
+
+body.close .sidebar-toggle {
+    background-color: #f3f0ede8;
+    width:52px;
+    transition: background-color 1s;
+}
+
+
 
 /* MERMAID CUSTOM FLOW CHARTS */
 
@@ -139,4 +155,8 @@ section tr:nth-child(2n) {
     border:none;
     font-size:16px;
 
+}
+
+.sidebar-toggle-button {
+    padding: 8px;
 }
