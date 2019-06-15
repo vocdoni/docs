@@ -1,12 +1,12 @@
 body {
-    color: #666;
-    font-family: Open Sans, Lato, sans-serif;
-    background-color: #eee;
+    color: #444;
+    font-family: "Open Sans", sans-serif, sans-serif;
+    background-color: #F3F0ED;
+    font-weight: 300;
 }
 
 .anchor span {
-    color: #333;
-    font-weight: 400;
+    color:#444;
 }
 
 .markdown-section {
@@ -16,29 +16,39 @@ body {
 }
 
 .markdown-section a {
-    color: inherit;
-    font-weight: inherit;
+    color: #789;
+    font-weight: 400;
+    line-height: 1.2rem;
+    text-decoration: none;
     text-decoration-color: rgba(0, 0, 0, 0.3);
 }
 
 .markdown-section a:hover {
-    font-weight: 600;
-    color: #fb0;
+    font-weight: 400;
+    color: #789;
+    text-decoration: underline;
+    text-decoration-color:#789
 }
 
 .markdown-section h1 {
+    font-weight: 400;
     font-size: 2.2em;
+
 }
 
 .markdown-section h2 {
+    font-weight: 400;
     font-size: 1.9em;
+ 
 }
 
 .markdown-section h3 {
+    font-weight: 400;
     font-size: 1.6em;
 }
 
 .markdown-section h4 {
+    font-weight: 400;
     font-size: 1.3em;
     margin-bottom: -0.6em;
 }
@@ -48,9 +58,9 @@ body {
 }
 
 .markdown-section blockquote {
-    border-left: 3px solid #fb0;
+    border-left: 3px solid #444;
     color: #999;
-    font-family: Open Sans, Lato, sans-serif;
+    font-family: "Open Sans", sans-serif, sans-serif;
 }
 
 .markdown-section blockquote p {
@@ -61,32 +71,44 @@ body {
     font-weight: inherit;
     word-break: break-word;
     font-size: 0.85em;
+    
 }
 
 .markdown-section td, .markdown-section th {
-    border: 1px solid #eee;
+    border: 1px solid #F3F0ED;
     padding: 10px 10px;
 }
+
+.markdown-section code, .markdown-section pre {
+    color:#444;
+    font-family: monospace;
+}
+section tr:nth-child(2n) {
+    background-color: #00000005;
+}
+
 
 .sidebar {
     border: 1px;
     padding: 40px 30px;
-    background-color: #eee;
+    background-color: #F3F0ED;
     padding-right: 0px;
 }
 
 .sidebar ul li.active>a {
-    color: #fb0;
+    color: #789;
     font-weight: 900;
+    text-decoration: none;
 }
 
 .sidebar-toggle {
     bottom: inherit;
-    background-color: #eee;
+    background-color: #F3F0ED;
+    padding:48px;
 }
 
 .sidebar-toggle span {
-    background-color: #fb0;
+    background-color: #444;
 }
 
 /* MERMAID CUSTOM FLOW CHARTS */
@@ -102,4 +124,19 @@ body {
 
 .mermaid g>foreignObject {
     color: #2d3e31;
+}
+
+.app-nav.no-badge {
+    margin: 0px;
+    /* margin-right: 25px; */
+    padding-top: 48px;
+    padding-left: 80px;
+    padding-right:80px;
+}
+
+.app-nav a.active, .app-nav a:hover {
+    color:#000;
+    border:none;
+    font-size:16px;
+
 }
