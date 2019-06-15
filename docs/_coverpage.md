@@ -8,4 +8,4 @@ An open tool-set for universally verifiable voting
 
 <!-- background color -->
 
-![color](#f0f0f0)
+![color](#F3F0ED)
