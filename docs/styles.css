@@ -62,8 +62,14 @@ body {
 
 .markdown-section blockquote {
     border-left: 3px solid #444;
-    color: #999;
+    color: #444;
     font-family: "Open Sans", sans-serif, sans-serif;
+    font-weight: 400;
+}
+
+.markdown-section em {
+    color: #444;
+    font-weight: 400;
 }
 
 .markdown-section blockquote p {
