@@ -24,21 +24,19 @@
 <!--    - [Client set up](/integration/client-set-up.md) -->
 <!--    - [Relay set up](/integration/relay-set-up.md) -->
 <!--    - [Vote scrutiny](/integration/scrutiny.md) -->
-- Design
-  - [UI prototype](design/ui-prototype.md)
-  - [Reputation mechanisms](design/entities-reputation-mechanisms.md)
-  - [Sketch.systems convention](design/sketch-systems-convention.md)
-- About us
-  - [Vision](about-us/vision.md)
-  - [Problem and solution](about-us/problem-solution.md)
-  - [Market](about-us/market.md)
-  - [Product](about-us/product.md)
-  - [Alternatives](about-us/alternatives.md)
-  - [Business model](about-us/business-model.md)
-  - [Funding](about-us/funding.md)
-  - [How we work](about-us/how-we-work.md)
-  - [Open postions](about-us/open-positions.md)
-  
-- [**Contribute**](contribute.md)
+<!--- Design
+<!--  - [UI prototype](design/ui-prototype.md) -->
+<!--  - [Reputation mechanisms](design/entities-reputation-mechanisms.md) -->
+<!--  - [Sketch.systems convention](design/sketch-systems-convention.md) -->
+
+- Contribute
+    - [Contribute](contribute.md)
     - [Guidelines](contribute/guidelines.md)
     - [Mermaid diagrams](contribute/mermaid.md)
+
+- About
+  - [Vision](about-us/vision.md)
+  - [Problem and solution](about-us/problem-solution.md)
+  - [Alternatives](about-us/alternatives.md)
+<!--  - [How we work](about-us/how-we-work.md)-->
+<!--  - [Open postions](about-us/open-positions.md)-->

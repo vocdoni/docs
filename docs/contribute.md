@@ -1,4 +1,4 @@
-# Contribute
+# How to contribute
 
 Thanks for wanting to help improve this documentation :)
 

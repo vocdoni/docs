@@ -19,7 +19,7 @@ This is well ilustrated by [Zooko's triangle](https://en.wikipedia.org/wiki/Zook
 
 ## Solution
 
-After months of iterations, we have a design with well balanced compromises:
+We have a design with well balanced compromises:
 
 We achieve this by externalizing the computational heavy lifting to a relay network - thereby allowing for lightweight end-user clients. This fundamental architectural choice has the following implications:
 
