@@ -106,24 +106,33 @@ Because of the extensive use, we make of the keys we extend the convention like 
 
 Below is a table with the proposed standard for key/value denomination.
 
-**Text record keys**
+#### Text record keys
+
+&nbsp;
 
 | Key                                 | Example                                                       | Description                                                                                                           |
 | ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `vnd.vocdoni.entity-name`           | 'Free Republic of Liberland'                                  | Entity's name                                                                                                         |
-| `vnd.vocdoni.languages`             | '["en", "fr"]'                                                | Languages supported by the entity. Used to know what `description` or `feed` to retrieve.                             |
+| `vnd.vocdoni.languages`             | '["en", "fr"]'                                                | Languages supported by the entity ([ISO codes](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)). The first language is the default one.                            |
 | `vnd.vocdoni.meta`                  | 'bzz://12345,ipfs://12345'                                    | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the JSON metadata. <br/>See [Meta](#meta). |
 | `vnd.vocdoni.voting-contract`       | '0xccc'                                                       | Address of the Processes Smart Contract instance used by the entity                                                   |
 | `vnd.vocdoni.gateway-update`        | '&lt;GatewayUpdate&gt;'                                       | Parameters for Gateways to report availability to boot nodes. See [Gateway update](#gateway-update)                   |
 | `vnd.vocdoni.process-ids.active`    | '["0x987","0x876"]'                                           | List of `processId`'s displayed as available by the client                                                            |
 | `vnd.vocdoni.process-ids.ended`     | '["0x887","0x886"]'                                           | List of `processId`'s displayed as unavailable by the client                                                          |
-| `vnd.vocdoni.news-feed.en`          | 'bzz-feed://23457,ipfs://23457,https://liberland.org/feed'    | [Content URI](/architecture/protocol/data-origins?id=content-uri) of the feed in an specific language.                |
-| `vnd.vocdoni.news-feed.fr`          | 'bzz-feed://23456,ipfs://23456,https://liberland.org/feed/fr' | [Content URI](/architecture/protocol/data-origins?id=content-uri) of the feed in an specific language.                |
-| `vnd.vocdoni.entity-description.en` | 'Is a sovereign state...'                                     | Entity description in an specific language                                                                            |
-| `vnd.vocdoni.entity-description.fr` | 'Dans un état souverain...'                                   | Entity description in an specific language                                                                            |
 | `vnd.vocdoni.avatar`                | 'https://liberland.org/logo.png'                              | [Content URI](/architecture/protocol/data-origins?id=content-uri) of an image file to display next to the entity name |
 
-**Text List record keys**
+**Language dependent fields**
+
+For every language defined on `vnd.vocdoni.languages`, there has to be a text record in the form of `vnd.vocdoni.name.<lang>`, `vnd.vocdoni.description.<lang>` and `vnd.vocdoni.news-feed.<lang>`.
+
+| Key                                 | Example                                                       | Description                                                                                                           |
+| ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `vnd.vocdoni.name.en`        | 'Free Republic of Liberland'                               | Entity description in a specific language                                                                            |
+| `vnd.vocdoni.description.en` | 'In a sovereign state...'                                   | Entity description in a specific language                                                                            |
+| `vnd.vocdoni.news-feed.en`          | 'ipfs://23456,https://liberland.org/feed/en' | [Content URI](/architecture/protocol/data-origins?id=content-uri) of the feed in a specific language.                |
+
+#### Text List record keys
+
+&nbsp;
 
 | Key                                          | Record example            | Description                                                                                                   |
 | -------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -174,12 +183,17 @@ Name: Meta
 
 ```json
 {
-  //text records
+
+  // ENS Text Records
+
   "version": "1.0",    // Protocol version
-  "languages": ["en", "fr"],
-  "entity-name": "Free Republic of Liberland",
-  "entity-description": {
-    "ca": "In a sovereign state...",
+  "languages": ["en", "fr"], // "en" is the default language
+  "name": {
+    "en": "Free Republic of Liberland",
+    "fr": "République Livre de Liberland"
+  },
+  "description": {
+    "en": "In a sovereign state...",
     "fr": "Dans un état souverain"
   },
   "voting-contract": "0xccc",
@@ -198,7 +212,9 @@ Name: Meta
   },
   "avatar": "https://liberland.org/logo.png,bzz://12345,ipfs://12345",
   ...
-  // Text List records
+
+  // ENS Text List records
+  
   "gateway-boot-nodes": [  // Bootnodes providing a list of active Gateways
     {
       "update": "pss://publicKey@0x0",
