@@ -58,13 +58,19 @@ This implementation allows to add or update smaller chunks of text in slices, in
 [Implementation](https://github.com/vocdoni/dvote-solidity/blob/master/contracts/profiles/TextListResolver.sol)
   
 ### Supported Text Record keys
-&nbsp;
+
+Every Entity should define:
 
 | Key                                 | Example                                                       | Description                                                                                                           |
 | ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `vnd.vocdoni.meta`                  | 'ipfs://12345,https://server/json'                                    | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the JSON metadata. <br/>See [JSON schema](#meta). |
+| `vnd.vocdoni.meta`                  | 'ipfs://12345,https://server/json'                                    | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the Entity's JSON metadata. <br/>See [JSON schema](#meta). |
 | `vnd.vocdoni.voting-contract`       | '0xccc'                                                       | Ethereum address of the Voting Processes Smart Contract used by the Entity                                                   |
-| `vnd.vocdoni.boot`       | 'ipfs://12345,https://server/gateways.json'                                                       | Used only by Vocdoni to provide a starter set of gateways                                                   |
+
+Used by Vocdoni only:
+
+| Key                                 | Example                                                       | Description                                                                                                           |
+| ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `vnd.vocdoni.boot`       | 'ipfs://12345,https://server/gateways.json'                                                       | Content URI of services providing a list of active Vocdoni Gateways                                                   |
 
 ## JSON schema
 
