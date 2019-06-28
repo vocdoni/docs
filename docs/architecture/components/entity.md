@@ -64,21 +64,7 @@ This implementation allows to add or update smaller chunks of text in slices, in
 | ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `vnd.vocdoni.meta`                  | 'ipfs://12345,https://server/json'                                    | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the JSON metadata. <br/>See [JSON schema](#meta). |
 | `vnd.vocdoni.voting-contract`       | '0xccc'                                                       | Ethereum address of the Voting Processes Smart Contract used by the Entity                                                   |
-
-<!-- ### Supported Text List record keys
-
-&nbsp;
-
-| Key                                          | Record example            | Description                                                                                                   |
-| -------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `vnd.vocdoni.boot-entities`                  | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s suggestions for the user to subscribe                          |
-| `vnd.vocdoni.fallback-bootnodes-entities`    | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s to borrow the bootnodes from in case of failure.               |
-| `vnd.vocdoni.trusted-entities`               | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s that the current entity trusts.                                |
-| `vnd.vocdoni.census-services`                | 'pss://12345'             | [Messaging URI](/architecture/protocol/data-origins?id=messsaging-uri) to use to reach a given census-service |
-| `vnd.vocdoni.census-service-source-entities` | '&lt;EntityReference&gt;' | Tells the entity's census service which resolver+entities to get the settings from.                           |
-| `vnd.vocdoni.census-ids`                     | '0xcc1'                   | CensusIds that the census-service keeps alive                                                                 |
-| `vnd.vocdoni.census-manager-keys`            | '0xcc2'                   | Public keys that can control the census-service. Currently any key can control any census-id                  |
-| `vnd.vocdoni.relays`                         | '&lt;Relay&gt;'           | Relays public keys                                                                                            | -->
+| `vnd.vocdoni.boot`       | 'ipfs://12345,https://server/gateways.json'                                                       | Used only by Vocdoni to provide a starter set of gateways                                                   |
 
 ## JSON schema
 

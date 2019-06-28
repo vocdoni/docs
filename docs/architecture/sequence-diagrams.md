@@ -105,7 +105,7 @@ sequenceDiagram
     Client->>DV: Gateway.getActive(ethGateway, resolverAddress, entityId)
         Note left of DV: Predefined:<br/>- Ethereum gateways<br/>- Entity Resolver address<br/>- Vocdoni Entity ID
 
-        DV->>ER: EntityResolver.list(resolverAddress, entityId, "vnd.vocdoni.boot-nodes")
+        DV->>ER: EntityResolver.list(resolverAddress, entityId, "vnd.vocdoni.boot")
         ER-->>DV: bootNodeUrl[]
     
         DV->>BN: GET /gateways.json
