@@ -101,9 +101,9 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
     "fr": "Dans un état souverain..."
   },
   "voting-contract": "0xccc...",
-  "process-ids":{
-    "active":["0x987...","0x876..."],
-    "ended":["0x887...","0x886..."]
+  "voting-processes":{
+    "active":["0x987...","0x876..."], // Process ID of the active votes
+    "ended":["0x887...","0x886..."]   // Process ID of the ended votes
   },
   "news-feed":{  // See News Feed below
     "en": "ipfs://34567,https://hipsterpixel.co/feed.json",

@@ -41,41 +41,41 @@ An Entity starts existing at the moment it has certain metadata stored on the [E
 ```mermaid
 
 sequenceDiagram
-    participant PM as Process Manager
+    participant EM as Entity Manager
     participant DV as dvote-js
     participant GW as Gateway/Web3
     participant ER as Entity Resolver contract
 
-    PM->>DV: getEntityId(entityAddress)
-    DV-->>PM: entityId
+    EM->>DV: getEntityId(entityAddress)
+    DV-->>EM: entityId
 
     alt has a Gateway
-        Note right of PM: Set Metamask <br/> to the Gateway
+        Note right of EM: Set Metamask <br/> to the Gateway
     else
-        Note right of PM: Boot a GW and tell <br/> Metamask to use it
+        Note right of EM: Boot a GW and tell <br/> Metamask to use it
     end
 
-    PM->>DV: getDefaultResolver()
+    EM->>DV: getDefaultResolver()
         Note right of DV: Hardcoded default Entity<br/>Resolver instance
-    DV-->>PM: resolverAddress
+    DV-->>EM: resolverAddress
 
 
-    PM->>PM: Fill-up name
-    PM->>+DV: EntityResolver.setName(entityId, name)
+    EM->>EM: Fill-up name
+    EM->>+DV: EntityResolver.setName(entityId, name)
         DV->>GW: setText(entityId, "name", name)
             GW->>ER: #60; transaction #62;
             ER-->>GW: 
         GW-->>DV: 
-    DV-->>-PM: 
+    DV-->>-EM: 
 
     loop additional key/values
-        PM->>PM: Fill-up key-value
-        PM->>+DV: EntityResolver.set(entityId, key, value)
+        EM->>EM: Fill-up key-value
+        EM->>+DV: EntityResolver.set(entityId, key, value)
             DV->>GW: setText(entityId, key, value)
                 GW->>ER: #60; transaction #62;
                 ER-->>GW: 
             GW-->>DV: 
-        DV-->>-PM: 
+        DV-->>-EM: 
     end
 
 ```
@@ -90,30 +90,32 @@ sequenceDiagram
 
 The app wants to get initial connectivity with the available gateways.
 
+- Using a well-known Ethereum Gateway (Infura or similar), we query for an initial set of boot nodes on the Vocdoni ENS Resolver (The Vocdoni Entity's ID is predefined)
+- From one of the bootnodes, we get a list of Gateways provided by Vocdoni
+
 ```mermaid
 
 sequenceDiagram
-    participant App
-    participant DV as dvote-js
-    participant RPC as Ethereum RPC
+    participant Client
+    participant DV as DVote
     participant ER as Entity Resolver contract
     participant BN as BootNode
 
-    App->>App: getBootstrapParams()
 
-    Note left of DV: Use predefined<br/>- webGateway,<br/>- resolverAddress,<br/>- entityId
+    Client->>DV: Gateway.getActive(ethGateway, resolverAddress, entityId)
+        Note left of DV: Predefined:<br/>- Ethereum gateways<br/>- Entity Resolver address<br/>- Vocdoni Entity ID
 
-    App->>DV: Gateway.getActive(webGateway, resolverAddress, entityId)
-
-        DV->>RPC: Resolver.text(resolverAddress, entityId, "vnd.vocdoni.gateway-boot-nodes")
-            RPC->>ER: <request>
-            ER-->>RPC: bootNode[]
-        RPC-->DV: bootNode[]
+        DV->>ER: EntityResolver.list(resolverAddress, entityId, "vnd.vocdoni.boot-nodes")
+        ER-->>DV: bootNodeUrl[]
     
-        DV->>BN: GET /gateways
-        BN-->>DV: gateway[]
-    DV-->>App: gateway[]
+        DV->>BN: GET /gateways.json
+        BN-->>DV: gatewayUri[]
+    DV-->>Client: gatewayUri[]
 ```
+
+Eventually:
+
+- One of Vocdoni's Gateways is used to query the ENS resolver of a certain Entity
 
 #### Listing boot entities
 
@@ -126,33 +128,19 @@ sequenceDiagram
     participant DV as dvote-js
     participant GW as Gateway/Web3
     participant ER as Entity Resolver contract
-    participant IPFS as Ipfs/Swarm
+    participant IPFS as Ipfs
 
     loop entityRef[]
         App->>DV: Entity.fetch(entityId, resolver)
-        alt Blockchain and Swarm respond
-            loop
-                DV->>GW: text(entities[i], "vnd.vocdoni.meta")
-                    GW->>ER: text(entities[i], "vnd.vocdoni.meta")
-                    ER-->>GW: metadataContentUri
-                GW-->>DV: metadataContentUri
-                DV->>GW: fetchFile(metadataContentUri)
-                    GW->>IPFS: Ipfs.get(metadataContentUri)
-                    IPFS-->>GW: entityMetadata
-                GW-->>DV: entityMetadata
-            end
-        else P2P fetching fails
-            DV->>GW: text(entities[i], "vnd.vocdoni.entity-name")
-            GW->>ER: text(entities[i], "vnd.vocdoni.entity-name")
-            ER-->>GW: entityName
-            GW-->>DV: entityName
-
-            loop core values
-                DV->>GW: text(entities[i], key)
-                GW->>ER: text(entities[i], key)
-                ER-->>GW: data
-                GW-->>DV: data
-            end
+        loop
+            DV->>GW: text(entities[i], "vnd.vocdoni.meta")
+                GW->>ER: text(entities[i], "vnd.vocdoni.meta")
+                ER-->>GW: metadataContentUri
+            GW-->>DV: metadataContentUri
+            DV->>GW: fetchFile(metadataContentUri)
+                GW->>IPFS: Ipfs.get(metadataContentUri)
+                IPFS-->>GW: entityMetadata
+            GW-->>DV: entityMetadata
         end
         DV-->>App: entityMetadata
     end
@@ -225,6 +213,8 @@ sequenceDiagram
 
 #### External Entity to make use of Census Service
 
+<!-- TODO: Review ENS records -->
+
 - `Census Service Entity` and `External Entity` can be the same entity
 - A request to the `Census Service` must include the <entityReference> in the payload for the `Census Service Entity` to know where it can find whether the `censusId` or the `entityId` are valid ones.
 
@@ -236,11 +226,13 @@ sequenceDiagram
     participant ENTCS as Entity's Census Service
     participant EXENT as External Entity
     participant EMGR as Entity Manager
-    participant DV as dvote-js
-    participant GW as Gateway/Web3/Swarm
+    participant DV as DVote
+    participant GW as Gateway/Web3/IPFS
     participant ER as Entity Resolver
     participant CSRV as Census Service
-    participant SW as Swarm
+    participant IPFS as IPFS
+
+    Note right of DV: TO DO: Review ENS records
 
     Note right of ENTCS: Agree on using <br/>the Census Service<br/>from an external <br/>channel
     ENTCS-->EXENT: 
@@ -279,8 +271,8 @@ sequenceDiagram
     Note right of EXENT: Finally, an Entity<br/>requests a census<br/>operation
     
     EXENT->>GW: addClaimBulk(censusId, payload)
-    GW->>SW: #60;request data#62;
-    SW-->>CSRV: #60;request data#62;
+    GW->>IPFS: #60;request data#62;
+    IPFS-->>CSRV: #60;request data#62;
     # CSRV->>CSRV: Get its own resolver and entityId
     CSRV->>CSRV: Check exEntityId is within "census-service-source-entities"
     CSRV->>CSRV: Check the censusId belongs to "census-ids"
@@ -298,7 +290,7 @@ Depending on the activity of users, an **Entity** may decide to add public keys 
 
 ```mermaid
 sequenceDiagram
-    participant PM as Process Manager
+    participant PM as Entity Manager
     participant DB as Internal Database
     participant DV as DVote JS
     participant GW as Gateway/Web3
@@ -336,11 +328,11 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant PM as Process Manager
+    participant PM as Entity Manager
     participant DV as DVote JS
     participant GW as Gateway/Web3
     participant CS as Census Service
-    participant SW as Swarm
+    participant IPFS as IPFS
     participant BC as Blockchain
 
     Note right of DV: TO DO: Review calls
@@ -355,12 +347,12 @@ sequenceDiagram
         alt Linkable Ring Signatures
             loop modulusGroups
                 DV-->>GW: addFile(modulusGroup) : modulusGroupHash
-                    GW-->SW: Swarm.put(modulusGroup) : modulusGroupHash
+                    GW-->IPFS: IPFS.put(modulusGroup) : modulusGroupHash
                 GW-->>DV: 
             end
         else ZK-Snarks
             DV-->>GW: addFile(merkleTree) : merkleTreeHash
-                GW-->SW: Swarm.put(merkleTree) : merkleTreeHash
+                GW-->IPFS: IPFS.put(merkleTree) : merkleTreeHash
             GW-->>DV: 
         end
 
@@ -370,7 +362,7 @@ sequenceDiagram
         GW-->>-DV: rootHash
 
         DV-->>GW: addFile(processMetadata) : metadataHash
-            GW-->SW: Swarm.put(processMetadata) : metadataHash
+            GW-->IPFS: IPFS.put(processMetadata) : metadataHash
         GW-->>DV: 
 
         DV->>+GW: Process.create(entityId, name, metadataContentUri)
@@ -378,9 +370,11 @@ sequenceDiagram
             BC-->>-GW: txId
         GW-->>-DV: txId
 
-        DV->>+GW: EntityResolver.set(entityId, 'vnd.vocdoni.process-ids.active', activeProcesses)
-            GW->>+BC: #60; transaction #62;
-            BC-->>-GW: txId
+        DV->>+GW: IPFS.put(newJsonMetadata)
+            GW-->BC: IPFS.put(newJsonMetadata)
+        GW-->>-DV: jsonHash
+
+        DV->>+GW: EntityResolver.set(entityId, 'vnd.vocdoni.meta', metadataContentUri)
         GW-->>-DV: txId
 
     DV-->>-PM: success
@@ -409,10 +403,14 @@ sequenceDiagram
 
     App->>+DV: Process.fetchByEntity(entityAddress, resolver)
 
-        DV->>GW: EntityResolver.text(entityId, "vnd.vocdoni.process-ids.active")
-            GW->>BC: text(entityId, "vnd.vocdoni.process-ids.active")
-            BC-->>GW: processId[]
-        GW-->>DV: processId[]
+        DV->>GW: EntityResolver.text(entityId, "vnd.vocdoni.meta")
+            GW->>BC: text(entityId, "vnd.vocdoni.meta")
+            BC-->>GW: contentUri
+        GW-->>DV: contentUri
+
+        DV->>GW: IPFS.get(jsonHash)
+            GW-->IPFS: IPFS.get(jsonHash)
+        GW-->>DV: entityMetadata
 
         loop processIDs
 
@@ -658,7 +656,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant PM as Process Manager
+    participant PM as Entity Manager
     participant DV as DVote JS
     participant GW as Gateway/Web3
     participant BC as Blockchain Process
