@@ -18,18 +18,13 @@ An entity can have many roles. For the most part, it is the organizer and the ul
     - [Gateway boot node](#gateway-boot-node)
     - [Relay](#relay)
     - [Gateway update](#gateway-update)
-    - [Entity reference](#entity-reference)
-    - [Feed](#feed)
+    - [News Feed](#news-feed)
     - [Entity Actions](#entity-actions)
-  - [ENS](#ens)
-    - [Overview](#overview)
-    - [No Mainnet](#no-mainnet)
-    - [ENS domain authentication](#ens-domain-authentication)
-    - [Comparison](#comparison)
+    - [Entity Reference](#entity-reference)
 
 ---
 
-The metadata of an entity is a JSON file that conforms to a specific schema. Typically this data is retrieved using a P2P storage system like IPFS. 
+The metadata of an entity is a [JSON file](#json-schema) that conforms to a specific schema. Typically this data is retrieved using a P2P storage system like IPFS. 
 
 However, indexing and integrity is provided by a Smart Contract running on the blockchain. Such Smart Contract allows entities to register and set the [Content URI](/architecture/protocol/data-origins?id=content-uri) that points to the actual JSON metadata.
 
@@ -76,7 +71,6 @@ This implementation allows to add or update smaller chunks of text in slices, in
 
 | Key                                          | Record example            | Description                                                                                                   |
 | -------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `vnd.vocdoni.gateway-boot-nodes`             | '&lt;GatewayBootNode&gt;' | Data of the boot nodes to ask for active gateways. [See below](#gateway-boot-nodes) for more details          |
 | `vnd.vocdoni.boot-entities`                  | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s suggestions for the user to subscribe                          |
 | `vnd.vocdoni.fallback-bootnodes-entities`    | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s to borrow the bootnodes from in case of failure.               |
 | `vnd.vocdoni.trusted-entities`               | '&lt;EntityReference&gt;' | List of [Entity reference](#entity-reference)s that the current entity trusts.                                |
@@ -124,7 +118,14 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
   "relays": [ <RelaySchema>, ... ], // See Relay below
 
   "actions": [ <ActionSchema>, ... ], // See Entity Actions below
-  ...
+
+  "boot-entities": [ <EntityReference>, ... ],  // See Entity Reference below
+
+  "fallback-boot-nodes-entities": [ <EntityReference>, ... ],  // See Entity Reference below
+  
+  "trusted-entities": [ <EntityReference>, ... ],  // See Entity Reference below
+  
+  "census-service-source-entities": [ <EntityReference>, ... ]  // See Entity Reference below
 }
 ```
 
@@ -137,8 +138,6 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
 
 A list of currently active boot nodes to interact with the Entity.
 
-**Description**
-
 Client apps may not be able to join P2P networks by themselves, so Vocdoni makes use of Gateways to enable decentralized transactions over HTTP/HTTPS.
 
 A gateway boot node is a server trusted by the Entity and it provides a list of active gateway IP addresses via HTTPS
@@ -146,8 +145,6 @@ A gateway boot node is a server trusted by the Entity and it provides a list of 
 - A gateway boot node is a best effort starting point.
 - To minimize censorship attacks organizations should provide their own set of Gateways.
 - Initial boot nodes may be hardcoded into the client App to prevent the chicken and the egg problems.
-
-**Schema**
 
 ```json
   {
@@ -159,8 +156,6 @@ A gateway boot node is a server trusted by the Entity and it provides a list of 
 ### Relay
 
 Data of an active Relay that can handle vote transactions for the Entity. This list acts as a fallback when votes don't have a specific one. The binding list of relays for a voting process is on the Voting Process smart contract.
-
-**Schema**
 
 ```json
 {
@@ -175,8 +170,6 @@ Boot-node servers provide the list of available gateways at the time of requesti
 
 This JSON schema provides the necessary parameters for the Gateways to communicate with the boot nodes.
 
-**Schema**
-
 ```json
 {
   "timeout": 60000,                   // milliseconds after which a Gateway is marked as down
@@ -187,13 +180,11 @@ This JSON schema provides the necessary parameters for the Gateways to communica
 
 ### News Feed
 
-A News Feed serves the purpose of having a uni-directional censorship-resistant communication channel between entities and users.
+A News Feed serves the purpose of having a uni-directional censorship-resistant communication channel between entities and users. They are referenced with [Content URIs](/architecture/protocol/data-origins?id=content-uri).
 
-They are referenced with [Content URIs](/architecture/protocol/data-origins?id=content-uri).
+News feeds are expected to conform to the specs of the JSON feed specification
 
-**Feed content**
-
-Content feeds are expected to conform to the specs of the [JSON feed specification](https://jsonfeed.org/version/1)
+- https://jsonfeed.org/version/1
 
 ### Entity Actions
 
@@ -316,38 +307,21 @@ The endpoint from `url` will receive a POST request with a JSON payload like:
 }
 ```
 
-`image1`, `image2`, etc will match every `name` given for every entry of `source[]`
+Keys like `image1`, `image2`, etc will match every `name` given for the entries of `source[]`
 
+### Entity Reference
 
+A pointer to the metadata of a specific entity. It can have several purposes.
 
+- **Boot Entities**: An entry point for the user to subscribe to new entities.
+- **Fallback Entities Boot Nodes**: If the can't reach the boot nodes, the Gateway Boot Nodes of external entities will be used
+- **Trusted Entities**: Used to allow users to know if already trusted entities trust a new one or not
+- **Census Service Source Entities**: Tells the entity's census service which resolver+entities to get the settings from. Useful to allow census services to operate for more than one entity.
 
-
-
-
-
-
------
-
------
-
-### Entity reference
-
-It is a pointer to the metadata of a specific entity.
-
-Lists of `EntityReference`s have several purposes.
-
-- `vnd.vocdoni.boot-entities`: An entry point for the user to subscribe to new entities.
-- `vnd.vocdoni.fallback-boot-nodes-entities`: If the can' reach the boot-nodes it will use the `vocdoni.gateway-boot-nodes` from these entities
-- `vnd.vocdoni.trusted-entities`: Aimed for the end-user as a simple discovery mechanism for entities trusted by the current one.
-- `vnd.vocdoni.census-service-source-entities`: Tells the entity's census service which resolver+entities to get the settings from. Useful to allow census services to operate for more than one entity.
-
-**Schema**
-
-Name: EntityReference
 ```json
 {
-  "resolverAddress": "0xaaa", //contract address of the smart-contract
-  "entityId": "0xeee"         //entityId. Hash of the the creator address
+  "resolverAddress": "0xaaa", // Address of the entity's ENS resolver contract
+  "entityId": "0xeee"         // Entity ID: Hash of the the creator's address
 }
 ```
 
