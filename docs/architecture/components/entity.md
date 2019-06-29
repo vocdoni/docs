@@ -64,9 +64,8 @@ Every Entity should define:
 | Key                                 | Example                                                       | Description                                                                                                           |
 | ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `vnd.vocdoni.meta`                  | 'ipfs://12345,https://server/json'                                    | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the Entity's JSON metadata. <br/>See [JSON schema](#meta). |
-| `vnd.vocdoni.voting-contract`       | '0xccc'                                                       | Ethereum address of the Voting Processes Smart Contract used by the Entity                                                   |
 
-Used by Vocdoni only:
+Vocdoni defines:
 
 | Key                                 | Example                                                       | Description                                                                                                           |
 | ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
@@ -92,32 +91,32 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
     "en": "In a sovereign state...",
     "fr": "Dans un état souverain..."
   },
-  "voting-contract": "0xccc...",
-  "voting-processes":{
+  "votingContract": "0xccc...",
+  "votingProcesses": {
     "active":["0x987...","0x876..."], // Process ID of the active votes
     "ended":["0x887...","0x886..."]   // Process ID of the ended votes
   },
-  "news-feed":{  // See News Feed below
+  "newsFeed": {  // See News Feed below
     "en": "ipfs://34567,https://hipsterpixel.co/feed.json",
     "fr": "ipfs://23456,https://feed2json.org/convert?url=http://www.intertwingly.net/blog/index.atom"
   },
   "avatar": "https://liberland.org/logo.png,ipfs://12345,ipfs://12345",
   
-  "gateway-update": <GatewayUpdateSchema>, // See Gateway Update below
-  
-  "gateway-boot-nodes": [ <GatewayBootNodeSchema>, ... ],  // See Gateway boot node below
-
-  "relays": [ <RelaySchema>, ... ], // See Relay below
-
   "actions": [ <ActionSchema>, ... ], // See Entity Actions below
 
-  "boot-entities": [ <EntityReference>, ... ],  // See Entity Reference below
+  "gatewayBootNodes": [ <GatewayBootNodeSchema>, ... ],  // See Gateway boot node below
 
-  "fallback-boot-nodes-entities": [ <EntityReference>, ... ],  // See Entity Reference below
+  "gatewayUpdate": <GatewayUpdateSchema>, // See Gateway Update below
   
-  "trusted-entities": [ <EntityReference>, ... ],  // See Entity Reference below
+  "relays": [ <RelaySchema>, ... ], // See Relay below
+
+  "bootEntities": [ <EntityReference>, ... ],  // See Entity Reference below
+
+  "fallbackBootNodeEntities": [ <EntityReference>, ... ],  // See Entity Reference below
   
-  "census-service-source-entities": [ <EntityReference>, ... ]  // See Entity Reference below
+  "trustedEntities": [ <EntityReference>, ... ],  // See Entity Reference below
+  
+  "censusServiceManagedEntities": [ <EntityReference>, ... ]  // See Entity Reference below
 }
 ```
 
@@ -140,8 +139,8 @@ A gateway boot node is a server trusted by the Entity and it provides a list of 
 
 ```json
   {
-    "update": "pss://publicKey@0x0",        // Messaging URI used to notify updates to the bootnode
-    "fetch": "https://hostname:port/route"  // URL used to fetch the list of Gateways
+    "heartbeatMessagingUri": "pss://publicKey@0x0",        // Messaging URI where Gateways can report their health status
+    "fetchUri": "https://bootnode-server:8080/gateways.json"  // URL used to fetch the list of Gateways
   }
 ```
 
@@ -213,7 +212,7 @@ Opening an interactive web browser
 ```
 
 - The embedded web site can send messages to the host app
-- Messages can request the public key, or a signature
+- Messages can request the public key or signing payloads
 
 #### Image upload
 
@@ -230,7 +229,7 @@ Prompt the user to upload one or more pictures, coming from the camera or from t
   },
 
   // Requested image types to provide
-  "source": [
+  "imageSources": [
 
       // An entry example expecting a picture from the front camera, overlaying a face silhouette
       // on the screen and identified by the "face-portrait" field name in the JSON payload
@@ -306,9 +305,9 @@ Keys like `image1`, `image2`, etc will match every `name` given for the entries 
 A pointer to the metadata of a specific entity. It can have several purposes.
 
 - **Boot Entities**: An entry point for the user to subscribe to new entities.
-- **Fallback Entities Boot Nodes**: If the can't reach the boot nodes, the Gateway Boot Nodes of external entities will be used
+- **Fallback Boot Node Entities**: If the can't reach the boot nodes, the Gateway Boot Nodes of external entities will be used
 - **Trusted Entities**: Used to allow users to know if already trusted entities trust a new one or not
-- **Census Service Source Entities**: Tells the entity's census service which resolver+entities to get the settings from. Useful to allow census services to operate for more than one entity.
+- **Census Service managed entities**: Tells the entity's census service which resolver+entities to get the settings from. Useful to allow census services to operate for more than one entity.
 
 ```json
 {
