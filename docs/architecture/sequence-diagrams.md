@@ -90,7 +90,10 @@ sequenceDiagram
 
 The app wants to get initial connectivity with the available gateways.
 
-- Using a well-known Ethereum Gateway (Infura or similar), we query for an initial set of boot nodes on the Vocdoni ENS Resolver (The Vocdoni Entity's ID is predefined)
+- Using a well-known Ethereum Gateway (Infura or similar), we query for an initial set of boot nodes on the Vocdoni ENS Resolver. The following is predefined:
+    - Well-known Ethereum gateways
+    - Entity Resolver contract address
+    - Vocdoni's Entity ID
 - From one of the bootnodes, we get a list of Gateways provided by Vocdoni
 
 ```mermaid
@@ -103,8 +106,6 @@ sequenceDiagram
 
 
     Client->>DV: Gateway.getActive(ethGateway, resolverAddress, entityId)
-        Note left of DV: Predefined:<br/>- Ethereum gateways<br/>- Entity Resolver address<br/>- Vocdoni Entity ID
-
         DV->>ER: EntityResolver.list(resolverAddress, entityId, "vnd.vocdoni.boot")
         ER-->>DV: bootNodeUrl[]
     
