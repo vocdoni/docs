@@ -85,5 +85,5 @@ The following are skill-sets that we're looking for. Sorted by urgency, and grou
 Do you think you fit into Vocodoni's culture, but don't see the right skill set?
 There are a lot of roles we need but aren't actively looking for yet.
 
-Drop us an e-mail. We are always happy to meet like-minded people.
+Drop us an [e-mail](mailto:xavi@vocdoni.io). We are always happy to meet like-minded people.
 Tell us a bit more about yourself so we can get a sense of what you'd like to work with us :)
