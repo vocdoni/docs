@@ -70,6 +70,10 @@ The response API calls take two shapes depending on the result of the request.
 
 Some methods may require authentication. To authenticate API calls, an ECDSA signature is used.
 
+Since not all JS libraries/wallets (Metamask, Web3, Ethers.js, etc) will be able to sign raw messages, Gateways are expected to accept Ethereum signatures. An Ethereum signature is created by prepending `\x19Ethereum Signed Message:\n<len>` to the actual payload to hash and sign.
+
+In the future, it's likely that Gateways have to accept both Ethereum and raw ECDSA signatures.
+
 ### Authenticated Requests
 
 The verifier (component running the API server) needs a whitelist of accounts entitled to perform a certain set of methods. An Ethereum address is a truncated hash of the actual public key.
