@@ -80,7 +80,7 @@ The verifier (component running the API server) needs a whitelist of accounts en
 
 Any method enforcing authentication needs to provide two additional fields:
 
-+ `request.timestamp`  The current UNIX timestamp, in seconds. Used to avoid replay attacks and to add randomless.
++ `request.timestamp`  The current UNIX timestamp, in seconds. Used to avoid replay attacks and to add randomless. The client should only accept the response if the given and the current timestamp differ by 10 seconds, at most.
 + `signature`  The ECDSA signature of the message, which proves that the sender is the owner of the whitelisted address
 
 The signature is a sha256 hash of payload's `request` field stringified.
