@@ -80,6 +80,7 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
 ```json
 {
   "version": "1.0",
+  "entityId": "0x1234...",
   // The first language in the list is the default one
   // Use "default" or https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
   "languages": ["en", "fr"],
@@ -91,7 +92,11 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
     "en": "In a sovereign state...",
     "fr": "Dans un état souverain..."
   },
-  "votingContract": "0xccc...",
+  "contracts": {
+    "resolverAddress": "0x2345...",
+    "votingAddress": "0xccc...",
+    "networkId": "goerli"   // Ethereum chain where the contract lives
+  },
   "votingProcesses": {
     "active":["0x987...","0x876..."], // Process ID of the active votes
     "ended":["0x887...","0x886..."]   // Process ID of the ended votes
@@ -100,11 +105,14 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
     "en": "ipfs://34567,https://hipsterpixel.co/feed.json",
     "fr": "ipfs://23456,https://feed2json.org/convert?url=http://www.intertwingly.net/blog/index.atom"
   },
-  "avatar": "https://liberland.org/logo.png,ipfs://12345,ipfs://12345",
+  "media": {
+    "avatar": "https://liberland.org/logo.png,ipfs://12345,ipfs://12345",
+    "header": "https://liberland.org/header.png,ipfs://12345,ipfs://12345",
+  },
   
   "actions": [ <ActionSchema>, ... ], // See Entity Actions below
 
-  "gatewayBootNodes": [ <GatewayBootNodeSchema>, ... ],  // See Gateway boot node below
+  "gatewayBootNodes": [ <GatewayBootNodeSchema>, ... ],  // See Gateway boot nodes below
 
   "gatewayUpdate": <GatewayUpdateSchema>, // See Gateway Update below
   
@@ -125,7 +133,7 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
 - [Set Entity metadata](/architecture/sequence-diagrams?id=set-entity-metadata)
 - [Entity subscription](/architecture/sequence-diagrams?id=entity-subscription)
 
-### Gateway boot node
+### Gateway boot nodes
 
 A list of currently active boot nodes to interact with the Entity.
 
@@ -139,8 +147,8 @@ A gateway boot node is a server trusted by the Entity and it provides a list of 
 
 ```json
   {
-    "heartbeatMessagingUri": "pss://publicKey@0x0",        // Messaging URI where Gateways can report their health status
-    "fetchUri": "https://bootnode-server:8080/gateways.json"  // URL used to fetch the list of Gateways
+    "fetchUri": "https://bootnode-server:8080/gateways.json",  // URL to fetch the list of Gateways from
+    "heartbeatMessagingUri": "pss://publicKey@0x0"        // Messaging URI where Gateways can report their health status
   }
 ```
 
@@ -312,6 +320,7 @@ A pointer to the metadata of a specific entity. It can have several purposes.
 ```json
 {
   "resolverAddress": "0xaaa", // Address of the entity's ENS resolver contract
+  "networkId": "goerli",
   "entityId": "0xeee"         // Entity ID: Hash of the the creator's address
 }
 ```
