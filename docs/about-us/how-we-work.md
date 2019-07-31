@@ -33,3 +33,7 @@ We want a sustainable work-life balance
 - Integration and unit testing
 - Well documented and maintained APIs
 - Well documented reasoning behind decisions
+
+## Join us
+
+If you think you think you can help us to fullfill our mission, check out our [open postions](about-us/open-positions.md) and drop us an [e-mail](mailto:xavi@vocdoni.io).
