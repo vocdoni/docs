@@ -14,37 +14,28 @@ Used as a registry of voting processes, associated to the entity with the same E
 
 ```solidity
 struct Process {
-    address entityResolver;    // A pointer to the Entity's resolver instance to fetch metadata
-    address entityAddress;     // The address of the Entity's creator
-    string processName;
-    string metadataContentUri; // Content URI to fetch the JSON metadata from
-    uint256 startTime;         // block.timestamp after which votes can be registered
-    uint256 endTime;           // block.timestamp after which votes can be registered
+    bytes32 entityId;                  // The ID of the Entity creating the process
+    address entityResolver;            // A pointer to the Entity's resolver instance to fetch metadata
+    string metadataContentUri;         // Content URI to fetch the JSON metadata from
+    uint256 startTime;                 // block.timestamp before which metadata changes can be made on Ethereum
+    uint256 endTime;                   // block.timestamp after which the decryption key can be published on Ethereum
     string voteEncryptionPublicKey;
-    string voteEncryptionPrivateKey;  // Key revealed after the vote ends so that scrutiny can start
+    string voteEncryptionPrivateKey;   // Key revealed after the vote ends so that scrutiny can start
     bool canceled;
 
-    address[] relayList;       // Relay addresses to let users fetch the Relay data
-    mapping (address => Relay) relays;
-    
-    mapping (uint64 => string) voteBatches;  // Mapping from [0..N-1] to Content URI's to fetch the vote batches
-    uint64 voteBatchCount;                   // N vote batches registered
-}
+    address[] censusManagerPublicKeys;  // Public key of the nodes that can manage the census of the vote
+    address[] chainValidatorPublicKeys; // Public key of the nodes that can validate transactions on the Tendermint chain
 
-struct Relay {
-    bool active;
-    string publicKey;
-    string messagingURI;
+    mapping(uint => uint) result;       // Mapping of the final vote count for each vote option
 }
 
 mapping (bytes32 => Process) public processes;   // processId => process data
-mapping (address => uint) public entityProcessCount;   // Amount of processes created by an address
+mapping (bytes32 => uint) public entityProcessCount;   // Amount of processes created by an address
 
-event ProcessCreated(address indexed entityAddress, bytes32 processId);
+event ProcessScheduled(bytes32 indexed entityAddress, bytes32 processId);
 event ProcessCanceled(bytes32 indexed processId);
-event RelayAdded(bytes32 indexed processId, address relayAddress);
-event RelayDisabled(bytes32 indexed processId, address relayAddress);
-event BatchRegistered(bytes32 indexed processId, uint64 batchNumber);
+event CensusManagerUpdated(bytes32 indexed processId, address node);
+event ChainValidatorUpdated(bytes32 indexed processId, address node);
 event PrivateKeyRevealed(bytes32 indexed processId);
 
 ```
@@ -67,9 +58,8 @@ where `entityProcessCount` is an auto-incremental nonce per `entityAddress`.
 
 * Deploys a new instance
 
-**`create(address entityResolver, address entityAddress, string processName, string metadataContentUri, uint startTime, uint endTime, string voteEncryptionPublicKey)`**
+**`create(bytes32 entityId, address entityResolver, string metadataContentUri, uint startTime, uint endTime, string voteEncryptionPublicKey)`**
 
-* The `processName` expects a single language version of the process name. Localized versions for every relevant language must be included within the metadata content
 * A new and unique `processId` will be assigned to the voting process
 * `metadataContentUri` is expected to contain a valid [Content URI](/architecture/protocol/data-origins?id=content-uri)
 * The actual content behind the `metadataContentUri` is expected to conform to the [data schema below](#process-metadata-json)
@@ -82,42 +72,31 @@ where `entityProcessCount` is an auto-incremental nonce per `entityAddress`.
 
 * Usable by the organizer until `startTime - 1000`
 
-**`addRelay(bytes32 processId, address relayAddress, string publicKey, string messagingUri)`**
+**`addCensusManager(bytes32 processId, bytes32 managerPublicKey)`**
 
 * Usable only by the organizer
-* `relayAddress` is the Ethereum address that will be allowed to register vote batches
-* `publicKey` will be used for vote packages to be encrypted using this key
-* `messagingUri` is expected to be a valid [Messaging URI](/architecture/protocol/data-origins?id=messaging-uri)
+* `managerPublicKey` is the ECDSA public key that will be allowed to update the census
 
-**`disableRelay(bytes32 processId, address relayAddress)`**
+**`disableCensusManager(bytes32 processId, uint arrayIndex)`**
 
 * Usable only by the organizer
 
-**`isActiveRelay(bytes32 processId, address relayAddress)`**
+**`getCensusManagerIndex(bytes32 processId)`**
 
-*  Confirms whether a relay is allowed to register vote batches on a process or not
+* Provides a list of census manager public keys
 
-**`getRelayIndex(bytes32 processId)`**
+**`addChainValidator(bytes32 processId, bytes32 validatorPublicKey)`**
 
-* Provides a list of relay addresses authorized to work on a process
+* Usable only by the organizer
+* `validatorPublicKey` is the ECDSA public key that will be allowed to validate blocks
 
-**`getRelay(bytes32 processId, address relayAddress)`**
+**`disableChainValidator(bytes32 processId, uint arrayIndex)`**
 
-* Returns the public key and the [Messaging URI](/architecture/protocol/data-origins?id=messaging-uri) for the given relay
+* Usable only by the organizer
 
-**`registerBatch(bytes32 processId, string dataContentUri)`**
+**`getChainValidatorIndex(bytes32 processId)`**
 
-* Usable by whitelisted relays only
-* Adds a [Content URI](/architecture/protocol/data-origins?id=content-uri) pointing to a vote batch to the given process
-* The content behind the [Content URI](/architecture/protocol/data-origins?id=content-uri) is expected to conform to a valid [Vote Batch](/architecture/components/relay?id=vote-batch)
-
-**`getBatchIndex(bytes32 processId)`**
-
-* Returns an array with the vote batches registered for the given processId
-
-**`getBatch(bytes32 processId, uint64 batchNumber)`**
-
-* Returns the [Content URI](/architecture/protocol/data-origins?id=content-uri) on which the vote batch can be fetched
+* Provides a list of chain validator public keys
 
 **`revealPrivateKey(bytes32 processId, string privateKey)`**
 
@@ -142,49 +121,49 @@ The JSON payload below is typically stored on Swarm or IPFS, so anyone can fetch
 {
     "version": "1.0",    // Protocol version
 
-    "address": "0x1234...", // Of the vote on the VotingProcesses smart contract
+    "processId": "0x1234...", // Of the vote on the VotingProcesses smart contract
     
     "voteType": "single-choice", // Defines how the UI should allow to choose among the votingOptions.
     "proofType": "zk-snarks",  // Allowed ["zk-snarks", "lrs"]
     
-    "name": {
-        "en": "Universal Basic Income",
-        "ca": "Renda Bàsica Universal"
-    },
-    "question": {
-        "en": "Should universal basic income become a human right?",
-        "ca": "Estàs d'acord amb que la renda bàsica universal sigui un dret humà?"
-    },
-    "voteOptions": [
-        {
-            "en": "Yes" ,
-            "ca": "Sí",
-            "value": "1"
+    "startTime": 10000,   // Block number on the vote chain since the process will be open
+    "endTime":  11000,    // Block number on the vote chain until which, the process will be open
+    "metadata": {
+        "title": {
+            "en": "Universal Basic Income",
+            "ca": "Renda Bàsica Universal"
         },
-        {
-            "en": "No",
-            "ca": "No",
-            "value": "2"
-        }
-    ],
-    "startTime": 10000,   // block timestamp as seconds since unix epoch
-    "endTime":  11000,    // block timestamp as seconds since unix epoch
-    "meta": {
+        "question": {
+            "en": "Should universal basic income become a human right?",
+            "ca": "Estàs d'acord amb que la renda bàsica universal sigui un dret humà?"
+        },
         "description": {
             "en": "## Markdown text goes here\n### Abstract",
             "ca": "## El markdown va aquí\n### Resum"
         },
         "images": [ "<content uri>", ... ],
         "organizer": {
-            "address": "0x1234...",  // Address of the Entity entry on the blockchain
-            "resolver": "0x2345...",  // Address of the EntityResolver smart contract
-            "metadata": "<content uri>" // Organizer's metadata
-        }
+            "entityId": "0x1234...",  // ID of the Entity on the blockchain
+            "resolverAddress": "0x2345...",  // Address of the EntityResolver smart contract
+            "metadata": "<content uri>" // Entity's metadata Content URI
+        },
+        "voteOptions": [
+            {
+                "en": "Yes" ,
+                "ca": "Sí",
+                "value": "1"
+            },
+            {
+                "en": "No",
+                "ca": "No",
+                "value": "2"
+            }
+        ]
     },
     "census": {
-        "id": "0x1234...",  // Census ID to use
-        "messagingUris": ["<messaging uri>", "..."], // Messaging URI of the Census Services to request data from
+        "id": "0x1234...",  // Census ID to use for the vote
         "merkleRoot": "0x1234...",
+        "messagingUris": ["<messaging uri>", "..."], // Messaging URI of the Census Services to request data from
         "modulusSize": 5000  // Only when type="lrs"
     },
 
