@@ -5,31 +5,6 @@
 
 ## Data Schemas
 
-### Modulus group list
-
-As [explained here](/architecture/protocol/franchise-proof?id=_2-create-census-rings), Linkable Ring Signatures allow to anonymize a signature within a group of keys. However, signing with the entire census for every single vote would mean storing and transfering very large amounts of data. 
-
-A solution is to break a large census into smaller groups and anonymize signatures within groups of 800~1000 keys instead of any greater values. 
-
-To this end, public keys are grouped by the modulus of dividing them by a predefined number. To store and fetch a specific array of keys from the Process Metadata, the following schema is used:
-
-```json
-{
-    "publicKeyModulus": int,
-    "publicKeys": [
-        "0x1234...",
-        "0x2345...",
-        "0x3456...",
-        ...
-    ]
-}
-```
-
-**Sequence diagrams**:
-- [Voting process creation](/architecture/sequence-diagrams?id=voting-process-creation)
-
----
-
 ## JSON API schemas
 
 Census Service interactions follow the [JSON API](/architecture/protocol/json-api) foundation.

@@ -44,20 +44,21 @@ MS-->BO2
 
 A Gateway provides access to one or several APIs to allow access to one or several peer-to-peer networks. The currently possible API schemes are the following:
 
-+ `vote API` access to specific vocdoni platform methods for voting
++ `vote API` access to specific vocdoni platform methods for voting (vochain)
 + `census API` access to the census service API
-+ `file API` access to specific vocdoni platform methods for administration
++ `file API` access to the p2p file network (ipfs)
 + `web3 API` access to the Ethereum compatible blockchain
 
 For example, the Gateway can be executed as follows, letting the user choose which APIs should be enabled:
 
-`./gateway --port=8001 --vote --census --web3`
+`./gateway --listenPort 9090 --listenHost 0.0.0.0 --dvoteApi --web3Api`
 
 The APIs ara available to the client via HTTP/WS using two endpoints:
 
 + `/web3` for the raw web3 API
-+ `/dvote` for the vote, census and file API
-
++ `/dvote` for the vote/participation API 
++ `/file` for the file API
++ `/census` for the census service API
 
 ## Census API
 
@@ -72,7 +73,7 @@ In the case of the `getRoot` method.
   "id": "req-12345678",
   "request": {
     "method": "getRoot",
-    "censusUri": "<messaging-uri>",   <<<
+    "censusUri": "<messaging-uri>",
     "censusId": "string",
     "timestamp": 1556110671
   },
@@ -96,54 +97,19 @@ The same applies to the rest of operations.
 
 ## Vote API
 
-### Get Voting Ring
+### Submit Envelope
 
-Get the public key list for creating a ring signature for a specific election process id.
-
-```json
-{
-  "id": "req-2345679",
-  "request": {
-    "method": "getVotingRing",
-    "processId": "hexString",
-    "publicKeyModulus": int,
-    "timestamp": 1556110671
-  },
-  "signature": "hexString"
-}
-```
-```json
-{
-  "id": "req-2345679",
-  "response": {
-    "ring": ["pubKey1", "pubKey2", ...],
-    "request": "req-2345679",    // Request ID here as well, to check its integrity
-    "timestamp": 1556110672
-  },
-  "signature": "hexString"
-  
-}
-```
-
-**Used in:**
-- [Voting with LRS](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
-
-### Submit Vote Envelope
-
-Send a vote envelope for an election process to the relay pool. The `voteEnvelope` content might be encrypted with a specific relay public key. The `relayAddress` might be provided or leave empty (`0x`) depending on the privacy decision of the client.
+Send a vote envelope for an election process to the Vochain mempool. The `payload` content might be encrypted with one ore more specific Vochain node public key. 
 
 ```json
 {
   "id": "req-2345679",
   "request": {
-    "method": "submitVoteEnvelope",
-    "type": "zk-snarks|lrs",
+    "method": "submitEnvelope",
     "processId": "hexString",
-    "encryptedEnvelope": "voteEnvelope",
-    "relayAddress": "hexString",
+    "payload": "base64-data",
     "timestamp": 1556110671
   },
-  "signature": "hexString"
 }
 ```
 
@@ -161,9 +127,10 @@ Send a vote envelope for an election process to the relay pool. The `voteEnvelop
 
 **Used in:**
 - [Voting with zksnarks](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
+
 - [Voting with LRS](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 
-### Get Vote Status
+### Get Envelope Status
 
 Check the status of an already submited vote envelope. 
 
@@ -171,7 +138,7 @@ Check the status of an already submited vote envelope.
 {
   "id": "req-2345679",
   "request": {
-    "method": "getVoteStatus",
+    "method": "getEnvelopeStatus",
     "processId": "hexString",
     "nullifier": "hexString",
     "timestamp": 1556110671
@@ -186,6 +153,129 @@ Check the status of an already submited vote envelope.
   "response": {
     "registered": true,          // Whether the vote is registered in a vote batch on the Blockchain
     "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+**Used in:**
+- [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
+
+### Get Envelope
+
+Get the content of an already submited envelope.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getEnvelope",
+    "processId": "hexString",
+    "nullifier": "hexString",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "payload": "base64-data",    // Payload of the enveolope
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+**Used in:**
+- [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
+
+### Get Envelope Height
+
+Get the number of envelopes registered for a process ID.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getEnvelopeHeight",
+    "processId": "hexString",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "height": int,               // Height of envelopes for the process ID
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+**Used in:**
+- [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
+
+
+### Get Process List
+
+Get a list of processes (open and closed). If `listSize=N` specified, only the last `N` processes are returned. Some Gateways might have a maximum `listSize` value (to avoid flood attacks). The starting process number to look at, can be specified using the field `from`. Thus `from=100 litSize=50` would return a list of process IDs from process 100 to 50. If `from` is nil or zero, then last process registered in the blockchain is considered.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getProcessList",
+    "from": int,
+    "listSize": int,
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "processIds": ["hexString1","hexString2", ...], // List of nullifiers already processed by the blockchain
+    "request": "req-2345679", // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+### Get Envelope List
+
+Get a list of the already registered vote envelopes for specific a process ID. If `listSize=N` specified, only the last `N` envelopes are returned. Some Gateways might have a maximum `listSize` value (to avoid DOS attacks). The starting block to look at, can be specified using the field `from`. Thus `from=100 litSize=50` would return a list of nullifiers from envelope 100 to 50. If `from` is nil or zero, then last envelope registered in the blockchain is considered.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getEnvelopeList",
+    "processId": "hexString",
+    "from": int,
+    "listSize": int,
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "nullifiers": ["hexString1","hexString2", ...], // List of nullifiers already processed by the blockchain
+    "request": "req-2345679", // Request ID here as well, to check its integrity
     "timestamp": 1556110672
   },
   "signature": "hexString"
