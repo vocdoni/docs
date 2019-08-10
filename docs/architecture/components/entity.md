@@ -202,6 +202,7 @@ Opening an interactive web browser
 ```json
 {
     "type": "browser",
+    "register": true,    // Does this action allow the user to sign in?
 
     // Localized Call To Action to appear on the app
     "name": {
@@ -221,6 +222,7 @@ Opening an interactive web browser
 
 - The embedded web site can send messages to the host app
 - Messages can request the public key or signing payloads
+- If `register` is `true`, the mobile app should display the action in a featured location
 
 #### Image upload
 

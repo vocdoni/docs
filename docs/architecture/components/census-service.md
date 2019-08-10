@@ -3,7 +3,29 @@
 - [Data Schemas](#data-schemas)
 - [JSON API schemas](#json-api-schemas)
 
-## Data Schemas
+The Census Service provides a service for both, organizations and users. Its purpose is to store and manage one or multiple census. A census is basically a list of public keys stored as a Merkle Tree.
+
+The organizer can:
+
++ Create new census (it might be one per election process)
++ Store claims (public keys)
++ Export the claim list
++ Recover in any moment the Merkle Root
+
+The user can:
+
++ Recover in any moment the Merkle Root
++ Given the content of a claim, get the Merkle Proof (which demostrates his public key is in the Census)
++ Check if a Merkle Proof is valid for a specific Merkle Root
+
+
+The interaction with the Census Manager is handled trough a JSON API. The current implementation of the Census service, exposes the API via HTTP(s), as part of the [go-dvote suit](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp) In the future more implementations using diferent transport layers could also be developed (i.e using Whisper, PSS or PubSub).
+
+The `censushttp` can be executed as follows:
+
+`./censushttp --port 1500 --logLevel debug --rootKey 347f650ea2adee1affe2fe81ee8e11c637d506da98dc16e74fc64ecb31e1bb2c1`
+
+This command will launch an HTTP endpoint on port 1500. This endpoint is administrated by the ECDSA public key specified as `rootKey`. It's the only one who can create new census and assign other public keys as uniq managers of that census.
 
 ## JSON API schemas
 
@@ -11,14 +33,48 @@ Census Service interactions follow the [JSON API](/architecture/protocol/json-ap
 
 Requests sent to a Census Service may invoke different operations. Depending on the `method`, certain parameters are expected or optional:
 
+### Census Service addCensus
+
+**Private Method**
+
+Only the root key administration can create new census.
+
+```json
+{
+  "id": "req-12345678",
+  "request": {
+    "method": "addCensus",
+    "censusId": "hexString",       // Where to add the claim
+    "pubKeys": ["pubKey1", "pubKey2", "..."],  // The list of pubkeys (hexStrings) for administration
+    "timestamp": 1556110671
+  },
+  "signature": "string"
+}
+```
+
+```json
+{
+  "id": "req-12345678",
+  "response": {
+    "ok": true,
+    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
+}
+```
+
+
 ### Census Service addClaim
+
+**Private Method**
 
 ```json
 {
   "id": "req-12345678",
   "request": {
     "method": "addClaim",
-    "censusId": "string",       // Where to add the claim
+    "censusId": "hexString",       // Where to add the claim
     "claimData": "string",      // Typically, a public key
     "timestamp": 1556110671
   },
@@ -44,12 +100,14 @@ Requests sent to a Census Service may invoke different operations. Depending on 
 
 ### Census Service addClaimBulk
 
+**Private Method**
+
 ```json
 {
   "id": "req-2345679",
   "request": {
     "method": "addClaimBulk",
-    "censusId": "string",       // Where to add the claims
+    "censusId": "hexString",       // Where to add the claims
     "claimsData": [             // Typically, a list of public keys
         "string",
         "string",
@@ -74,12 +132,14 @@ Requests sent to a Census Service may invoke different operations. Depending on 
 
 ### Census Service getRoot
 
+**Public Method**
+
 ```json
 {
   "id": "req-12345678",
   "request": {
     "method": "getRoot",
-    "censusId": "string",
+    "censusId": "hexString",
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -102,50 +162,18 @@ Requests sent to a Census Service may invoke different operations. Depending on 
 
 - [Voting process creation](/architecture/sequence-diagrams?id=voting-process-creation)
 
-### Census Service setParams
-
-```json
-{
-  "id": "req-2345679",
-  "request": {
-    "method": "setParams",
-    "censusId": "string",       // Where to apply the new settings
-    "processId": "string",
-    "maxSize": "string",        // The max size of modulus groups
-    "timestamp": 1556110671
-  },
-  "signature": "string"
-}
-```
-
-```json
-{
-  "id": "req-2345679",
-  "response": {
-    "ok": true,
-    "request": "req-2345679",    // Request ID here as well, to check its integrity as well
-    "timestamp": 1556110672
-  },
-  "signature": "0x1234..."
-}
-```
-
-Used in LRS only.
-
-**Used in:**
-
-- [Voting process creation](/architecture/sequence-diagrams?id=voting-process-creation)
-
 ### Census Service generateProof
+
+**Public Method**
 
 ```json
 {
   "id": "req-12345678",
   "request": {
     "method": "generateProof",
-    "censusId": "string",
-    "claimData": "string",          // The claim for which data is requested
-    "rootHash": "optional-string",  // From a specific version
+    "censusId": "hexString",
+    "claimData": "string",             // The claim for which data is requested
+    "rootHash": "optional-hexString",  // From a specific merkle tree snapshot
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -156,7 +184,7 @@ Used in LRS only.
 {
   "id": "req-12345678",
   "response": {
-    "siblings": ["root-hash", "hash-1", "hash-2", ...],
+    "siblings": "hexString",
     "request": "req-12345678",    // Request ID here as well, to check its integrity as well
     "timestamp": 1556110672
   },
@@ -167,75 +195,52 @@ Used in LRS only.
 **Used in:**
 
 - [Check census inclusion](/architecture/sequence-diagrams?id=check-census-inclusion)
-<!-- - [Casting a vote with ZK Snarks](/architecture/sequence-diagrams?id=casting-a-vote-with-zk-snarks) -->
 
-<!-- ### Census Service getChunk
+### Census Service checkProof
+
+**Public Method**
 
 ```json
 {
-    "method": "getChunk",
-    "censusId": "string",
-    "rootHash": "optional-string",  // from a specific version
-    "publicKeyModulus": 4321
+  "id": "req-12345678",
+  "request": {
+    "method": "checkProof",
+    "censusId": "hexString",
+    "claimData": "string",         // The claim for which data is requested
+    "proofData": "hexString",     // The siblings, same format obtainet in genProof
+    "timestamp": 1556110671
+  },
+  "signature": "string"
 }
 ```
+
 ```json
 {
-    "error": false,
-    "response": "string"
+  "id": "req-12345678",
+  "response": {
+    "validProof": bool,           // It's a valid proof or not
+    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
 }
 ```
 
 **Used in:**
 
-- [Casting a vote with Linkable Ring Signatures](/architecture/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
--->
+- [Check census inclusion](/architecture/sequence-diagrams?id=check-census-inclusion)
 
-<!-- ### Census Service checkProof
-
-```json
-{
-    "method": "checkProof",
-    "censusId": "string",
-    "claimData": "string",
-    "rootHash": "optional-string",  // from a specific version
-    "proofData": "string"
-}
-```
-```json
-{
-    "error": false,
-    "response": "string"
-}
-```
--->
-
-<!-- ### Census Service getIdx
-
-```json
-{
-    "method": "getIdx",
-    "censusId": "string",
-    "claimData": "string",
-    "rootHash": "optional-string"
-}
-```
-```json
-{
-    "error": false,
-    "response": "string"
-}
-```
--->
 
 ### Census Service dump
+
+**Private Method**
 
 ```json
 {
   "id": "req-12345678",
   "request": {
     "method": "dump",
-    "censusId": "string",
+    "censusId": "hexString",
     "claimData": "string",          // The claim for which data is requested
     "rootHash": "optional-string",  // From a specific version
     "timestamp": 1556110671
@@ -264,9 +269,8 @@ Used in LRS only.
 
 - [Voting process creation](/architecture/sequence-diagrams?id=voting-process-creation)
 
-Requests may be sent over HTTP/HTTPS, as well as PSS or IPFS pub/sub.
 
-**Related:**
+## Resources
 
-- [Census service API specs](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp#api)
+- [Census service HTTP(s) implementation](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp)
 
