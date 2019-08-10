@@ -31,13 +31,19 @@ mapping (bytes32 => uint) public entityProcessCount;   // Amount of processes cr
 ```
 
 
-Processes are referenced by their `processId`
+Processes are uniquely identified by their `processId`
+
+To guarantee its uniqueness is generated out of:
+- `entityId`
+- `idx`
+- `genesis`
+- `chainId`
 
 ```solidity
 function getNextProcessId(address entityAddress) public view returns (bytes32){
     // From 0 to N-1, the next index is N
     uint idx = entityProcessCount[entityAddress];
-    return keccak256(abi.encodePacked(entityAddress, idx,genesis, chainId));
+    return keccak256(abi.encodePacked(entityAddress, idx, genesis, chainId));
 }
 ```
 
