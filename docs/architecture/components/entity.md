@@ -215,7 +215,7 @@ Opening an interactive web browser
 
     // Endpoint to POST to with publicKey and signature+timestamp JSON fields
     // Returning true will show the action and hide it otherwise
-    "visible": "https://census-registry.cloud/lambda/census-register-visible/"
+    "visible": "https://census-registry.cloud/lambda/visible-actions?action=register"
     // "visible": "always"    (always visible, alternatively)
 }
 ```
