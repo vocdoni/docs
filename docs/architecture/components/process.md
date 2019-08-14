@@ -20,7 +20,6 @@ struct Process {
     string resultsHash;                // IPFS hash published once results are computed
 }
 
-string version;                        // Version of the protocol
 string [] validators;                  // Votchain validators public keys
 string [] oracles;                     // Oracles public keys
 string genesis;                        // Genesis block hash of the Votchain
