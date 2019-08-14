@@ -13,15 +13,17 @@ Used as a registry of voting processes, associated to the entity with the same E
 ```solidity
 struct Process {
     bytes32 entityId;                       // Id of the Entity creating the process
-    string processMetadataHash;             // IPFS hash to fetch the JSON metadata from
-    string voteEncryptionPrivateKey;        // Key revealed after the vote ends so that scrutiny can start
+    string metadataContentUri;              // Content URI to fetch the JSON metadata from
+    string metadataHash;                    // SHA3-256 hash of the metadataContentUri contents
+    string voteEncryptionPrivateKey;        // Private Key revealed after the vote ends so that scrutiny can start
     bool canceled;                          // Can be used by organization to cancel the project
-    string resultsHash;                     // IPFS hash published once results are computed
+    string resultsContentUri;               // Content URI to fetch the results once they are computed
+    string resultsHash;                     // SHA3-256 of the resultsContentUri contents
 }
 
-string [] validators;                       // Votchain validators public keys
+string [] validators;                       // Vocchain validators public keys
 string [] oracles;                          // Oracles public keys
-string genesis;                             // Genesis block hash of the Votchain
+string genesis;                             // Genesis block hash of the Vocchain
 int chainId;                                // Votechain chainId
 
 Process[] public processes;                 // Array of Process struct
@@ -30,7 +32,6 @@ mapping (bytes32 => uint) processesIndex;   // Mapping of processIds with proces
 mapping (bytes32 => uint) public entityProcessCount;   // Amount of processes created by an address
 
 ```
-
 
 Processes are uniquely identified by their `processId`
 
@@ -43,22 +44,23 @@ To guarantee its uniqueness is generated out of:
 ```solidity
 function getNextProcessId(address entityAddress) public view returns (bytes32){
     // From 0 to N-1, the next index is N
-    uint idx = entityProcessCount[entityAddress];
-    return keccak256(abi.encodePacked(entityAddress, idx, genesis, chainId));
+    uint nextIdx = entityProcessCount[entityAddress];
+    return keccak256(abi.encodePacked(entityAddress, nextIdx, genesis, chainId));
 }
 ```
 
-where `entityProcessCount` is an auto-incremental nonce per `entityAddress`.
+where `entityProcessCount` is an incremental nonce per `entityAddress`.
 
 ### Methods
 
-**`constructor()`**
-- Deploys a new instance
+**`constructor(uint chainIdValue)`**
+- Deploys a new instance and sets the chainId to the given one
 
-**`create(bytes32 entityId, address entityResolver, string metadataHash,)`**
-- A new and unique `processId` will be assigned to the voting process
-- `metadataHash` is an IPFS hash.
-- The actual content behind the `metadataHash` is expected to conform to the [data schema below](#process-metadata-json)
+**`create(string memory metadataContentUri, string memory metadataHash)`**
+- Register a new voting process
+- `metadataContentUri` points to the place(s) to fetch the metadata from
+- The actual content behind the `metadataContentUri` is expected to conform to the [data schema below](#process-metadata-json)
+- `metadataHash` is the SHA3-256 hash of the content behind `metadataContentUri`
 
 **`get(bytes32 processId)`**
 - Fetch the current data from `processId`
@@ -70,18 +72,32 @@ where `entityProcessCount` is an auto-incremental nonce per `entityAddress`.
 - Usable only by contract owner
 - `validatorPublicKey` is the ECDSA public key that will be allowed to update the census
 
+**`removeValidator(int idx, string validatorPublicKey)`**
+- Usable only by contract owner
+- Usable only by contract owner
+
+**`getValidators()`**
+
 **`addOracle(string oraclePublicKey)`**
 - Usable only by contract owner
-- `oraclePublicKey` is the ECDSA public key that will be allowed to update the census
-**`getCensusManagerIndex(bytes32 processId)`**
+- `oraclePublicKey` is the ECDSA public key of the oracle
 
-**`revealPrivateKey(bytes32 processId, string privateKey)`**
-* Usable after `endTime`
+**`removeOracle(int idx, string oraclePublicKey)`**
+- Usable only by contract owner
+
+**`getOracless()`**
+
+**`publishPrivateKey(bytes32 processId, string privateKey)`**
 * Used by the organizer so that the count process can start and votes can be decrypted
+* Nacl Box key
 
-**`publishResults(bytes32 processId, string resultsHash)`**
+**`getPrivateKey()`**
+
+**`publishResults(bytes32 processId, string memory resultsContentUri, string memory resultsHash)`**
 * Usable after `voteEncryptionPrivateKey`
 * Used by the organizer so that the count process can start and votes can be decrypted
+
+**`getResults()`**
 
 ## Data schema
 
@@ -94,8 +110,8 @@ The JSON payload below is stored on IPFS.
 ```json
 {
     "version": "1.0", // Protocol version
-    "type": "snarks-voting-01", // details depends on the type
-    "startBlock": 10000, // Block number on the votchain since the process will be open
+    "type": "snark-vote", // One of: snark-vote, snark-poll, snark-petition
+    "startBlock": 10000, // Block number on the vocchain since the process will be open
     "numberOfBlocks": 400,
     "census": {
         "id": "0x1234...", // Census ID to use for the vote
