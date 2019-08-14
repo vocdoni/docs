@@ -8,7 +8,7 @@ In order to denominate them and provide a prioritized list of fallbacks in a sin
 
 Transfering data files may be done through IPFS and http/s (Swarm and Swarm Feeds may be supported in the future). In order to use an ordered list of origins and fallbacks, Vocdoni defines data origins in a single field by using a **comma separated list of URI's** like the examples below:
 
-- `ipfs://<content-hash>,https://cloudflare-ipfs.com/ipfs/<your-ipfs-hash-here>`
+- `ipfs://<content-hash>,https://cloudflare-ipfs.com/ipfs/your-ipfs-hash`
     - First, try to fetch the given &lt;content-hash&gt; from IPFS
     - In case of error, attempt to fetch &lt;your-ipfs-hash-here&gt; from the IPFS gateway provided by CloudFlare
 - `ipfs://<content-hash>,https://<url>/<route>`
@@ -25,6 +25,22 @@ Supported protocols:
 URI order matters:
 - Clients are expected to try using URI's from left to right
 - In the event of a mismatch, the data from the leftmost functional service is used
+
+## Content Hashed URI
+
+In essence, it features a Content URI with the hash of the underlying data appended at the end. 
+
+- Content URI items are delimited by the `,` symbol.
+- The hash of a Content Hashed URI is delimited by the `!` symbol.
+- The hash is a SHA3-256 of the underlying content
+
+Example:
+
+```
+ipfs://1234...1234,https://host.io/file.txt!1234567890
+```
+
+This type of link is intended for contents that don't change frequently and that require integrity checks in-place.
 
 ## Messaging URI
 

@@ -30,12 +30,10 @@ Used as a registry of voting processes, associated to the entity with the same E
 
 struct Process {
     address entityAddress;             // The Ethereum address of the Entity
-    string metadataContentUri;         // Content URI to fetch the JSON metadata from
-    string metadataHash;               // SHA3-256 hash of the metadata content
+    string metadataContentHashedUri;   // Content Hashed URI of the JSON metadata (See Data Origins)
     string voteEncryptionPrivateKey;   // Key published after the vote ends so that scrutiny can start
     bool canceled;                     // Can be used by organization to cancel the project
-    string resultsContentUri;          // Content URI to fetch the results once they are computed
-    string resultsHash;                // SHA3-256 hash of the resultsContentUri contents
+    string resultsContentHashedUri;    // Content Hashed URI of the results (See Data Origins)
 }
 
 // GLOBAL DATA
@@ -43,7 +41,7 @@ struct Process {
 address contractOwner;
 string[] validators;
 string[] oracles;
-string genesis;
+string genesisContentHashedUri;
 uint chainId;
 
 // PER-PROCESS DATA
@@ -61,20 +59,20 @@ Processes are uniquely identified by their `processId`
 To guarantee its uniqueness is generated out of:
 - `entityId`
 - `idx`
-- `genesis`
+- `genesisContentHashedUri`
 - `chainId`
 
 ```solidity
 function getNextProcessId(address entityAddress) public view returns (bytes32){
     // From 0 to N-1, the next index is N
     uint nextIdx = entityProcessCount[entityAddress];
-    return keccak256(abi.encodePacked(entityAddress, nextIdx, genesis, chainId));
+    return keccak256(abi.encodePacked(entityAddress, nextIdx, genesisContentHashedUri, chainId));
 }
 ```
 
 ``` Get a process ID
 function getProcessId(address entityAddress, uint processCountIndex) public view returns (bytes32) {
-    return keccak256(abi.encodePacked(entityAddress, processCountIndex, genesis, chainId));
+    return keccak256(abi.encodePacked(entityAddress, processCountIndex, genesisContentHashedUri, chainId));
 }
 
 ```
@@ -168,8 +166,7 @@ Most of the sanity check logic can't no longer be in the ethereum blockchain, th
 
 Oracles therefor must have an ethereum account, and it should be registered together with its public key
 
-Oracles can complain when there is a problem
-.
+Oracles can complain when there is a problem.
 ```
 complain(uint reason){}
 ```
