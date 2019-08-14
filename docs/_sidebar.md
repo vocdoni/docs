@@ -22,7 +22,6 @@
 <!--    - [DVote JS library](/integration/dvote-js.md) -->
 <!--    - [DVote Go library](/integration/go-dvote.md) -->
 <!--    - [Client set up](/integration/client-set-up.md) -->
-<!--    - [Relay set up](/integration/relay-set-up.md) -->
 <!--    - [Vote scrutiny](/integration/scrutiny.md) -->
 <!--- Design
 <!--  - [UI prototype](design/ui-prototype.md) -->

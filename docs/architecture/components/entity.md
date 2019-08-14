@@ -4,7 +4,7 @@ An entity can have many roles. For the most part, it is the organizer and the ul
 
 - Publishing news/information via the [Feed](#feed)
 - Providing pointers to trusted/related [Entities](#entities-list)
-- Providing [Gateway boot nodes](#gateway-boot-nodes) or Relays
+- Providing [Gateway boot nodes](#gateway-boot-nodes)
 
 ## Index
 
@@ -16,7 +16,6 @@ An entity can have many roles. For the most part, it is the organizer and the ul
     - [Resolver keys](#resolver-keys)
   - [JSON schema](#json-schema)
     - [Gateway boot node](#gateway-boot-node)
-    - [Relay](#relay)
     - [Gateway update](#gateway-update)
     - [News Feed](#news-feed)
     - [Entity Actions](#entity-actions)
@@ -116,8 +115,6 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
 
   "gatewayUpdate": <GatewayUpdateSchema>, // See Gateway Update below
   
-  "relays": [ <RelaySchema>, ... ], // See Relay below
-
   "bootEntities": [ <EntityReference>, ... ],  // See Entity Reference below
 
   "fallbackBootNodeEntities": [ <EntityReference>, ... ],  // See Entity Reference below
@@ -150,17 +147,6 @@ A gateway boot node is a server trusted by the Entity and it provides a list of 
     "fetchUri": "https://bootnode-server:8080/gateways.json",  // URL to fetch the list of Gateways from
     "heartbeatMessagingUri": "pss://publicKey@0x0"        // Messaging URI where Gateways can report their health status
   }
-```
-
-### Relay
-
-Data of an active Relay that can handle vote transactions for the Entity. This list acts as a fallback when votes don't have a specific one. The binding list of relays for a voting process is on the Voting Process smart contract.
-
-```json
-{
-  "publicKey": "0x23456...",  // Key to encrypt data sent to it
-  "messagingUri": "<messaging-uri>"    // Where to send messages. See Data origins > Messaging URI
-}
 ```
 
 ### Gateway update
