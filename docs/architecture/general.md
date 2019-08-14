@@ -1,6 +1,6 @@
 # Global architecture
 
-Electronic voting processes represent a great tech and social challenge. An official binding vote with standard requirements should at least be able to:
+Digital voting processes represent a great tech and social challenge. An official binding vote with standard requirements should at least be able to:
 
 + Enforce vote anonimity
 + Rely on an opensource platform
@@ -11,7 +11,7 @@ Electronic voting processes represent a great tech and social challenge. An offi
 Vocdoni defines an open architechture and the protocols to empower large communities to exercise full democracy with the aforementioned guarantees. 
 
 A fully functional implementation of Vocdoni will typically involve a combination of two types of services. 
-- The public blockchain, Gateways, Relays and decentralized storage systems (open and accessible)
+- A public Ethereum blockchain, Gateways, Census Service, Voting Chain miners/oracles, and decentralized storage systems (open and accessible)
 - Private custom services so that Entities can maintain a census of users (with personal data that should not be disclosed)
 
 ## Service architecture and components
@@ -28,8 +28,8 @@ To provide resilence and avoid any kind of censorship, the network architecture 
 A Vocdoni voting process makes use of the following components:
 
 <!-- ![Main architecture](./architecture-main.svg "Main architecture") -->
-<div style="padding: 20px; background-color: white;">
-	<img src="/docs/architecture/architecture-main.svg" alt="Main architecture"/>
+<div style="padding: 20px;">
+	<img src="/docs/architecture/architecture-main.png" alt="Main architecture"/>
 </div>
 
 + Data integrity is provided by a public BlockChain such as the Ethereum main net.
@@ -41,3 +41,5 @@ A Vocdoni voting process makes use of the following components:
 + The client interface (app or webapp) interacts with the P2P network and the Blockchain through Gateways (using WebSockets or HTTP/RPC). 
 
 * Gateways are neutral/agnostic, since the cryptographic layer happens on the peer side. The only intent of a Gateway is about forwarding requests from clients that can't open a socket by themselves (typically web browsers).
+
+* Election processes are handled in a Proof-of-Authority Blockchain designed specifically and only for this aim
