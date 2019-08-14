@@ -12,31 +12,39 @@ Used as a registry of voting processes, associated to the entity with the same E
 
 ```solidity
 struct Process {
-    bytes32 entityId;                  // Id of the Entity creating the process
-    address entityResolver;            // A pointer to the Entity's resolver instance to fetch metadata
-    string processMetadataHash;        // IPFS hash to fetch the JSON metadata from
-    string voteEncryptionPrivateKey;   // Key revealed after the vote ends so that scrutiny can start
-    bool canceled;                     // Can be used by organization to cancel the project
-    string resultsHash;                // IPFS hash published once results are computed
+    bytes32 entityId;                       // Id of the Entity creating the process
+    string processMetadataHash;             // IPFS hash to fetch the JSON metadata from
+    string voteEncryptionPrivateKey;        // Key revealed after the vote ends so that scrutiny can start
+    bool canceled;                          // Can be used by organization to cancel the project
+    string resultsHash;                     // IPFS hash published once results are computed
 }
 
-string [] validators;                  // Votchain validators public keys
-string [] oracles;                     // Oracles public keys
-string genesis;                        // Genesis block hash of the Votchain
-int chainId;                           // Votechain chainId
+string [] validators;                       // Votchain validators public keys
+string [] oracles;                          // Oracles public keys
+string genesis;                             // Genesis block hash of the Votchain
+int chainId;                                // Votechain chainId
 
-Process[] public processes;            // Array of Process structs
+Process[] public processes;                 // Array of Process struct
+mapping (bytes32 => uint) processesIndex;   // Mapping of processIds with processess idx
+
 mapping (bytes32 => uint) public entityProcessCount;   // Amount of processes created by an address
+
 ```
 
 
-Processes are referenced by their `processId`
+Processes are uniquely identified by their `processId`
+
+To guarantee its uniqueness is generated out of:
+- `entityId`
+- `idx`
+- `genesis`
+- `chainId`
 
 ```solidity
 function getNextProcessId(address entityAddress) public view returns (bytes32){
     // From 0 to N-1, the next index is N
     uint idx = entityProcessCount[entityAddress];
-    return keccak256(abi.encodePacked(entityAddress, idx,genesis, chainId));
+    return keccak256(abi.encodePacked(entityAddress, idx, genesis, chainId));
 }
 ```
 

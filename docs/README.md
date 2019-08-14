@@ -8,7 +8,13 @@ We intend the algorithms, systems, and software that we build to be a useful con
 
 ## Architecture overview
 
-Data integrity is provided by an Ethereum like Blockchain, data availability is provided by IPFS/Swarm, and p2p messaging is implemented using the distributed messaging protocol Swarm/PSS. The client interface (app or web app) interacts with the P2P network and the Blockchain through Gateways (using WebSockets or HTTP/RPC).
+Data integrity is provided by an Ethereum like Blockchain, data availability is provided by IPFS/Swarm, p2p messaging is implemented using the distributed messaging protocol Swarm/PSS and the voting is handled by a specific Tendermint like blockchain. The client interface (app or web app) interacts with the P2P network and the Blockchain through Gateways (using WebSockets or HTTP/RPC).
+
+<!-- ![Main architecture](./architecture-main.svg "Main architecture") -->
+<div style="padding: 20px;">
+        <img src="/docs/vocdoni_family.png" alt="Vocdoni Family"/>
+</div>
+
 
 Each organization maintains a list of public keys from their potential voters, either in a database or in a public ledger. Before starting a voting process, the organizer collates a list of those keys belonging to eligible voters. To begin a new process, the organizers derive a single-use public key for each voter based on a process nonce and the original public key. These single-use keys are organized into a Merkle tree. This data structure, referred to as a census, is distributed trough a decentralized filesystem and the process metadata (including the Merkle root of the census, and a process public key for vote encryption) is published on the blockchain.
 
