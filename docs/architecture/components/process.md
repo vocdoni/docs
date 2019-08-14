@@ -94,6 +94,7 @@ The JSON payload below is stored on IPFS.
 ```json
 {
     "version": "1.0", // Protocol version
+    "type": "snarks-voting-01", // details depends on the type
     "startBlock": 10000, // Block number on the votchain since the process will be open
     "numberOfBlocks": 400,
     "census": {
@@ -104,9 +105,8 @@ The JSON payload below is stored on IPFS.
             "..."
         ] // Messaging URI of the Census Services to request data from
     },
-    "processType": "snarks-voting-01", //defines details
     "details": {
-        "encryptionKey":"0x1123",
+        "encryptionPublicKey":"01234...",  // Nacl Box public key: https://godoc.org/golang.org/x/crypto/nacl/box
         "title": {
             "en": "Universal Basic Income",
             "ca": "Renda Bàsica Universal"
@@ -115,7 +115,7 @@ The JSON payload below is stored on IPFS.
             "en": "## Markdown text goes here\n### Abstract",
             "ca": "## El markdown va aquí\n### Resum"
         },
-        "headerImage": [
+        "headerImages": [
             "<content uri>"
         ],
         "questions": [
