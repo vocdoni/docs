@@ -148,7 +148,7 @@ The JSON payload below is stored on IPFS.
         ] // Messaging URI of the Census Services to request data from
     },
     "details": {
-        "entityId": "0x123", // Resolver contract to find entity-metadata
+        "entityId": "0x123",
         "encryptionKey":" 0x1123",
         "title": {
             "en": "Universal Basic Income",
