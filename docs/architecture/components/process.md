@@ -7,6 +7,7 @@
     - [Current implementation](#current-implementation)
   - [Data schema](#data-schema)
     - [Process metadata (JSON)](#process-metadata-json)
+    - [Process metadata (JSON)](#process-metadata-json-1)
   - [Future work](#future-work)
     - [Definie a versioning system](#definie-a-versioning-system)
     - [Define sanity checks](#define-sanity-checks)
@@ -112,9 +113,7 @@ The JSON payload below is stored on IPFS.
             "en": "## Markdown text goes here\n### Abstract",
             "ca": "## El markdown va aquí\n### Resum"
         },
-        "headerImages": [
-            "<content uri>"
-        ],
+        "headerImage": "<content uri>",
         "questions": [
             {
                 "questionType": "single-choice", // Defines how the UI should allow to choose among the votingOptions.
