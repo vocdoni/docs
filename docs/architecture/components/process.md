@@ -1,5 +1,19 @@
 # Voting Process
 
+- [Voting Process](#voting-process)
+  - [Smart Contract](#smart-contract)
+    - [Internal structs](#internal-structs)
+    - [ProcessId](#processid)
+    - [Current implementation](#current-implementation)
+  - [Data schema](#data-schema)
+    - [Process metadata (JSON)](#process-metadata-json)
+    - [Process metadata (JSON)](#process-metadata-json-1)
+  - [Future work](#future-work)
+    - [Definie a versioning system](#definie-a-versioning-system)
+    - [Define sanity checks](#define-sanity-checks)
+    - [Oracles protocol](#oracles-protocol)
+    - [Support multi-layer vote encryption](#support-multi-layer-vote-encryption)
+
 Voting processes are declared on the Blockchain and store the critical information for integrity. However, the metadata of a process lives on a JSON file with the information on which voters can make a choice. It also allows validators to fetch the technical parameters of a vote.
 
 The starting point is the **[Voting Process](#smart-contract)** contract, but it is tightly coupled with the **[JSON Process Metadata](#data-schema)** living on P2P filesystems.
@@ -11,27 +25,36 @@ Used as a registry of voting processes, associated to the entity with the same E
 ### Internal structs
 
 ```solidity
+
+// GLOBAL STRUCTS
+
 struct Process {
-    bytes32 entityId;                       // Id of the Entity creating the process
-    string metadataContentUri;              // Content URI to fetch the JSON metadata from
-    string metadataHash;                    // SHA3-256 hash of the metadataContentUri contents
-    string voteEncryptionPrivateKey;        // Private Key revealed after the vote ends so that scrutiny can start
-    bool canceled;                          // Can be used by organization to cancel the project
-    string resultsContentUri;               // Content URI to fetch the results once they are computed
-    string resultsHash;                     // SHA3-256 of the resultsContentUri contents
+    address entityAddress;             // The Ethereum address of the Entity
+    string metadataContentUri;         // Content URI to fetch the JSON metadata from
+    string metadataHash;               // SHA3-256 hash of the metadata content
+    string voteEncryptionPrivateKey;   // Key published after the vote ends so that scrutiny can start
+    bool canceled;                     // Can be used by organization to cancel the project
+    string resultsContentUri;          // Content URI to fetch the results once they are computed
+    string resultsHash;                // SHA3-256 hash of the resultsContentUri contents
 }
 
-string [] validators;                       // Vocchain validators public keys
-string [] oracles;                          // Oracles public keys
-string genesis;                             // Genesis block hash of the Vocchain
-int chainId;                                // Votechain chainId
+// GLOBAL DATA
+
+address contractOwner;
+string[] validators;
+string[] oracles;
+string genesis;
+uint chainId;
+
+// PER-PROCESS DATA
 
 Process[] public processes;                 // Array of Process struct
 mapping (bytes32 => uint) processesIndex;   // Mapping of processIds with processess idx
-
-mapping (bytes32 => uint) public entityProcessCount;   // Amount of processes created by an address
+mapping (address => uint) public entityProcessCount;   // index of the last process for a given address
 
 ```
+
+### ProcessId
 
 Processes are uniquely identified by their `processId`
 
@@ -49,6 +72,13 @@ function getNextProcessId(address entityAddress) public view returns (bytes32){
 }
 ```
 
+``` Get a process ID
+function getProcessId(address entityAddress, uint processCountIndex) public view returns (bytes32) {
+    return keccak256(abi.encodePacked(entityAddress, processCountIndex, genesis, chainId));
+}
+
+```
+
 where `entityProcessCount` is an incremental nonce per `entityAddress`.
 
 ### Methods
@@ -62,15 +92,11 @@ where `entityProcessCount` is an incremental nonce per `entityAddress`.
 - The actual content behind the `metadataContentUri` is expected to conform to the [data schema below](#process-metadata-json)
 - `metadataHash` is the SHA3-256 hash of the content behind `metadataContentUri`
 
-**`get(bytes32 processId)`**
-- Fetch the current data from `processId`
+### Current implementation
 
-**`cancel(bytes32 processId)`**
-- Usable by the organizer
+[VotingProcess.sol](https://gitlab.com/vocdoni/dvote-solidity/raw/master/contracts/VotingProcess.sol)
 
-**`addValidator(string validatorPublicKey)`**
-- Usable only by contract owner
-- `validatorPublicKey` is the ECDSA public key that will be allowed to update the census
+## Data schema
 
 **`removeValidator(int idx, string validatorPublicKey)`**
 - Usable only by contract owner
@@ -94,7 +120,7 @@ where `entityProcessCount` is an incremental nonce per `entityAddress`.
 **`getPrivateKey()`**
 
 **`publishResults(bytes32 processId, string memory resultsContentUri, string memory resultsHash)`**
-* Usable after `voteEncryptionPrivateKey`
+* Usable after `voteEncryptionPrivateKey` is published
 * Used by the organizer so that the count process can start and votes can be decrypted
 
 **`getResults()`**
@@ -122,7 +148,8 @@ The JSON payload below is stored on IPFS.
         ] // Messaging URI of the Census Services to request data from
     },
     "details": {
-        "encryptionPublicKey":"01234...",  // Nacl Box public key: https://godoc.org/golang.org/x/crypto/nacl/box
+        "entityId": "0x123", // Resolver contract to find entity-metadata
+        "encryptionKey":" 0x1123",
         "title": {
             "en": "Universal Basic Income",
             "ca": "Renda Bàsica Universal"
@@ -131,12 +158,10 @@ The JSON payload below is stored on IPFS.
             "en": "## Markdown text goes here\n### Abstract",
             "ca": "## El markdown va aquí\n### Resum"
         },
-        "headerImages": [
-            "<content uri>"
-        ],
+        "headerImage": "<content uri>",
         "questions": [
             {
-                "questionType": "single-choice", // Defines how the UI should allow to choose among the votingOptions.
+                "type": "single-choice", // Defines how the UI should allow to choose among the votingOptions.
                 "question": {
                     "en": "Should universal basic income become a human right?",
                     "ca": "Estàs d'acord amb que la renda bàsica universal sigui un dret humà?"
@@ -162,3 +187,56 @@ The JSON payload below is stored on IPFS.
     }
 }
 ```
+
+
+## Future work
+
+### Definie a versioning system
+### Define sanity checks
+There are serveral events where the process may be invalid.
+
+- Process-metadata can't be fetched from IPFS
+- Process-metadata field can't be parsed or does not exist
+- voteEncryptionPrivateKey is invalid is not correct
+- Block-times are have an valid range. Define how far in the future they want the
+
+Oracles must report them, and action should be taken if there is concensus.
+
+### Oracles protocol
+
+Most of the sanity check logic can't no longer be in the ethereum blockchain, therefore we need to define process/concensus mechanism for the oracles to report to the ethereum smart-contracts.
+
+Oracles therefor must have an ethereum account, and it should be registered together with its public key
+
+Oracles can complain when there is a problem
+.
+```
+complain(uint reason){}
+```
+
+If a pre-defined percentage of oracles agrees on a problem of a specific reason, the process can be invalidated.
+
+```
+invalidate(uint reason){}
+```
+
+Before the user is shown a process, it should've been validated that the process is all good. Therfore is probably a good idea that the validators approve the process at the begining.
+
+```
+complain(0);
+```
+
+The same logic should be used for the reporting the results
+
+```
+reportResults(string resultsHash){}
+```
+
+```
+validateResults(){}
+````
+In case of the `voteEncryptionPrivateKey` it is more complex, specially if there are multiple actors.
+
+### Support multi-layer vote encryption
+
+Define how multiple entities can publish the public and private key for vote encryption. So no single entity has privliedge information.
