@@ -81,49 +81,9 @@ function getProcessId(address entityAddress, uint processCountIndex) public view
 
 where `entityProcessCount` is an incremental nonce per `entityAddress`.
 
-### Methods
-
-**`constructor(uint chainIdValue)`**
-- Deploys a new instance and sets the chainId to the given one
-
-**`create(string memory metadataContentUri, string memory metadataHash)`**
-- Register a new voting process
-- `metadataContentUri` points to the place(s) to fetch the metadata from
-- The actual content behind the `metadataContentUri` is expected to conform to the [data schema below](#process-metadata-json)
-- `metadataHash` is the SHA3-256 hash of the content behind `metadataContentUri`
-
 ### Current implementation
 
 [VotingProcess.sol](https://gitlab.com/vocdoni/dvote-solidity/raw/master/contracts/VotingProcess.sol)
-
-## Data schema
-
-**`removeValidator(int idx, string validatorPublicKey)`**
-- Usable only by contract owner
-- Usable only by contract owner
-
-**`getValidators()`**
-
-**`addOracle(string oraclePublicKey)`**
-- Usable only by contract owner
-- `oraclePublicKey` is the ECDSA public key of the oracle
-
-**`removeOracle(int idx, string oraclePublicKey)`**
-- Usable only by contract owner
-
-**`getOracless()`**
-
-**`publishPrivateKey(bytes32 processId, string privateKey)`**
-* Used by the organizer so that the count process can start and votes can be decrypted
-* Nacl Box key
-
-**`getPrivateKey()`**
-
-**`publishResults(bytes32 processId, string memory resultsContentUri, string memory resultsHash)`**
-* Usable after `voteEncryptionPrivateKey` is published
-* Used by the organizer so that the count process can start and votes can be decrypted
-
-**`getResults()`**
 
 ## Data schema
 
