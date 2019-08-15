@@ -66,11 +66,10 @@ To guarantee its uniqueness is generated out of:
 function getNextProcessId(address entityAddress) public view returns (bytes32){
     // From 0 to N-1, the next index is N
     uint nextIdx = entityProcessCount[entityAddress];
+    
     return keccak256(abi.encodePacked(entityAddress, nextIdx, genesisContentHashedUri, chainId));
 }
-```
 
-``` Get a process ID
 function getProcessId(address entityAddress, uint processCountIndex) public view returns (bytes32) {
     return keccak256(abi.encodePacked(entityAddress, processCountIndex, genesisContentHashedUri, chainId));
 }
