@@ -106,7 +106,7 @@ The JSON payload below is stored on IPFS.
     },
     "details": {
         "entityId": "0x123",
-        "encryptionKey":" 0x1123",
+        "encryptionPublicKey":" 0x1123",
         "title": {
             "en": "Universal Basic Income",
             "ca": "Renda Bàsica Universal"
