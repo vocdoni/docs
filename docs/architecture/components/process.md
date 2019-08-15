@@ -93,6 +93,7 @@ The JSON payload below is stored on IPFS.
 ```json
 {
     "version": "1.0", // Protocol version
+    "processId": "0x0123456789...",
     "type": "snark-vote", // One of: snark-vote, snark-poll, snark-petition
     "startBlock": 10000, // Block number on the vocchain since the process will be open
     "numberOfBlocks": 400,
