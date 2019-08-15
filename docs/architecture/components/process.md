@@ -129,13 +129,17 @@ The JSON payload below is stored on IPFS.
                 },
                 "voteOptions": [
                     {
-                        "en": "Yes",
-                        "ca": "Sí",
+                        "name": {
+                            "en": "Yes",
+                            "ca": "Sí",
+                        },
                         "value": "1"
                     },
                     {
-                        "en": "No",
-                        "ca": "No",
+                        "name": {
+                            "en": "No",
+                            "ca": "No",
+                        },
                         "value": "2"
                     }
                 ]
