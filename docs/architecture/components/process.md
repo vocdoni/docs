@@ -131,14 +131,14 @@ The JSON payload below is stored on IPFS.
                     {
                         "name": {
                             "en": "Yes",
-                            "ca": "Sí",
+                            "ca": "Sí"
                         },
                         "value": "1"
                     },
                     {
                         "name": {
                             "en": "No",
-                            "ca": "No",
+                            "ca": "No"
                         },
                         "value": "2"
                     }
