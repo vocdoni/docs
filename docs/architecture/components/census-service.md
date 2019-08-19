@@ -2,6 +2,7 @@
 
 - [Data Schemas](#data-schemas)
 - [JSON API schemas](#json-api-schemas)
+- [How census works](#census)
 
 The Census Service provides a service for both, organizations and users. Its purpose is to store and manage one or multiple census. A census is basically a list of public keys stored as a Merkle Tree.
 
@@ -231,7 +232,7 @@ Only the root key administration can create new census.
 - [Check census inclusion](/architecture/sequence-diagrams?id=check-census-inclusion)
 
 
-### Census Service dump
+### Census dump
 
 **Private Method**
 
@@ -241,8 +242,76 @@ Only the root key administration can create new census.
   "request": {
     "method": "dump",
     "censusId": "hexString",
-    "claimData": "string",          // The claim for which data is requested
-    "rootHash": "optional-string",  // From a specific version
+    "rootHash": "optional-hexString",  // From a specific version
+    "timestamp": 1556110671
+  },
+  "signature": "string"
+}
+```
+
+```json
+{
+  "id": "req-12345678",
+  "response": {
+    "claimsData": [
+        "hexString",
+        "hexString",
+        "hexString"
+    ],
+    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
+}
+```
+
+**Used in:**
+
+- [Voting process creation](/architecture/sequence-diagrams?id=voting-process-creation)
+
+### Census dump plain
+
+**Private Method**
+
+```json
+{
+  "id": "req-12345678",
+  "request": {
+    "method": "dumpPlain",
+    "censusId": "hexString",
+    "rootHash": "optional-hexString",  // From a specific version
+    "timestamp": 1556110671
+  },
+  "signature": "string"
+}
+```
+
+```json
+{
+  "id": "req-12345678",
+  "response": {
+    "claimsData": [
+        "string",
+        "string",
+        "string"
+    ],
+    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
+}
+```
+### Census import
+
+**Private Method**
+
+```json
+{
+  "id": "req-12345678",
+  "request": {
+    "method": "importDump",
+    "censusId": "hexString",
+    "claimsData": "[hexString, hexString, ...]",  // list of claims to import
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -265,10 +334,7 @@ Only the root key administration can create new census.
 }
 ```
 
-**Used in:**
-
-- [Voting process creation](/architecture/sequence-diagrams?id=voting-process-creation)
-
+----
 
 ## Resources
 
