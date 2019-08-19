@@ -30,25 +30,27 @@ Used as a registry of voting processes, associated to the entity with the same E
 
 struct Process {
     address entityAddress;             // The Ethereum address of the Entity
-    string metadataContentHashedUri;   // Content Hashed URI of the JSON metadata (See Data Origins)
+    string metadata;                   // Content Hashed URI of the JSON meta data (See Data Origins)
     string voteEncryptionPrivateKey;   // Key published after the vote ends so that scrutiny can start
+    string censusMerkleRoot;           // Hex string with the Merkle Root hash of the census
+    string censusMerkleTree;           // Content Hashed URI of the exported Merkle Tree (not including the public keys)
     bool canceled;                     // Can be used by organization to cancel the project
-    string resultsContentHashedUri;    // Content Hashed URI of the results (See Data Origins)
+    string results;                    // Content Hashed URI of the results (See Data Origins)
 }
 
 // GLOBAL DATA
 
 address contractOwner;
-string[] validators;
-string[] oracles;
-string genesisContentHashedUri;
+string[] validators;                    // Public key array
+string[] oracles;                       // Public key array
+string genesis;                         // Content Hashed URI
 uint chainId;
 
 // PER-PROCESS DATA
 
-Process[] public processes;                 // Array of Process struct
-mapping (bytes32 => uint) processesIndex;   // Mapping of processIds with processess idx
-mapping (address => uint) public entityProcessCount;   // index of the last process for a given address
+Process[] public processes;                 // Array of Process structs
+mapping (bytes32 => uint) processesIndex;   // Mapping of processIds to process idx on the array
+mapping (address => uint) public entityProcessCount;   // Index of the last process for a given Entity address
 
 ```
 
@@ -59,7 +61,7 @@ Processes are uniquely identified by their `processId`
 To guarantee its uniqueness is generated out of:
 - `entityId`
 - `idx`
-- `genesisContentHashedUri`
+- `genesis`
 - `chainId`
 
 ```solidity
@@ -67,11 +69,11 @@ function getNextProcessId(address entityAddress) public view returns (bytes32){
     // From 0 to N-1, the next index is N
     uint nextIdx = entityProcessCount[entityAddress];
     
-    return keccak256(abi.encodePacked(entityAddress, nextIdx, genesisContentHashedUri, chainId));
+    return keccak256(abi.encodePacked(entityAddress, nextIdx, genesis, chainId));
 }
 
 function getProcessId(address entityAddress, uint processCountIndex) public view returns (bytes32) {
-    return keccak256(abi.encodePacked(entityAddress, processCountIndex, genesisContentHashedUri, chainId));
+    return keccak256(abi.encodePacked(entityAddress, processCountIndex, genesis, chainId));
 }
 
 ```
@@ -97,12 +99,8 @@ The JSON payload below is stored on IPFS.
     "startBlock": 10000, // Block number on the vocchain since the process will be open
     "numberOfBlocks": 400,
     "census": {
-        "id": "0x1234...", // Census ID to use for the vote
         "merkleRoot": "0x1234...",
-        "messagingUris": [
-            "<messaging uri>",
-            "..."
-        ] // Messaging URI of the Census Services to request data from
+        "merkleTree": "ipfs://1234,https://server/file.dat!sha3-hash" // Content Hashed URI of the exported Merkle Tree
     },
     "details": {
         "entityId": "0x123",
