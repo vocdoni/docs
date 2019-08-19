@@ -31,9 +31,9 @@ Used as a registry of voting processes, associated to the entity with the same E
 struct Process {
     address entityAddress;             // The Ethereum address of the Entity
     string metadata;                   // Content Hashed URI of the JSON meta data (See Data Origins)
-    string voteEncryptionPrivateKey;   // Key published after the vote ends so that scrutiny can start
     string censusMerkleRoot;           // Hex string with the Merkle Root hash of the census
     string censusMerkleTree;           // Content Hashed URI of the exported Merkle Tree (not including the public keys)
+    string voteEncryptionPrivateKey;   // Key published after the vote ends so that scrutiny can start
     bool canceled;                     // Can be used by organization to cancel the project
     string results;                    // Content Hashed URI of the results (See Data Origins)
 }
