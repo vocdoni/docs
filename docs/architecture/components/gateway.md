@@ -70,7 +70,6 @@ In the case of the `getRoot` method.
 {
   "id": "req-12345678",
   "request": {
-    "api": "census",
     "method": "getRoot",
     "censusUri": "<messaging-uri>",
     "censusId": "string",
@@ -104,7 +103,6 @@ Send a vote envelope for an election process to the Vochain mempool. The `payloa
 {
   "id": "req-2345679",
   "request": {
-    "api": "vote",
     "method": "submitEnvelope",
     "processId": "hexString",
     "payload": "base64-data",
@@ -138,7 +136,6 @@ Check the status of an already submited vote envelope.
 {
   "id": "req-2345679",
   "request": {
-    "api": "vote",
     "method": "getEnvelopeStatus",
     "processId": "hexString",
     "nullifier": "hexString",
@@ -170,7 +167,6 @@ Get the content of an already submited envelope.
 {
   "id": "req-2345679",
   "request": {
-    "api": "vote",
     "method": "getEnvelope",
     "processId": "hexString",
     "nullifier": "hexString",
@@ -202,7 +198,6 @@ Get the number of envelopes registered for a process ID.
 {
   "id": "req-2345679",
   "request": {
-    "api": "vote",
     "method": "getEnvelopeHeight",
     "processId": "hexString",
     "timestamp": 1556110671
@@ -234,7 +229,6 @@ Get a list of processes (open and closed). If `listSize=N` specified, only the l
 {
   "id": "req-2345679",
   "request": {
-    "api": "vote",
     "method": "getProcessList",
     "from": int,
     "listSize": int,
@@ -264,7 +258,6 @@ Get a list of the already registered vote envelopes for specific a process ID. I
 {
   "id": "req-2345679",
   "request": {
-    "api": "vote",
     "method": "getEnvelopeList",
     "processId": "hexString",
     "from": int,
@@ -299,7 +292,6 @@ Fetch a file from the P2P network (currently IPFS or Swarm/BZZ).
 {
   "id": "req-2345679",
   "request": {
-    "api": "file",
     "method": "fetchFile",
     "uri": "<content uri>",
     "timestamp": 1556110671
@@ -341,7 +333,6 @@ Ideally, this methods require authentication following the rules described [in t
 {
   "id": "req-2345679",
   "request": {
-    "api": "file",
     "method": "addFile",
     "type": "swarm|ipfs",
     "content": "base64Payload",  // File contents
@@ -381,7 +372,6 @@ This method provides administrators of a Gateway with a list of resources that h
 {
   "id": "req-2345679",
   "request": {
-    "api": "file",
     "method": "pinList",
     "timestamp": 1556110671
   },
@@ -417,7 +407,6 @@ This method allows administrators to pin already existing remote content, so it 
 {
   "id": "req-2345679",
   "request": {
-    "api": "file",
     "method": "pinFile",
     "uri": "<content-uri>",  // Multiple origins can be pinned at once
     "timestamp": 1556110671
@@ -447,7 +436,6 @@ This method is the counterpart of `pin` and `addFile`. It allows administrators 
 {
   "id": "req-2345679",
   "request": {
-    "api": "file",
     "method": "unpinFile",
     "uri": "<content-uri>",  // Multiple origins can be unpinned at once
     "timestamp": 1556110671

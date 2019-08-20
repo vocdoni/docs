@@ -10,31 +10,15 @@ The data schema used to define a set of boot nodes is a JSON file like the examp
 
 ```json
 {
-   "goerli": [
-      {
-         "host":"hostname.net",
-         "wss": [  // What Gateway API's are available on the WSS protocol
-            "file",
-            "dvote",
-            "census"
-         ],
-         "https": [  // What Gateway API's are available on the HTTPS protocol
-            "web3"
-         ],
-         "pubkey":"02325f284f50fa52d53579c7873a480b351cc20f7780fa556929f5017283ad2449"  // ECDSA Public key
-      },
-      {
-         "host":"hostname2.net",
-         "wss": [
-            "file",   // will use wss://hostname2.net/file  as the endpoint
-            "dvote",  // will use wss://hostname2.net/dvote  as the endpoint
-            "census"  // will use wss://hostname2.net/census  as the endpoint
-         ],
-         "https": [
-            "web3"    // will use https://hostname2.net/web3  as the endpoint
-         ],
-         "pubkey":"0381290a9b7fabe99c24d8edcf4746859f17ee8e6099288fcf9170c356545fcac0"
-      }
-   ]
+   "goerli": { // The Ethereum network ID
+      "web3": [
+         { "uri": "https://host1/web3" },
+         { "uri": "https://host3/web3" }
+      ],
+      "dvote": [
+         { "uri": "wss://host1/dvote", "apis": ["file", "vote"], "pubKey": "02325f284f50fa52d53579c7873a480b351cc20f7780fa556929f5017283ad2449"  },
+         { "uri": "wss://host2/dvote", "apis": ["vote", "census"], "pubKey": "02325f284f50fa52d53579c7873a480b351cc20f7780fa556929f5017283ad2449"  }
+      ]
+   }
 }
 ```

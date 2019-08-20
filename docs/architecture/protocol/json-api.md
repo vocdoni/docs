@@ -7,7 +7,6 @@ Most of the Vocdoni components expose or use a JSON API to communicate with othe
 API request calls must contain the following fields:
 
 + `id` Arbitrary value given by the client, so that it can match incoming responses with the originating request. Ideally a salted hash of the current timestamp to prevent correlation analysis).
-+ `request.api` String defining the API where the operation belongs
 + `request.method` String defining the method which is being called
 
 Any field other than `id` and `request.method` is accepted if the specification of the API method allows it.
@@ -16,7 +15,6 @@ Any field other than `id` and `request.method` is accepted if the specification 
 {
   "id": "req-12345678",
   "request": {
-    "api": "file",
     "method": "addFile"
 
     // additional fields, depending on the method's expected parameters
@@ -93,7 +91,6 @@ In the following example, the payload is:
 {
   "id": "req-12345678",
   "request": {
-    "api": "some-api",
     "method": "method-name",
 
     // any additional values required by the method
