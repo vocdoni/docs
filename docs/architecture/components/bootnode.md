@@ -26,12 +26,12 @@ The data schema used to define a set of boot nodes is a JSON file like the examp
       {
          "host":"hostname2.net",
          "wss": [
-            "file",
-            "dvote",
-            "census"
+            "file",   // will use wss://hostname2.net/file  as the endpoint
+            "dvote",  // will use wss://hostname2.net/dvote  as the endpoint
+            "census"  // will use wss://hostname2.net/census  as the endpoint
          ],
          "https": [
-            "web3"
+            "web3"    // will use https://hostname2.net/web3  as the endpoint
          ],
          "pubkey":"0381290a9b7fabe99c24d8edcf4746859f17ee8e6099288fcf9170c356545fcac0"
       }
