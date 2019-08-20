@@ -144,7 +144,7 @@ A gateway boot node is a server trusted by the Entity and it provides a list of 
 
 ```json
   {
-    "fetchUri": "https://bootnode-server:8080/gateways.json",  // URL to fetch the list of Gateways from
+    "fetchUri": "https://bootnode-server:8080/gateways.json",  // URL to fetch the list of Gateways from. See Boot Node.
     "heartbeatMessagingUri": "pss://publicKey@0x0"        // Messaging URI where Gateways can report their health status
   }
 ```
