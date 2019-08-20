@@ -60,7 +60,7 @@ The APIs ara available to the client via HTTP/WS using two endpoints:
 
 ## Census API
 
-The Census API inherits directly from the methods defined in the [Census Service API](/docs/#/architecture/components/census-service). 
+The Census API inherits directly from the methods defined in the [Census Service API](/architecture/components/census-service). 
 
 The only difference is that this API is to be used by mobile and web clients needing the aid of a Gateway. To tell the Gateway where the Census Service can be reached, the field `messaging-uri` is added as a parameter.
 
@@ -187,6 +187,7 @@ Get the content of an already submited envelope.
   "signature": "hexString"
 }
 ```
+
 **Used in:**
 - [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 
