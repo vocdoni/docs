@@ -44,10 +44,10 @@ MS-->BO2
 
 A Gateway provides access to one or several APIs to allow access to one or several peer-to-peer networks. The currently possible API schemes are the following:
 
-+ `vote API` access to specific vocdoni platform methods for voting (vochain)
-+ `census API` access to the census service API
-+ `file API` access to the p2p file network (ipfs)
-+ `web3 API` access to the Ethereum compatible blockchain
++ `Vote API` access to specific vocdoni platform methods for voting (vochain)
++ `Census API` access to the census service API
++ `File API` access to the p2p file network (ipfs)
++ `Web3 API` access to the Ethereum compatible blockchain
 
 For example, the Gateway can be executed as follows, letting the user choose which APIs should be enabled:
 
@@ -56,13 +56,11 @@ For example, the Gateway can be executed as follows, letting the user choose whi
 The APIs ara available to the client via HTTP/WS using two endpoints:
 
 + `/web3` for the raw web3 API
-+ `/dvote` for the vote/participation API 
-+ `/file` for the file API
-+ `/census` for the census service API
++ `/dvote` for the Vote, File and Census API's
 
 ## Census API
 
-The Census API inherits directly frmo the methods defined in the [Census Service API](/docs/#/architecture/components/census-service). 
+The Census API inherits directly from the methods defined in the [Census Service API](/docs/#/architecture/components/census-service). 
 
 The only difference is that this API is to be used by mobile and web clients needing the aid of a Gateway. To tell the Gateway where the Census Service can be reached, the field `messaging-uri` is added as a parameter.
 
@@ -72,6 +70,7 @@ In the case of the `getRoot` method.
 {
   "id": "req-12345678",
   "request": {
+    "api": "census",
     "method": "getRoot",
     "censusUri": "<messaging-uri>",
     "censusId": "string",
@@ -105,6 +104,7 @@ Send a vote envelope for an election process to the Vochain mempool. The `payloa
 {
   "id": "req-2345679",
   "request": {
+    "api": "vote",
     "method": "submitEnvelope",
     "processId": "hexString",
     "payload": "base64-data",
@@ -138,6 +138,7 @@ Check the status of an already submited vote envelope.
 {
   "id": "req-2345679",
   "request": {
+    "api": "vote",
     "method": "getEnvelopeStatus",
     "processId": "hexString",
     "nullifier": "hexString",
@@ -169,6 +170,7 @@ Get the content of an already submited envelope.
 {
   "id": "req-2345679",
   "request": {
+    "api": "vote",
     "method": "getEnvelope",
     "processId": "hexString",
     "nullifier": "hexString",
@@ -200,6 +202,7 @@ Get the number of envelopes registered for a process ID.
 {
   "id": "req-2345679",
   "request": {
+    "api": "vote",
     "method": "getEnvelopeHeight",
     "processId": "hexString",
     "timestamp": 1556110671
@@ -231,6 +234,7 @@ Get a list of processes (open and closed). If `listSize=N` specified, only the l
 {
   "id": "req-2345679",
   "request": {
+    "api": "vote",
     "method": "getProcessList",
     "from": int,
     "listSize": int,
@@ -260,6 +264,7 @@ Get a list of the already registered vote envelopes for specific a process ID. I
 {
   "id": "req-2345679",
   "request": {
+    "api": "vote",
     "method": "getEnvelopeList",
     "processId": "hexString",
     "from": int,
@@ -294,6 +299,7 @@ Fetch a file from the P2P network (currently IPFS or Swarm/BZZ).
 {
   "id": "req-2345679",
   "request": {
+    "api": "file",
     "method": "fetchFile",
     "uri": "<content uri>",
     "timestamp": 1556110671
@@ -335,6 +341,7 @@ Ideally, this methods require authentication following the rules described [in t
 {
   "id": "req-2345679",
   "request": {
+    "api": "file",
     "method": "addFile",
     "type": "swarm|ipfs",
     "content": "base64Payload",  // File contents
@@ -374,6 +381,7 @@ This method provides administrators of a Gateway with a list of resources that h
 {
   "id": "req-2345679",
   "request": {
+    "api": "file",
     "method": "pinList",
     "timestamp": 1556110671
   },
@@ -409,6 +417,7 @@ This method allows administrators to pin already existing remote content, so it 
 {
   "id": "req-2345679",
   "request": {
+    "api": "file",
     "method": "pinFile",
     "uri": "<content-uri>",  // Multiple origins can be pinned at once
     "timestamp": 1556110671
@@ -429,7 +438,7 @@ This method allows administrators to pin already existing remote content, so it 
 ```
 
 
-### Unpin  a file
+### Unpin a file
 
 This method is the counterpart of `pin` and `addFile`. It allows administrators to unpin and drop content from a Gateway so it doesn't eventually run out of space.
 
@@ -438,6 +447,7 @@ This method is the counterpart of `pin` and `addFile`. It allows administrators 
 {
   "id": "req-2345679",
   "request": {
+    "api": "file",
     "method": "unpinFile",
     "uri": "<content-uri>",  // Multiple origins can be unpinned at once
     "timestamp": 1556110671
