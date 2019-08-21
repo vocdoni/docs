@@ -79,7 +79,6 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
 ```json
 {
   "version": "1.0",
-  "entityId": "0x1234...",
   // The first language in the list is the default one
   // Use "default" or https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
   "languages": ["en", "fr"],
