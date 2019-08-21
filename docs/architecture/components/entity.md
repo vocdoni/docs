@@ -58,17 +58,19 @@ This implementation allows to add or update smaller chunks of text in slices, in
   
 ### Supported Text Record keys
 
-Every Entity should define:
+Entities may define the following Text Records:
 
 | Key                                 | Example                                                       | Description                                                                                                           |
 | ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `vnd.vocdoni.meta`                  | 'ipfs://12345,https://server/json'                                    | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the Entity's JSON metadata. <br/>See [JSON schema](#meta). |
+| `vnd.vocdoni.boot-nodes`            | 'ipfs://12345,https://server/gw.json'                                 | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch a set of Gateways for the Entity. <br/>See [Gateway Boot Nodes](#gateway-boot-nodes) below. |
+| `vnd.vocdoni.gateway-heartbeat`     | 'pss://publicKey@address,wss://host/path'                              | [Messaging URI](/architecture/protocol/data-origins?id=messaging-uri) where the Gateways of the entity should report their health status. |
 
-Vocdoni defines:
-
-| Key                                 | Example                                                       | Description                                                                                                           |
-| ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `vnd.vocdoni.boot`       | 'ipfs://12345,https://server/gateways.json'                                                       | Content URI of services providing a list of active Vocdoni Gateways                                                   |
+- Mandatory
+  - `vnd.vocdoni.meta`
+- Optional
+  - `vnd.vocdoni.boot-nodes`
+  - `vnd.vocdoni.gateway-heartbeat`  (as long as the entity has no Gateways)
 
 ## JSON schema
 
@@ -110,10 +112,6 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
   
   "actions": [ <ActionSchema>, ... ], // See Entity Actions below
 
-  "gatewayBootNodes": [ <GatewayBootNodeSchema>, ... ],  // See Gateway boot nodes below
-
-  "gatewayUpdate": <GatewayUpdateSchema>, // See Gateway Update below
-  
   "bootEntities": [ <EntityReference>, ... ],  // See Entity Reference below
 
   "fallbackBootNodeEntities": [ <EntityReference>, ... ],  // See Entity Reference below
@@ -129,24 +127,15 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
 - [Set Entity metadata](/architecture/sequence-diagrams?id=set-entity-metadata)
 - [Entity subscription](/architecture/sequence-diagrams?id=entity-subscription)
 
+
 ### Gateway boot nodes
 
-A list of currently active boot nodes to interact with the Entity.
+Client apps may not be able to join P2P networks by themselves, so Vocdoni makes use of Gateways to enable decentralized transactions over Web Sockets. A gateway Boot Node is a service provided by the Entity, and it defines a list of active Gateways that a client can use.
 
-Client apps may not be able to join P2P networks by themselves, so Vocdoni makes use of Gateways to enable decentralized transactions over HTTP/HTTPS.
+By default, Vocdoni (as an Entity) provides its own set of DVote and Web3 Gateways. However, entities may want to use their own infrastructure. To this end, the Entity's ENS Text Record `vnd.vocdoni.boot-nodes` can be set to the Content URI of a [BootNodes JSON file](/architecture/components/bootnode) defining some of them.
 
-A gateway boot node is a server trusted by the Entity and it provides a list of active gateway IP addresses via HTTPS
 
-- A gateway boot node is a best effort starting point.
-- To minimize censorship attacks organizations should provide their own set of Gateways.
-- Initial boot nodes may be hardcoded into the client App to prevent the chicken and the egg problems.
-
-```json
-  {
-    "fetchUri": "https://bootnode-server:8080/gateways.json",  // URL to fetch the list of Gateways from. See Boot Node.
-    "heartbeatMessagingUri": "pss://publicKey@0x0"        // Messaging URI where Gateways can report their health status
-  }
-```
+<!--
 
 ### Gateway update
 
@@ -161,6 +150,7 @@ This JSON schema provides the necessary parameters for the Gateways to communica
   "difficulty": 1000                  // Difficulty of the proof of work, to prevent spammers
 }
 ```
+-->
 
 ### News Feed
 
@@ -306,9 +296,9 @@ A pointer to the metadata of a specific entity. It can have several purposes.
 
 ```json
 {
-  "resolverAddress": "0xaaa", // Address of the entity's ENS resolver contract
   "networkId": "goerli",
-  "entityId": "0xeee"         // Entity ID: Hash of the the creator's address
+  "entityId": "0xeee",         // Entity ID: Hash of the the creator's address
+  "entryPoints": [ "https://goerli.infura.io/v3/YOUR-PROJECT-ID", "https://rpc.slock.it/goerli" ] // Web3 gateways on the above Network ID
 }
 ```
 
