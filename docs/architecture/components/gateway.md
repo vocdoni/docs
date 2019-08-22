@@ -44,8 +44,9 @@ MS-->BO2
 
 A Gateway provides access to one or several APIs to allow access to one or several peer-to-peer networks. The currently possible API schemes are the following:
 
-+ `Vote API` access to specific vocdoni platform methods for voting (vochain)
++ `Info API` access to information about the gateway
 + `Census API` access to the census service API
++ `Vote API` access to specific vocdoni platform methods for voting (vochain)
 + `File API` access to the p2p file network (ipfs)
 + `Web3 API` access to the Ethereum compatible blockchain
 
@@ -56,7 +57,41 @@ For example, the Gateway can be executed as follows, letting the user choose whi
 The APIs ara available to the client via HTTP/WS using two endpoints:
 
 + `/web3` for the raw web3 API
-+ `/dvote` for the Vote, File and Census API's
++ `/dvote` for the Info, Vote, File and Census API's
+
+## Info API
+
+### Get Gateway Info
+Get overview of gateway info - which APIs are enabled, and whether the gateway allows private methods.
+
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getGwInfo",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "census": true,
+    "vote": true,
+    "file": true,
+    "private": true,
+    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+
 
 ## Census API
 
@@ -108,6 +143,7 @@ Send a vote envelope for an election process to the Vochain mempool. The `payloa
     "payload": "base64-data",
     "timestamp": 1556110671
   },
+  "signature": "hexString"
 }
 ```
 
