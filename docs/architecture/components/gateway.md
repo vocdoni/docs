@@ -69,7 +69,7 @@ Get overview of gateway info - which APIs are enabled, and whether the gateway a
 {
   "id": "req-2345679",
   "request": {
-    "method": "getGwInfo",
+    "method": "getGatewayInfo",
     "timestamp": 1556110671
   },
   "signature": "hexString"
