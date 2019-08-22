@@ -22,6 +22,8 @@ The starting point is the **[Voting Process](#smart-contract)** contract, but it
 
 Used as a registry of voting processes, associated to the entity with the same Ethereum address as the transaction sender.
 
+The address of the Voting process contract instance is resolved from `voting-process.vocdoni.eth` on the ENS registry.
+
 ### Internal structs
 
 ```solidity

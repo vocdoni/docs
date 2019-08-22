@@ -33,6 +33,8 @@ However, indexing and integrity is provided by a Smart Contract running on the b
 
 An **[Entity Resolver](#entity-resolver)** is the smart contract where the Entity metadata is stored/indexed. It follows the architecture of an ENS resolver contract but it only uses it as a key-value store.
 
+The address of the Entity Resolver contract instance is resolved from `entity-resolver.vocdoni.eth` on the ENS registry.
+
 The `entityId` is the unique identifier of each entity, being a hash of its creator's address:
 
 ```solidity
