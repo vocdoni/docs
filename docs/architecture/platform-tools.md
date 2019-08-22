@@ -15,7 +15,7 @@ Its intent is to provide communication systems compatible with their JS counterp
 [More information](/integration/go-dvote)
 
 ## DVote Solidity
-Formerly known as `dvote-smart-contracts`, this library provides the Smart Contracts that support the integrity transactions involving Entities and Voting Processes.
+This library provides the Smart Contracts that support the integrity transactions involving Entities and Voting Processes.
 
 Much of the work involving metadata is delegated to decentralized filesystems, providing the complete metadata. 
 

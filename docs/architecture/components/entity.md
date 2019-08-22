@@ -94,11 +94,6 @@ The retrieved [Content URI](/architecture/protocol/data-origins?id=content-uri) 
     "en": "In a sovereign state...",
     "fr": "Dans un état souverain..."
   },
-  "contracts": {
-    "resolverAddress": "0x2345...",
-    "votingAddress": "0xccc...",
-    "networkId": "goerli"   // Ethereum chain where the contract lives
-  },
   "votingProcesses": {
     "active":["0x987...","0x876..."], // Process ID of the active votes
     "ended":["0x887...","0x886..."]   // Process ID of the ended votes
@@ -298,7 +293,6 @@ A pointer to the metadata of a specific entity. It can have several purposes.
 
 ```json
 {
-  "networkId": "goerli",
   "entityId": "0xeee",         // Entity ID: Hash of the the creator's address
   "entryPoints": [ "https://goerli.infura.io/v3/YOUR-PROJECT-ID", "https://rpc.slock.it/goerli" ] // Web3 gateways on the above Network ID
 }
