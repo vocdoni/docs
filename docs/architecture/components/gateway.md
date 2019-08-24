@@ -52,12 +52,12 @@ A Gateway provides access to one or several APIs to allow access to one or sever
 
 For example, the Gateway can be executed as follows, letting the user choose which APIs should be enabled:
 
-`./gateway --listenPort 9090 --listenHost 0.0.0.0 --dvoteApi --web3Api`
+`./gateway --listenPort 9090 --listenHost 0.0.0.0 --apiRoute /dvote --dvoteApi --web3Api --censusApi`
 
-The APIs ara available to the client via HTTP/WS using two endpoints:
+The APIs ara available to the client via HTTP/WS using two possible endpoints:
 
-+ `/web3` for the raw web3 API
-+ `/dvote` for the Info, Vote, File and Census API's
++ HTTP(s) `/web3` for the raw web3 API
++ WebSocket(s) `/dvote` for the Info, Vote, File and Census API's
 
 ## Info API
 
@@ -84,49 +84,16 @@ Get overview of gateway info - which APIs are enabled, and whether the gateway a
     "vote": true,
     "file": true,
     "private": true,
-    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "request": "req-2345679", // Request ID here as well, to check its integrity
     "timestamp": 1556110672
   },
   "signature": "hexString"
 }
 ```
-
-
 
 ## Census API
 
 The Census API inherits directly from the methods defined in the [Census Service API](/architecture/components/census-service). 
-
-The only difference is that this API is to be used by mobile and web clients needing the aid of a Gateway. To tell the Gateway where the Census Service can be reached, the field `messaging-uri` is added as a parameter.
-
-In the case of the `getRoot` method.
-
-```json
-{
-  "id": "req-12345678",
-  "request": {
-    "method": "getRoot",
-    "censusUri": "<messaging-uri>",
-    "censusId": "string",
-    "timestamp": 1556110671
-  },
-  "signature": "hexString"
-}
-```
-
-```json
-{
-  "id": "req-12345678",
-  "response": {
-    "censusId": "string",        // The census ID we requested, for integrity checking
-    "root": "0x1234...",         // The root hash
-    "timestamp": 1556110672
-  },
-  "signature": "hexString"
-}
-```
-
-The same applies to the rest of operations.
 
 ## Vote API
 
@@ -152,7 +119,7 @@ Send a vote envelope for an election process to the Vochain mempool. The `payloa
   "id": "req-2345679",
   "response": {
     "ok": true,
-    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "request": "req-2345679", // Request ID here as well, to check its integrity
     "timestamp": 1556110672
   },
   "signature": "hexString"
@@ -185,8 +152,8 @@ Check the status of an already submited vote envelope.
 {
   "id": "req-2345679",
   "response": {
-    "registered": true,          // Whether the vote is registered in a vote batch on the Blockchain
-    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "registered": true,  // Whether the vote is registered in a vote batch on the Blockchain
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
@@ -216,8 +183,8 @@ Get the content of an already submited envelope.
 {
   "id": "req-2345679",
   "response": {
-    "payload": "base64-data",    // Payload of the enveolope
-    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "payload": "base64-data", // Payload of the enveolope in base64
+    "request": "req-2345679", 
     "timestamp": 1556110672
   },
   "signature": "hexString"
@@ -247,8 +214,8 @@ Get the number of envelopes registered for a process ID.
 {
   "id": "req-2345679",
   "response": {
-    "height": int,               // Height of envelopes for the process ID
-    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "height": int, // Height of envelopes for the process ID
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
@@ -279,8 +246,8 @@ Get a list of processes (open and closed). If `listSize=N` specified, only the l
 {
   "id": "req-2345679",
   "response": {
-    "processIds": ["hexString1","hexString2", ...], // List of nullifiers already processed by the blockchain
-    "request": "req-2345679", // Request ID here as well, to check its integrity
+    "processIds": ["hexString1","hexString2", ...], // List of processes of the blockchain
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
@@ -310,7 +277,7 @@ Get a list of the already registered vote envelopes for specific a process ID. I
   "id": "req-2345679",
   "response": {
     "nullifiers": ["hexString1","hexString2", ...], // List of nullifiers already processed by the blockchain
-    "request": "req-2345679", // Request ID here as well, to check its integrity
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
@@ -421,12 +388,12 @@ This method provides administrators of a Gateway with a list of resources that h
   "id": "req-2345679",
   "response": {
     "files": [
-      { "name": "census-ring-1.txt", "uri": "<content-uri>" },
-      { "name": "census-ring-2.txt", "uri": "<content-uri>" },
-      { "name": "census-ring-3.txt", "uri": "<content-uri>" },
+      { "name": "file1.txt", "uri": "<content-uri>" },
+      { "name": "file2.png", "uri": "<content-uri>" },
+      { "name": "file3.bin", "uri": "<content-uri>" },
       ...
     ],
-    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
@@ -445,7 +412,7 @@ This method allows administrators to pin already existing remote content, so it 
   "id": "req-2345679",
   "request": {
     "method": "pinFile",
-    "uri": "<content-uri>",  // Multiple origins can be pinned at once
+    "uri": "<content-uri>", // Multiple origins can be pinned at once
     "timestamp": 1556110671
   },
   "signature": "hexString"
@@ -456,7 +423,7 @@ This method allows administrators to pin already existing remote content, so it 
   "id": "req-2345679",
   "response": {
     "ok": true,
-    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
@@ -485,7 +452,7 @@ This method is the counterpart of `pin` and `addFile`. It allows administrators 
   "id": "req-2345679",
   "response": {
     "ok": true,
-    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"

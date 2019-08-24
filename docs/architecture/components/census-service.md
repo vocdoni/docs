@@ -2,16 +2,18 @@
 
 - [Data Schemas](#data-schemas)
 - [JSON API schemas](#json-api-schemas)
-- [How census works](#census)
+- [How census works](architecture/census)
 
 The Census Service provides a service for both, organizations and users. Its purpose is to store and manage one or multiple census. A census is basically a list of public keys stored as a Merkle Tree.
 
 The organizer can:
 
 + Create new census (it might be one per election process)
-+ Store claims (public keys)
++ Store claims (a hash of a public key usually)
 + Export the claim list
 + Recover in any moment the Merkle Root
++ Publish the census to IPFS or other supported filesystem
++ Import the census from IPFS or other support filesystem
 
 The user can:
 
@@ -19,14 +21,30 @@ The user can:
 + Given the content of a claim, get the Merkle Proof (which demostrates his public key is in the Census)
 + Check if a Merkle Proof is valid for a specific Merkle Root
 
+The interaction with the Census Manager is handled trough a JSON API. The current API implementation of the Census service, can be exposed via HTTP(s), as part of the **go-dvote suit**, in two different ways:
 
-The interaction with the Census Manager is handled trough a JSON API. The current implementation of the Census service, exposes the API via HTTP(s), as part of the [go-dvote suit](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp) In the future more implementations using diferent transport layers could also be developed (i.e using Whisper, PSS or PubSub).
++ the standalone [censusHTTP backend](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp) 
++ via the [dvote Gateway](https://github.com/vocdoni/go-dvote/tree/master/cmd/gateway)
+
+In the future more implementations using diferent transport layers could also be developed (i.e using Whisper, PSS or PubSub).
+
+#### censushttp
 
 The `censushttp` can be executed as follows:
 
 `./censushttp --port 1500 --logLevel debug --rootKey 347f650ea2adee1affe2fe81ee8e11c637d506da98dc16e74fc64ecb31e1bb2c1`
 
 This command will launch an HTTP endpoint on port 1500. This endpoint is administrated by the ECDSA public key specified as `rootKey`. It's the only one who can create new census and assign other public keys as uniq managers of that census.
+
+When using censushttp methods `publish` and `importRemote` are not available but `dump` and `importDump` can be used instead.
+
+#### gateway
+
+The `gateway` can be executed as follows:
+
+`./gateway --censusApi --apiRoute /dvote --listenPort 9090 --allowPrivate --allowedAddrs da5807a5c23e1e5986116116892e0b53278d686f`
+
+Then the gateway will expose the census API on a websockets HTTP endpoint `http://IP:9090/dvote`. If a storage has been enabled (IPFS by default) the census can be published and imported from the storage. Only `allowedAddrs` will be able to execute private methods (extracted from the ECDSA signature).
 
 ## JSON API schemas
 
@@ -38,15 +56,17 @@ Requests sent to a Census Service may invoke different operations. Depending on 
 
 **Private Method**
 
-Only the root key administration can create new census.
+When using `censushttp` only the root key administration can create new census if `rootKey` specified.
+
+When using the `gateway`, only the public keys specified in `--allowedAddrs` can create new census and the address is added automatically as prefix for the `censusId` (to avoid colision and for security reasons).
 
 ```json
 {
   "id": "req-12345678",
   "request": {
     "method": "addCensus",
-    "censusId": "hexString",       // Where to add the claim
-    "pubKeys": ["pubKey1", "pubKey2", "..."],  // The list of pubkeys (hexStrings) for administration
+    "censusId": "hexString", // where to add the claim
+    "pubKeys": ["pubKey1", "pubKey2", "..."],  // list of pubkeys (hexStrings) for executing private methods
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -58,7 +78,7 @@ Only the root key administration can create new census.
   "id": "req-12345678",
   "response": {
     "ok": true,
-    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "request": "req-12345678", // request ID here as well, to check its integrity
     "timestamp": 1556110672
   },
   "signature": "0x1234..."
@@ -75,8 +95,8 @@ Only the root key administration can create new census.
   "id": "req-12345678",
   "request": {
     "method": "addClaim",
-    "censusId": "hexString",       // Where to add the claim
-    "claimData": "string",      // Typically, a public key
+    "censusId": "hexString", // where to add the claim
+    "claimData": "string", // typically, a hash of a public key
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -88,7 +108,7 @@ Only the root key administration can create new census.
   "id": "req-12345678",
   "response": {
     "ok": true,
-    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "request": "req-12345678", // request ID here as well, to check its integrity
     "timestamp": 1556110672
   },
   "signature": "0x1234..."
@@ -108,8 +128,8 @@ Only the root key administration can create new census.
   "id": "req-2345679",
   "request": {
     "method": "addClaimBulk",
-    "censusId": "hexString",       // Where to add the claims
-    "claimsData": [             // Typically, a list of public keys
+    "censusId": "hexString", // where to add the claims (must exist)
+    "claimsData": [  // typically, a list of hashes of public keys
         "string",
         "string",
         "string"
@@ -124,7 +144,7 @@ Only the root key administration can create new census.
   "id": "req-2345679",
   "response": {
     "ok": true,
-    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "0x1234..."
@@ -151,17 +171,14 @@ Only the root key administration can create new census.
 {
   "id": "req-12345678",
   "response": {
-    "root": "0x1234...",         // The root hash
-    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "root": "0x1234...", // the current census root hash
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "0x1234..."
 }
 ```
 
-**Used in:**
-
-- [Voting process creation](/architecture/sequence-diagrams?id=voting-process-creation)
 
 ### Census Service generateProof
 
@@ -171,10 +188,10 @@ Only the root key administration can create new census.
 {
   "id": "req-12345678",
   "request": {
-    "method": "generateProof",
+    "method": "genProof",
     "censusId": "hexString",
-    "claimData": "string",             // The claim for which data is requested
-    "rootHash": "optional-hexString",  // From a specific merkle tree snapshot
+    "claimData": "string", // the claim for which data is requested
+    "rootHash": "optional-hexString", // from a specific merkle tree snapshot
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -186,16 +203,12 @@ Only the root key administration can create new census.
   "id": "req-12345678",
   "response": {
     "siblings": "hexString",
-    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "request": "req-12345678",
     "timestamp": 1556110672
   },
   "signature": "0x1234..."
 }
 ```
-
-**Used in:**
-
-- [Check census inclusion](/architecture/sequence-diagrams?id=check-census-inclusion)
 
 ### Census Service checkProof
 
@@ -207,8 +220,8 @@ Only the root key administration can create new census.
   "request": {
     "method": "checkProof",
     "censusId": "hexString",
-    "claimData": "string",         // The claim for which data is requested
-    "proofData": "hexString",     // The siblings, same format obtainet in genProof
+    "claimData": "string", // the claim for which data is requested
+    "proofData": "hexString", // the siblings, same format obtainet in genProof
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -219,20 +232,17 @@ Only the root key administration can create new census.
 {
   "id": "req-12345678",
   "response": {
-    "validProof": bool,           // It's a valid proof or not
-    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "validProof": bool, // it's a valid proof or not
+    "request": "req-12345678",
     "timestamp": 1556110672
   },
   "signature": "0x1234..."
 }
 ```
 
-**Used in:**
-
-- [Check census inclusion](/architecture/sequence-diagrams?id=check-census-inclusion)
-
-
 ### Census dump
+
+Dumps the entire content of the census as an array of hexStrings rady to be imported to another census service.
 
 **Private Method**
 
@@ -242,7 +252,7 @@ Only the root key administration can create new census.
   "request": {
     "method": "dump",
     "censusId": "hexString",
-    "rootHash": "optional-hexString",  // From a specific version
+    "rootHash": "optional-hexString", // from a specific version
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -258,18 +268,16 @@ Only the root key administration can create new census.
         "hexString",
         "hexString"
     ],
-    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "request": "req-12345678",
     "timestamp": 1556110672
   },
   "signature": "0x1234..."
 }
 ```
 
-**Used in:**
-
-- [Voting process creation](/architecture/sequence-diagrams?id=voting-process-creation)
-
 ### Census dump plain
+
+Dumpcs the contents of a census in raw string format. Not valid to use with `importDump`.
 
 **Private Method**
 
@@ -279,7 +287,7 @@ Only the root key administration can create new census.
   "request": {
     "method": "dumpPlain",
     "censusId": "hexString",
-    "rootHash": "optional-hexString",  // From a specific version
+    "rootHash": "optional-hexString", // from a specific version
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -295,13 +303,16 @@ Only the root key administration can create new census.
         "string",
         "string"
     ],
-    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "request": "req-12345678",
     "timestamp": 1556110672
   },
   "signature": "0x1234..."
 }
 ```
-### Census import
+
+### Census import local dump
+
+Only works with specific merkletree format used by `dump` method. To add a list of plain claims use `addClaimBulk` instead.
 
 **Private Method**
 
@@ -311,7 +322,7 @@ Only the root key administration can create new census.
   "request": {
     "method": "importDump",
     "censusId": "hexString",
-    "claimsData": "[hexString, hexString, ...]",  // list of claims to import
+    "claimsData": "[hexString, hexString, ...]", // list of claims to import
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -322,17 +333,75 @@ Only the root key administration can create new census.
 {
   "id": "req-12345678",
   "response": {
-    "claimsData": [
-        "string",
-        "string",
-        "string"
-    ],
-    "request": "req-12345678",    // Request ID here as well, to check its integrity as well
+    "request": "req-12345678",
     "timestamp": 1556110672
   },
   "signature": "0x1234..."
 }
 ```
+
+### Census publish
+
+Exports and publish the entire census on the storage of the backend (usually IPFS). Returns the URI.
+
+**Private Method**
+
+```json
+{
+  "id": "req-12345678",
+  "request": {
+    "method": "publish",
+    "censusId": "hexString",
+    "rootHash": "optional-hexString", // the census snapshot to publish, if not specified, use the last one
+    "timestamp": 1556110671
+  },
+  "signature": "string"
+}
+```
+
+```json
+{
+  "id": "req-12345678",
+  "response": {
+    "request": "req-12345678",
+    "uri": "uri-string", // where to find the census, i.e ipfs://Qmasdf94341...
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
+}
+```
+
+### Census import remote
+
+Import a previously published remote census. Only valid URIs accepted (depends on the backend).
+
+**Private Method**
+
+```json
+{
+  "id": "req-12345678",
+  "request": {
+    "method": "importRemote",
+    "censusId": "hexString",
+    "uri": "uri-string", // where to find the remote census, i.e ipfs://Qmasdf94341...
+    "timestamp": 1556110671
+  },
+  "signature": "string"
+}
+```
+
+```json
+{
+  "id": "req-12345678",
+  "response": {
+    "request": "req-12345678",
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
+}
+```
+
+
 
 ----
 
