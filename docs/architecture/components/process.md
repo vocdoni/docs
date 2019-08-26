@@ -7,7 +7,7 @@
     - [Current implementation](#current-implementation)
   - [Data schema](#data-schema)
     - [Process metadata (JSON)](#process-metadata-json)
-    - [Process metadata (JSON)](#process-metadata-json-1)
+    - [Results (JSON)](#results-json)
   - [Future work](#future-work)
     - [Definie a versioning system](#definie-a-versioning-system)
     - [Define sanity checks](#define-sanity-checks)
@@ -149,6 +149,45 @@ The JSON payload below is stored on IPFS.
 }
 ```
 
+### Results (JSON)
+
+- Its hash is published in the voting-process smart-contract
+- Sorting must match the `ProcessMetadata` questions.
+
+```json
+
+{
+    "questions":[
+        {
+            "invalid": 0, 
+            "results": [
+                {
+                    "count": 12342,
+                    "value": "0" // Mataches the value in voteOption in ProcessMetadata
+                },
+                {
+                    "count": 4321,
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "invalid": 0,
+            "results": [
+                {
+                    "count": 12342,
+                    "value": "0" 
+                },
+                {
+                    "count": 4321,
+                    "value": "1"
+                }
+            ]
+        }
+    ]
+}
+
+```
 
 ## Future work
 
