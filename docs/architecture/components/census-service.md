@@ -65,8 +65,8 @@ When using the `gateway`, only the public keys specified in `--allowedAddrs` can
   "id": "req-12345678",
   "request": {
     "method": "addCensus",
-    "censusId": "hexString", // where to add the claim
-    "pubKeys": ["pubKey1", "pubKey2", "..."],  // list of pubkeys (hexStrings) for executing private methods
+    "censusId": "<entropy-hash>", // Unique hex payload like the hash of the original census name
+    "pubKeys": ["040012345...", "040123456...", "..."],  // hex pubKeys allowed to request private methods
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -78,6 +78,7 @@ When using the `gateway`, only the public keys specified in `--allowedAddrs` can
   "id": "req-12345678",
   "response": {
     "ok": true,
+    "censusId": "0x12345678.../<entropy-hash>", // The full census ID that any client should use from now on
     "request": "req-12345678", // request ID here as well, to check its integrity
     "timestamp": 1556110672
   },
@@ -90,12 +91,15 @@ When using the `gateway`, only the public keys specified in `--allowedAddrs` can
 
 **Private Method**
 
+Adds a payload to the census Merkle Tree and returns the updated Root Hash
+- In the case of public keys, the payload should be a Base64 encoded string with the Poseidon hash of the user's Public Key
+
 ```json
 {
   "id": "req-12345678",
   "request": {
     "method": "addClaim",
-    "censusId": "hexString", // where to add the claim
+    "censusId": "0x12345678/0x23456789", // where to add the claim (must already exist)
     "claimData": "string", // typically, a hash of a public key
     "timestamp": 1556110671
   },
@@ -123,27 +127,33 @@ When using the `gateway`, only the public keys specified in `--allowedAddrs` can
 
 **Private Method**
 
+Adds a set of payloads to the census Merkle Tree and returns the updated Root Hash
+- In the case of public keys, the payload should be a Base64 encoded string with the Poseidon hash of the user's Public Key
+- If any of the claims could not be added, `invalidClaims` contains an array with the indexes that failed
+
 ```json
 {
   "id": "req-2345679",
   "request": {
     "method": "addClaimBulk",
-    "censusId": "hexString", // where to add the claims (must exist)
+    "censusId": "0x12345678/0x23456789", // where to add the claims (must already exist)
     "claimsData": [  // typically, a list of hashes of public keys
-        "string",
-        "string",
-        "string"
+        "string-0",
+        "string-1",
+        "string-2"
     ],
     "timestamp": 1556110671
   },
   "signature": "string"
 }
 ```
+
 ```json
 {
   "id": "req-2345679",
   "response": {
     "ok": true,
+    "invalidClaims": [1, 2],   // string-1 and string-2 were not added
     "request": "req-2345679",
     "timestamp": 1556110672
   },
@@ -160,7 +170,7 @@ When using the `gateway`, only the public keys specified in `--allowedAddrs` can
   "id": "req-12345678",
   "request": {
     "method": "getRoot",
-    "censusId": "hexString",
+    "censusId": "0x12345678/0x23456789",
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -189,9 +199,9 @@ When using the `gateway`, only the public keys specified in `--allowedAddrs` can
   "id": "req-12345678",
   "request": {
     "method": "genProof",
-    "censusId": "hexString",
-    "claimData": "string", // the claim for which data is requested
-    "rootHash": "optional-hexString", // from a specific merkle tree snapshot
+    "censusId": "0x12345678/0x23456789",
+    "claimData": "string", // the claim for which the proof is requested
+    "rootHash": "optional-hexString", // [optional] from a specific merkle tree snapshot
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -219,7 +229,7 @@ When using the `gateway`, only the public keys specified in `--allowedAddrs` can
   "id": "req-12345678",
   "request": {
     "method": "checkProof",
-    "censusId": "hexString",
+    "censusId": "0x12345678/0x23456789",
     "claimData": "string", // the claim for which data is requested
     "proofData": "hexString", // the siblings, same format obtainet in genProof
     "timestamp": 1556110671
@@ -251,7 +261,7 @@ Dumps the entire content of the census as an array of hexStrings rady to be impo
   "id": "req-12345678",
   "request": {
     "method": "dump",
-    "censusId": "hexString",
+    "censusId": "0x12345678/0x23456789",
     "rootHash": "optional-hexString", // from a specific version
     "timestamp": 1556110671
   },
@@ -286,7 +296,7 @@ Dumpcs the contents of a census in raw string format. Not valid to use with `imp
   "id": "req-12345678",
   "request": {
     "method": "dumpPlain",
-    "censusId": "hexString",
+    "censusId": "0x12345678/0x23456789",
     "rootHash": "optional-hexString", // from a specific version
     "timestamp": 1556110671
   },
@@ -321,7 +331,7 @@ Only works with specific merkletree format used by `dump` method. To add a list 
   "id": "req-12345678",
   "request": {
     "method": "importDump",
-    "censusId": "hexString",
+    "censusId": "0x12345678/0x23456789",
     "claimsData": "[hexString, hexString, ...]", // list of claims to import
     "timestamp": 1556110671
   },
@@ -351,7 +361,7 @@ Exports and publish the entire census on the storage of the backend (usually IPF
   "id": "req-12345678",
   "request": {
     "method": "publish",
-    "censusId": "hexString",
+    "censusId": "0x12345678/0x23456789",
     "rootHash": "optional-hexString", // the census snapshot to publish, if not specified, use the last one
     "timestamp": 1556110671
   },
@@ -382,7 +392,7 @@ Import a previously published remote census. Only valid URIs accepted (depends o
   "id": "req-12345678",
   "request": {
     "method": "importRemote",
-    "censusId": "hexString",
+    "censusId": "0x12345678/0x23456789",
     "uri": "uri-string", // where to find the remote census, i.e ipfs://Qmasdf94341...
     "timestamp": 1556110671
   },
