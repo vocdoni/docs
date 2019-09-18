@@ -151,15 +151,32 @@ The JSON payload below is stored on IPFS.
 
 ### Vote Envelope
 
-The Vote Envelope wraps vote packages...
+The Vote Envelope wraps different types of vote packages and features certain fields, depending on the underlying Vote Package Type
+
+#### Containing Snark Votes
 
 ```json
 {
-    "type": "snark-vote", // One of: snark-vote, poll-vote, petition-sign
+    // vote type is fetched from the blockchain
     "processId": "0x1234567890...",
-    "proof": "0x1234...",  // ZK Proof / Merkle Proof
+    "proof": "0x1234...",  // ZK Proof
     "nullifier": "0x1234...",   // Hash of the private key
-    "vote-package": "base64-vote-package"  // base64(jsonString) is encrypted when type=snark-vote
+    "vote-package": "base64-vote-package"  // base64(jsonString) is encrypted
+}
+```
+
+#### Containing Poll votes
+
+The Vote Envelope of a Poll vote features the process ID, the Census Merkle Proof of the user, a nonce to prevent replay attacks and a Base64 representation of the Vote Package. The signature should be generated from a JSON object containing the keys in ascending alphabetical order.
+
+```json
+{
+    // vote type is fetched from the blockchain
+    "processId": "0x1234567890...",
+    "proof": "0x1234...",  // Merkle Proof
+    "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
+    "vote-package": "base64-vote-package",  // base64(jsonString)
+    "signature": "0x12345678..."  // sign( JSON.stringify( { nonce, processId, proof, 'vote-package' } ), privateKey )
 }
 ```
 
@@ -174,7 +191,7 @@ Used for anonymous votes using ZK Snarks to validate votes.
 ```json
 {
     "type": "snark-vote", // One of: snark-vote, poll-vote, petition-sign
-    "nonce": "1234567890", // random number to obfuscate collisions
+    "nonce": "1234567890", // random number to prefent guessing the encrypted payload before the key is revealed
     "votes": [  // Direclty mapped to the `questions` field of the metadata
         1, 3, 2
     ]
@@ -188,7 +205,7 @@ Used for non-anonymous votes, where the Merkle Proof is enough.
 ```json
 {
     "type": "poll-vote", // One of: snark-vote, poll-vote, petition-sign
-    "nonce": "1234567890", // (optional) random number to obfuscate collisions
+    "nonce": "1234567890", // (optional) random number to prefent guessing the encrypted payload before the key is revealed
     "votes": [  // Direclty mapped to the `questions` field of the metadata
         1, 3, 2
     ]
