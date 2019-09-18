@@ -199,12 +199,10 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
   "id": "req-12345678",
   "request": {
     "method": "genProof",
-    "censusId": "0x12345678/0x23456789",
-    "claimData": "string", // the claim for which the proof is requested
-    "rootHash": "optional-hexString", // [optional] from a specific merkle tree snapshot
-    "timestamp": 1556110671
-  },
-  "signature": "string"
+    "censusId": "0x123456789", // Merkle Root of the census for which the claim siblings are requested
+    "claimData": "string" // the leaf for which the proof is requested
+  }
+  // no signature
 }
 ```
 
@@ -229,12 +227,10 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
   "id": "req-12345678",
   "request": {
     "method": "checkProof",
-    "censusId": "0x12345678/0x23456789",
-    "claimData": "string", // the claim for which data is requested
-    "proofData": "hexString", // the siblings, same format obtainet in genProof
-    "timestamp": 1556110671
-  },
-  "signature": "string"
+    "censusId": "0x123456789", // Merkle Root of the census for which the Merkle Tree's claim will be checked
+    "claimData": "string", // the leaf for which data is requested
+    "proofData": "hexString" // the siblings, same format obtainet in genProof
+  }
 }
 ```
 

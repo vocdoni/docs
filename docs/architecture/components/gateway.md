@@ -107,7 +107,7 @@ Send a vote envelope for an election process to the Vochain mempool. The `payloa
   "request": {
     "method": "submitEnvelope",
     "processId": "hexString",
-    "payload": "base64-data",
+    "payload": { <VoteEnvelope> },   // See Vote Envelope from "Voting Process"
     "timestamp": 1556110671
   },
   "signature": "hexString"

@@ -97,7 +97,7 @@ The JSON payload below is stored on IPFS.
 ```json
 {
     "version": "1.0", // Protocol version
-    "type": "snark-vote", // One of: snark-vote, snark-poll, snark-petition
+    "type": "snark-vote", // One of: snark-vote, poll-vote, petition-sign
     "startBlock": 10000, // Block number on the vocchain since the process will be open
     "numberOfBlocks": 400,
     "census": {
@@ -148,6 +148,71 @@ The JSON payload below is stored on IPFS.
     }
 }
 ```
+
+### Vote Envelope
+
+The Vote Envelope wraps vote packages...
+
+```json
+{
+    "processId": "0x1234567890...",
+    "proof": "0x1234...",  // ZK Proof / Merkle Proof
+    "nullifier": "0x1234...",   // Hash of the private key
+    "vote-package": "base64-vote-package"  // base64(jsonString) is encrypted when type=snark-vote
+}
+```
+
+### Vote Package
+
+The Vote Package contains the actual payload that will be processed when the scrutiny takes places.
+
+#### Snark Vote
+
+(anonymous voting)
+
+```json
+{
+    "type": "snark-vote", // One of: snark-vote, poll-vote, petition-sign
+    "nonce": "1234567890", // random number to obfuscate collisions
+    "votes": [  // Direclty mapped to the `questions` field of the metadata
+        1, 3, 2
+    ]
+}
+```
+
+#### Poll Vote
+
+(poll)
+
+```json
+{
+    "type": "poll-vote", // One of: snark-vote, poll-vote, petition-sign
+    "nonce": "1234567890", // (optional) random number to obfuscate collisions
+    "votes": [  // Direclty mapped to the `questions` field of the metadata
+        1, 3, 2
+    ]
+}
+```
+
+#### Petition Sign
+
+(Coming soon)
+
+<!--
+
+(Petition signing)
+
+```json
+{
+    "type": "petition-sign", // One of: snark-vote, poll-vote, petition-sign
+    "nullifier": "0x1234...",   // Hash of the private key
+    "votes": [  // Direclty mapped to the `questions` field of the metadata
+        1
+    ]
+}
+```
+
+-->
 
 ### Results (JSON)
 
