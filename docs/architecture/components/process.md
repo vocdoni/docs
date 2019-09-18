@@ -155,6 +155,7 @@ The Vote Envelope wraps vote packages...
 
 ```json
 {
+    "type": "snark-vote", // One of: snark-vote, poll-vote, petition-sign
     "processId": "0x1234567890...",
     "proof": "0x1234...",  // ZK Proof / Merkle Proof
     "nullifier": "0x1234...",   // Hash of the private key
@@ -168,7 +169,7 @@ The Vote Package contains the actual payload that will be processed when the scr
 
 #### Snark Vote
 
-(anonymous voting)
+Used for anonymous votes using ZK Snarks to validate votes.
 
 ```json
 {
@@ -182,7 +183,7 @@ The Vote Package contains the actual payload that will be processed when the scr
 
 #### Poll Vote
 
-(poll)
+Used for non-anonymous votes, where the Merkle Proof is enough.
 
 ```json
 {
