@@ -191,7 +191,7 @@ Used for anonymous votes using ZK Snarks to validate votes.
 ```json
 {
     "type": "snark-vote", // One of: snark-vote, poll-vote, petition-sign
-    "nonce": "1234567890", // random number to prefent guessing the encrypted payload before the key is revealed
+    "nonce": "1234567890", // random number to prevent guessing the encrypted payload before the key is revealed
     "votes": [  // Direclty mapped to the `questions` field of the metadata
         1, 3, 2
     ]
@@ -205,7 +205,7 @@ Used for non-anonymous votes, where the Merkle Proof is enough.
 ```json
 {
     "type": "poll-vote", // One of: snark-vote, poll-vote, petition-sign
-    "nonce": "1234567890", // (optional) random number to prefent guessing the encrypted payload before the key is revealed
+    "nonce": "1234567890", // (optional) random number to prevent guessing the encrypted payload before the key is revealed
     "votes": [  // Direclty mapped to the `questions` field of the metadata
         1, 3, 2
     ]
