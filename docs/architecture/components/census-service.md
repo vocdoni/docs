@@ -171,7 +171,6 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
   "request": {
     "method": "getRoot",
     "censusId": "0x12345678/0x23456789",
-    "timestamp": 1556110671
   },
   "signature": ""  // Leave empty
 }
@@ -189,6 +188,35 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
 }
 ```
 
+### Census Service getSize
+
+**Public Method**
+
+```json
+{
+  "id": "req-12345678",
+  "request": {
+    "method": "getSize",
+    "censusId": "0x12345678/0x23456789",
+    "rootHash": "optional-hexString", // from a specific version
+  },
+  "signature": ""  // Leave empty
+}
+```
+
+```json
+{
+  "id": "req-12345678",
+  "response": {
+    "size": int64, // the current size of the census
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "0x1234..."
+}
+```
+
+
 
 ### Census Service generateProof
 
@@ -201,6 +229,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
     "method": "genProof",
     "censusId": "0x123456789", // Merkle Root of the census for which the claim siblings are requested
     "claimData": "string" // the leaf for which the proof is requested
+    "rootHash": "optional-hexString", // from a specific version
   },
   "signature": ""  // Leave empty
 }
@@ -230,6 +259,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
     "censusId": "0x123456789", // Merkle Root of the census for which the Merkle Tree's claim will be checked
     "claimData": "string", // the leaf for which data is requested
     "proofData": "hexString" // the siblings, same format obtainet in genProof
+    "rootHash": "optional-hexString", // from a specific version
   },
   "signature": ""  // Leave empty
 }
