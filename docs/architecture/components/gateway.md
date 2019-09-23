@@ -223,6 +223,33 @@ Get the number of envelopes registered for a process ID.
 **Used in:**
 - [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 
+### Get Block Height
+
+Request the number of blocks that are currently on the blockchain. 
+
+```json
+{
+  "id": "req-12345678",
+  "request": {
+    "method": "getBlockHeight",
+    "timestamp": 1556110671
+  },
+  "signature": ""  // Leave empty
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "ok": true,
+    "height": 12345,
+    "request": "req-2345679", // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
 
 ### Get Process List
 
