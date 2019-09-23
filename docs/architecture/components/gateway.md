@@ -213,6 +213,7 @@ Get the number of envelopes registered for a process ID.
 {
   "id": "req-2345679",
   "response": {
+    "ok": true,
     "height": int, // Height of envelopes for the process ID
     "request": "req-2345679",
     "timestamp": 1556110672
