@@ -23,8 +23,7 @@ We want a sustainable work-life balance
 
 - We are fully autonomous and responsible individuals, therefore, nothing mandates days, schedules, or hours that you work
 - We don't like process, but we're not afraid of it if is needed.
-- Our communications are 80% online through channels like Matrix chats and Mumble calls
-- We do weekly meetups in Barcelona to smooth out coordination.
+- Our communications are 80% online through channels like Matrix/Wire chats and Mumble calls
 
 ## Development practices
 
