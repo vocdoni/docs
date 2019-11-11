@@ -37,7 +37,7 @@ The address of the Voting process contract instance is resolved from `voting-pro
 
 // GLOBAL STRUCTS
 
-enum s { SnarkVote, PollVote}
+enum ProcessType { SnarkVote, PollVote}
 
 struct Process {
     address entityAddress;             // The Ethereum address of the Entity
