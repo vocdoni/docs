@@ -7,6 +7,13 @@
     - [Current implementation](#current-implementation)
   - [Data schema](#data-schema)
     - [Process metadata (JSON)](#process-metadata-json)
+    - [Vote Envelope](#vote-envelope)
+      - [Containing Snark Votes](#containing-snark-votes)
+      - [Containing Poll votes](#containing-poll-votes)
+    - [Vote Package](#vote-package)
+      - [Snark Vote](#snark-vote)
+      - [Poll Vote](#poll-vote)
+      - [Petition Sign](#petition-sign)
     - [Results (JSON)](#results-json)
   - [Future work](#future-work)
     - [Definie a versioning system](#definie-a-versioning-system)
@@ -30,11 +37,14 @@ The address of the Voting process contract instance is resolved from `voting-pro
 
 // GLOBAL STRUCTS
 
+enum s { SnarkVote, PollVote}
+
 struct Process {
     address entityAddress;             // The Ethereum address of the Entity
     string metadata;                   // Content Hashed URI of the JSON meta data (See Data Origins)
     string censusMerkleRoot;           // Hex string with the Merkle Root hash of the census
     string censusMerkleTree;           // Content Hashed URI of the exported Merkle Tree (not including the public keys)
+    ProcessType processType;           // So nodes know how to check the transaction. Currently only SnarkVote and PollVote (not anoymous)
     string voteEncryptionPrivateKey;   // Key published after the vote ends so that scrutiny can start
     bool canceled;                     // Can be used by organization to cancel the project
     string results;                    // Content Hashed URI of the results (See Data Origins)
