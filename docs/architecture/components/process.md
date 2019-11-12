@@ -37,14 +37,14 @@ The address of the Voting process contract instance is resolved from `voting-pro
 
 // GLOBAL STRUCTS
 
-enum ProcessType { SnarkVote, PollVote}
-
 struct Process {
+    string processType;                // One of: snark-vote, poll-vote, petition-sign
     address entityAddress;             // The Ethereum address of the Entity
+    uint256 startBlock;                // Tendermint block number on which the voting process starts
+    uint256 numberOfBlocks;            // Amount of Tendermint blocks during which the voting process is active
     string metadata;                   // Content Hashed URI of the JSON meta data (See Data Origins)
     string censusMerkleRoot;           // Hex string with the Merkle Root hash of the census
     string censusMerkleTree;           // Content Hashed URI of the exported Merkle Tree (not including the public keys)
-    ProcessType processType;           // So nodes know how to check the transaction. Currently only SnarkVote and PollVote (not anoymous)
     string voteEncryptionPrivateKey;   // Key published after the vote ends so that scrutiny can start
     bool canceled;                     // Can be used by organization to cancel the project
     string results;                    // Content Hashed URI of the results (See Data Origins)
