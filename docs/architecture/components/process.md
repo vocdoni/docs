@@ -170,7 +170,7 @@ The Vote Envelope wraps different types of vote packages and features certain fi
     "processId": "0x1234567890...",
     "proof": "0x1234...",  // ZK Proof
     "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
-    "nullifier": "0x1234...",   // Hash of the private key
+    "nullifier": "0x1234...",   // Hash of the private key + processId
     "vote-package": "base64-vote-package"  // base64(jsonString) is encrypted
 }
 ```
@@ -189,9 +189,7 @@ The Vote Envelope of a Poll vote features the process ID, the Census Merkle Proo
 }
 ```
 
-### Vote Package
-
-The Vote Package contains the actual payload that will be processed when the scrutiny takes places.
+The `nullifier` to identify the vote in the blockchain will be returned by the service handling the request. Usually the `nullifier` will be `processId_pubKeyAddr`.
 
 #### Snark Vote
 
