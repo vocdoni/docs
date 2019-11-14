@@ -184,7 +184,7 @@ The Vote Envelope of a Poll vote features the process ID, the Census Merkle Proo
     "processId": "0x1234567890...",
     "proof": "0x1234...",  // Merkle Proof
     "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
-    "signature": "0x12345678...",  // sign( JSON.stringify( { processId, proof, nonce, type, vote-package } ), privateKey )
+    "signature": "0x12345678...",  // sign( JSON.stringify( { processId, proof, nonce, vote-package } ), privateKey )
     "vote-package": "base64-vote-package"  // base64(jsonString)
 }
 ```
