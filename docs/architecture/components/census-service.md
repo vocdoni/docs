@@ -100,7 +100,7 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
   "request": {
     "method": "addClaim",
     "censusId": "0x12345678/0x23456789", // where to add the claim (must already exist)
-    "claimData": "string", // typically, a hash of a public key
+    "claimData": "base64-string", // typically, a hash of a public key
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -138,9 +138,9 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
     "method": "addClaimBulk",
     "censusId": "0x12345678/0x23456789", // where to add the claims (must already exist)
     "claimsData": [  // typically, a list of hashes of public keys
-        "string-0",
-        "string-1",
-        "string-2"
+        "base64-string-0",
+        "base64-string-1",
+        "base64-string-2"
     ],
     "timestamp": 1556110671
   },
@@ -217,7 +217,6 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
 ```
 
 
-
 ### Census Service generateProof
 
 **Public Method**
@@ -228,8 +227,8 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
   "request": {
     "method": "genProof",
     "censusId": "0x123456789", // Merkle Root of the census for which the claim siblings are requested
-    "claimData": "string" // the leaf for which the proof is requested
-    "rootHash": "optional-hexString", // from a specific version
+    "claimData": "base64-string", // the leaf for which the proof is requested
+    "rootHash": "optional-hexString" // from a specific version
   },
   "signature": ""  // Leave empty
 }
@@ -257,9 +256,9 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
   "request": {
     "method": "checkProof",
     "censusId": "0x123456789", // Merkle Root of the census for which the Merkle Tree's claim will be checked
-    "claimData": "string", // the leaf for which data is requested
-    "proofData": "hexString" // the siblings, same format obtainet in genProof
-    "rootHash": "optional-hexString", // from a specific version
+    "claimData": "base64-string", // the leaf for which data is requested
+    "proofData": "hexString", // the siblings, same format obtainet in genProof
+    "rootHash": "optional-hexString" // from a specific version
   },
   "signature": ""  // Leave empty
 }
@@ -314,7 +313,7 @@ Dumps the entire content of the census as an array of hexStrings rady to be impo
 
 ### Census dump plain
 
-Dumpcs the contents of a census in raw string format. Not valid to use with `importDump`.
+Dumps the content of the census in base64 format. The dump cannot be used afterwars with `importDump`.
 
 **Private Method**
 
@@ -336,9 +335,9 @@ Dumpcs the contents of a census in raw string format. Not valid to use with `imp
   "id": "req-12345678",
   "response": {
     "claimsData": [
-        "string",
-        "string",
-        "string"
+        "base64-string",
+        "base64-string",
+        "base64-string"
     ],
     "request": "req-12345678",
     "timestamp": 1556110672
@@ -358,11 +357,11 @@ Only works with specific merkletree format used by `dump` method. To add a list 
   "id": "req-12345678",
   "request": {
     "method": "importDump",
-    "censusId": "0x12345678/0x23456789",
-    "claimsData": "[hexString, hexString, ...]", // list of claims to import
+    "censusId": "0x12345678/0x23456789", // the censusId where to import the data
+    "claimsData": ["hexString", "hexString", ...], // list of claims to import in hex format
     "timestamp": 1556110671
   },
-  "signature": "string"
+  "signature": "0x1234..."
 }
 ```
 
