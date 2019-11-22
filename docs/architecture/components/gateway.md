@@ -109,7 +109,7 @@ Send a vote envelope for an election process to the Vochain mempool. The `payloa
     "payload": { <VoteEnvelope> },   // See Vote Envelope from "Voting Process"
     "timestamp": 1556110671
   },
-  "signature": ""  // Leave empty
+  "signature": ""  // Might be empty
 }
 ```
 
@@ -143,7 +143,7 @@ Check the status of an already submited vote envelope.
     "nullifier": "hexString",
     "timestamp": 1556110671
   },
-  "signature": ""  // Leave empty
+  "signature": ""  // Might be empty
 }
 ```
 
@@ -174,7 +174,7 @@ Get the content of an already submited envelope.
     "nullifier": "hexString",
     "timestamp": 1556110671
   },
-  "signature": ""  // Leave empty
+  "signature": ""  // Might be empty
 }
 ```
 
@@ -205,7 +205,7 @@ Get the number of envelopes registered for a process ID.
     "processId": "hexString",
     "timestamp": 1556110671
   },
-  "signature": ""  // Leave empty
+  "signature": ""  // Might be empty
 }
 ```
 
@@ -235,7 +235,7 @@ Request the number of blocks that are currently on the blockchain.
     "method": "getBlockHeight",
     "timestamp": 1556110671
   },
-  "signature": ""  // Leave empty
+  "signature": ""  // Might be empty
 }
 ```
 
@@ -265,7 +265,7 @@ Get a list of processes (open and closed). If `listSize=N` specified, only the l
     "listSize": int,
     "timestamp": 1556110671
   },
-  "signature": ""  // Leave empty
+  "signature": ""  // Might be empty
 }
 ```
 
@@ -295,7 +295,7 @@ Get a list of the already registered vote envelopes for specific a process ID. I
     "listSize": int,
     "timestamp": 1556110671
   },
-  "signature": ""  // Leave empty
+  "signature": ""  // Might be empty
 }
 ```
 
