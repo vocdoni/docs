@@ -191,7 +191,7 @@ The Vote Envelope of a Poll vote features the process ID, the Census Merkle Proo
 
 The `nullifier` to identify the vote in the blockchain is computed as follows: 
 
-`nullifier = keccak256(bytes(addr(signature)) + bytes(processId))`
+`nullifier = keccak256(bytes(hex(addr(signature))) + bytes(hex(processId)))`
 
 #### Snark Vote
 
