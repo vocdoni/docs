@@ -70,9 +70,9 @@ Get overview of gateway info - which APIs are enabled, and whether the gateway a
   "id": "req-2345679",
   "request": {
     "method": "getGatewayInfo",
-    "timestamp": 1556110671
+    "timestamp": 1556110671 // optional, not required
   },
-  "signature": "hexString"
+  "signature": "hexString" // optional, not required
 }
 ```
 
@@ -80,10 +80,8 @@ Get overview of gateway info - which APIs are enabled, and whether the gateway a
 {
   "id": "req-2345679",
   "response": {
-    "census": true,
-    "vote": true,
-    "file": true,
-    "private": true,
+	"apiList": ["census","file","vote"],
+    "ok": true,
     "request": "req-2345679", // Request ID here as well, to check its integrity
     "timestamp": 1556110672
   },
