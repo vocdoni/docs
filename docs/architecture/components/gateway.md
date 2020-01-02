@@ -1,24 +1,16 @@
 # Gateway
 
-Gateways provide an entry point to the P2P networks. They allow clients to reach decentralized services (census, relays, blockchain, etc.) through a WebSocket or an HTTP API interface.
+Gateways provide an entry point to the P2P networks. They allow clients to reach decentralized services through a WebSocket or an HTTP API interface.
 
-```mermaid
-graph LR
+The Gateway code can be found inside the [go-dvote](https://gitlab.com/vocdoni/go-dvote) repository.
 
-CA(<center>Client APP<br/><br/><i class='fa fa-2x fa-user'/></center>)
-GW(<center>Gateway<br/><br/><i class='fa fa-2x fa-archway'/></center>)
-DA[<center>Filesystem p2p<br/><br/><i class='fa fa-2x fa-database'/></center>]
-BC[<center>Blockchain<br/><br/><i class='fab fa-2x fa-ethereum'/></center>]
-CS[<center>Census<br/><br/><i class='fa fa-2x fa-address-book'/></center>]
-MS[<center>Messaging p2p<br/><br/><i class='fa fa-2x fa-envelope-open-text'/></center>]
-RE[<center>Vote Relay<br/><br/><i class='fa fa-2x fa-dove'/></center>]
-CA-->|HTTP/WS|GW
-GW-->BC
-GW-->MS
-GW-->DA
-MS-->CS
-MS-->RE
-```
+The following diagram shows the gateway internal overall architecture and its components.
+
+<div style="padding: 20px;">
+	<img src="/docs/architecture/components/gateway-components.png" alt="Gateway Components"/>
+</div>
+
+One of the main rules applied on the Gateway development is to have a single system process. To this end all existing components such as Geth, IPFS or Tendermint are imported and executed as golang-libraries.
 
 ### Discovery mechanism
 
