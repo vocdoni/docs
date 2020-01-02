@@ -28,7 +28,7 @@ The validator public keys are stored in the Voting smart contract.
 
 ### Vochain Oracle
 
-The Vochain oracle(s) is a trusted component who is able to modify some parameters of the Vochain (such as the validator public keys) and add new voting processes via a set of special transactions. The Oracle must be a neutral component with the only aim of take the information from the Ethereum voting contract and add it to the Vochain Blockchain.
+The Vochain oracle(s) is a trusted component who is able to modify some parameters of the Vochain (such as the validator public keys), add new voting processes or cancel an existing one via a set of special transactions. The Oracle must be a neutral component with the only aim of take the information from the Ethereum voting contract and add it to the Vochain Blockchain.
 
 The oracle public keys are stored in the Voting smart contract.
 
