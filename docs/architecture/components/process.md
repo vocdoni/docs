@@ -108,7 +108,7 @@ The JSON payload below is stored on IPFS.
 {
     "version": "1.0", // Protocol version
     "type": "snark-vote", // One of: snark-vote, poll-vote, petition-sign
-    "startBlock": 10000, // Block number on the vocchain since the process will be open
+    "startBlock": 10000, // Vochain block number to start the voting process
     "numberOfBlocks": 400,
     "census": {
         "merkleRoot": "0x1234...",
