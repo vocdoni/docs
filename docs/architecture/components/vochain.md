@@ -159,5 +159,5 @@ The Oracle is a trusted machine that enables bidirectional comunication between 
 ## Overall connections
 
 <div style="padding: 20px; background-color: white;">
-	<img src="architecture/components/vochainconn.png" alt="Vochain connections schema"/>
+	<img src="architecture/components/vochain-conn.png" alt="Vochain connections schema"/>
 </div>
