@@ -18,7 +18,7 @@ Vocdoni uses Ethereum as the source of truth and with that we can do some cool t
 
 For the current version only one Vochain handling all processes will exist.
 
-## How it works ?
+## How it works
 
 The nicest thing with tendermint is that the [core](https://docs.tendermint.com/) handles the network and consensus layers, so you only need to implement the logic of the application (the state machine itself).
 
@@ -47,12 +47,6 @@ Vochain also has some special transactions (can only be done by oracles) that al
 - Update the Tendermint validator list `AdminTx: Add/Remove Validator`.
 - Add or remove the trusted oracle list `AdminTx: Add/Remove Oracle`(the ones who can comunicate with both Ethereum and Tendermint).
 - Cancel an already existing voting process `cancelProcessTx` created by an entity.
-
-## Network
-
-<div style="padding: 20px; background-color: white;">
-	<img src="architecture/components/vochain-network.png" alt="Vochain network schema"/>
-</div>
 
 ## Transaction Data Schemas
 
