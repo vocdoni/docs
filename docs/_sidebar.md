@@ -29,14 +29,10 @@
 <!--  - [Reputation mechanisms](design/entities-reputation-mechanisms.md) -->
 <!--  - [Sketch.systems convention](design/sketch-systems-convention.md) -->
 
-- Contribute
-    - [Contribute](contribute.md)
-    - [Guidelines](contribute/guidelines.md)
-    - [Mermaid diagrams](contribute/mermaid.md)
-
-- About
-  - [Vision](about-us/vision.md)
-  - [Problem and solution](about-us/problem-solution.md)
-  - [Alternatives](about-us/alternatives.md)
+- Others
+  <!--  - - [Vision](about-us/vision.md)-->
+  <!--  - - [Problem and solution](about-us/problem-solution.md)-->
+<!--  - - [Alternatives](about-us/alternatives.md)-->
   - [How we work](about-us/how-we-work.md)
   - [Open postions](about-us/open-positions.md)
+  - [Contribute to the docs](contribute.md)

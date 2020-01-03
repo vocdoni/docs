@@ -2,6 +2,30 @@
 
 Thanks for wanting to help improve this documentation :)
 
+## Guidelines
+
+### Structure
+
+The side-bar hierchy should be a mapping of the folder hierchy.
+
+Don't forget to update the `/docs/_sidebar.md` after adding or changing a file.
+
+### Naming
+
+We use [kebab-case](https://stackoverflow.com/questions/11273282/whats-the-name-for-hyphen-separated-case/12273101) as naming convention.
+
+```example
+kebab-case-file-name.md
+```
+
+### Linting and formating
+
+If you are using VS Code, we highly recommend to install the following extensions, to leverage most of the work for keeping the docs nice and tiddy...
+
+- [Markdown lint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
+- [Markdown formatter](https://marketplace.visualstudio.com/items?itemName=tehnix.vscode-tidymarkdown)
+
+
 ## How
 
 The content of this documentation lives in the `/docs` directory in [Vocdoni's `docs` repository](https://github.com/vocdoni/docs)
@@ -45,13 +69,44 @@ Files named `README.md` are accessible at its parent directory URL. Think about 
 
 So `/docs/directoryName/README.md` it is accesible via `/#/directoryName`
 
-### Make diagrams
 
-[There is support for Mermaid diagrams](/documentation/mermaid.md)
+### Make Mermaid diagrams
 
-## Preview locally
+[Mermaid](https://mermaidjs.github.io/) allows to draw diarams and flowcharts using a Markdown like syntax.
 
-### Local server
+You can use [markdown's code blocks](https://help.github.com/en/articles/creating-and-highlighting-code-blocks) to render diagrams by specifying `mermaid` as a lanaguage identifier. Like this...
+
+```mermaidSyntax
+
+```mermaid
+ graph TD
+  A-->B
+  A-->C
+``````
+
+Should render as...
+
+```mermaid
+
+  graph TD
+  A-->B
+  A-->C
+
+```
+
+#### Preview in editor
+
+[VS Code extension for Mermaid preview](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
+
+#### Special characters
+In a sequence diagram some characters don't work with the plugin:
+
+- Use `#60;` instead of `<`
+- Use `#62;` instead of `>`
+
+### Preview locally
+
+#### Local server
 
 To test locally you can run the http server of you choice at the `/docs` directory.
 
@@ -60,6 +115,6 @@ If you want to [install docsify npm package](https://docsify.js.org/#/quickstart
 Alternatively [npm http-server](https://www.npmjs.com/package/http-server) or
 Python's [SimpleHTTPServer](https://docs.python.org/2/library/simplehttpserver.html) are convinient options.
 
-### VS Code
+#### VS Code
 
 If you're using VS Code consider using preview extensions such as [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one) and [Mermaid Preview](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
