@@ -2,9 +2,7 @@
 
 An open tool-set for universally verifiable voting
 
-<!-- background image -->
-
-![](_media/bg.png)
+<!-- background image ![](_media/bg.png) -->
 
 <!-- background color -->
 

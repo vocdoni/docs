@@ -43,3 +43,5 @@ A Vocdoni voting process makes use of the following components:
 * Gateways are neutral/agnostic, since the cryptographic layer happens on the peer side. The only intent of a Gateway is about forwarding requests from clients that can't open a socket by themselves (typically web browsers).
 
 * Election processes are handled in a Proof-of-Authority Blockchain designed specifically and only for this aim
+
++ Voting privacy is achieved using zk-Snarks or Linkable Ring Signature
