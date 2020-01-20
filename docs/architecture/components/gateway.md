@@ -251,6 +251,7 @@ Get a list of processes (open and closed). If `listSize=N` specified, only the l
   "id": "req-2345679",
   "request": {
     "method": "getProcessList",
+	"entityId": "hexString",
     "from": int,
     "listSize": int,
     "timestamp": 1556110671
