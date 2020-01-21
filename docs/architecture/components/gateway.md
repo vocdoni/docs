@@ -251,7 +251,7 @@ Get a list of processes (open and closed). If `listSize=N` specified, only the l
   "id": "req-2345679",
   "request": {
     "method": "getProcessList",
-	"entityId": "hexString",
+	  "entityId": "hexString",
     "from": int,
     "listSize": int,
     "timestamp": 1556110671
@@ -303,6 +303,67 @@ Get a list of the already registered vote envelopes for specific a process ID. I
 ```
 **Used in:**
 - [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
+
+### Get Process Result List
+
+**only available if scrutinizer enabled on the gateway**
+Get a list of the processes indexed by the scrutinizer with results. Currently this method returns a non-deterministic set of 64 ids.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getProcListResults",
+    "timestamp": 1556110671
+  },
+  "signature": ""  // Might be empty
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "processIds": ["hexString1","hexString2", ...],
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+### Get Process Results
+
+**only available if scrutinizer enabled on the gateway**
+Get the results of the processIds indexed by the scrutinizer.
+The results are represented in a two-dimension array: `Question1[Option1,Option2,...], Question2[Option1,Option2,...], ...`
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getResults",
+    "processId": "hexString",
+    "timestamp": 1556110671
+  },
+  "signature": ""  // Might be empty
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "request": "req-2345679",
+    "type": "pool-vote",
+    "finished": true,
+    "results": [ [12, 2], [3, 11, 24], [0, 43] ],
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+- [GitLab issue regarding this feature](https://gitlab.com/vocdoni/go-dvote/issues/106)
 
 ## File API
 
