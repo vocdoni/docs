@@ -356,7 +356,7 @@ The results are represented in a two-dimension array: `Question1[Option1,Option2
   "response": {
     "request": "req-2345679",
     "type": "pool-vote",
-    "finished": true,
+    "state": "Active",         // "Scheduled|Active|Paused|Finished|Canceled"
     "results": [ [12, 2], [3, 11, 24], [0, 43] ],
     "timestamp": 1556110672
   },
