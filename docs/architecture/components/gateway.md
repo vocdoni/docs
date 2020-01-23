@@ -244,7 +244,10 @@ Request the number of blocks that are currently on the blockchain.
 
 ### Get Process List
 
-Get a list of processes (open and closed). If `listSize=N` specified, only the last `N` processes are returned. Some Gateways might have a maximum `listSize` value (to avoid flood attacks). The starting process number to look at, can be specified using the field `from`. Thus `from=100 litSize=50` would return a list of process IDs from process 100 to 50. If `from` is nil or zero, then last process registered in the blockchain is considered.
+Get a list of processes from the Vochain for a specific entityId. There is a hardcoded maximum size of 64 for the process list. The starting process id to look at, can be specified using the field `fromId`. If `fromId` is empty, the first 64 process ids will be returned.
+
+The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastProcIdReceived` to get the next 64 values.
+
 
 ```json
 {
@@ -252,8 +255,7 @@ Get a list of processes (open and closed). If `listSize=N` specified, only the l
   "request": {
     "method": "getProcessList",
 	  "entityId": "hexString",
-    "from": int,
-    "listSize": int,
+    "fromId": "hexString",
     "timestamp": 1556110671
   },
   "signature": ""  // Might be empty
@@ -274,7 +276,7 @@ Get a list of processes (open and closed). If `listSize=N` specified, only the l
 
 ### Get Envelope List
 
-Get a list of the already registered vote envelopes for specific a process ID. If `listSize=N` specified, only the last `N` envelopes are returned. Some Gateways might have a maximum `listSize` value (to avoid DOS attacks). The starting block to look at, can be specified using the field `from`. Thus `from=100 litSize=50` would return a list of nullifiers from envelope 100 to 50. If `from` is nil or zero, then last envelope registered in the blockchain is considered.
+Get a list of registered vote envelopes for specific a process ID (maximum of 64 per call).  See `Get Process List`  to see how `fromId` works.
 
 ```json
 {
@@ -282,8 +284,7 @@ Get a list of the already registered vote envelopes for specific a process ID. I
   "request": {
     "method": "getEnvelopeList",
     "processId": "hexString",
-    "from": int,
-    "listSize": int,
+    "fromId": "hexString",
     "timestamp": 1556110671
   },
   "signature": ""  // Might be empty
@@ -307,13 +308,16 @@ Get a list of the already registered vote envelopes for specific a process ID. I
 ### Get Process Result List
 
 **only available if scrutinizer enabled on the gateway**
-Get a list of the processes indexed by the scrutinizer with results. Currently this method returns a non-deterministic set of 64 ids.
+Get a list of the processes indexed by the scrutinizer with results. Currently this method returns a non-deterministic set of maximum 64 process ids. 
+
+The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastProcIdReceived` to get the next 64 values.
 
 ```json
 {
   "id": "req-2345679",
   "request": {
     "method": "getProcListResults",
+    "fromId": "hexString",
     "timestamp": 1556110671
   },
   "signature": ""  // Might be empty
