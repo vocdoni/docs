@@ -544,3 +544,21 @@ This method is the counterpart of `pin` and `addFile`. It allows administrators 
 
 **Related:**
 - [Content URI](/architecture/protocol/data-origins?id=content-uri)
+
+## Health Status
+
+The health of a DVote Gateway can be checked quite simply:
+
+- Request:
+  - `HTTP GET https://<host-name>/ping`
+- Response:
+  - `HTTP 200` with the text `"pong"` in the body
+
+Example:
+
+```sh
+$ curl https://my.gateway.net/ping
+pong
+```
+
+Clients should check the status before attempting to use a certain Gateway. 
