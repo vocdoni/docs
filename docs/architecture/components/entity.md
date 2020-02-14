@@ -185,16 +185,16 @@ Opening an interactive web browser
     // The URL to open
     "url": "https://census-register.cloud/sign-up/",
 
-    // Endpoint to POST to with publicKey and signature+timestamp JSON fields
-    // Returning true will show the action and hide it otherwise
-    "visible": "https://census-registry.cloud/lambda/visible-actions?action=register"
-    // "visible": "always"    (always visible, alternatively)
+    // Endpoint to POST to query for the visibility (if dynamic).
+    // Returning true will show the action and hide it otherwise.
+    // See Action visibility below.
+    "visible": "https://census-registry.cloud/lambda/visible-actions?actionKey=register"
+    // "visible": "always"    (or make it always visible)
 }
 ```
 
 - The embedded web site can send messages to the host app
 - Messages can request the public key or signing payloads
-- If `register` is `true`, the mobile app should display the action in a featured location
 
 #### Image upload
 
@@ -281,6 +281,34 @@ The endpoint from `url` will receive a POST request with a JSON payload like:
 ```
 
 Keys like `image1`, `image2`, etc will match every `name` given for the entries of `source[]`
+
+### Action visibility
+
+The visibility of entity actions can be static or dynamic. 
+
+- Actions that should always be visible are declared with `"visible": "always"`.
+- If the visibility is dynamic, `"visible"` contains the URL endpoint to which the client will perform a POST request.
+
+The body should contain:
+
+```json
+{
+  "publicKey": "041234567890...",   // Who is requesting? ECDSA public key.
+  "entityId": "0x1234...",          // For what entity?
+  "timestamp": "1581673325384",     // When was that signed?
+  "signature": "37ec193906..."      // ECDSA proof that the client is not someone else spamming.
+}
+```
+
+The `signature` should be computed on the string `{"timestamp":1581673325384}`, where the timestamp value is an integer.
+
+The response should be of the form:
+
+```json
+{
+  "visible": true // or false
+}
+```
 
 ### Entity Reference
 
