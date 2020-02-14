@@ -295,18 +295,26 @@ The body should contain:
 {
   "publicKey": "041234567890...",   // Who is requesting? ECDSA public key.
   "entityId": "0x1234...",          // For what entity?
-  "timestamp": "1581673325384",     // When was that signed?
+  "timestamp": 1581673325384  ,     // When was that signed? Timestamp in milliseconds.
   "signature": "37ec193906..."      // ECDSA proof that the client is not someone else spamming.
 }
 ```
 
-The `signature` should be computed on the string `{"timestamp":1581673325384}`, where the timestamp value is an integer.
+The `signature` should be computed on the string `{"timestamp":1581673325384}`, where the timestamp value is an integer. The signature will be precomputed every time the user unlocks an account. For this reason, the backend should allow for a certain amount of tolerance. By default, the client app will keep the signature as valid for at least **6 hours**, but this may change in the future.
 
 The response should be of the form:
 
 ```json
 {
   "visible": true // or false
+}
+```
+
+or:
+
+```json
+{
+  "error": "The description of what went wrong"
 }
 ```
 
