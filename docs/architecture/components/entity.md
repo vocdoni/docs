@@ -261,13 +261,13 @@ Prompt the user to upload one or more pictures, coming from the camera or from t
   ],
 
   // The URL will receive the following query string parameters:
-  // - signature = sign(hash(jsonBody), privateKey)
+  // - signature = sign(jsonBody, privateKey)
   // - publicKey
   "url": "https://census-registry.cloud/lambda/upload-kyc-pictures/",
 
   // Endpoint to POST to with publicKey and signature+timestamp fields
   // Returning true will show the action and hide it otherwise
-  "visible": "https://census-registry.cloud/lambda/image-upload-visible/"
+  "visible": "https://census-registry.cloud/lambda/visible-actions?actionKey=selfieUpload"
 }
 ```
 
@@ -300,7 +300,9 @@ The body should contain:
 }
 ```
 
-The `signature` should be computed on the string `{"timestamp":1581673325384}`, where the timestamp value is an integer. The signature will be precomputed every time the user unlocks an account. For this reason, the backend should allow for a certain amount of tolerance. By default, the client app will keep the signature as valid for at least **6 hours**, but this may change in the future.
+The `signature` should be computed like `sign({"timestamp":1581673325384}, privateKey)`, where the timestamp value is an integer. 
+
+The signature will be precomputed every time the user unlocks an account. For this reason, the backend should allow for a certain amount of tolerance. By default, the client app will keep the signature as valid for at least **6 hours**, but this may change in the future.
 
 The response should be of the form:
 
