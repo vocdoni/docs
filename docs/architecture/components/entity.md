@@ -175,7 +175,12 @@ Open a register form within the client app.
 ```json
 {
     "type": "register",
-    "actionKey": "sign-up",   // The name you give to identify your action
+    "actionKey": "sign-up",   // The name you give to identify the action
+
+    "name": {
+        "default": "Register",
+        "fr": "S'inscrire"
+    },
 
     // The URL to POST the provided data to.
     // See the format below.
@@ -231,7 +236,7 @@ Opening an interactive web browser
 ```json
 {
     "type": "browser",
-    "actionKey": "browse-events",   // The name you give to identify your action
+    "actionKey": "browse-events",   // The name you give to identify the action
 
     // Localized Call To Action to appear on the app
     "name": {
@@ -261,7 +266,7 @@ Prompt the user to upload one or more pictures, coming from the camera or from t
 ```json
 {
   "type": "submitMedia",
-  "actionKey": "kyc",   // The name you give to identify your action
+  "actionKey": "kyc",   // The name you give to identify the action
 
   // Localized Call To Action to appear on the app
   "name": {
