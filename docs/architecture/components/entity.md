@@ -260,7 +260,7 @@ Prompt the user to upload one or more pictures, coming from the camera or from t
 
 ```json
 {
-  "type": "image",
+  "type": "submitMedia",
   "actionKey": "kyc",   // The name you give to identify your action
 
   // Localized Call To Action to appear on the app
@@ -337,8 +337,8 @@ The endpoint on `url` will receive a POST request with a JSON payload like:
 ```json
 {
   "request": {
-    "method": "register",
-    "actionKey": "sign-up",
+    "method": "submitMedia",
+    "actionKey": "kyc",
     "face-portrait": "base64-image-payload-1",
     "id-front": "base64-image-payload-2",
     "id-back": "base64-image-payload-3",
