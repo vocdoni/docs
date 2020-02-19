@@ -163,9 +163,66 @@ Entity Actions are custom operations that users may be prompted to start. Their 
 
 Entity actions can be in the form of:
 
+- Sign up
 - Web browser actions
 - Image uploading
+- (More to come)
 
+#### Register
+
+Open a register form within the client app.
+
+```json
+{
+    "type": "register",
+    "actionKey": "sign-up",   // The name you give to identify your action
+
+    // The URL to POST the provided data to.
+    // See the format below.
+    "url": "https://census-registry.cloud/lambda/actions/",
+
+    // Endpoint to query for the visibility (if dynamic).
+    // Returning true will show the action and hide it otherwise.
+    // See Action Visibility below.
+    "visible": "https://census-registry.cloud/lambda/actions/"
+
+    // "visible": "always"    (or make it always visible)
+}
+```
+
+The body of the POST request submitted to `url` will contain a JSON body like:
+
+```json
+{
+  "request": {
+    "method": "register",
+    "actionKey": "sign-up",
+    "entityId": "0xaabbccdd...",
+    "firstName": "John",
+    "lastName:": "Snow",
+    "dateOfBirth": "2020-02-19T10:09:19.738Z",
+    "email": "john@snow.me",
+    "phone": "+1235678838",
+    "timestamp": 1556110671
+  },
+  "signature": "0x1234..." // The public key will be extracted from the signature
+̣}
+```
+
+As it happens with Gateway requests, `signature` is computed from the stringified JSON of `request`, where its keys are sorted alphabetically.
+
+The response from the backend should be like:
+
+```json
+{
+  "response": {
+    "ok": true,
+    // "error": "Something went wrong",  // Only if `ok` == false
+    "timestamp": 1556110671
+  },
+  "signature": "" // Empty until registry public keys are available
+}
+```
 
 #### Web browser
 
@@ -174,21 +231,22 @@ Opening an interactive web browser
 ```json
 {
     "type": "browser",
-    "register": true,    // Does this action allow the user to sign in?
+    "actionKey": "browse-events",   // The name you give to identify your action
 
     // Localized Call To Action to appear on the app
     "name": {
-        "en": "Sign up to The Entity",  // The default language is used if none of the languages match
-        "fr": "S'inscrire à l'organisation"
+        "default": "Browse the events",  // The default language is used if none of the languages match
+        "fr": "Voir nos évenements"
     },
 
     // The URL to open
-    "url": "https://census-register.cloud/sign-up/",
+    "url": "https://my-entity.org/events/",
 
-    // Endpoint to POST to query for the visibility (if dynamic).
+    // Endpoint to query for the visibility (if dynamic).
     // Returning true will show the action and hide it otherwise.
-    // See Action visibility below.
-    "visible": "https://census-registry.cloud/lambda/visible-actions?actionKey=register"
+    // See Action Visibility below.
+    "visible": "https://census-registry.cloud/lambda/actions/"
+
     // "visible": "always"    (or make it always visible)
 }
 ```
@@ -203,6 +261,7 @@ Prompt the user to upload one or more pictures, coming from the camera or from t
 ```json
 {
   "type": "image",
+  "actionKey": "kyc",   // The name you give to identify your action
 
   // Localized Call To Action to appear on the app
   "name": {
@@ -260,27 +319,51 @@ Prompt the user to upload one or more pictures, coming from the camera or from t
       }
   ],
 
-  // The URL will receive the following query string parameters:
-  // - signature = sign(jsonBody, privateKey)
-  // - publicKey
-  "url": "https://census-registry.cloud/lambda/upload-kyc-pictures/",
+  // The URL to POST the provided data to.
+  // See the format below.
+  "url": "https://census-registry.cloud/lambda/actions/",
 
-  // Endpoint to POST to with publicKey and signature+timestamp fields
-  // Returning true will show the action and hide it otherwise
-  "visible": "https://census-registry.cloud/lambda/visible-actions?actionKey=selfieUpload"
+  // Endpoint to query for the visibility (if dynamic).
+  // Returning true will show the action and hide it otherwise.
+  // See Action Visibility below.
+  "visible": "https://census-registry.cloud/lambda/actions/"
+
+  // "visible": "always"    (or make it always visible)
 }
 ```
 
-The endpoint from `url` will receive a POST request with a JSON payload like:
+The endpoint on `url` will receive a POST request with a JSON payload like:
+
 ```json
 {
-  "image1": "base64-image-payload-1",
-  "image2": "base64-image-payload-2",
-  ...
+  "request": {
+    "method": "register",
+    "actionKey": "sign-up",
+    "face-portrait": "base64-image-payload-1",
+    "id-front": "base64-image-payload-2",
+    "id-back": "base64-image-payload-3",
+    ...
+    "timestamp": 1556110671
+  },
+  "signature": "0x1234..." // The public key will be extracted from the signature
+̣}
+```
+Keys like `face-portrait`, `id-front`, `id-back`, etc will match every `name` given for the entries of `source[]`
+
+As with Gateway requests, `signature` is computed from the stringified JSON of `request`, where its keys are sorted alphabetically.
+
+The response from the backend should be like:
+
+```json
+{
+  "response": {
+    "ok": true,
+    // "error": "Something went wrong",  // Only if `ok` == false
+    "timestamp": 1556110671
+  },
+  "signature": "" // Empty until registry public keys are available
 }
 ```
-
-Keys like `image1`, `image2`, etc will match every `name` given for the entries of `source[]`
 
 ### Action visibility
 
@@ -293,30 +376,34 @@ The body should contain:
 
 ```json
 {
-  "publicKey": "041234567890...",   // Who is requesting? ECDSA public key.
-  "entityId": "0x1234...",          // For what entity?
-  "timestamp": 1581673325384  ,     // When was that signed? Timestamp in milliseconds.
-  "signature": "37ec193906..."      // ECDSA proof that the client is not someone else spamming.
-}
+  "request": {
+    "method": "getVisibility",
+    "actionKey": "sign-up",
+    "entityId": "0xaabbccdd...",
+    "timestamp": 1556110671
+  },
+  "signature": "0x1234..." // The public key will be extracted from the signature
+̣}
 ```
 
-The `signature` should be computed like `sign({"timestamp":1581673325384}, privateKey)`, where the timestamp value is an integer. 
+The public key for which the visibility is queried will be recovered from the `signature`. The `signature` is computed from `sign({"method":"getVisibility","timestamp":1581673325384}, privateKey)`.
+- This prevents spam requests to leak knowledge about a certain account
+- For UX reasons, a precomputed signature is cached when users unlock an account within the app
+- Since it is not feasible to precompute all potential signatures for every possible entity, the `entityId` and `actionKey` fields are omitted on the signature
+- Signing the timestamp allows backends to only accept queries for a reasonable period of time, until the user unlocks the account again
+- A neater approach is in the works
 
-The signature will be precomputed every time the user unlocks an account. For this reason, the backend should allow for a certain amount of tolerance. By default, the client app will keep the signature as valid for at least **6 hours**, but this may change in the future.
-
-The response should be of the form:
+The response from the backend should be like:
 
 ```json
 {
-  "visible": true // or false
-}
-```
-
-or:
-
-```json
-{
-  "error": "The description of what went wrong"
+  "response": {
+    "ok": true,
+    "visible": true // or false   // only if `ok` == true
+    // "error": "Something went wrong",  // Only if `ok` == false
+    "timestamp": 1556110671
+  },
+  "signature": "" // Empty until registry public keys are available
 }
 ```
 
