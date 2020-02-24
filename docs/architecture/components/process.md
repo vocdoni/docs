@@ -193,12 +193,17 @@ The `nullifier` to identify the vote in the blockchain is computed as follows:
 
 `nullifier = keccak256(bytes(hex(addr(signature))) + bytes(hex(processId)))`
 
+### Vote Package
+
+Is the actual data contained within a vote Envelope.
+
 #### Snark Vote
 
-Used for anonymous votes using ZK Snarks to validate votes.
+Used for anonymous votes using ZK Snarks to restrict voters to only those on the Merke Tree.
 
 ```json
 {
+    "type": "snark-vote",
     "nonce": "1234567890", // random number to prevent guessing the encrypted payload before the key is revealed
     "votes": [  // Direclty mapped to the `questions` field of the metadata
         1, 3, 2
@@ -208,10 +213,11 @@ Used for anonymous votes using ZK Snarks to validate votes.
 
 #### Poll Vote
 
-Used for non-anonymous votes, where the Merkle Proof is enough.
+Non-anonymous votes, where the Merkle Proof and the signature are enough.
 
 ```json
 {
+    "type": "poll-vote",
     "nonce": "1234567890", // (optional) random number to prevent guessing the encrypted payload before the key is revealed
     "votes": [  // Direclty mapped to the `questions` field of the metadata
         1, 3, 2
