@@ -12,17 +12,20 @@ Regardless of the position the following are a MUST have
 - Multi-disciplinary, you can learn and adapt to upcoming needs and lead initiatives.
 - Ability to self-organize and prioritize
 
-## What are we currently looking for?
+## What are we currently looking for ?
 
-### Product manager
+### Front-end (Flutter development)
 
-- Adds clarity
-- Facilitates an ongoing conversation with a distributed team
-- Manages release cycles
-- Shapes the roadmap and reduces long term objectives into actionable steps
-- Keeps an eye on an always up-to-date documentation
-- The role could extend to business intelligence, long term strategy, product definition
-- Understanding of GDPR
+- Strong background in reactive frameworks
+- Strong background in either JS, TS or Dart
+- Strong background in responsive and multi-platform design.
+- Experience integrating with backend infrastructure and manipulating data structures
+- Experience in Flutter or capacity to learn it
+- Experience with UI testing frameworks
+- Passion for details, aesthetically pleasing and minimal design.
+- Good general understanding of the Web3 and blockchain the ecosystem
+- General understanding of cryptographic functions (signatures, encryption, hashing...)
+- Familiarity with decentralized identity models.
 
 ### Full-stack
   
@@ -44,4 +47,4 @@ Regardless of the position the following are a MUST have
 Do you think you fit into Vocodoni's culture and [how we work](about-us/how-we-work.md), but don't see the right skill set?
 There are a lot of roles we need but aren't actively looking for yet.
 
-📨 Drop us an [e-mail](mailto:xavi@vocdoni.io), telling us a bit more about yourself so we can get a sense of what you'd like to work with us. We are always happy to meet like-minded people :)
+📨 Drop us an [e-mail](mailto:hello@vocdoni.io), telling us a bit more about yourself so we can get a sense of what you'd like to work with us. We are always happy to meet like-minded people :)
