@@ -47,4 +47,4 @@ Regardless of the position the following are a MUST have
 Do you think you fit into Vocodoni's culture and [how we work](about-us/how-we-work.md), but don't see the right skill set?
 There are a lot of roles we need but aren't actively looking for yet.
 
-**Fill in [📝this form](https://airtable.com/shrCiICLho77ACcd9)**, telling us a bit more about yourself so we can get a sense of what you'd like to work with us. We are always happy to meet like-minded people :)
+**Fill in** [**📝this form**](https://airtable.com/shrCiICLho77ACcd9), telling us a bit more about yourself so we can get a sense of what you'd like to work with us. We are always happy to meet like-minded people :)
