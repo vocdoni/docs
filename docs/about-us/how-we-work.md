@@ -35,4 +35,4 @@ We want a sustainable work-life balance
 
 ## Join us
 
-If you think you think you can help us to fullfill our mission, check out our [open postions](about-us/open-positions.md) and drop us an [e-mail](mailto:xavi@vocdoni.io).
+If you think you can help us to fullfill our mission, check out our [open positions](about-us/open-positions.md) and drop us an [e-mail](mailto:xavi@vocdoni.io).

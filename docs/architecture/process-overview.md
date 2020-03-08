@@ -24,7 +24,7 @@ OG --> PM
 CR --> PM
 PM --> CR
 PM --> |export census|CS
-PM -.- |add process metatada and census hash|DATA
+PM -.- |add process metadata and census hash|DATA
 PM --> |create voting process|BP
 
 subgraph 

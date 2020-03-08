@@ -17,10 +17,10 @@ H5-.->HashPubKey2
 H6-.->HashPubKey3
 ```
 
-One of the interesting properties of this kind of data structure, is the method for prooving that a specific leaf is part of the structure. In our case, to proof that a specific Public Key is in the tree:
+One of the interesting properties of this kind of data structure, is the method for proving that a specific leaf is part of the structure. In our case, to proof that a specific Public Key is in the tree:
 
 + __verifier__ only needs to now the Root Hash
-+ __proover__ only needs to provide its PubKey and the Siblings
++ __prover__ only needs to provide its PubKey and the Siblings
 
 The owner of PubKey1 only needs to provide `HashPubKey1 + H4 + H1` to anyone to demostrate that his key is part of the census.
 
@@ -32,7 +32,7 @@ Vocdoni is using HashPubKey1 instead of just PubKey1 as a leaf data to add an ex
 
 Each entity/organization must provide its census before launching any governance process. It is up to the entity to decide the mechanism to add a specific public key to its census.
 
-The __census registry (CR)__ is a private/centralized component used by the entities to manage and create census. Usually the CR has a standard database containing the private details of the memebrs/users of the entity and their public keys. Somethig like the following example:
+The __census registry (CR)__ is a private/centralized component used by the entities to manage and create census. Usually the CR has a standard database containing the private details of the members/users of the entity and their public keys. Somethig like the following example:
 
 | id | name | age | country | pubkeyHash
 | --- | --- | --- | --- | ---
@@ -72,6 +72,6 @@ In addition, to create a process, the Entity Manager will publish the rest of de
 
 ### Using the census
 
-The Gateways deployed by Vocdoni and third parties will be monitorizing the Voting Process SC. Once they see there is a new open process and a new census, they will download and import the Merkle Tree. So at this point the users can use any available Gatrway to query if they are eligible for voting and to fetch their Merkle Proof.
+The Gateways deployed by Vocdoni and third parties will be monitorizing the Voting Process SC. Once they see there is a new open process and a new census, they will download and import the Merkle Tree. So at this point the users can use any available Gateway to query if they are eligible for voting and to fetch their Merkle Proof.
 
 With the Merkle Proof, the user will be able to demostrate his inclusion into the census thus she will be able to participate.
