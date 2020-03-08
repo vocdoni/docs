@@ -23,7 +23,7 @@ Much of the work involving metadata is delegated to decentralized filesystems, p
 - [Voting Process smart contract](/architecture/components/process?id=smart-contract).
 
 ## Web runtime (for React Native)
-Environments like React Native allow to develop mobile app clients with an efficient and consistent platrofm but lack the support of cryptographic API's present by default on Web browsers or NodeJS. Several crypto libraries rely on such API's, which are not available on RN. 
+Environments like React Native allow to develop mobile app clients with an efficient and consistent platform but lack the support of cryptographic API's present by default on Web browsers or NodeJS. Several crypto libraries rely on such API's, which are not available on RN. 
 
 Until React Native or Expo ship with native support, the current workaround is to mount a virtual web view and load them in a bundle, so the app code can queue operations to a web environment, pretty much like a WebWorker. 
 
