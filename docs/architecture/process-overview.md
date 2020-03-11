@@ -94,7 +94,7 @@ BP[<center>Ethereum<br/><br/><i class='fab fa-2x fa-ethereum'/></center>]
 OG -->|Publish vote private key|PM
 PM -->|Make transaction to smart contract|BP
 BP -->|<center>Get private key</center>| SC
-DATA -->|<center>Fetch process data <br/>and decypt votes</center>| SC
+DATA -->|<center>Fetch process data <br/>and decrypt votes</center>| SC
 SC -->|Write results| BP
 
 subgraph 
