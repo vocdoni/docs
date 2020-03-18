@@ -101,6 +101,7 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
     "method": "addClaim",
     "censusId": "0x12345678/0x23456789", // where to add the claim (must already exist)
     "claimData": "base64-string", // typically, a hash of a public key
+    "hash": false, // in case the hashing must be done on server side
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -142,6 +143,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
         "base64-string-1",
         "base64-string-2"
     ],
+    "hash": false, // in case the hashing must be done on server side
     "timestamp": 1556110671
   },
   "signature": "string"
