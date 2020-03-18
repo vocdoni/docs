@@ -92,7 +92,10 @@ When using the `gateway`, only the public keys specified in `--allowedAddrs` can
 **Private Method**
 
 Adds a payload to the census Merkle Tree and returns the updated Root Hash
-- In the case of public keys, the payload should be a Base64 encoded string with the Poseidon hash of the user's Public Key
+- If `digested` is `false`, the receiver will handle `claimData` as a raw public key encoded in base64
+  - The receiver should compute its Poseidon Hash and store it
+- If `digested` is `true`, the receiver will handle `claimData` as an already hashed public key, encoded in base64
+  - The receiver should store `claimData` as it is
 
 ```json
 {
@@ -100,8 +103,8 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
   "request": {
     "method": "addClaim",
     "censusId": "0x12345678/0x23456789", // where to add the claim (must already exist)
-    "claimData": "base64-string", // typically, a hash of a public key
-    "hash": false, // in case the hashing must be done on server side
+    "digested": false,  // is the claim digested? the Gateway should do it if not
+    "claimData": "base64-string", // the public key in base64 or its hash, also in base64
     "timestamp": 1556110671
   },
   "signature": "string"
@@ -129,7 +132,11 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
 **Private Method**
 
 Adds a set of payloads to the census Merkle Tree and returns the updated Root Hash
-- In the case of public keys, the payload should be a Base64 encoded string with the Poseidon hash of the user's Public Key
+
+- If `digested` is `false`, the receiver will handle `claimData` as a raw public key encoded in base64
+  - The receiver should compute its Poseidon Hash and store it
+- If `digested` is `true`, the receiver will handle `claimData` as an already hashed public key, encoded in base64
+  - The receiver should store `claimData` as it is
 - If any of the claims could not be added, `invalidClaims` contains an array with the indexes that failed
 
 ```json
@@ -138,12 +145,12 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
   "request": {
     "method": "addClaimBulk",
     "censusId": "0x12345678/0x23456789", // where to add the claims (must already exist)
-    "claimsData": [  // typically, a list of hashes of public keys
+    "digested": false,  // are the claims digested? the Gateway should do it if not
+    "claimsData": [  // the public keys in base64 or their hashes, also in base64
         "base64-string-0",
         "base64-string-1",
         "base64-string-2"
     ],
-    "hash": false, // in case the hashing must be done on server side
     "timestamp": 1556110671
   },
   "signature": "string"
