@@ -133,10 +133,10 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
 
 Adds a set of payloads to the census Merkle Tree and returns the updated Root Hash
 
-- If `digested` is `false`, the receiver will handle `claimData` as a raw public key encoded in base64
-  - The receiver should compute its Poseidon Hash and store it
-- If `digested` is `true`, the receiver will handle `claimData` as an already hashed public key, encoded in base64
-  - The receiver should store `claimData` as it is
+- If `digested` is `false`, the receiver will handle `claimsData` as raw public keys encoded in base64
+  - The receiver should compute their Poseidon Hashes and store them
+- If `digested` is `true`, the receiver will handle `claimsData` as already hashed public keys, encoded in base64
+  - The receiver should store `claimsData` as they are
 - If any of the claims could not be added, `invalidClaims` contains an array with the indexes that failed
 
 ```json
