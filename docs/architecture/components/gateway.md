@@ -369,6 +369,37 @@ The results are represented in a two-dimension array: `Question1[Option1,Option2
 ```
 - [GitLab issue regarding this feature](https://gitlab.com/vocdoni/go-dvote/issues/106)
 
+### Get Scrutinizer Entities
+
+**only available if scrutinizer enabled on the gateway**
+Get a list of the entities indexed by the scrutinizer. Currently this method returns a non-deterministic set of maximum 64 entity ids. 
+
+The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastEntityIdReceived` to get the next 64 values.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getScrutinizerEntities",
+    "fromId": "hexString",
+    "timestamp": 1556110671
+  },
+  "signature": ""  // Might be empty
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "entityIds": ["hexString1","hexString2", ...],
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
 ## File API
 
 ### Fetch File
