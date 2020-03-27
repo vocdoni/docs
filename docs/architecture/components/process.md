@@ -16,7 +16,7 @@
       - [Petition Sign](#petition-sign)
     - [Results (JSON)](#results-json)
   - [Future work](#future-work)
-    - [Definie a versioning system](#definie-a-versioning-system)
+    - [Define a versioning system](#definie-a-versioning-system)
     - [Define sanity checks](#define-sanity-checks)
     - [Oracles protocol](#oracles-protocol)
     - [Support multi-layer vote encryption](#support-multi-layer-vote-encryption)
@@ -100,7 +100,7 @@ where `entityProcessCount` is an incremental nonce per `entityAddress`.
 
 ### Process metadata (JSON)
 
-The creation of this document is critical. Multiple checks should be in place to ensure that the data is choerent (well formatted, all relevant locales present, etc).
+The creation of this document is critical. Multiple checks should be in place to ensure that the data is coherent (well formatted, all relevant locales present, etc).
 
 The JSON payload below is stored on IPFS.
 
@@ -287,22 +287,22 @@ Non-anonymous votes, where the Merkle Proof and the signature are enough.
 
 ## Future work
 
-### Definie a versioning system
+### Define a versioning system
 ### Define sanity checks
 There are serveral events where the process may be invalid.
 
 - Process-metadata can't be fetched from IPFS
 - Process-metadata field can't be parsed or does not exist
 - voteEncryptionPrivateKey is invalid is not correct
-- Block-times are have an valid range. Define how far in the future they want the
+- Block-times have an invalid range. Define how far in the future they want the
 
-Oracles must report them, and action should be taken if there is concensus.
+Oracles must report them, and action should be taken if there is consensus.
 
 ### Oracles protocol
 
-Most of the sanity check logic can't no longer be in the ethereum blockchain, therefore we need to define process/concensus mechanism for the oracles to report to the ethereum smart-contracts.
+Most of the sanity check logic can't no longer be in the ethereum blockchain, therefore we need to define process/consensus mechanism for the oracles to report to the ethereum smart-contracts.
 
-Oracles therefor must have an ethereum account, and it should be registered together with its public key
+Oracles therefore must have an ethereum account, and it should be registered together with its public key
 
 Oracles can complain when there is a problem.
 ```
@@ -315,13 +315,13 @@ If a pre-defined percentage of oracles agrees on a problem of a specific reason,
 invalidate(uint reason){}
 ```
 
-Before the user is shown a process, it should've been validated that the process is all good. Therfore is probably a good idea that the validators approve the process at the begining.
+Before the user is shown a process, it should've been validated that the process is all good. Therefore is probably a good idea that the validators approve the process at the beginning.
 
 ```
 complain(0);
 ```
 
-The same logic should be used for the reporting the results
+The same logic should be used for reporting the results
 
 ```
 reportResults(string resultsHash){}
@@ -334,4 +334,4 @@ In case of the `voteEncryptionPrivateKey` it is more complex, specially if there
 
 ### Support multi-layer vote encryption
 
-Define how multiple entities can publish the public and private key for vote encryption. So no single entity has privliedge information.
+Define how multiple entities can publish the public and private key for vote encryption. So no single entity has privilege information.

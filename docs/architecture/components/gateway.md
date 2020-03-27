@@ -16,7 +16,7 @@ One of the main rules applied on the Gateway development is to have a single sys
 
 A Gateway is a neutral piece of the whole ecosystem which can be contributed by any third party. Communities, neighbourhoods or any kind of organization might add new Gateways to provide access to the network and resilence against possible censorship attacks.
 
-To this end, Gateways participate in an automathic discovery mechanism through a p2p messaging network to make Bootnodes know of their existence. Clients make requests to Bootnodes to fetch a fresh list of working Gateways.
+To this end, Gateways participate in an automatic discovery mechanism through a p2p messaging network to make Bootnodes know of their existence. Clients make requests to Bootnodes to fetch a fresh list of working Gateways.
 
 ```mermaid
 graph TD
@@ -276,7 +276,7 @@ The `fromId` field can be used to seek an specific position and start from it. S
 
 ### Get Envelope List
 
-Get a list of registered vote envelopes for specific a process ID (maximum of 64 per call).  See `Get Process List`  to see how `fromId` works.
+Get a list of registered vote envelopes for a specific process ID (maximum of 64 per call).  See `Get Process List`  to see how `fromId` works.
 
 ```json
 {
@@ -453,7 +453,7 @@ Ideally, this methods require authentication following the rules described [in t
 
 ### List pinned files
 
-This method provides administrators of a Gateway with a list of resources that have been uploaded and or pinned remotelly and are still available on Swarm or IPFS.
+This method provides administrators of a Gateway with a list of resources that have been uploaded and or pinned remotely and are still available on Swarm or IPFS.
 
 ```json
 {

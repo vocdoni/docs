@@ -34,5 +34,5 @@
   <!--  - - [Problem and solution](about-us/problem-solution.md)-->
 <!--  - - [Alternatives](about-us/alternatives.md)-->
   - [How we work](about-us/how-we-work.md)
-  - [Open postions](about-us/open-positions.md)
+  - [Open positions](about-us/open-positions.md)
   - [Contribute to the docs](contribute.md)

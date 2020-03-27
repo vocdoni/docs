@@ -24,7 +24,7 @@ OG --> PM
 CR --> PM
 PM --> CR
 PM --> |export census|CS
-PM -.- |add process metatada and census hash|DATA
+PM -.- |add process metadata and census hash|DATA
 PM --> |create voting process|BP
 
 subgraph 
@@ -94,7 +94,7 @@ BP[<center>Ethereum<br/><br/><i class='fab fa-2x fa-ethereum'/></center>]
 OG -->|Publish vote private key|PM
 PM -->|Make transaction to smart contract|BP
 BP -->|<center>Get private key</center>| SC
-DATA -->|<center>Fetch process data <br/>and decypt votes</center>| SC
+DATA -->|<center>Fetch process data <br/>and decrypt votes</center>| SC
 SC -->|Write results| BP
 
 subgraph 
