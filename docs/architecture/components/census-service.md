@@ -237,6 +237,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
     "method": "genProof",
     "censusId": "0x123456789", // Merkle Root of the census for which the claim siblings are requested
     "claimData": "base64-string", // the leaf for which the proof is requested
+    "digested": false,  // is the claim digested? the backend should do it if not
     "rootHash": "optional-hexString" // from a specific version
   },
   "signature": ""  // Leave empty
@@ -267,6 +268,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
     "censusId": "0x123456789", // Merkle Root of the census for which the Merkle Tree's claim will be checked
     "claimData": "base64-string", // the leaf for which data is requested
     "proofData": "hexString", // the siblings, same format obtainet in genProof
+    "digested": false,  // is the claim digested? the backend should do it if not
     "rootHash": "optional-hexString" // from a specific version
   },
   "signature": ""  // Leave empty
