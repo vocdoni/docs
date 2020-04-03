@@ -4,7 +4,7 @@
 
 Voting ecosystems will need to interact with two different Smart Contracts on the Blockchain:
 * **Entity Resolver**
-    * Decentralized registry of entities and their corresponding metatada
+    * Decentralized registry of entities and their corresponding metadata
 * **Voting Process**
     * Registry of voting processes created by the entities defined above
 
@@ -52,11 +52,11 @@ A mobile APP able to generate and store a cryptographic user identity and intera
 
 ## Entity Manager
 
-A private service providing the Entity administrators a web site to manage voting processes on the blockchain. The service does not interact with any kind of users, it only needs to relay transactions to the blockchain.
+A private service providing the Entity administrators a website to manage voting processes on the blockchain. The service does not interact with any kind of users, it only needs to relay transactions to the blockchain.
 
 ### Census Registry
 
-A custom web site provided by the Entity typically used to validate a user before adding him/her to a Census. This web site is loaded on a webview from the client app, once the user decides to register to an Entity. The required steps to pass a validation are dependent on every Entity and need a custom integration.
+A custom website provided by the Entity typically used to validate a user before adding him/her to a Census. This website is loaded on a webview from the client app, once the user decides to register to an Entity. The required steps to pass a validation are dependent on every Entity and need a custom integration.
 
 Vocdoni will provide a very basic census registry which can be used by any entity (as an example or in production).
 
@@ -64,7 +64,7 @@ Vocdoni will provide a very basic census registry which can be used by any entit
 
 A private server allowing Entity administrators to manage the attributes (age, payment status, etc.) of users registered to it. Data from this service typically lives on a private database that will produce updated versions of specific census on demand.
 
-The web site also allows to create new census and define the requirements that users have to accomplish to be included.
+The website also allows to create new census and define the requirements that users have to accomplish to be included.
 
 ---
 

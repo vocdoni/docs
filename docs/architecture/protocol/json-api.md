@@ -44,6 +44,7 @@ The response API calls take two shapes depending on the result of the request.
   "id": "req-12345678",          // ID of the originating request
   "response": {
     "request": "req-12345678",   // Request ID here as well
+	"ok": true,                  // Whetever there has been an error or not
 
     // any additional values returned by the method
   }
@@ -52,14 +53,15 @@ The response API calls take two shapes depending on the result of the request.
 
 ### Error
 
-+ `error` A string with information of why a request failed
-+ `error.request` The value given in the request `id` field
-+ `error.message` Explanation of what went wrong
++ `response.ok` A bool indicating if the request failed
++ `response.request` The value given in the request `id` field
++ `response.message` Explanation of what went wrong
 
 ```json
 {
-  "id": "req-12345678",          // ID of the originating request
-  "error": {
+  "id": "req-12345678",                 // ID of the originating request
+  "response": {
+	"ok": false,                        // false if error found
     "request": "req-12345678",          // Request ID here as well
     "message": "Unknown method"         // What went wrong
   }
@@ -147,25 +149,6 @@ Response messages can also be signed. Keeping the examples above:
 Where:
 
 `payload.signature` = `ECDSA.SIGN` ( `sha256` ( `stringify` ( `payload.response` ) ) )
-
-And also:
-
-```json
-{
-  "error": {
-    "request": "req-12345678",           // ID of the originating request
-    "message": "Unknown method",         // What went wrong
-    "timestamp": 1556110671   <<<
-  },
-  "signature": "0x1234..."   <<<
-}
-```
-
-Where:
-
-`payload.signature` = `ECDSA.SIGN` ( `sha256` ( `stringify` ( `payload.error` ) ) )
-
-
 
 ## Encryption
 

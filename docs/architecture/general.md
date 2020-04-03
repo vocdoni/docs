@@ -8,7 +8,7 @@ Digital voting processes represent a great tech and social challenge. An officia
 + Use uncensorable communication channels
 + Ensure that voters from a census can only vote once without revealing anyone's identity
 
-Vocdoni defines an open architechture and the protocols to empower large communities to exercise full democracy with the aforementioned guarantees. 
+Vocdoni defines an open architecture and the protocols to empower large communities to exercise full democracy with the aforementioned guarantees. 
 
 A fully functional implementation of Vocdoni will typically involve a combination of two types of services. 
 - A public Ethereum blockchain, Gateways, Census Service, Voting Chain miners/oracles, and decentralized storage systems (open and accessible)

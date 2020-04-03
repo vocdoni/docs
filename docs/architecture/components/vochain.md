@@ -38,7 +38,7 @@ The workflow from creating a process, voting, and finalizing the process, is:
 - At least one permissioned account (representing an entity) is permissioned to set the process attributes in a Ethereum smart-contract.
 - A trusted oracle will see this new information and will send a `newProcessTx` transaction to the Tendermint blockchain in order to add the new process.
 - Once the process starts at some block (`startBlock`), any person/organization who is in the entity census can cast a `voteTx` vote from their smartphone.
-- The vote is sent to the gateway, and at some point it will be added to the Tendermint blockchain (if it complies with the requeriments, such as being a valid vote from a valid ID included in the census of a valid entity).
+- The vote is sent to the gateway, and at some point it will be added to the Tendermint blockchain (if it complies with the requirements, such as being a valid vote from a valid ID included in the census of a valid entity).
 - At some point in the near future, the process will finish and casting of new votes will be disabled.
 - Once the process is finished, an authorized can upload the process encryption keys to decrypt the votes.
 - At this point the whole process can be accounted and verified, and will live in the blockchain forever (or just its merkle root if any pruning is done).

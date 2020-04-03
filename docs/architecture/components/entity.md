@@ -256,7 +256,7 @@ Opening an interactive web browser
 }
 ```
 
-- The embedded web site can send messages to the host app
+- The embedded website can send messages to the host app
 - Messages can request the public key or signing payloads
 
 #### Image upload

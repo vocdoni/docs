@@ -164,7 +164,7 @@ sequenceDiagram
 
 ### Custom requests to an Entity
 
-An Entity may have specific requirements on what users have to accomplish in order to join a be part of its user registry.
+An Entity may have specific requirements on what users have to accomplish in order to join and be part of its user registry.
 
 Some may require filling a simple form. Some others may ask to log in from an existing HTTP service. Uploading ID pictures, selfies or even making payments need custom implementations that decide that a user must eventually be added to a census.
 

@@ -7,4 +7,5 @@
 - [Business model](/about-us/business-model.md)
 - [Funding](/about-us/funding.md)
 - [How we work](/about-us/how-we-work.md)
-- [Open postions](/about-us/open-positions.md)
+- [Open positions](/about-us/open-positions.md)
+- [Privacy policy](/about-us/privacy-policy.md)

@@ -16,7 +16,7 @@ One of the main rules applied on the Gateway development is to have a single sys
 
 A Gateway is a neutral piece of the whole ecosystem which can be contributed by any third party. Communities, neighbourhoods or any kind of organization might add new Gateways to provide access to the network and resilence against possible censorship attacks.
 
-To this end, Gateways participate in an automathic discovery mechanism through a p2p messaging network to make Bootnodes know of their existence. Clients make requests to Bootnodes to fetch a fresh list of working Gateways.
+To this end, Gateways participate in an automatic discovery mechanism through a p2p messaging network to make Bootnodes know of their existence. Clients make requests to Bootnodes to fetch a fresh list of working Gateways.
 
 ```mermaid
 graph TD
@@ -276,7 +276,7 @@ The `fromId` field can be used to seek an specific position and start from it. S
 
 ### Get Envelope List
 
-Get a list of registered vote envelopes for specific a process ID (maximum of 64 per call).  See `Get Process List`  to see how `fromId` works.
+Get a list of registered vote envelopes for a specific process ID (maximum of 64 per call).  See `Get Process List`  to see how `fromId` works.
 
 ```json
 {
@@ -369,6 +369,37 @@ The results are represented in a two-dimension array: `Question1[Option1,Option2
 ```
 - [GitLab issue regarding this feature](https://gitlab.com/vocdoni/go-dvote/issues/106)
 
+### Get Scrutinizer Entities
+
+**only available if scrutinizer enabled on the gateway**
+Get a list of the entities indexed by the scrutinizer. Currently this method returns a non-deterministic set of maximum 64 entity ids. 
+
+The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastEntityIdReceived` to get the next 64 values.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getScrutinizerEntities",
+    "fromId": "hexString",
+    "timestamp": 1556110671
+  },
+  "signature": ""  // Might be empty
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "entityIds": ["hexString1","hexString2", ...],
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
 ## File API
 
 ### Fetch File
@@ -453,7 +484,7 @@ Ideally, this methods require authentication following the rules described [in t
 
 ### List pinned files
 
-This method provides administrators of a Gateway with a list of resources that have been uploaded and or pinned remotelly and are still available on Swarm or IPFS.
+This method provides administrators of a Gateway with a list of resources that have been uploaded and or pinned remotely and are still available on Swarm or IPFS.
 
 ```json
 {

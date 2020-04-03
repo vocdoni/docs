@@ -56,7 +56,7 @@ To understand how a decentralized voting process works, we need to define the se
 	<!-- - Publish the Merkle Tree to Swarm -->
 	- On ZK Snarks processes:
 		- Push the eligible public keys to the [Census Service](/architecture/general?id=census-service)
-	- With Linkable Rring Signatures:
+	- With Linkable Ring Signatures:
 		- Push the eligible public keys to the [Census Service](/architecture/general?id=census-service)
 		- Push the settings of the new census so that group modulus can be created (process Id and maximum group size)
 		- Get the modulus number and the [Content URI](/architecture/protocol/data-origins?id=content-uri)'s where the [Census Service](/architecture/general?id=census-service) is pinning every [modulus group](/architecture/protocol/franchise-proof?id=_2-create-census-rings)
