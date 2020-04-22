@@ -141,6 +141,8 @@ Check the status of an already submited vote envelope.
 {
   "id": "req-2345679",
   "response": {
+    "blockTimestamp": 1556110672, // if registered == true
+    "height": 1234, // if registered == true
     "registered": true,  // Whether the vote is registered in a vote batch on the Blockchain
     "request": "req-2345679",
     "timestamp": 1556110672
@@ -296,6 +298,34 @@ Get a list of registered vote envelopes for a specific process ID (maximum of 64
   "id": "req-2345679",
   "response": {
     "nullifiers": ["hexString1","hexString2", ...], // List of nullifiers already processed by the blockchain
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+### Get Process Keys
+
+Get a list encryption public keys for a specific process ID.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getProcessKeys",
+    "processId": "hexString",
+    "timestamp": 1556110671
+  },
+  "signature": ""  // Might be empty
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "processKeys": ["hexString1","hexString2", ...], // List of process encryption public keys
     "request": "req-2345679",
     "timestamp": 1556110672
   },
