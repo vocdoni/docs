@@ -236,6 +236,7 @@ Request the number of blocks that are currently on the blockchain.
 {
   "id": "req-2345679",
   "response": {
+    "blockTimestamp": 1556110672,
     "ok": true,
     "height": 12345,
     "request": "req-2345679", // Request ID here as well, to check its integrity
