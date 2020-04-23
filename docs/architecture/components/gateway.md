@@ -73,6 +73,7 @@ Get overview of gateway info - which APIs are enabled, and whether the gateway a
   "id": "req-2345679",
   "response": {
 	"apiList": ["census","file","vote"],
+    "health": 65,  // A number between 1 and 100 that indicates the health of the gateway (resource consumption, network status, etc.)
     "ok": true,
     "request": "req-2345679", // Request ID here as well, to check its integrity
     "timestamp": 1556110672
@@ -338,7 +339,7 @@ Get a list encryption public keys for a specific process ID.
 ### Get Process Result List
 
 **only available if scrutinizer enabled on the gateway**
-Get a list of the processes indexed by the scrutinizer with results. Currently this method returns a non-deterministic set of maximum 64 process ids. 
+Get a list of the processes indexed by the scrutinizer with **final results**. Currently this method returns a non-deterministic set of maximum 64 process ids. 
 
 The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastProcIdReceived` to get the next 64 values.
 
@@ -366,10 +367,41 @@ The `fromId` field can be used to seek an specific position and start from it. S
 }
 ```
 
+### Get Live Process Result List
+
+**only available if scrutinizer enabled on the gateway**
+Get a list of the processes indexed by the scrutinizer with **partial results**. Only those vote types with a non-encrypted payload can be partialy scrutinized.
+
+The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastProcIdReceived` to get the next 64 values.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getProcListLiveResults",
+    "fromId": "hexString",
+    "timestamp": 1556110671
+  },
+  "signature": ""  // Might be empty
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "processIds": ["hexString1","hexString2", ...],
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
 ### Get Process Results
 
 **only available if scrutinizer enabled on the gateway**
-Get the results of the processIds indexed by the scrutinizer.
+Get the results of the processIds indexed by the scrutinizer. If the process is not yet finished and the votes are not encrypted, returns the **partial result**.
 The results are represented in a two-dimension array: `Question1[Option1,Option2,...], Question2[Option1,Option2,...], ...`
 
 ```json
@@ -390,7 +422,7 @@ The results are represented in a two-dimension array: `Question1[Option1,Option2
   "response": {
     "request": "req-2345679",
     "type": "poll-vote",
-    "state": "active",         // "scheduled|active|paused|finished|canceled"
+    "state": "active",     // "scheduled|active|paused|finished|canceled"
     "results": [ [12, 2], [3, 11, 24], [0, 43] ],
     "timestamp": 1556110672
   },
