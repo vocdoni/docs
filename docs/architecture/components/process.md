@@ -8,7 +8,7 @@
   - [Data schema](#data-schema)
     - [Process metadata (JSON)](#process-metadata-json)
     - [Vote Envelope](#vote-envelope)
-      - [Containing Snark Votes](#containing-snark-votes)
+      - [Containing Snark votes](#containing-snark-votes)
       - [Containing Poll votes](#containing-poll-votes)
     - [Vote Package](#vote-package)
       - [Snark Vote](#snark-vote)
@@ -171,7 +171,7 @@ The Vote Envelope wraps different types of vote packages and features certain fi
     "proof": "0x1234...",  // ZK Proof
     "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
     "nullifier": "0x1234...",   // Hash of the private key + processId
-    "vote-package": "base64-vote-package"  // base64(jsonString) is encrypted
+    "vote-package": "base64-vote-package"  // base64(jsonString) or base64( encrypt(jsonString) )
 }
 ```
 
@@ -185,7 +185,7 @@ The Vote Envelope of a Poll vote features the process ID, the Census Merkle Proo
     "proof": "0x1234...",  // Merkle Proof
     "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
     "signature": "0x12345678...",  // sign( JSON.stringify( { processId, proof, nonce, vote-package } ), privateKey )
-    "vote-package": "base64-vote-package"  // base64(jsonString)
+    "vote-package": "base64-vote-package"  // base64(jsonString) or base64( encrypt(jsonString) )
 }
 ```
 
