@@ -309,7 +309,14 @@ Get a list of registered vote envelopes for a specific process ID (maximum of 64
 
 ### Get Process Keys
 
-Get a list encryption public keys for a specific process ID.
+Get a list encryption public keys, private keys and commitment/reveal keys for a specific process ID.
+
+The response will have all known keys. If the process is on-going, usually `encryptionPubkeys` and `commitmentKeys` will be available.
+Once the process is finished, `encryptionPrivKeys` and `revealKeys` will be also added to the response.
+
+The syntax is `[keyIndex:hexKey]`. 
+
+When encrypting and decrypting a vote payload it is expected to use the keys ordered by their indexes. It's important to note that the indexes might not be consecutive, however the smaller index goes first.
 
 ```json
 {
@@ -327,7 +334,10 @@ Get a list encryption public keys for a specific process ID.
 {
   "id": "req-2345679",
   "response": {
-    "processKeys": ["hexString1","hexString2", ...], // List of process encryption public keys
+    "encryptionPubKeys": ["1:hexString1","4:hexString2", ...], 
+    "commitmentKeys": ["1:hexString1","4:hexString2", ...],
+    "encryptionPrivKeys": ["1:hexString1","4:hexString2", ...],
+    "revealKeys": ["1:hexString1","4:hexString2", ...],
     "request": "req-2345679",
     "timestamp": 1556110672
   },
