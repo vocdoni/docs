@@ -314,8 +314,6 @@ Get a list encryption public keys, private keys and commitment/reveal keys for a
 The response will have all known keys. If the process is on-going, usually `encryptionPubkeys` and `commitmentKeys` will be available.
 Once the process is finished, `encryptionPrivKeys` and `revealKeys` will be also added to the response.
 
-The syntax is `[keyIndex:hexKey]`. 
-
 When encrypting and decrypting a vote payload it is expected to use the keys ordered by their indexes. It's important to note that the indexes might not be consecutive, however the smaller index goes first.
 
 ```json
