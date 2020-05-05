@@ -204,7 +204,7 @@ Used for anonymous votes using ZK Snarks to restrict voters to only those on the
 ```json
 {
     "type": "snark-vote",
-    "nonce": "1234567890", // random number to prevent guessing the encrypted payload before the key is revealed
+    "nonce": "01234567890abcdef", // 8+ byte random string to prevent guessing the encrypted payload before the reveal key is released
     "votes": [  // Direclty mapped to the `questions` field of the metadata
         1, 3, 2
     ]
@@ -218,12 +218,14 @@ Non-anonymous votes, where the Merkle Proof and the signature are enough.
 ```json
 {
     "type": "poll-vote",
-    "nonce": "1234567890", // (optional) random number to prevent guessing the encrypted payload before the key is revealed
+    "nonce": "01234567890abcdef", // 8+ byte random string to prevent guessing the encrypted payload before the reveal key is released
     "votes": [  // Direclty mapped to the `questions` field of the metadata
         1, 3, 2
     ]
 }
 ```
+
+The `nonce` is mandatory if the poll is encrypted. Can be omitted otherwise.
 
 #### Petition Sign
 

@@ -334,10 +334,10 @@ When encrypting and decrypting a vote payload it is expected to use the keys ord
 {
   "id": "req-2345679",
   "response": {
-    "encryptionPubKeys": ["1:hexString1","4:hexString2", ...], 
-    "commitmentKeys": ["1:hexString1","4:hexString2", ...],
-    "encryptionPrivKeys": ["1:hexString1","4:hexString2", ...],
-    "revealKeys": ["1:hexString1","4:hexString2", ...],
+    "encryptionPubKeys": [ {"idx": 1, "key": "1234567890..."}, {"idx": 6, "key": "2345678901..."}, ... ], 
+    "commitmentKeys": [ {"idx": 1, "key": "1234567890..."}, {"idx": 6, "key": "2345678901..."}, ... ],
+    "encryptionPrivKeys": [ {"idx": 1, "key": "1234567890..."}, {"idx": 6, "key": "2345678901..."}, ... ],
+    "revealKeys": [ {"idx": 1, "key": "1234567890..."}, {"idx": 6, "key": "2345678901..."}, ... ],
     "request": "req-2345679",
     "timestamp": 1556110672
   },
