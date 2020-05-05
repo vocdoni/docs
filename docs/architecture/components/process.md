@@ -171,6 +171,7 @@ The Vote Envelope wraps different types of vote packages and features certain fi
     "proof": "0x1234...",  // ZK Proof
     "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
     "nullifier": "0x1234...",   // Hash of the private key + processId
+    "encryptionKeyIndexes": [0, 1, 2, 3, 4],  // (optional) On encrypted votes, contains the (sorted) indexes of the keys used to encrypt
     "vote-package": "base64-vote-package"  // base64(jsonString) or base64( encrypt(jsonString) )
 }
 ```
@@ -184,8 +185,9 @@ The Vote Envelope of a Poll vote features the process ID, the Census Merkle Proo
     "processId": "0x1234567890...",
     "proof": "0x1234...",  // Merkle Proof
     "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
-    "signature": "0x12345678...",  // sign( JSON.stringify( { processId, proof, nonce, vote-package } ), privateKey )
-    "vote-package": "base64-vote-package"  // base64(jsonString) or base64( encrypt(jsonString) )
+    "encryptionKeyIndexes": [0, 1, 2, 3, 4],  // (optional) On encrypted polls, contains the (sorted) indexes of the keys used to encrypt
+    "vote-package": "base64-vote-package",  // base64(jsonString) or base64( encrypt(jsonString) )
+    "signature": "0x12345678...",  // sign( JSON.stringify( { processId, proof, nonce, encryptionKeyIndexes?, vote-package } ), privateKey )
 }
 ```
 
@@ -211,6 +213,8 @@ Used for anonymous votes using ZK Snarks to restrict voters to only those on the
 }
 ```
 
+- On encrypted votes, public keys must be used in ascending order.
+
 #### Poll Vote
 
 Non-anonymous votes, where the Merkle Proof and the signature are enough.
@@ -225,7 +229,8 @@ Non-anonymous votes, where the Merkle Proof and the signature are enough.
 }
 ```
 
-The `nonce` is mandatory if the poll is encrypted. Can be omitted otherwise.
+- The `nonce` is mandatory if the poll is encrypted. Can be omitted otherwise.
+- On encrypted polls, public keys must be used in ascending order.
 
 #### Petition Sign
 
