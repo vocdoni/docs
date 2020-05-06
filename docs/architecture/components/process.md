@@ -38,7 +38,7 @@ The address of the Voting process contract instance is resolved from `voting-pro
 // GLOBAL STRUCTS
 
 struct Process {
-    string processType;                // One of: snark-vote, poll-vote, petition-sign
+    string processType;                // One of: snark-vote, poll-vote, encrypted-vote, petition-sign
     address entityAddress;             // The Ethereum address of the Entity
     uint256 startBlock;                // Tendermint block number on which the voting process starts
     uint256 numberOfBlocks;            // Amount of Tendermint blocks during which the voting process is active
