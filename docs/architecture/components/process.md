@@ -107,7 +107,7 @@ The JSON payload below is stored on IPFS.
 ```json
 {
     "version": "1.0", // Protocol version
-    "type": "snark-vote", // One of: snark-vote, poll-vote, petition-sign
+    "type": "snark-vote", // One of: snark-vote, poll-vote, encrypted-poll, petition-sign
     "startBlock": 10000, // Vochain block number to start the voting process
     "numberOfBlocks": 400,
     "census": {
@@ -242,7 +242,7 @@ Non-anonymous votes, where the Merkle Proof and the signature are enough.
 
 ```json
 {
-    "type": "petition-sign", // One of: snark-vote, poll-vote, petition-sign
+    "type": "petition-sign", // One of: snark-vote, poll-vote, encrypted-poll, petition-sign
     "nullifier": "0x1234...",   // Hash of the private key
     "votes": [  // Direclty mapped to the `questions` field of the metadata
         1
