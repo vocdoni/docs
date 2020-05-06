@@ -87,7 +87,7 @@ The following are data payloads that are packaged by a client app or an oracle, 
     "proof": "0x1234",
     "signature": "signature of all the data made by the client",
     "type": "vote",
-    "vote-package": "the envelope itself encoded in b64"
+    "votePackage": "the envelope itself encoded in b64"
 }
 ```
 - `Add an oracle`

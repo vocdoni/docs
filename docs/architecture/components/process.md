@@ -172,7 +172,7 @@ The Vote Envelope wraps different types of vote packages and features certain fi
     "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
     "nullifier": "0x1234...",   // Hash of the private key + processId
     "encryptionKeyIndexes": [0, 1, 2, 3, 4],  // (optional) On encrypted votes, contains the (sorted) indexes of the keys used to encrypt
-    "vote-package": "base64-vote-package"  // base64(jsonString) or base64( encrypt(jsonString) )
+    "votePackage": "base64-vote-package"  // base64(jsonString) or base64( encrypt(jsonString) )
 }
 ```
 
@@ -186,8 +186,8 @@ The Vote Envelope of a Poll vote features the process ID, the Census Merkle Proo
     "proof": "0x1234...",  // Merkle Proof
     "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
     "encryptionKeyIndexes": [0, 1, 2, 3, 4],  // (optional) On encrypted polls, contains the (sorted) indexes of the keys used to encrypt
-    "vote-package": "base64-vote-package",  // base64(jsonString) or base64( encrypt(jsonString) )
-    "signature": "0x12345678...",  // sign( JSON.stringify( { processId, proof, nonce, encryptionKeyIndexes?, vote-package } ), privateKey )
+    "votePackage": "base64-vote-package",  // base64(jsonString) or base64( encrypt(jsonString) )
+    "signature": "0x12345678...",  // sign( JSON.stringify( { processId, proof, nonce, encryptionKeyIndexes?, votePackage } ), privateKey )
 }
 ```
 
