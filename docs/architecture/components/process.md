@@ -38,31 +38,31 @@ The address of the Voting process contract instance is resolved from `voting-pro
 // GLOBAL STRUCTS
 
 struct Process {
-    string processType;                // One of: snark-vote, poll-vote, encrypted-vote, petition-sign
-    address entityAddress;             // The Ethereum address of the Entity
-    uint256 startBlock;                // Tendermint block number on which the voting process starts
-    uint256 numberOfBlocks;            // Amount of Tendermint blocks during which the voting process is active
-    string metadata;                   // Content Hashed URI of the JSON meta data (See Data Origins)
-    string censusMerkleRoot;           // Hex string with the Merkle Root hash of the census
-    string censusMerkleTree;           // Content Hashed URI of the exported Merkle Tree (not including the public keys)
-    string voteEncryptionPrivateKey;   // Key published after the vote ends so that scrutiny can start
-    bool canceled;                     // Can be used by organization to cancel the project
-    string results;                    // Content Hashed URI of the results (See Data Origins)
+    uint8 envelopeType;         // One of valid envelope types, see: https://vocdoni.io/docs/#/architecture/components/process
+    uint8 mode;                 // 0 [scheduled-single-envelope], 1 [ondemand-single-envelope]
+    address entityAddress;      // The Ethereum address of the Entity
+    uint256 startBlock;         // Tendermint block number on which the voting process starts
+    uint256 numberOfBlocks;     // Amount of Tendermint blocks during which the voting process is active
+    string metadata;            // Content Hashed URI of the JSON meta data (See Data Origins)
+    string censusMerkleRoot;    // Hex string with the Merkle Root hash of the census
+    string censusMerkleTree;    // Content Hashed URI of the exported Merkle Tree (not including the public keys)
+    uint8 status;               // 0 [open], 1 [ended], 2 [canceled], 3 [paused]
+    string results;             // String containing the actual results
 }
 
 // GLOBAL DATA
 
 address contractOwner;
-string[] validators;                    // Public key array
-string[] oracles;                       // Public key array
-string genesis;                         // Content Hashed URI
-uint chainId;
+string[] validators;            // Public key array
+address[] oracles;              // Public key array
+string genesis;                 // Content Hashed URI
+uint256 chainId;
 
 // PER-PROCESS DATA
 
-Process[] public processes;                 // Array of Process structs
-mapping (bytes32 => uint) processesIndex;   // Mapping of processIds to process idx on the array
-mapping (address => uint) public entityProcessCount;   // Index of the last process for a given Entity address
+Process[] public processes; // Array of Process struct
+mapping(bytes32 => uint256) processesIndex; // Mapping of processIds with processess idx
+mapping(address => uint256) public entityProcessCount; // index of the last process for a given address
 
 ```
 
@@ -116,7 +116,6 @@ The JSON payload below is stored on IPFS.
     },
     "details": {
         "entityId": "0x123",
-        "encryptionPublicKey":" 0x1123",
         "title": {
             "en": "Universal Basic Income",
             "ca": "Renda Bàsica Universal"
@@ -300,7 +299,6 @@ There are serveral events where the process may be invalid.
 
 - Process-metadata can't be fetched from IPFS
 - Process-metadata field can't be parsed or does not exist
-- voteEncryptionPrivateKey is invalid is not correct
 - Block-times have an invalid range. Define how far in the future they want the
 
 Oracles must report them, and action should be taken if there is consensus.
@@ -337,7 +335,6 @@ reportResults(string resultsHash){}
 ```
 validateResults(){}
 ````
-In case of the `voteEncryptionPrivateKey` it is more complex, specially if there are multiple actors.
 
 ### Support multi-layer vote encryption
 
