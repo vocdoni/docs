@@ -57,6 +57,8 @@ string[] validators;            // Public key array
 address[] oracles;              // Public key array
 string genesis;                 // Content Hashed URI
 uint256 chainId;
+mapping(uint8 => bool) envelopeTypes; // valid envelope types
+mapping(uint8 => bool) modes;         // valid process modes
 
 // PER-PROCESS DATA
 
