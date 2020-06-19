@@ -217,15 +217,15 @@ Get the number of envelopes registered for a process ID.
 **Used in:**
 - [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 
-### Get Block Time
+### Get Block Status
 
-Request the average block creation time.
+Request info about the last mined block and the average block time for the last 1m, 10m, 1h, 6h and 24h.
 
 ```json
 {
   "id": "req-12345678",
   "request": {
-    "method": "getBlockTime",
+    "method": "getBlockStatus",
     "timestamp": 1556110671
   },
   "signature": ""  // Might be empty
@@ -236,10 +236,11 @@ Request the average block creation time.
 {
   "id": "req-2345679",
   "response": {
-    "blockTimestamp": 1556110672,
+    "blockTime": [10000, 12000, 12200, 12500, 12600], // In milliseconds, average for 1 minute, 10m, 1h, 6h, 24h
+                                                      // If there is no average yet, values are 0
+    "blockTimestamp": 1556110672, // in seconds
+    "height": 12345,
     "ok": true,
-    "blockTime": [10000,12000,12200,12500,12600], // In miliseconds, average for 1 minute, 10m, 1h, 6h, 24h
-                                                  // If there is not average yet, value is 0
     "request": "req-2345679", // Request ID here as well, to check its integrity
     "timestamp": 1556110672
   },
