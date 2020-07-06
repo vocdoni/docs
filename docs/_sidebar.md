@@ -7,6 +7,7 @@
     - [Components](architecture/components.md)
         - [Entity](architecture/components/entity.md)
         - [Voting Process](architecture/components/process.md)
+        - [Namespaces](architecture/components/namespaces.md)
         - [Vochain](architecture/components/vochain.md)
         - [Census Service](architecture/components/census-service.md)
         - [Gateway](architecture/components/gateway.md)
