@@ -52,19 +52,22 @@ struct Process {
     string metadata; // Content Hashed URI of the JSON meta data (See Data Origins)
     string censusMerkleRoot; // Hex string with the Merkle Root hash of the census
     string censusMerkleTree; // Content Hashed URI of the exported Merkle Tree (not including the public keys)
-
     Status status; // One of 0 [ready], 1 [ended], 2 [canceled], 3 [paused], 4 [results]
     uint8 questionIndex; // The index of the currently active question (only assembly processes)
 
-    // How many choices should be on every question.
+    // How many questions are available to vote
     // questionCount >= 1
     uint8 questionCount;
 
-    // Determines the acceptable value range.
-    // N => valid votes will range from 1 to N (inclusive)
-    uint8 maxVoteOverwrites; // How many times a vote can be replaced (only the last counts)
+    // How many choices can be made for each question.
+    // 1 <= maxCount <= 100
+    uint8 maxCount;
 
+    // Determines the acceptable value range.
+    // N => valid votes will range from 0 to N (inclusive)
     uint8 maxValue;
+
+    uint8 maxVoteOverwrites; // How many times a vote can be replaced (only the last one counts)
 
     // Choices for a question cannot appear twice or more
     bool uniqueValues;
