@@ -407,43 +407,66 @@ When `envelopeType.ENCRYPTED_VOTE` is enabled:
 
 ### Results (JSON)
 
-- Its hash is published in the voting-process smart-contract
-- Sorting must match the `ProcessMetadata` questions.
+Below is an excerp of vote types, along with 3 votes and their corresponding scrutiny output.
 
-```json
-
-{
-    "questions":[
-        {
-            "invalid": 0, 
-            "results": [
-                {
-                    "count": 12342,
-                    "value": "0" // Mataches the value in voteOption in ProcessMetadata
-                },
-                {
-                    "count": 4321,
-                    "value": "1"
-                }
-            ]
-        },
-        {
-            "invalid": 0,
-            "results": [
-                {
-                    "count": 12342,
-                    "value": "0" 
-                },
-                {
-                    "count": 4321,
-                    "value": "1"
-                }
-            ]
-        }
-    ]
-}
-
-```
+<table><thead><tr><th>Name</th><th>Answers</th><th>Results</th><th>maxCount</th><th>maxValue</th><th>maxTotalCost</th><th>costExponent</th><th>uniqueValues</th></tr></thead><tbody><tr><td class="cell-title">Rate a product</td>
+	<td class="cell-one">[3] [5] [3]</td>
+<td class="cell-two">[ [0,0,2,0,1] ]</td>
+<td class="cell-three">1</td>
+<td class="cell-four">5</td>
+<td class="cell-five">-</td>
+<td class="cell-six">-</td>
+<td class="cell-seven">false</td></tr>
+<tr><td class="cell-title">Rate 3 candidates: A, B, C ⇒ 0, 1, 2</td>
+	<td class="cell-one">[2,1,2] [0,1,2] [0,0,0]</td>
+<td class="cell-two">[ [2,0,1], [1,2,0], [1,0,2] ]</td>
+<td class="cell-three">3</td>
+<td class="cell-four">2</td>
+<td class="cell-five">-</td>
+<td class="cell-six">-</td>
+<td class="cell-seven">false</td></tr>
+<tr><td class="cell-title">Single choice (1 out of 3)</td>
+	<td class="cell-one">[0,1,0] [0,1,0] [1,0,1]
+</td>
+<td class="cell-two">[ [2,1], [1,2], [2,1] ]</td>
+<td class="cell-three">3</td>
+<td class="cell-four">1</td>
+<td class="cell-five">1</td>
+<td class="cell-six">-</td>
+<td class="cell-seven">false</td></tr>
+<tr><td class="cell-title">Multiple choice (3 out of 5)</td>
+	<td class="cell-one">[1,1,1,0,0] [0,1,1,1,0] [1,1,0,0,0]</td>
+<td class="cell-two">[ [1, 2], [0, 3], [1, 2], [2, 1], [3, 0] ] </td>
+<td class="cell-three">5</td>
+<td class="cell-four">1</td>
+<td class="cell-five">3</td>
+<td class="cell-six">-</td>
+<td class="cell-seven">false</td></tr>
+<tr><td class="cell-title">Weighted choice: Sort the 5 candidates</td>
+	<td class="cell-one">[1,4,2,5,3] [4,1,2,5,3] [2,3,4,5,1]</td>
+<td class="cell-two">[ [0,1,1,0,1,0], [0,1,0,1,1,0], [0,0,2,0,1,1], [0,1,0,2,0,0] ]</td>
+<td class="cell-three">5</td>
+<td class="cell-four">5</td>
+<td class="cell-five">-</td>
+<td class="cell-six">-</td>
+<td class="cell-seven">true</td></tr>
+<tr><td class="cell-title">Quadratic voting: 4 options, 9 credits</td>
+	<td class="cell-one">[2,2,1,0] [1,1,1,1] [0,3,0,0]</td>
+<td class="cell-two">[ [1,1,1,0], [0,1,1,1], [1,2,0,0], [2,1,0,0] ]</td>
+<td class="cell-three">4</td>
+<td class="cell-four">-</td>
+<td class="cell-five">9</td>
+<td class="cell-six">2.0000</td>
+<td class="cell-seven">false</td></tr>
+<tr><td class="cell-title">Election: 3 positions (CEO, COO, CFO), 5 candidates</td>
+	<td class="cell-one">[4,3,2] [4,2,3] [0,1,4]</td>
+<td class="cell-two">[ [1,0,0,0,2], [0,1,1,1,0], [0,0,1,1,1] ]</td>
+<td class="cell-three">3</td>
+<td class="cell-four">4</td>
+<td class="cell-five"></td>
+<td class="cell-six"></td>
+<td class="cell-seven">false</td></tr>
+</tbody></table>
 
 ## Future work
 
