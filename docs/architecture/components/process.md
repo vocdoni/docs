@@ -289,7 +289,8 @@ The JSON payload below is stored on IPFS.
 ```json
 {
     "version": "1.0", // Protocol version
-    "type": "snark-vote", // One of: snark-vote, poll-vote, encrypted-poll, petition-sign
+    "mode": 0, // See the Process Mode flags above
+    "envelopeType": 0, // See the Envelope Type flags above
     "startBlock": 10000, // Vochain block number to start the voting process
     "blockCount": 400,
     "census": {
@@ -340,15 +341,19 @@ The JSON payload below is stored on IPFS.
 }
 ```
 
+The source of truth of the `mode`, `envelopeType`, `startblock` and `blockCount` is on the Smart Contract. The JSON fields are a convenience replica and may be deprecated in the future.
+
 ### Vote Envelope
 
-The Vote Envelope wraps different types of vote packages and features certain fields, depending on the underlying Vote Package Type
+The Vote Envelope contains a (possibly encrypted) Vote Package and provides the details to check that the incoming vote is valid. Some fields may be optional depending on the `mode` and the `envelopetype` of the process.
 
-#### Containing Snark Votes
+#### When `envelopeType.ANONYMOUS` is enabled
+
+An anonymous Vote Envelope features the proces ID, the ZK Proof, a nonce to prevent replay attacks, the user's nullifier for the vote, the index of the encryption keys used and a base64 representation of the Vote Package.
 
 ```json
 {
-    "processId": "0x1234567890...",
+    "processId": "0x1234567890...",  // The process for which the vote is casted
     "proof": "0x1234...",  // ZK Proof
     "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
     "nullifier": "0x1234...",   // Hash of the private key + processId
@@ -357,14 +362,20 @@ The Vote Envelope wraps different types of vote packages and features certain fi
 }
 ```
 
-#### Containing Poll votes
+The `nullifier` to uniquely identify the vote in the blockchain is computed as follows: 
 
-The Vote Envelope of a Poll vote features the process ID, the Census Merkle Proof of the user, a nonce to prevent replay attacks and a Base64 representation of the Vote Package. The signature should be generated from a JSON object containing the keys in ascending alphabetical order.
+`nullifier = keccak256(bytes(hex(addr(signature))) + bytes(hex(processId)))`
+
+#### When `envelopeType.ANONYMOUS` is disabled
+
+A non-anonymous Vote Envelope features the process ID, the Census Merkle Proof of the user, a nonce to prevent replay attacks, the index of the encryption keys used, a Base64 representation of the Vote Package and the user's signature.
+
+Like always, the signature should be generated from a JSON object containing the keys in ascending alphabetical order.
 
 ```json
 {
     "processId": "0x1234567890...",
-    "proof": "0x1234...",  // Merkle Proof
+    "proof": "0x1234...",  // Merkle Proof of the voter's public key
     "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
     "encryptionKeyIndexes": [0, 1, 2, 3, 4],  // (optional) On encrypted polls, contains the (sorted) indexes of the keys used to encrypt
     "votePackage": "base64-vote-package",  // base64(jsonString) or base64( encrypt(jsonString) )
@@ -372,21 +383,12 @@ The Vote Envelope of a Poll vote features the process ID, the Census Merkle Proo
 }
 ```
 
-The `nullifier` to identify the vote in the blockchain is computed as follows: 
-
-`nullifier = keccak256(bytes(hex(addr(signature))) + bytes(hex(processId)))`
-
 ### Vote Package
 
-Is the actual data contained within a vote Envelope.
-
-#### Snark Vote
-
-Used for anonymous votes using ZK Snarks to restrict voters to only those on the Merke Tree.
+Contains the actual votes and is part of the Vote Envelope.
 
 ```json
 {
-    "type": "snark-vote",
     "nonce": "01234567890abcdef", // 8+ byte random string to prevent guessing the encrypted payload before the reveal key is released
     "votes": [  // Direclty mapped to the `questions` field of the metadata
         1, 3, 2
@@ -394,44 +396,14 @@ Used for anonymous votes using ZK Snarks to restrict voters to only those on the
 }
 ```
 
-- On encrypted votes, public keys must be used in ascending order.
+When `envelopeType.ENCRYPTED_VOTE` is disabled:
+- The `nonce` can be omitted.
+- The package must be used as a plain base-64 string.
 
-#### Poll Vote
-
-Non-anonymous votes, where the Merkle Proof and the signature are enough.
-
-```json
-{
-    "type": "poll-vote",
-    "nonce": "01234567890abcdef", // 8+ byte random string to prevent guessing the encrypted payload before the reveal key is released
-    "votes": [  // Direclty mapped to the `questions` field of the metadata
-        1, 3, 2
-    ]
-}
-```
-
-- The `nonce` is mandatory if the poll is encrypted. Can be omitted otherwise.
-- On encrypted polls, public keys must be used in ascending order.
-
-#### Petition Sign
-
-(Coming soon)
-
-<!--
-
-(Petition signing)
-
-```json
-{
-    "type": "petition-sign", // One of: snark-vote, poll-vote, encrypted-poll, petition-sign
-    "nullifier": "0x1234...",   // Hash of the private key
-    "votes": [  // Direclty mapped to the `questions` field of the metadata
-        1
-    ]
-}
-```
-
--->
+When `envelopeType.ENCRYPTED_VOTE` is enabled:
+- The `nonce` is mandatory. Can be omitted otherwise.
+- The package must be encrypted with the public keys used in ascending order.
+- The package must be a base64 representation of the encrypted bytes.
 
 ### Results (JSON)
 
