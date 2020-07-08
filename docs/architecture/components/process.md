@@ -288,60 +288,49 @@ The JSON payload below is stored on IPFS.
 
 ```json
 {
-    "version": "1.0", // Protocol version
-    "mode": 0, // See the Process Mode flags above
-    "envelopeType": 0, // See the Envelope Type flags above
-    "startBlock": 10000, // Vochain block number to start the voting process
-    "blockCount": 400,
-    "census": {
-        "merkleRoot": "0x1234...",
-        "merkleTree": "ipfs://1234,https://server/file.dat!sha3-hash" // Content Hashed URI of the exported Merkle Tree
+    "version": "1.1", // Protocol version
+    "title": {
+        "en": "Universal Basic Income",
+        "ca": "Renda Bàsica Universal"
     },
-    "details": {
-        "entityId": "0x123",
-        "title": {
-            "en": "Universal Basic Income",
-            "ca": "Renda Bàsica Universal"
-        },
-        "description": {
-            "en": "## Markdown text goes here\n### Abstract",
-            "ca": "## El markdown va aquí\n### Resum"
-        },
-        "headerImage": "<content uri>",
-        "questions": [
-            {
-                "type": "single-choice", // Defines how the UI should allow to choose among the votingOptions.
-                "question": {
-                    "en": "Should universal basic income become a human right?",
-                    "ca": "Estàs d'acord amb que la renda bàsica universal sigui un dret humà?"
-                },
-                "description": {
-                    "en": "## Markdown text goes here\n### Abstract",
-                    "ca": "## El markdown va aquí\n### Resum"
-                },
-                "voteOptions": [
-                    {
-                        "title": {
-                            "en": "Yes",
-                            "ca": "Sí"
-                        },
-                        "value": "1"
+    "description": {
+        "en": "## Markdown text goes here\n### Abstract",
+        "ca": "## El markdown va aquí\n### Resum"
+    },
+    "media": {
+        "header": "<content uri>",
+        "streamUri": "https://.../"
+    },
+    "questions": [
+        {
+            "title": {
+                "en": "Should universal basic income become a human right?",
+                "ca": "Estàs d'acord amb que la renda bàsica universal sigui un dret humà?"
+            },
+            "description": {
+                "en": "## Markdown text goes here\n### Abstract",
+                "ca": "## El markdown va aquí\n### Resum"
+            },
+            "choices": [
+                {
+                    "title": {
+                        "en": "Yes",
+                        "ca": "Sí"
                     },
-                    {
-                        "title": {
-                            "en": "No",
-                            "ca": "No"
-                        },
-                        "value": "2"
-                    }
-                ]
-            }
-        ]
-    }
+                    "value": 0
+                },
+                {
+                    "title": {
+                        "en": "No",
+                        "ca": "No"
+                    },
+                    "value": 1
+                }
+            ]
+        }
+    ]
 }
 ```
-
-The source of truth of the `mode`, `envelopeType`, `startblock` and `blockCount` is on the Smart Contract. The JSON fields are a convenience replica and may be deprecated in the future.
 
 ### Vote Envelope
 
