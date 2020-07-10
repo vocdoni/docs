@@ -72,7 +72,7 @@ Get overview of gateway info - which APIs are enabled, and whether the gateway a
 {
   "id": "req-2345679",
   "response": {
-	"apiList": ["census","file","vote"],
+	"apiList": ["census","file","vote", "results"],
     "health": 65,  // A number between 1 and 100 that indicates the health of the gateway (resource consumption, network status, etc.)
     "ok": true,
     "request": "req-2345679", // Request ID here as well, to check its integrity
@@ -378,7 +378,7 @@ When encrypting and decrypting a vote payload it is expected to use the keys ord
 
 ### Get Process Result List
 
-**only available if scrutinizer enabled on the gateway**
+**only available if scrutinizer enabled on the gateway** - scrutinizer is enabled if `results` API is enabled.  
 Get a list of the processes indexed by the scrutinizer with **final results**. Currently this method returns a non-deterministic set of maximum 64 process ids. 
 
 The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastProcIdReceived` to get the next 64 values.
@@ -409,7 +409,7 @@ The `fromId` field can be used to seek an specific position and start from it. S
 
 ### Get Live Process Result List
 
-**only available if scrutinizer enabled on the gateway**
+**only available if scrutinizer enabled on the gateway** - scrutinizer is enabled if `results` API is enabled.  
 Get a list of the processes indexed by the scrutinizer with **partial results**. Only those vote types with a non-encrypted payload can be partialy scrutinized.
 
 The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastProcIdReceived` to get the next 64 values.
@@ -440,7 +440,7 @@ The `fromId` field can be used to seek an specific position and start from it. S
 
 ### Get Process Results
 
-**only available if scrutinizer enabled on the gateway**
+**only available if scrutinizer enabled on the gateway** - scrutinizer is enabled if `results` API is enabled.  
 Get the results of the processIds indexed by the scrutinizer. If the process is not yet finished and the votes are not encrypted, returns the **partial result**.
 The results are represented in a two-dimension array: `Question1[Option1,Option2,...], Question2[Option1,Option2,...], ...`
 
@@ -473,7 +473,7 @@ The results are represented in a two-dimension array: `Question1[Option1,Option2
 
 ### Get Scrutinizer Entities
 
-**only available if scrutinizer enabled on the gateway**
+**only available if scrutinizer enabled on the gateway** - scrutinizer is enabled if `results` API is enabled.  
 Get a list of the entities indexed by the scrutinizer. Currently this method returns a non-deterministic set of maximum 64 entity ids. 
 
 The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastEntityIdReceived` to get the next 64 values.
