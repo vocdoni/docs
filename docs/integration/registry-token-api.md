@@ -90,7 +90,7 @@ secret = "hello"
 }
 ```
 
-#### generate a batch of tokens
+##### generate a batch of tokens
 
 ```json
 // Request
