@@ -44,8 +44,8 @@ While the process contract is the source of truth, the governance process itself
 // GLOBAL STRUCTS
 
 struct Process {
-    uint8 mode; // The selected process mode. See: https://vocdoni.io/docs/#/architecture/components/process
-    uint8 envelopeType; // One of valid envelope types, see: https://vocdoni.io/docs/#/architecture/components/process
+    uint8 mode; // The selected process mode. See: https://docs.vocdoni.io/#/architecture/components/process
+    uint8 envelopeType; // One of valid envelope types, see: https://docs.vocdoni.io/#/architecture/components/process
     address entityAddress; // The Ethereum address of the Entity
     uint64 startBlock; // Tendermint block number on which the voting process starts
     uint32 blockCount; // Amount of Tendermint blocks during which the voting process should be active

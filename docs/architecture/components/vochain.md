@@ -13,7 +13,7 @@ It is important to mention that the details of each Vochain are indexed and live
 Vocdoni uses Ethereum as the source of truth. That has several advantages, like having a versioning system for each blockchain, and being able to prune all past and finished processes leaving only one hash representing all the history. We can also use interchain communication in order to pass messages between blockchains and trigger certain actions.
 
 <div style="padding: 20px; background-color: white;">
-	<img src="architecture/components/vochain-overall.png" alt="Vochain overall architecture"/>
+	<img src="/architecture/components/vochain-overall.png" alt="Vochain overall architecture"/>
 </div>
 
 For the current version, only one Vochain exists, which handles all processes.
@@ -128,7 +128,7 @@ The following are data payloads that are packaged by a client app or an oracle, 
 }
 ```
 
-The data stored in Ethereum lives in a [smart contract](architecture/components/process?id=smart-contract)
+The data stored in Ethereum lives in a [smart contract](/architecture/components/process?id=smart-contract)
 
 
 ## Trusted Oracle
@@ -153,5 +153,5 @@ The Oracle is a trusted machine that enables bidirectional communication between
 ## Overall connections
 
 <div style="padding: 20px; background-color: white;">
-	<img src="architecture/components/vochain-conn.png" alt="Vochain connections schema"/>
+	<img src="/architecture/components/vochain-conn.png" alt="Vochain connections schema"/>
 </div>

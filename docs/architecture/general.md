@@ -29,7 +29,7 @@ A Vocdoni voting process makes use of the following components:
 
 <!-- ![Main architecture](./architecture-main.svg "Main architecture") -->
 <div style="padding: 20px;">
-	<img src="/docs/architecture/architecture-main.png" alt="Main architecture"/>
+	<img src="/architecture/architecture-main.png" alt="Main architecture"/>
 </div>
 
 + Data integrity is provided by a public BlockChain such as the Ethereum main net.

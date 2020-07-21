@@ -12,7 +12,7 @@ Data integrity is provided by an Ethereum like Blockchain, data availability is 
 
 <!-- ![Main architecture](./architecture-main.svg "Main architecture") -->
 <div style="padding: 20px;">
-        <img src="/docs/vocdoni_family.png" alt="Vocdoni Family"/>
+        <img src="/vocdoni_family.png" alt="Vocdoni Family"/>
 </div>
 
 Each organization maintains a list of public keys from their potential voters, either in a database or in a public ledger. 

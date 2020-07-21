@@ -30,7 +30,7 @@ If you are using VS Code, we highly recommend to install the following extension
 
 The content of this documentation lives in the `/docs` directory in [Vocdoni's `docs` repository](https://github.com/vocdoni/docs)
 
-Any edit on `origin/master` will be reflected on [vocdoni.io/docs](https://vocdoni.io/docs/#/)
+Any edit on `origin/master` will be reflected on [docs.vocdoni.io](https://docs.vocdoni.io/#/)
 
 ## Docsify
 
@@ -51,9 +51,9 @@ Simple edits can be done on the browser (via Github) by clicking the pencil icon
 
 You can simply create a `.md` file anywhere under the `/docs` directory.
 
-A file in `/docs/whitepaper.md` is accessible via [/#/whitepaper](https://vocdoni.io/docs/#/whitepaper).
+A file in `/docs/whitepaper.md` is accessible via [/#/whitepaper](https://docs.vocdoni.io/#/whitepaper).
 
-A file in `/docs/documentation/contribute.md` is accessible via [/#/documentation/contribute.md](https://vocdoni.io/docs/#/documentation/contribute).
+A file in `/docs/documentation/contribute.md` is accessible via [/#/documentation/contribute.md](https://docs.vocdoni.io/#/documentation/contribute).
 
 ### Sidebar menu
 

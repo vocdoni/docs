@@ -7,7 +7,7 @@ The Gateway code can be found inside the [go-dvote](https://gitlab.com/vocdoni/g
 The following diagram shows the gateway internal overall architecture and its components.
 
 <div style="padding: 20px;">
-	<img src="/docs/architecture/components/gateway-components.png" alt="Gateway Components"/>
+	<img src="/architecture/components/gateway-components.png" alt="Gateway Components"/>
 </div>
 
 One of the main rules applied on the Gateway development is to have a single system process. To this end all existing components such as Geth, IPFS or Tendermint are imported and executed as golang-libraries.
@@ -117,9 +117,9 @@ Send a vote envelope for an election process to the Vochain mempool. The `payloa
 ```
 
 **Used in:**
-- [Voting with zksnarks](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
+- [Voting with zksnarks](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
 
-- [Voting with LRS](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
+- [Voting with LRS](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=casting-a-vote-with-linkable-ring-signatures)
 
 ### Get Envelope Status
 
@@ -152,7 +152,7 @@ Check the status of an already submited vote envelope.
 }
 ```
 **Used in:**
-- [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
+- [Checking a submitted vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 
 ### Get Envelope
 
@@ -184,7 +184,7 @@ Get the content of an already submited envelope.
 ```
 
 **Used in:**
-- [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
+- [Checking a submitted vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 
 ### Get Envelope Height
 
@@ -215,7 +215,7 @@ Get the number of envelopes registered for a process ID.
 }
 ```
 **Used in:**
-- [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
+- [Checking a submitted vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 
 ### Get Block Status
 
@@ -374,7 +374,7 @@ When encrypting and decrypting a vote payload it is expected to use the keys ord
 }
 ```
 **Used in:**
-- [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
+- [Checking a submitted vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 
 ### Get Process Result List
 
@@ -533,10 +533,10 @@ Fetch a file from the P2P network (currently IPFS or Swarm/BZZ).
 }
 ```
 **Used in:**
-- [Entity subscription](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=entity-subscription)
-- [Voting process retrieval](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=voting-process-retrieval)
-- [Checking a submitted vote](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
-- [Vote scrutiny](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=vote-scrutiny)
+- [Entity subscription](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=entity-subscription)
+- [Voting process retrieval](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=voting-process-retrieval)
+- [Checking a submitted vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
+- [Vote scrutiny](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=vote-scrutiny)
 
 **Related:**
 - [Content URI](/architecture/protocol/data-origins?id=content-uri)
@@ -577,9 +577,9 @@ Ideally, this methods require authentication following the rules described [in t
 ```
 
 **Used in:**
-- [Set Entity metadata](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=set-entity-metadata)
-- [Voting process creation](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=voting-process-creation)
-- [Vote scrutiny](https://vocdoni.io/docs/#/architecture/sequence-diagrams?id=vote-scrutiny)
+- [Set Entity metadata](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=set-entity-metadata)
+- [Voting process creation](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=voting-process-creation)
+- [Vote scrutiny](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=vote-scrutiny)
 
 **Related:**
 - [Content URI](/architecture/protocol/data-origins?id=content-uri)

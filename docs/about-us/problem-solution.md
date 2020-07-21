@@ -32,4 +32,4 @@ We achieve this by externalizing the computational heavy lifting to a relay netw
 - The user can verify the correctness of the results and that their ballot has been properly counted
 - The entire process is verifiable by any external observer
 
-> Design details can be found in the [Docs](https://vocdoni.io/docs/#/architecture/general)
+> Design details can be found in the [Docs](https://docs.vocdoni.io/#/architecture/general)
