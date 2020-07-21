@@ -8,4 +8,3 @@
 - [Funding](/about-us/funding.md)
 - [How we work](/about-us/how-we-work.md)
 - [Open positions](/about-us/open-positions.md)
-- [Privacy policy](/about-us/privacy-policy.md)
