@@ -1,8 +1,8 @@
 # registry token API
 
-The token API allows organizations to take control over the user tokens required for user registering on the Vocdoni registry backend.
+The token API allows organizations to take control over the user tokens required for user registration on the Vocdoni registry backend.
 
-The API can be accessed on a url like this `wss://vocdoni-registry-service/api/token`
+The API can be accessed on a url like this `wss://vocdoni-registry-service/api/token`. It uses websockets with a JSON payload.
 
 ### authentication
 
@@ -116,7 +116,9 @@ secret = "hello"
 
 #### full example 
 
-```
+A full working example with secret=`test`.
+
+```json
 {
 "request":{
     "amount":5,
