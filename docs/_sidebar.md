@@ -19,12 +19,9 @@
         - [JSON API](architecture/protocol/json-api.md)
         - [Franchise proof](architecture/protocol/franchise-proof.md)
         - [Messaging protocol](architecture/protocol/messaging.md)
-<!-- - Integrating Vocdoni -->
-<!--    - [Overview](/integration/overview.md) -->
-<!--    - [DVote JS library](/integration/dvote-js.md) -->
-<!--    - [DVote Go library](/integration/go-dvote.md) -->
-<!--    - [Client set up](/integration/client-set-up.md) -->
-<!--    - [Vote scrutiny](/integration/scrutiny.md) -->
+- Integrating Vocdoni
+   - [Overview](/integration/overview.md)
+   - [Registry backend](/integration/registry-token-api.md)
 <!--- Design
 <!--  - [UI prototype](design/ui-prototype.md) -->
 <!--  - [Reputation mechanisms](design/entities-reputation-mechanisms.md) -->
