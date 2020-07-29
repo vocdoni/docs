@@ -279,9 +279,9 @@ Request the number of blocks that are currently on the blockchain.
 
 ### Get Process List
 
-Get a list of processes from the Vochain for a specific entityId. There is a hardcoded maximum size of 64 for the process list. The starting process id to look at, can be specified using the field `fromId`. If `fromId` is empty, the first 64 process ids will be returned.
+Get a list of processes from the Vochain for a specific entityId. There is a hardcoded maximum size of 64 for the process list. The initial process height can be specified using the field `from`. If `from` is empty, the first 64 process ids will be returned.
 
-The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastProcIdReceived` to get the next 64 values.
+The `from` field can be used to seek an specific position and start from it. So if the first call with `from` empty returns 64 values, a second call may be done using `from`=`lastProcHeightReceived` to get the next 64 values.
 
 
 ```json
@@ -289,8 +289,8 @@ The `fromId` field can be used to seek an specific position and start from it. S
   "id": "req-2345679",
   "request": {
     "method": "getProcessList",
-	  "entityId": "hexString",
-    "fromId": "hexString",
+    "entityId": "hexString",
+    "from": 0,
     "timestamp": 1556110671
   },
   "signature": ""  // Might be empty
@@ -311,7 +311,7 @@ The `fromId` field can be used to seek an specific position and start from it. S
 
 ### Get Envelope List
 
-Get a list of registered vote envelopes for a specific process ID (maximum of 64 per call).  See `Get Process List`  to see how `fromId` works.
+Get a list of registered vote envelopes for a specific process ID (maximum of 64 per call).  See `Get Process List`  to see how `from` works.
 
 ```json
 {
@@ -319,7 +319,7 @@ Get a list of registered vote envelopes for a specific process ID (maximum of 64
   "request": {
     "method": "getEnvelopeList",
     "processId": "hexString",
-    "fromId": "hexString",
+    "from": 0,
     "timestamp": 1556110671
   },
   "signature": ""  // Might be empty
@@ -381,14 +381,14 @@ When encrypting and decrypting a vote payload it is expected to use the keys ord
 **only available if scrutinizer enabled on the gateway** - scrutinizer is enabled if `results` API is enabled.  
 Get a list of the processes indexed by the scrutinizer with **final results**. Currently this method returns a non-deterministic set of maximum 64 process ids. 
 
-The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastProcIdReceived` to get the next 64 values.
+The `from` field can be used to seek an specific position and start from it. So if the first call with `from` empty returns 64 values, a second call may be done using `from`=`lastProcHeightReceived` to get the next 64 values.
 
 ```json
 {
   "id": "req-2345679",
   "request": {
     "method": "getProcListResults",
-    "fromId": "hexString",
+    "from": 0,
     "timestamp": 1556110671
   },
   "signature": ""  // Might be empty
@@ -412,14 +412,14 @@ The `fromId` field can be used to seek an specific position and start from it. S
 **only available if scrutinizer enabled on the gateway** - scrutinizer is enabled if `results` API is enabled.  
 Get a list of the processes indexed by the scrutinizer with **partial results**. Only those vote types with a non-encrypted payload can be partialy scrutinized.
 
-The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastProcIdReceived` to get the next 64 values.
+The `from` field can be used to seek an specific position and start from it. So if the first call with `from` empty returns 64 values, a second call may be done using `from`=`lastProcHeightReceived` to get the next 64 values.
 
 ```json
 {
   "id": "req-2345679",
   "request": {
     "method": "getProcListLiveResults",
-    "fromId": "hexString",
+    "from": 0,
     "timestamp": 1556110671
   },
   "signature": ""  // Might be empty
@@ -476,14 +476,14 @@ The results are represented in a two-dimension array: `Question1[Option1,Option2
 **only available if scrutinizer enabled on the gateway** - scrutinizer is enabled if `results` API is enabled.  
 Get a list of the entities indexed by the scrutinizer. Currently this method returns a non-deterministic set of maximum 64 entity ids. 
 
-The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastEntityIdReceived` to get the next 64 values.
+The `from` field can be used to seek an specific position and start from it. So if the first call with `from` empty returns 64 values, a second call may be done using `from`=`lastEntityHeightReceived` to get the next 64 values.
 
 ```json
 {
   "id": "req-2345679",
   "request": {
     "method": "getScrutinizerEntities",
-    "fromId": "hexString",
+    "from": 0,
     "timestamp": 1556110671
   },
   "signature": ""  // Might be empty
