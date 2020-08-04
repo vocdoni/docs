@@ -16,14 +16,14 @@ We share very strong ideals among us
 We want a sustainable work-life balance
 
 - We encourage the use of working hours for learning related stuff to your work and our collective mission.
-- We encourage a balanced lifestyle and we suggest a daily average of 6 working hours
-- As of today, everyone gets paid the same.
+- We encourage a balanced lifestyle and we suggest a daily average of 7 working hours
+- We adapt to everyone's needs and motivations
 
 ## Coordination
 
 - We are fully autonomous and responsible individuals, therefore, nothing mandates days, schedules, or hours that you work
 - We don't like process, but we're not afraid of it if is needed.
-- Our communications are 80% online through channels like Matrix/Wire chats and Mumble calls
+- We are a fully remote team. We have a bi-monthly retreat for team building
 
 ## Development practices
 
