@@ -142,6 +142,52 @@ A full working example with secret=`test`.
 }
 ```
 
+### reference javascript client
+
+Dependencies (tested versions): [ethers@4.0.47](https://docs.ethers.io/v5/api/utils/hashing/#utils-keccak256), [ws@7.3.1`](https://github.com/websockets/ws)
+
+```js
+const WebSocket = require('ws')
+const keccak256 = require("ethers").utils.keccak256
+const toUtf8Bytes = require("ethers").utils.toUtf8Bytes
+
+const ws = new WebSocket('ws://localhost:8000/api/token')
+
+const generateAuthHash = (fields, secret) => {
+  str = fields.reduce((x,y) => String(x)+String(y)) + secret
+  return keccak256(toUtf8Bytes(str))  
+}
+
+ws.on('message', function incoming(message) {
+    console.log('received: %s', message);
+    ws.close()
+});
+
+ws.on('open', function open() {
+  var secret = "test"
+  // Generate request
+  var request = {}
+  request.method= "status"
+  // adjust timestamp precision to the server
+  request.timestamp = Math.floor(Date.now() / 1000)
+  request.authHash = generateAuthHash(new Array(request.entityId, request.method, request.timestamp, request.token), secret)  
+
+  // Generate random request id
+  var rand = Math.random().toString(16).split('.')[1]
+  var requestId = keccak256('0x' + rand).substr(2, 10)
+  var msg = {
+  "id": requestId,
+  "request": request
+  }
+  console.log(msg)
+  ws.send(JSON.stringify(msg));
+
+ws.on('error', function error(err) {
+  console.error(err)
+  })
+});
+```
+
 ### Callback
 
 The organization can define an HTTP callback that will be triggered on some registration events.
