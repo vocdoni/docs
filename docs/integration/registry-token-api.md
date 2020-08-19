@@ -144,7 +144,7 @@ A full working example with secret=`test`.
 
 ### reference javascript client
 
-Dependencies (tested versions): [ethers@4.0.47](https://docs.ethers.io/v5/api/utils/hashing/#utils-keccak256), [ws@7.3.1`](https://github.com/websockets/ws)
+Dependencies (tested versions): [ethers@4.0.47](https://docs.ethers.io/v5/api/utils/hashing/#utils-keccak256), [ws@7.3.1](https://github.com/websockets/ws)
 
 ```js
 const WebSocket = require('ws')
