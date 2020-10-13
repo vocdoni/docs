@@ -99,7 +99,7 @@ section tr:nth-child(2n) {
 
 .sidebar {
     border: 1px;
-    padding:64px 48px;
+    padding:18px 48px;
     background-color: #F3F0ED;
     padding-right: 0px;
 }
