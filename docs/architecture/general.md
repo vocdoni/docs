@@ -51,3 +51,9 @@ A voting process makes use of the following components:
 	- Multiple voting is prevented using deterministic nullifiers
 - Gateways are a neutral piece, since cryptography is used on the peer side
 	- The only intent of a Gateway is to act as a P2P proxy for clients that can't open sockets by themselves (web browsers)
+
+---
+
+### Coming next
+
+Check the [Process overview](/architecture/process-overview) section.
