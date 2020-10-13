@@ -35,10 +35,10 @@ The ZK-Snark proof (or Franchise proof) is an easy-to-verify way of proving that
 
 The custom [Tendermint based blockchain](/architecture/components/vochain) validates the vote envelope and its franchise proof. It stores all valid votes on the public ledger and allows any third party to fetch it and verify its correctness. It is referred to as the Voting Chain (_Vochain_).
 
-A ballot contains three parts:
+A [ballot](/architecture/components/process?id=vote-envelope) contains mainly three parts:
 
-1. Election/process ID
-2. Encrypted or unencrypted vote
+1. Election ID
+2. Vote values (encrypted or unencrypted)
 3. ZK-proof
 
 Users can submit their ballots to any [Gateway or fullnode](/architecture/components/gateway) on the Voting blockchain, which will broadcast it to the mempool for further validation and eventual inclusion.
