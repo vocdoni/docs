@@ -17,21 +17,11 @@ A user can:
 + Given a claim, request the Merkle Proof (the siblings allowing to prove that the claim matches the current root hash)
 + Check if a Merkle Proof is valid
 
-## Census enabled Gateways
-
-Gateways can be launched as follows:
-
-`./gateway --censusApi --apiRoute /dvote --listenPort 9090 --allowPrivate --allowedAddrs da5807a5c23e1e5986116116892e0b53278d686f`
-
-The gateway process will expose the Census API on a HTTP/WS endpoint. If the storage API has been enabled, census can be published and imported. Only `allowedAddrs` will be able to execute private methods (extracted from the ECDSA signature).
-
-## JSON API schemas
+## JSON API
 
 The Census API interactions follow the [JSON API](/architecture/protocol/json-api).
 
-Requests sent to a Census Service may invoke different operations. Depending on the `method`, certain parameters are expected or optional:
-
-### Census Service addCensus
+### Add Census
 
 **Private Method**
 
@@ -66,7 +56,7 @@ When using the `gateway`, only the public keys specified in `--allowedAddrs` can
 ```
 
 
-### Census Service addClaim
+### addClaim
 
 **Private Method**
 
@@ -106,7 +96,7 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
 
 - [Adding users to a census](/architecture/sequence-diagrams?id=adding-users-to-a-census)
 
-### Census Service addClaimBulk
+### addClaimBulk
 
 **Private Method**
 
@@ -149,7 +139,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
 }
 ```
 
-### Census Service getRoot
+### getRoot
 
 **Public Method**
 
@@ -176,7 +166,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
 }
 ```
 
-### Census Service getSize
+### getSize
 
 **Public Method**
 
@@ -205,7 +195,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
 ```
 
 
-### Census Service generateProof
+### generateProof
 
 **Public Method**
 
@@ -235,7 +225,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
 }
 ```
 
-### Census Service checkProof
+### checkProof
 
 **Public Method**
 
