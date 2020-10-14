@@ -16,9 +16,13 @@ The data schema used to define a set of boot nodes is a JSON file like the examp
          { "uri": "https://host3/web3" }
       ],
       "dvote": [
-         { "uri": "wss://host1/dvote", "apis": ["file", "vote"], "pubKey": "02325f284f50fa52d53579c7873a480b351cc20f7780fa556929f5017283ad2449"  },
+         { "uri": "https://host1/dvote", "apis": ["file", "vote", "results"], "pubKey": "02325f284f50fa52d53579c7873a480b351cc20f7780fa556929f5017283ad2449"  },
          { "uri": "wss://host2/dvote", "apis": ["vote", "census"], "pubKey": "02325f284f50fa52d53579c7873a480b351cc20f7780fa556929f5017283ad2449"  }
       ]
    }
 }
 ```
+
+### Coming next
+
+See the [Sequence Diagrams](/architecture/sequence-diagrams) section.

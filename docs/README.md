@@ -17,7 +17,7 @@ The algorithms, systems and software that we build are intended to be a contribu
 
 <!-- ![Main architecture](./architecture-main.svg "Main architecture") -->
 <div style="padding: 20px; text-align: center;">
-        <img src="/img/vocdoni-family.png" alt="Vocdoni Family"/>
+        <img src="https://raw.githubusercontent.com/vocdoni/design/main/docs/vocdoni-family.png" alt="Vocdoni Family"/>
 </div>
 
 ### Election components
