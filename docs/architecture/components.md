@@ -1,70 +1,83 @@
 # Component Overview
 
+The voting ecosystem is built on top of three kind of components:
+- Decentralized blockchains
+- Decentralized file storage
+- Private services
+
+They serve different purposes and they enable to have the following components.
+
 ### Smart Contracts
 
-Voting ecosystems will need to interact with two different Smart Contracts on the Blockchain:
-* **Entity Resolver**
-    * Decentralized registry of entities and their corresponding metadata
-* **Voting Process**
-    * Registry of voting processes created by the entities defined above
+Smart contracts are a piece of immutable code running on a decentralized blockchain. Transactions sent to them run in a trustless fashion and serve as the permanent source of trust from the perspective of Vocdoni.
+
+General purpose blockchains are slow and hard to scale, so they are only used to signal and declare parameters of organizations and governance processes. The following contracts are used:
+
+* **ENS Resolver**
+	* Simmilarly to DNS Text Records, the ENS Resolver is used as a global key-value store for entities
+    * Organizations can declare the origin to their metadata, among other values
+* **Process**
+    * Global registry of governance processes created by entities
+	* Defines the parameters of all processes available
+* **Namespace**
+	* Global registry to parameterize the different voting blockchains available
+	* Each namespace defines the validators, oracles and settings of a certain Vochain
 
 ##### Entity Metadata
 
-An Entity is an aggregate of data living on the Entity Resolver smart contract and on Swarm/IPFS.
+An Entity is an aggregate of data living on the Entity Resolver smart contract and on IPFS.
 
 For a complete explanation, read the [Entity section](/architecture/components/entity).
 
 ##### Process Metadata
 
-A Voting Process is also an aggregate of data living on the Voting Process smart contract and on Swarm/IPFS.
+A Voting Process is also an aggregate of data living on the Voting Process smart contract and on IPFS.
 
 For a complete explanation, read the [Voting Process section](/architecture/components/process).
 
 ### Vochain Miner
 
-The Vochain miner/validator is a trusted component able to generate new blocks of the voting blockchain. At least four nodes of this kind are required.
+The Vochain miner/validator is a node of the PoA voting blockchain. It can generate new blocks and validate the blocks proposed by other miners. At least four nodes of this kind are required.
 
-The validator public keys are stored in the Voting smart contract.
+The validator public keys are defined in the Namespace smart contract.
 
-### Vochain Oracle
+### Oracle
 
-The Vochain oracle(s) is a trusted component who is able to modify some parameters of the Vochain (such as the validator public keys), add new voting processes or cancel an existing one via a set of special transactions. The Oracle must be a neutral component with the only aim of take the information from the Ethereum voting contract and add it to the Vochain Blockchain.
+An oracle is a trustless component that can relay Ethereum transactions (process creation or status update) and signal events within the own Vochain (ended process). 
 
-The oracle public keys are stored in the Voting smart contract.
+On the Ethereum side, it can also compute the results and submit them to the process smart contract, along with a ZK Rollup.
+
+Oracles are a neutral and their role effectively allows for a Layer 2 governance that eventually triggers binding results on the Layer 1.
 
 ### Gateway
 
-Gateways provide an entry point to reach decentralized services like Census Services, Ethereum, IPFS, voting blockchain and more, using HTTP(s) WebSockets.
+Gateways provide an entry point to decentralized services like Ethereum, IPFS, the Vochain and more, using HTTP or WebSockets.
 
-Gateways are neutral and they only aim is to provide access to the APP clients. Anyone can add a Gateway to the network.
+Gateways are neutral and their goal is to provide P2P access to web and app clients. Anyone can start a Gateway and expand the network.
 
 ### Census Service
 
-A server handling the public census of an Entity. It stores Merkle trees with user claims, it allows an Entity to trigger updates (using asymmetric key signature authentication) and allows clients to ask for data on a particular Merkle tree.
+A server handling the public census of an Entity. It stores Merkle trees with user claims, it allows entities to trigger updates (using asymmetric key signature authentication) and allows clients to ask for data on a particular Merkle tree.
 
-The Census Service is a critical piece of the overall platform, so its real IP/location should be hidden as much as possible. Ideally, it should only be reachable through the P2P messaging protocol.
+### Mobile client
 
-Census Service's have to be started with a predefined Entity Resolver instance address, as well as an Entity Address so they know what configuration they need to apply.
+A mobile App that generates and manages cryptographic self-sovereign identities. It interacts with network Gateways to participate in the Vocdoni ecosystem.
 
-### Client app
+It allows to visit entities, browse their content, see governance processes, cast votes and see the results.
 
-A mobile APP able to generate and store a cryptographic user identity and interact with the Gateways to participate in the Vocdoni ecosystem.
+## Manager
 
-## Entity Manager
+A private service providing organizations with a UI to manage their community and public content. This includes a news feed, voting processes, assemblies, events, etc.
 
-A private service providing the Entity administrators a website to manage voting processes on the blockchain. The service does not interact with any kind of users, it only needs to relay transactions to the blockchain.
+It also allows to manage the members and their attributes (age, payment status, etc.). Such data typically lives on a private database that will compute updated snapshots of the census at a given point in time.
 
-### Census Registry
+The manager also allows to export new census and define the requirements that users have to accomplish for a user to be in a census. These requirements depend on each organization's policies.
 
-A custom website provided by the Entity typically used to validate a user before adding him/her to a Census. This website is loaded on a webview from the client app, once the user decides to register to an Entity. The required steps to pass a validation are dependent on every Entity and need a custom integration.
+### User Registry
 
-Vocdoni will provide a very basic census registry which can be used by any entity (as an example or in production).
+A custom private service used to handle registrations and validate them before adding a user to a Census. 
 
-### Census Manager
-
-A private server allowing Entity administrators to manage the attributes (age, payment status, etc.) of users registered to it. Data from this service typically lives on a private database that will produce updated versions of specific census on demand.
-
-The website also allows to create new census and define the requirements that users have to accomplish to be included.
+The Vocdoni manager features a user registry out of the box.
 
 ---
 
@@ -76,30 +89,47 @@ Below is the relationship between publicly accessible and private services that 
 graph TD;
 
 OR(<center>Organizer<br/><br/><i class='fa fa-2x fa-user'/></center>)
-CL(<center>Client<br/><br/><i class='fa fa-2x fa-users'/></center>)
-PM(<center>Process Manager<br/><br/><i class='fa fa-2x fa-desktop'/></center>)
+APP(<center>Mobile client<br/><br/><i class='fa fa-2x fa-users'/></center>)
+GW(<center>Gateway<br/><br/><i class='fa fa-2x fa-network-wired'/></center>)
 DB((<center><br/>Internal DB<br/><br/><i class='fa fa-2x fa-database'/></center>))
 KYC((<center><br/>KYC, payment, etc<br/><br/><i class='far fa-2x fa-id-card'/></center>))
-CR(<center>Census Registry<br/><br/><i class='fa fa-2x fa-server'/></center>)
-CM(<center>Census Manager<br/><br/><i class='fa fa-2x fa-desktop'/></center>)
+UR(<center>User Registry<br/><br/><i class='fa fa-2x fa-server'/></center>)
+EM(<center>Entity Manager<br/><br/><i class='fa fa-2x fa-server'/></center>)
 CS(<center>Census Service<br/><br/><i class='far fa-2x fa-list-alt'/></center>)
-BKP(<center>Backup<br/><br/><i class='fa fa-2x fa-file-archive'/></center>)
-BCH((<center><br/>Blockchain<br/><br/><i class='fab fa-2x fa-ethereum'/></center>))
+BCH(<center><br/>Blockchain<br/><br/><i class='fab fa-2x fa-ethereum'/></center>)
+IPFS(<center><br/>IPFS<br/><br/><i class='fa fa-2x fa-database'/></center>)
 
 
-OR-- Manage -->CM
-OR-->|Manage|PM
-
-subgraph Entity Private Services
-	CR-.->KYC
-	CR-->DB
-	CM-->DB
-	DB-->BKP
+subgraph Public services
+	GW
+	CS
+	BCH
+	IPFS
 end
 
-CL-- Sign up -->CR
-CM-.->|Update|CS
-CS-.-BCH
-PM-->|Get census root hash|CS
-PM-.->|Create vote|BCH
+subgraph Entity Private Services
+	UR
+	KYC
+	DB
+	EM
+end
+
+OR-- Manage -->EM
+APP-- Sign up -->UR
+
+UR-.->KYC
+UR-->DB
+EM-->DB
+
+EM-.->|New census|CS
+EM-.->|New process|GW
+CS-.-IPFS
+
+GW-.-IPFS
+GW-.->BCH
+
 ```
+
+### Coming next
+
+See the [Entity](/architecture/components/entity) section.
