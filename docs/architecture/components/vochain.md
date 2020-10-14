@@ -133,6 +133,11 @@ The data stored in Ethereum lives in a [smart contract](/architecture/components
 
 ## Special actors
 
+<div style="padding: 20px; background-color: white;">
+	<img src="https://github.com/vocdoni/design/raw/main/docs/vochain-actors.png" alt="Vochain actors"/>
+</div>
+
+
 ### Miner
 
 As any other blockchain, Vochain requires a set of nodes able to include new transactions on the chain that will modify the state.
@@ -171,7 +176,7 @@ The KeyKeeper is a trusted identity that act as temporary cryptographic key admi
 In the following diagram the vote transaction lifecycle is shown. ChecTX, DeliverTX and Commit are the main steps of the Vochain. The first decides if a new transaction should be included in the mempool (and broadcasted to other peers), the second decides if a transaction that is going to be included in the next block is valid and the last makes the changes permanent and updates the state.
 
 <div style="padding: 20px; background-color: white;">
-	<img src="https://github.com/vocdoni/design/raw/main/docs/vochain-transaction-lifecicle.png" alt="Vochain overall architecture"/>
+	<img src="https://github.com/vocdoni/design/raw/main/docs/vochain-transaction-lifecicle.png" alt="Vochain transaction cicle"/>
 </div>
 
 
