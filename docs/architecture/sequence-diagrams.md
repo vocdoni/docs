@@ -1,100 +1,46 @@
 # Sequence diagrams
 
-Traditional systems like API's present simple scenarios, in which a centralized service defined how data should be encoded.
+Traditional systems like API's present simple scenarios, in which a centralized service define how data should be encoded.
 
 However, decentralized ecosystems like a distributed vote system need much stronger work on defining every interaction between any two peers on the network.
 
-- [Sequence diagrams](#sequence-diagrams)
-  - [Prior to voting](#prior-to-voting)
-    - [Set Entity metadata](#set-entity-metadata)
-    - [Entity subscription](#entity-subscription)
-      - [Initial Gateway discovery](#initial-gateway-discovery)
-      - [Listing boot entities](#listing-boot-entities)
-    - [Custom requests to an Entity](#custom-requests-to-an-entity)
-      - [Sign up](#sign-up)
-      - [Submit a picture](#submit-a-picture)
-      - [Make a payment](#make-a-payment)
-      - [Resolve a captcha](#resolve-a-captcha)
-      - [External Entity to make use of Census Service](#external-entity-to-make-use-of-census-service)
-      - [Adding users to a census](#adding-users-to-a-census)
-  - [Voting](#voting)
-    - [Voting process creation](#voting-process-creation)
-    - [Voting process retrieval](#voting-process-retrieval)
-    - [Check census inclusion](#check-census-inclusion)
-    - [Casting a vote with ZK Snarks](#casting-a-vote-with-zk-snarks)
-    - [Casting a vote with Linkable Ring Signatures](#casting-a-vote-with-linkable-ring-signatures)
-    - [Registering a Vote Batch](#registering-a-vote-batch)
-  - [After voting](#after-voting)
-    - [Checking a submitted vote](#checking-a-submitted-vote)
-    - [Closing a Voting Process](#closing-a-voting-process)
-    - [Vote Scrutiny](#vote-scrutiny)
+- [Prior to voting](#prior-to-voting)
+  - [Initial Gateway discovery](#initial-gateway-discovery)
+  - [Set Entity metadata](#set-entity-metadata)
+  - [Custom requests to an Entity](#custom-requests-to-an-entity)
+    - [Sign up](#sign-up)
+    - [Submit a picture](#submit-a-picture)
+    - [Make a payment](#make-a-payment)
+    - [Resolve a captcha](#resolve-a-captcha)
+    - [External Entity to make use of Census Service](#external-entity-to-make-use-of-census-service)
+    - [Adding users to a census](#adding-users-to-a-census)
+- [Voting](#voting)
+  - [Voting process creation](#voting-process-creation)
+  - [Voting process retrieval](#voting-process-retrieval)
+  - [Check census inclusion](#check-census-inclusion)
+  - [Casting a vote with ZK Snarks](#casting-a-vote-with-zk-snarks)
+  - [Casting a vote with Linkable Ring Signatures](#casting-a-vote-with-linkable-ring-signatures)
+  - [Registering a Vote Batch](#registering-a-vote-batch)
+- [After voting](#after-voting)
+  - [Checking a submitted vote](#checking-a-submitted-vote)
+  - [Closing a Voting Process](#closing-a-voting-process)
+  - [Vote Scrutiny](#vote-scrutiny)
 
 ---
 
 ## Prior to voting
 
---------------------------------------------------------------------------------
+---
 
-### Set Entity metadata
-An Entity starts existing at the moment it has certain metadata stored on the [Entity Resolver](/architecture/components/entities?id=entityresolver) smart contract. 
-
-```mermaid
-
-sequenceDiagram
-    participant EM as Entity Manager
-    participant DV as dvote-js
-    participant GW as Gateway/Web3
-    participant ER as Entity Resolver contract
-
-    EM->>DV: getEntityId(entityAddress)
-    DV-->>EM: entityId
-
-    alt has a Gateway
-        Note right of EM: Set Metamask <br/> to the Gateway
-    else
-        Note right of EM: Boot a GW and tell <br/> Metamask to use it
-    end
-
-    EM->>DV: getDefaultResolver()
-        Note right of DV: Hardcoded default Entity<br/>Resolver instance
-    DV-->>EM: resolverAddress
-
-
-    EM->>EM: Fill-up name
-    EM->>+DV: EntityResolver.setName(entityId, name)
-        DV->>GW: setText(entityId, "name", name)
-            GW->>ER: #60; transaction #62;
-            ER-->>GW: 
-        GW-->>DV: 
-    DV-->>-EM: 
-
-    loop additional key/values
-        EM->>EM: Fill-up key-value
-        EM->>+DV: EntityResolver.set(entityId, key, value)
-            DV->>GW: setText(entityId, key, value)
-                GW->>ER: #60; transaction #62;
-                ER-->>GW: 
-            GW-->>DV: 
-        DV-->>-EM: 
-    end
-
-```
-
-**Used schemas:**
-
-- [Entity metadata](/architecture/components/entities?id=json-schema)
-
-### Entity subscription
-
-#### Initial Gateway discovery
+### Initial Gateway discovery
 
 The app wants to get initial connectivity with the available gateways.
 
-- Using a well-known Ethereum Gateway (Infura or similar), we query for an initial set of boot nodes on the Vocdoni ENS Resolver. The following is predefined:
-    - Well-known Ethereum gateways
+- Using a well-known Ethereum Gateway, we query for an initial boot node on the ENS Resolver. The following is defined:
+    - Well-known Ethereum blockchain gateways
     - Entity Resolver contract address
     - Vocdoni's Entity ID
-- From one of the bootnodes, we get a list of Gateways provided by Vocdoni
+- From one of the boot nodes, we get a list of Gateways provided by Vocdoni
 
 ```mermaid
 
@@ -118,172 +64,45 @@ Eventually:
 
 - One of Vocdoni's Gateways is used to query the ENS resolver of a certain Entity
 
-#### Listing boot entities
-
-A user wants to visualize a list of entities so he/she can eventually subscribe to one.
+### Set Entity metadata
+An Entity starts existing at the moment it has certain metadata stored on the [Entity Resolver](/architecture/components/entities?id=entityresolver) smart contract. 
 
 ```mermaid
 
 sequenceDiagram
-    participant App
-    participant DV as dvote-js
+    participant EM as Entity Manager
+    participant DV as DVote
     participant GW as Gateway/Web3
     participant ER as Entity Resolver contract
-    participant IPFS as Ipfs
+    participant IPFS
 
-    loop entityRef[]
-        App->>DV: Entity.fetch(entityId, resolver)
-        loop
-            DV->>GW: text(entities[i], "vnd.vocdoni.meta")
-                GW->>ER: text(entities[i], "vnd.vocdoni.meta")
-                ER-->>GW: metadataContentUri
-            GW-->>DV: metadataContentUri
-            DV->>GW: fetchFile(metadataContentUri)
-                GW->>IPFS: Ipfs.get(metadataContentUri)
-                IPFS-->>GW: entityMetadata
-            GW-->>DV: entityMetadata
-        end
-        DV-->>App: entityMetadata
-    end
+    EM->>DV: getEntityId(entityAddress)
+    DV-->>EM: entityId
 
-    App->>App: Display Entites
-    App->>App: Subscribe
-```
+    EM->>DV: getDefaultResolver()
+    DV-->>EM: resolverAddress
 
-**Used schemas:**
-
-- [Entity metadata](/architecture/components/entities?id=json-schema)
-
-**Related:**
-
-- [Gateway Boot Nodes](/architecture/components/entities?id=gateway-boot-nodes)
-
-**Notes:**
-
-- In the case of React Native apps, DVote JS will need to run on the [Web Runtime component](/architecture/general?id=web-runtime-for-react-native)
-
-### Custom requests to an Entity
-
-An Entity may have specific requirements on what users have to accomplish in order to join and be part of its user registry.
-
-Some may require filling a simple form. Some others may ask to log in from an existing HTTP service. Uploading ID pictures, selfies or even making payments need custom implementations that decide that a user must eventually be added to a census.
-
-Below are some examples of a user selecting an action from the entityMetadata > actions available.
-
-#### Sign up
-
-The user fills a form with personal data and submits it to the entity.
-
-```mermaid
-sequenceDiagram
-    participant App
-    participant UR as WebView<br/>User Registry
-    participant BK as Private Backend
-
-    Note right of App: Selected action:<br/>Browse #60;action-url#62;
-
-    App->>UR: GET /#60;action-url#62;
-        alt Needs the public key
-            UR->>App: sendMessage('authenticate')
-            App-->>UR: (publicKey, signature, timestamp)
-
-        end
-        UR->>UR: Fill the form
-
-        UR->>UR: signUp(name, lastName, publicKey, censusId)
-
-        UR->>BK: insert(name, lastName, publicKey, censusId)
-            Note right of BK: validate the request
-        BK-->>UR: 
-    UR-->>App: 
-```
-
-**Used schemas:**
-
-- [Entity metadata](/architecture/components/entities?id=json-schema)
-
-**Notes:**
-
-- `ACTION-URL` is defined on the metadata of the contract. It is expected to be a full URL that can be navigated through a traditional HTTP/S request.
-
-#### Submit a picture
-
-#### Make a payment
-
-#### Resolve a captcha
-
-#### External Entity to make use of Census Service
-
-<!-- TODO: Review ENS records -->
-
-- `Census Service Entity` and `External Entity` can be the same entity
-- A request to the `Census Service` must include the <entityReference> in the payload for the `Census Service Entity` to know where it can find whether the `censusId` or the `entityId` are valid ones.
-
->Prefix `ex` and `cs` on `entityId` and `resolverAddress` are used to represent `External Entity` and `Census Service` respectively.
-
-```mermaid
-
-sequenceDiagram
-    participant ENTCS as Entity's Census Service
-    participant EXENT as External Entity
-    participant EMGR as Entity Manager
-    participant DV as DVote
-    participant GW as Gateway/Web3/IPFS
-    participant ER as Entity Resolver
-    participant CSRV as Census Service
-    participant IPFS as IPFS
-
-    Note right of DV: TO DO: Review ENS records
-
-    Note right of ENTCS: Agree on using <br/>the Census Service<br/>from an external <br/>channel
-    ENTCS-->EXENT: 
-    ENTCS->>EMGR: Fill External Entity resolver and externalEntityId
-    EMGR->>DV: addCensusServiceSourceEntity(csEntityResolver, csEntityId, exResolver,exEntityId)
-    DV->>DV: getEntityReference(exResolverAddress, exEntityId)
-    DV->>GW: setListText(csEntityId, "vnd.vocdoni.census-service-source-entities", index, &#60;exEntityReference#62;)
-    GW->>ER: #60;transaction#62;
-
-    loop to all census ids
-        EXENT->>EMGR:Fill censusId
-        EMGR->>DV:addCensusId(exResolverAddress, exEntityId, censusId)
-        DV->>GW:setListText(exEntityId, "vnd.vocdoni.census-ids", index,  censusId)
-        GW->>ER:#60;transaction#62;
-    end
-
-    loop to all keys
-        EXENT->>EMGR:Fill the public key that will publish to the Census Service
-        EMGR->>DV:addCensusManagerKey(exResolverAddress, exEntityId, publicKey)
-        DV->>GW:setListText(exEntityId, "vnd.vocdoni.census-manager-keys", index,  publicKey)
-        GW->>ER:#60;transaction#62;
-    end
-
-    Note left of CSRV: Eventually, the <br/>Census Service <br/>refreshes its config
-
-    CSRV->>ER: List(csEntityId, "vnd.vocdoni.census-service-source-entities")
-    ER-->>CSRV:[#60;entityReference#62;]
-
-    loop source entities
-        CSRV->>ER: List(exEntityId, "vnd.vocdoni.census-ids")
-        ER-->>CSRV:[#60;census-id#62;, ...]
-        CSRV->>ER: List(exEntityId, "vnd.vocdoni.census-manager-keys")
-        ER-->>CSRV:[#60;publicKey#62;, ...]
-    end
-
-    Note right of EXENT: Finally, an Entity<br/>requests a census<br/>operation
+    EM->>EM: Enter name, logo, header
     
-    EXENT->>GW: addClaimBulk(censusId, payload)
-    GW->>IPFS: #60;request data#62;
-    IPFS-->>CSRV: #60;request data#62;
-    # CSRV->>CSRV: Get its own resolver and entityId
-    CSRV->>CSRV: Check exEntityId is within "census-service-source-entities"
-    CSRV->>CSRV: Check the censusId belongs to "census-ids"
-    CSRV->>CSRV: Check the signer belongs to "census-manager-keys"
-    CSRV->>CSRV: addClaimBulk(censusId, payload)
+    EM->>+DV: addFile(json)
+        DV->>GW: addFile(json)
+            GW->>IPFS: #60; uri #62;
+            IPFS-->>GW: 
+        GW-->>DV: 
+    DV-->>-EM: 
 
+
+    EM->>+DV: setMetadata(entityId, uri)
+        DV->>GW: setText(entityId, "vnd.vocdoni.boot", uri)
+            GW->>ER: #60; transaction #62;
+            ER-->>GW: 
+        GW-->>DV: 
+    DV-->>-EM: 
 ```
 
 **Used schemas:**
-- [Entity reference](/architecture/components/census-service?id=entity-reference)
+
+- [Entity metadata](/architecture/components/entities?id=json-schema)
 
 #### Adding users to a census
 
@@ -306,8 +125,6 @@ sequenceDiagram
                 DV->>DV: signRequestPayload(payload, web3Provider)
             deactivate DV
 
-            Note right of DV: TO DO: Review calls
-
             DV->>GW: addCensusClaim(addClaimPayload)
                 GW->>CS: addClaim(claimPayload)
                 CS-->>GW: success
@@ -318,8 +135,8 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Census Service - addClaim](/architecture/components/census-service?id=census-service-addclaim)
-- [Census Service - addClaimBulk](/architecture/components/census-service?id=census-service-addclaimbulk)
+- [Census Service addClaim](/architecture/components/census-service?id=addclaim)
+- [Census Service addClaimBulk](/architecture/components/census-service?id=addclaimbulk)
 
 ---
 
@@ -336,8 +153,6 @@ sequenceDiagram
     participant IPFS as IPFS
     participant BC as Blockchain
 
-    Note right of DV: TO DO: Review calls
-
     PM->>+DV: Process.create(processDetails)
 
         DV->>+GW: censusDump(censusId, signature)
@@ -345,17 +160,9 @@ sequenceDiagram
             CS-->>-GW: merkleTree
         GW-->>-DV: merkleTree
 
-        alt Linkable Ring Signatures
-            loop modulusGroups
-                DV-->>GW: addFile(modulusGroup) : modulusGroupHash
-                    GW-->IPFS: IPFS.put(modulusGroup) : modulusGroupHash
-                GW-->>DV: 
-            end
-        else ZK-Snarks
-            DV-->>GW: addFile(merkleTree) : merkleTreeHash
-                GW-->IPFS: IPFS.put(merkleTree) : merkleTreeHash
-            GW-->>DV: 
-        end
+        DV-->>GW: addFile(merkleTree) : merkleTreeHash
+            GW-->IPFS: IPFS.put(merkleTree) : merkleTreeHash
+        GW-->>DV: 
 
         DV->>+GW: getCensusRoot(censusId)
         GW->>+CS: getRoot(censusId)
@@ -366,7 +173,7 @@ sequenceDiagram
             GW-->IPFS: IPFS.put(processMetadata) : metadataHash
         GW-->>DV: 
 
-        DV->>+GW: Process.create(entityId, name, metadataContentUri)
+        DV->>+GW: Process.create(name, metadataContentUri, params)
             GW->>+BC: #60; transaction #62;
             BC-->>-GW: txId
         GW-->>-DV: txId
@@ -384,11 +191,9 @@ sequenceDiagram
 **Used schemas:**
 
 - [Process Metadata](/architecture/components/processes?id=process-metadata-json)
-- [Modulus group list](/architecture/components/census-service?id=modulus-group-list)
-- [Census Service - addClaimBulk](/architecture/components/census-service?id=census-service-addclaimbulk)
-- [Census Service - getRoot](/architecture/components/census-service?id=census-service-getroot)
-- [Census Service - setParams](/architecture/components/census-service?id=census-service-setparams)
-- [Census Service - dump](/architecture/components/census-service?id=census-service-dump)
+- [Census Service addClaimBulk](/architecture/components/census-service?id=addclaimbulk)
+- [Census Service getRoot](/architecture/components/census-service?id=getroot)
+- [Census Service dump](/architecture/components/census-service?id=dump)
 
 ### Voting process retrieval
 
@@ -462,7 +267,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Census Service - generateProof](/architecture/components/census-service?id=census-service-generateproof)
+- [Census Service generateProof](/architecture/components/census-service?id=generateproof)
 
 **Notes:**
 
@@ -516,7 +321,7 @@ sequenceDiagram
 **Used schemas:**
 
 - [Process Metadata](/architecture/components/processes?id=process-metadata-json)
-- [Census Service - generateProof](/architecture/components/census-service?id=census-service-generateproof)
+- [Census Service generateProof](/architecture/components/census-service?id=generateproof)
 - [Vote Package - ZK Snarks](/architecture/components/relay?id=vote-package-zk-snarks)
 
 **Notes:**
@@ -570,7 +375,7 @@ sequenceDiagram
 **Used schemas:**
 
 - [Process Metadata](/architecture/components/processes?id=process-metadata-json)
-<!-- - [getChunk](/architecture/components/census-service?id=census-service-getchunk) -->
+<!-- - [getChunk](/architecture/components/census-service?id=getchunk) -->
 - [Vote Package - Ring Signature](/architecture/components/relay?id=vote-package-ring-signature)
 
 **Notes:**

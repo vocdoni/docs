@@ -56,7 +56,7 @@ When using the `gateway`, only the public keys specified in `--allowedAddrs` can
 ```
 
 
-### addClaim
+### Add Claim
 
 **Private Method**
 
@@ -96,7 +96,7 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
 
 - [Adding users to a census](/architecture/sequence-diagrams?id=adding-users-to-a-census)
 
-### addClaimBulk
+### Add Claim Bulk
 
 **Private Method**
 
@@ -139,7 +139,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
 }
 ```
 
-### getRoot
+### Get Root
 
 **Public Method**
 
@@ -166,7 +166,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
 }
 ```
 
-### getSize
+### Get Size
 
 **Public Method**
 
@@ -195,7 +195,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
 ```
 
 
-### generateProof
+### Generate Proof
 
 **Public Method**
 
@@ -225,7 +225,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
 }
 ```
 
-### checkProof
+### Check Proof
 
 **Public Method**
 
@@ -256,7 +256,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
 }
 ```
 
-### Census dump
+### Census Dump
 
 Dumps the entire content of the census as an array of hexStrings rady to be imported to another census service.
 
@@ -291,7 +291,7 @@ Dumps the entire content of the census as an array of hexStrings rady to be impo
 }
 ```
 
-### Census dump plain
+### Census Dump Plain
 
 Dumps the content of the census in base64 format. The dump cannot be used afterwars with `importDump`.
 
@@ -326,7 +326,7 @@ Dumps the content of the census in base64 format. The dump cannot be used afterw
 }
 ```
 
-### Census import local dump
+### Census Import Local Dump
 
 Only works with specific merkletree format used by `dump` method. To add a list of plain claims use `addClaimBulk` instead.
 
@@ -356,7 +356,7 @@ Only works with specific merkletree format used by `dump` method. To add a list 
 }
 ```
 
-### Census publish
+### Census Publish
 
 Exports and publish the entire census on the storage of the backend (usually IPFS). Returns the URI.
 
@@ -387,7 +387,7 @@ Exports and publish the entire census on the storage of the backend (usually IPF
 }
 ```
 
-### Census import remote
+### Census Import Remote
 
 Import a previously published remote census. Only valid URIs accepted (depends on the backend).
 
