@@ -33,4 +33,4 @@ The process contract needs to define a namespace contract instance. This instanc
 
 ### Coming next
 
-See the [Vochain](/architecture/components/vochain) section.
+See the [Gateway](/architecture/components/gateway) section.

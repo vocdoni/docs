@@ -695,3 +695,7 @@ pong
 ```
 
 Clients should check the status before attempting to use a certain Gateway. 
+
+### Coming next
+
+See the [Vochain](/architecture/components/vochain) section.

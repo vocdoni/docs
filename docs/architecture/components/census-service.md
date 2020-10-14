@@ -1,54 +1,33 @@
 # Census Service
 
-- [Data Schemas](#data-schemas)
-- [JSON API schemas](#json-api-schemas)
-- [How census works](architecture/census-overview)
-
-The Census Service provides a service for both, organizations and users. Its purpose is to store and manage one or multiple census. A census is basically a list of public keys stored as a Merkle Tree.
+The Census Service provides a service for both organizations and users. Its purpose is to store and manage census, which are a list of public keys stored as a Merkle Tree.
 
 The organizer can:
 
-+ Create new census (it might be one per election process)
-+ Store claims (a hash of a public key usually)
-+ Export the claim list
-+ Recover in any moment the Merkle Root
-+ Publish the census to IPFS or other supported filesystem
-+ Import the census from IPFS or other support filesystem
++ Create a new census
++ Add new claims to a census (hash of the public key)
++ Export the list of claims
++ Recover the Merkle Root
++ Publish the census to IPFS or similar
++ Import a census from IPFS
 
-The user can:
+A user can:
 
-+ Recover in any moment the Merkle Root
-+ Given the content of a claim, get the Merkle Proof (which demostrates his public key is in the Census)
-+ Check if a Merkle Proof is valid for a specific Merkle Root
++ Request the Merkle Root
++ Given a claim, request the Merkle Proof (the siblings allowing to prove that the claim matches the current root hash)
++ Check if a Merkle Proof is valid
 
-The interaction with the Census Manager is handled trough a JSON API. The current API implementation of the Census service, can be exposed via HTTP(s), as part of the **go-dvote suit**, in two different ways:
+## Census enabled Gateways
 
-+ the standalone [censusHTTP backend](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp) 
-+ via the [dvote Gateway](https://github.com/vocdoni/go-dvote/tree/master/cmd/gateway)
-
-In the future more implementations using diferent transport layers could also be developed (i.e using Whisper, PSS or PubSub).
-
-#### censushttp
-
-The `censushttp` can be executed as follows:
-
-`./censushttp --port 1500 --logLevel debug --rootKey 347f650ea2adee1affe2fe81ee8e11c637d506da98dc16e74fc64ecb31e1bb2c1`
-
-This command will launch an HTTP endpoint on port 1500. This endpoint is administrated by the ECDSA public key specified as `rootKey`. It's the only one who can create new census and assign other public keys as uniq managers of that census.
-
-When using censushttp methods `publish` and `importRemote` are not available but `dump` and `importDump` can be used instead.
-
-#### gateway
-
-The `gateway` can be executed as follows:
+Gateways can be launched as follows:
 
 `./gateway --censusApi --apiRoute /dvote --listenPort 9090 --allowPrivate --allowedAddrs da5807a5c23e1e5986116116892e0b53278d686f`
 
-Then the gateway will expose the census API on a websockets HTTP endpoint `http://IP:9090/dvote`. If a storage has been enabled (IPFS by default) the census can be published and imported from the storage. Only `allowedAddrs` will be able to execute private methods (extracted from the ECDSA signature).
+The gateway process will expose the Census API on a HTTP/WS endpoint. If the storage API has been enabled, census can be published and imported. Only `allowedAddrs` will be able to execute private methods (extracted from the ECDSA signature).
 
 ## JSON API schemas
 
-Census Service interactions follow the [JSON API](/architecture/protocol/json-api) foundation.
+The Census API interactions follow the [JSON API](/architecture/protocol/json-api).
 
 Requests sent to a Census Service may invoke different operations. Depending on the `method`, certain parameters are expected or optional:
 
@@ -448,11 +427,6 @@ Import a previously published remote census. Only valid URIs accepted (depends o
 }
 ```
 
+### Coming next
 
-
-----
-
-## Resources
-
-- [Census service HTTP(s) implementation](https://github.com/vocdoni/go-dvote/tree/master/cmd/censushttp)
-
+See the [Boot node](/architecture/components/bootnode) section.
