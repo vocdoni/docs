@@ -335,7 +335,7 @@ The JSON payload below is stored on IPFS.
 
 ### Vote Envelope
 
-The Vote Envelope contains a (possibly encrypted) Vote Package and provides the details to check that the incoming vote is valid. Some fields may be optional depending on the `mode` and the `envelopetype` of the process.
+The Vote Envelope contains a (possibly encrypted) Vote Package and provides the details to check that the incoming vote is valid. Some fields may be optional depending on the process `mode` and `envelopeType`.
 
 #### When `envelopeType.ANONYMOUS` is enabled
 
@@ -352,15 +352,15 @@ An anonymous Vote Envelope features the proces ID, the ZK Proof, a nonce to prev
 }
 ```
 
-The `nullifier` to uniquely identify the vote in the blockchain is computed as follows: 
+The `nullifier` uniquely identifies the vote in the blockchain and it is computed as follows: 
 
 `nullifier = keccak256(bytes(hex(addr(signature))) + bytes(hex(processId)))`
 
 #### When `envelopeType.ANONYMOUS` is disabled
 
-A non-anonymous Vote Envelope features the process ID, the Census Merkle Proof of the user, a nonce to prevent replay attacks, the index of the encryption keys used, a Base64 representation of the Vote Package and the user's signature.
+A signed (non-anonymous) Vote Envelope features the process ID, the Census Merkle Proof of the user, a nonce to prevent replay attacks, the index of the encryption keys used, a Base64 representation of the Vote Package and the user's signature.
 
-Like always, the signature should be generated from a JSON object containing the keys in ascending alphabetical order.
+As always, the signature should be generated from a JSON object containing the keys in ascending alphabetical order.
 
 ```json
 {
@@ -397,9 +397,11 @@ When `envelopeType.ENCRYPTED_VOTE` is enabled:
 
 ### Results (JSON)
 
-Below is an excerp of vote types, along with 3 votes and their corresponding scrutiny output.
+Requests to the Results API will return an Array of number arrays. They will contain the number of occurrences of every possible vote option, for every question available.
 
-<table><thead><tr><th>Name</th><th>Answers</th><th>Results</th><th>maxCount</th><th>maxValue</th><th>maxTotalCost</th><th>costExponent</th><th>uniqueValues</th></tr></thead><tbody><tr><td class="cell-title">Rate a product</td>
+Given diferent process with various parameters, below is an example of the results that would be returned given the votes of 3 users.
+
+<table><thead><tr><th>Name</th><th>Vote examples</th><th>Results</th><th>maxCount</th><th>maxValue</th><th>maxTotalCost</th><th>costExponent</th><th>uniqueValues</th></tr></thead><tbody><tr><td class="cell-title">Rate a product</td>
 	<td class="cell-one">[3] [5] [3]</td>
 <td class="cell-two">[ [0,0,2,0,1] ]</td>
 <td class="cell-three">1</td>
@@ -440,7 +442,7 @@ Below is an excerp of vote types, along with 3 votes and their corresponding scr
 <td class="cell-five">-</td>
 <td class="cell-six">-</td>
 <td class="cell-seven">true</td></tr>
-<tr><td class="cell-title">Quadratic voting: 4 options, 9 credits</td>
+<tr><td class="cell-title">Quadratic voting: 4 options, 9 credits to spend</td>
 	<td class="cell-one">[2,2,1,0] [1,1,1,1] [0,3,0,0]</td>
 <td class="cell-two">[ [1,1,1,0], [0,1,1,1], [1,2,0,0], [2,1,0,0] ]</td>
 <td class="cell-three">4</td>
@@ -458,51 +460,6 @@ Below is an excerp of vote types, along with 3 votes and their corresponding scr
 <td class="cell-seven">false</td></tr>
 </tbody></table>
 
-## Future work
+### Coming next
 
-### Define a versioning system
-### Define sanity checks
-There are serveral events where the process may be invalid.
-
-- Process-metadata can't be fetched from IPFS
-- Process-metadata field can't be parsed or does not exist
-- Block-times have an invalid range. Define how far in the future they want the
-
-Oracles must report them, and action should be taken if there is consensus.
-
-### Oracles protocol
-
-Most of the sanity check logic can't no longer be in the ethereum blockchain, therefore we need to define process/consensus mechanism for the oracles to report to the ethereum smart-contracts.
-
-Oracles therefore must have an ethereum account, and it should be registered together with its public key
-
-Oracles can complain when there is a problem.
-```
-complain(uint reason){}
-```
-
-If a pre-defined percentage of oracles agrees on a problem of a specific reason, the process can be invalidated.
-
-```
-invalidate(uint reason){}
-```
-
-Before the user is shown a process, it should've been validated that the process is all good. Therefore is probably a good idea that the validators approve the process at the beginning.
-
-```
-complain(0);
-```
-
-The same logic should be used for reporting the results
-
-```
-reportResults(string resultsHash){}
-```
-
-```
-validateResults(){}
-````
-
-### Support multi-layer vote encryption
-
-Define how multiple entities can publish the public and private key for vote encryption. So no single entity has privilege information.
+See the [Namespaces](/architecture/components/namespaces) section.
