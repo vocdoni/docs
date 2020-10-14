@@ -13,7 +13,7 @@
         - [Census Service](/architecture/components/census-service.md)
         - [Boot node](/architecture/components/bootnode.md)
     - [Sequence diagrams](/architecture/sequence-diagrams.md)
-    - [Platform tools](/architecture/platform-tools.md)
+    - [Libraries and tooling](/architecture/libraries-tooling.md)
     - Protocol
         - [Data origins](/architecture/protocol/data-origins.md)
         - [JSON API](/architecture/protocol/json-api.md)

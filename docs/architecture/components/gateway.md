@@ -108,7 +108,7 @@ Send a [Vote Envelope](/architecture/components/processes?id=vote-envelope) to t
 ```
 
 **Used in:**
-- [Voting with ZK Snarks](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=casting-a-vote-with-zk-snarks)
+- [Casting a vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=casting-a-vote)
 
 ### Get Envelope Status
 
