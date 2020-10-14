@@ -9,20 +9,15 @@ However, decentralized ecosystems like a distributed vote system need much stron
   - [Set Entity metadata](#set-entity-metadata)
   - [Custom requests to an Entity](#custom-requests-to-an-entity)
     - [Sign up](#sign-up)
-    - [Submit a picture](#submit-a-picture)
-    - [Make a payment](#make-a-payment)
-    - [Resolve a captcha](#resolve-a-captcha)
-    - [External Entity to make use of Census Service](#external-entity-to-make-use-of-census-service)
     - [Adding users to a census](#adding-users-to-a-census)
 - [Voting](#voting)
   - [Voting process creation](#voting-process-creation)
   - [Voting process retrieval](#voting-process-retrieval)
   - [Check census inclusion](#check-census-inclusion)
-  - [Casting a vote with ZK Snarks](#casting-a-vote-with-zk-snarks)
-  - [Casting a vote with Linkable Ring Signatures](#casting-a-vote-with-linkable-ring-signatures)
+  - [Casting a vote](#casting-a-vote)
   - [Registering a Vote Batch](#registering-a-vote-batch)
 - [After voting](#after-voting)
-  - [Checking a submitted vote](#checking-a-submitted-vote)
+  - [Checking a Vote Envelope](#checking-a-vote-envelope)
   - [Closing a Voting Process](#closing-a-voting-process)
   - [Vote Scrutiny](#vote-scrutiny)
 
@@ -112,7 +107,7 @@ Depending on the activity of users, an **Entity** may decide to add public keys 
 sequenceDiagram
     participant PM as Entity Manager
     participant DB as Internal Database
-    participant DV as DVote JS
+    participant DV as DVote
     participant GW as Gateway/Web3
     participant CS as Census Service
 
@@ -147,7 +142,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant PM as Entity Manager
-    participant DV as DVote JS
+    participant DV as DVote
     participant GW as Gateway/Web3
     participant CS as Census Service
     participant IPFS as IPFS
@@ -202,10 +197,10 @@ A user wants to retrieve the voting processes of a given Entity
 ```mermaid
 sequenceDiagram
     participant App as App user
-    participant DV as DVote JS
+    participant DV as DVote
     participant GW as Gateway/Web3
     participant BC as Blockchain
-    participant SW as Swarm
+    participant IPFS as IPFS
 
     App->>+DV: Process.fetchByEntity(entityAddress, resolver)
 
@@ -222,13 +217,13 @@ sequenceDiagram
 
             DV->>GW: getMetadata(processId)
                 GW->>BC: getMetadata(processId)
-                BC-->>GW: (name, metadataContentUri, merkleRootHash, relayList, startTime, endTime)
-            GW-->>DV: (name, metadataContentUri, merkleRootHash, relayList, startTime, endTime)
+                BC-->>GW: (metadata, merkleRoot, params)
+            GW-->>DV: (metadata, merkleRoot, params)
 
             alt Process is active or in the future
                 DV->>GW: fetchFile(metadataHash)
-                GW->>SW: Swarm.get(metadataHash)
-                SW-->>GW: processMetadata
+                GW->>IPFS: IPFS.get(metadataHash)
+                IPFS-->>GW: processMetadata
                 GW-->>DV: processMetadata
             end
         end
@@ -244,18 +239,14 @@ sequenceDiagram
 
 A user wants to know whether he/she belongs in the census of a process or not.
 
-The request can be sent through HTTP/PSS/PubSub. The response may be fetched by subscribing to a topic on PSS/PubSub.
-
 ```mermaid
 sequenceDiagram
     participant App as App user
-    participant DV as DVote JS
+    participant DV as DVote
     participant GW as Gateway/Web3
     participant CS as Census Service
 
-    Note right of DV: TO DO: Review calls (LRS)
-
-    App->>+DV: Census.hasClaim(publicKey, censusId, censusMessagingURI)
+    App->>+DV: Census.isInCensus(publicKey, censusId, censusMessagingURI)
 
         DV->>+GW: genCensusProof(censusId, publicKey)
         GW->>+CS: genProof(censusId, publicKey)
@@ -274,208 +265,102 @@ sequenceDiagram
 - `generateProof` may be replaced with a call to `hasClaim`, for efficiency
 - The `censusId` and `censusMessagingURI` should have been fetched from the [Process Metadata](/architecture/components/processes)
 
-### Casting a vote with ZK Snarks
+### Casting a vote
 
-Requests can be sent through HTTP/PSS/PubSub. Responses may be fetched by subscribing to a topic on PSS/PubSub.
+A user wants to submit a vote for a given governance process.
 
 ```mermaid
 sequenceDiagram
 
     participant App
-    participant DV as DVote JS
+    participant DV as DVote
     participant GW as Gateway/Web3
     participant CS as Census Service
-    participant RL as Relay
+    participant MP as Mempool
 
     App->>+DV: Process.castVote(vote, processMetadata, merkleProof?)
 
-        alt merkleProof not provided
+        DV->>+GW: genProof(processMetadata.census.id, publicKey)
 
-            DV->>+GW: generateProof(processMetadata.census.id, publicKey)
-
-            GW->>+CS: PSS.broadcast(#60;generateProofData#62;)
+            GW->>+CS: genProof(publicKeyHash)
             CS-->>-GW: merkleProof
 
-            GW-->>-DV: merkleProof
-
-        end
+        GW-->>-DV: merkleProof
 
         DV->>DV: computeNullifier()
 
-        DV->>DV: encrypt(vote, processMetadata.publicKey)
+        alt Encrypted process
+            DV->>DV: encrypt(vote, processMetadata.publicKey)
+        end
 
-        DV->>DV: generateZkProof(provingK, verificationK, signals)
+        alt Anonymous vote
+            DV->>DV: generateZkProof(provingK, verificationK, signals)
+        end
 
-        DV->>DV: encryptVotePackage(package, relay.publicKey)
+        alt Encrypted process
+            DV->>DV: encryptVotePackage(votePackage)
+        end
 
-        DV->>GW: submitVote(encryptedVotePackage, relay.messagingUri)
+        DV->>GW: submitVoteEnvelope(voteEnvelope)
 
-            GW->>RL: transmitVoteEnvelope(encryptedVotePackage)
-            RL-->>GW: ACK
+            GW->>MP: addEnvelope(voteEnvelope)
+            MP-->>GW: ACK
 
-        GW-->>DV: submitted
+        GW-->>DV: success
 
-    DV-->>-App: submitted
+    DV-->>-App: success
 ```
 
 **Used schemas:**
 
 - [Process Metadata](/architecture/components/processes?id=process-metadata-json)
 - [Census Service generateProof](/architecture/components/census-service?id=generateproof)
-- [Vote Package - ZK Snarks](/architecture/components/relay?id=vote-package-zk-snarks)
+- [Vote Package](/architecture/components/processes?id=vote-package)
 
 **Notes:**
-
 - The Merkle Proof could be retrieved and stored beforehand
-
-### Casting a vote with Linkable Ring Signatures
-
-Requests can be sent through HTTP/PSS/PubSub. Responses may be fetched by subscribing to a topic on PSS/PubSub.
-
-```mermaid
-sequenceDiagram
-
-    participant App
-    participant DV as DVote JS
-    participant GW as Gateway/Web3
-    participant CS as Census Service
-    participant RL as Relay
-
-    App->>+DV: Process.castVote(vote, processMetadata, censusChunk?)
-
-        Note right of DV: TO DO: Review calls
-
-        alt censusChunk not provided
-
-            DV->>+GW: getChunk(publicKeyModulus)
-
-            GW->>+CS: getChunkData(modulus)
-            CS-->>-GW: censusChunk
-
-            GW-->>-DV: censusChunk
-
-        end
-
-        DV->>DV: encrypt(vote, processMetadata.publicKey)
-
-        DV->>DV: sign(processMetadata.address, privateKey, censusChunk)
-
-        DV->>DV: encryptVotePackage(package, relay.publicKey)
-
-        DV->>GW: submitVote(encryptedVotePackage, relay.messagingUri)
-
-            GW->>RL: transmitVoteEnvelope(encryptedVotePackage)
-            RL-->>GW: ACK
-
-        GW-->>DV: submitted
-
-    DV-->>-App: submitted
-```
-
-**Used schemas:**
-
-- [Process Metadata](/architecture/components/processes?id=process-metadata-json)
-<!-- - [getChunk](/architecture/components/census-service?id=getchunk) -->
-- [Vote Package - Ring Signature](/architecture/components/relay?id=vote-package-ring-signature)
-
-**Notes:**
-
-- The `publicKeyModulus` allows to segment the whole census into `N` polling stations. Every public key is assigned to exactly one, depending on the modulus that yields a division by `processMetadata.census.modulusSize`.
-
-### Registering a Vote Batch
-
-```mermaid
-sequenceDiagram
-    participant RL as Relay
-    participant SW as Swarm
-    participant BC as Blockchain Process
-
-    activate RL
-        RL->>RL: loadPendingVotes()
-        RL->>RL: skipInvalidVotes()
-    deactivate RL
-
-    RL-->SW: Swarm.put(voteBatch) : batchHash
-
-    RL->>+BC: Process.registerBatch(batchContentUri)
-    BC-->>-RL: txId
-```
-
-**Used schemas:**
-
-- [Vote Batch](/architecture/components/relay?id=vote-batch)
 
 ## After voting
 
-### Checking a submitted vote
+### Checking a Vote Envelope
 
-The sequence diagram applies to both **ZK Snarks** and **LRS** Vote Packages. `nullifierOrSignature` will be interpreted according to the process' `type` on its metadata.
+A user wants to check the status of an envelope by its nullifier.
 
 ```mermaid
 sequenceDiagram
     participant App
-    participant DV as DVote JS
+    participant DV as DVote
     participant GW as Gateway/Web3
-    participant RL as Relay
-    participant BC as Blockchain Process
-    participant SW as Swarm
+    participant VN as Vochain Node
 
-    App->>DV: checkVoteStatus(processId, relayMessagingUri)
+    App->>DV: getEnvelopeStatus(processId)
 
-        DV->>DV: computeNullifierOrSignature()
+        DV->>DV: computeNullifier()
 
-        DV->>+GW: getVoteStatus(processId, nullifierOrSignature, relayMessagingUri)
+        DV->>+GW: getEnvelopeStatus(processId, nullifier)
 
-            GW-->>RL: requestVoteStatus(processId, nullifierOrSignature)
-            RL-->>GW: (batchId?, batchContentUri?)
+            GW-->>VN: getEnvelopeStatus(processId, nullifier)
+            VN-->>GW: status
 
-        GW-->>-DV: (batchId?, batchContentUri?)
+        GW-->>-DV: status
 
-        alt it does not trust the batchContentUri
-
-            DV->>+GW: Process.getBatch(batchId)
-            GW->>+BC: Process.getBatch(batchId)
-            BC-->>-GW: (processId, batchContentUri)
-            GW-->>-DV: (processId, batchContentUri)
-
-        end
-
-        DV->>+GW: fetchFile(batchHashURI)
-        GW->>+SW: Swarm.get(batchHash)
-        SW-->>-GW: batch
-        GW-->>-DV: batch
-
-        DV->>DV: checkWithinBatch(nullifierOrSignature, batch)
-
-    DV-->>App: isRegistered
+    DV-->>App: registered
 ```
-**Used schemas:**
-
-- [Vote Batch](/architecture/components/relay?id=vote-batch)
-
-**Notes:**
-
-- `nullifierOrSignature` is expected to contain a nullifier when the process `type` is `zk-snarks`
-- `nullifierOrSignature` is expected to contain a ring signature when the process `type` is `lrs`
 
 ### Closing a Voting Process
 
 ```mermaid
 sequenceDiagram
     participant PM as Entity Manager
-    participant DV as DVote JS
+    participant DV as DVote
     participant GW as Gateway/Web3
     participant BC as Blockchain Process
 
-    PM->>DV: Process.close(processId, privateKey)
+    PM->>DV: Process.endProcess(processId)
 
-        DV->>+GW: Process.close(processId, privateKey)
-        GW->>+BC: Process.close(processId, privateKey)
-
-            BC->>BC: checkPrivateKey(privateKey)
-            BC->>BC: closeProcess(processId)
-
-        BC-->>-GW: success
+        DV->>+GW: Process.setStatus(processId, "ENDED")
+            GW->>+BC: setStatus(processId, "ENDED")
+            BC-->>-GW: success
         GW-->>-DV: success
 
     DV-->>PM: success
@@ -483,15 +368,15 @@ sequenceDiagram
 
 ### Vote Scrutiny
 
-Anyone with internet access can compute the scrutiny of a given processId. However, the vote batch data needs to be pinned online for a certain period of time.
+Anyone with network access can compute the scrutiny of a given processId. The node can even compute a ZK Rollup proof to let the contract verify the correctness of the provided results on-chain.
 
 ```mermaid
 sequenceDiagram
     participant SC as Scrutinizer
-    participant DV as DVote JS
+    participant DV as DVote
     participant GW as Gateway/Web3
-    participant BC as Blockchain Process
-    participant SW as Swarm
+    participant BC as Blockchain
+    participant IPFS as IPFS
 
     SC->>+DV: Process.get(processId)
 
@@ -502,101 +387,69 @@ sequenceDiagram
 
     DV-->>-SC: (name, metadataContentUri)
 
-    SC->>+DV: Swarm.get(metadataHash)
+    SC->>+DV: IPFS.get(metadataHash)
 
         DV->>+GW: fetchFile(metadataHash)
-        GW->>+SW: Swarm.get(metadataHash)
-        SW-->>-GW: processMetadata
+        GW->>+IPFS: IPFS.get(metadataHash)
+        IPFS-->>-GW: processMetadata
         GW-->>-DV: processMetadata
 
     DV-->>-SC: processMetadata
 
-    SC->>+DV: Process.getVoteBatchIds(processId)
-
-        DV->>+GW: Process.getVoteBatchIds(processId)
-        GW->>+BC: Process.getVoteBatchIds(processId)
-        BC-->>-GW: batchIds
-        GW-->>-DV: batchIds
-
-    DV-->>-SC: batchIds
-
-    SC->>+DV: Process.fetchBatches(batchIds)
-        loop batchIds
-
-            DV->>+GW: Process.getBatch(batchId)
-            GW->>+BC: Process.getBatch(batchId)
-            BC-->>-GW: (type, relay, batchContentUri)
-            GW-->>-DV: (type, relay, batchContentUri)
-
-            DV->>+GW: fetchFile(batchHash)
-            GW->>+SW: Swarm.get(batchHash)
-            SW-->>-GW: voteBatch
-            GW-->>-DV: voteBatch
-
+    SC->>+DV: getEnvelopeNullifiers(processId)
+        loop
+            DV->>+GW: Process.getEnvelopeList(processId)
+                GW->>+BC: Process.getEnvelopeList(processId)
+                BC-->>-GW: nullifiers[]
+            GW-->>-DV: nullifiers[]
         end
-    DV-->>-SC: voteBatches
+    DV-->>-SC: nullifiers[]
 
-    SC->>+DV: skipInvalidRelayBatches(voteBatches, processMetadata.relays)
-    DV-->>-SC: validRelayBatches
-
-    SC->>+DV: skipInvalidTypeBatches(validRelayBatches, processMetadata.type)
-    DV-->>-SC: validTypeBatches
-
-    SC->>SC: sort(merge(validTypeBatches))
-
-    SC->>+DV: resolveDuplicates(voteBatches)
-    DV-->>-SC: uniqueVotePackages
-
-    alt type=zk-snarks
-        loop uniqueVotePackages
-
-            SC->>+DV: Snark.check(proof, votePackage.publicSignals)
-            DV-->>-SC: valid
-
+    SC->>+DV: getEnvelopes(nullifiers[])
+        loop
+            DV->>+GW: Process.getEnvelope(nullifier)
+                GW->>+BC: Process.getEnvelope(nullifier)
+                BC-->>-GW: envelope
+            GW-->>-DV: envelope
         end
-    else type=lrs
+    DV-->>-SC: envelopes[]
 
-        SC->>SC: groupByModulus(uniqueVotePackages)
-        loop voteGroups
 
-            SC->>+DV: LRS.check(signature, voteGroup.pubKeys, processId)
-            DV-->>-SC: isWithinGroup
+    SC->>SC: sort(merge(filterValid(envelopes)))
+    SC->>SC: resolveDuplicates(validEnvelopes)
 
-            SC->>+DV: LRS.isUnseen(signature, processedVotes.signature)
-            DV-->>-SC: isUnseen
+    loop uniqueVotePackages
 
-        end
+        SC->>+DV: Proof.check(proof, nullifier, ...)
+        DV-->>-SC: valid
+
     end
 
     loop validVotes
 
-        SC->>+DV: decrypt(vote.encryptedVote, privateKey)
-        DV-->>-SC: voteValue
+        alt encrypted process
+            SC->>+DV: decrypt(vote.encryptedVote, privateKey)
+            DV-->>-SC: voteValue
+        end
 
         SC->>SC: updateVoteCount(voteValue)
-
     end
 
-    SC->>+DV: addFile(voteSummary)
-        DV-->GW: addFile(voteSummary)
-        GW-->SW: Swarm.put(voteSummary)
-        SW-->>GW: voteSummaryHash
-        GW-->>DV: voteSummaryHash
-    DV-->>-SC: voteSummaryHash
+    alt
+        SC->>+DV: setResults(processId, voteCounts)
+            DV->>DV: computeZkRollup(voteCount, params)
 
-    SC->>+DV: addFile(voteList)
-        DV-->GW: addFile(voteList)
-        GW-->SW: Swarm.put(voteList)
-        SW-->>GW: voteListHash
-        GW-->>DV: voteListHash
-    DV-->>-SC: voteListHash
+            DV->>+GW: Process.setResults(processId, results, voteCount, proof)
+                GW->>+BC: setResults(processId, results, voteCount, proof)
+                    BC->>BC: verify(proof)
+                BC-->>-GW: success
+            GW-->>DV: success
+        DV-->>-SC: success
+    end
+
 ```
 
 **Used schemas:**
 
 - [Process Metadata](/architecture/components/processes?id=process-metadata-json)
-- [Vote Package - ZK Snarks](/architecture/components/relay?id=vote-package-zk-snarks)
-- [Vote Package - Ring Signature](/architecture/components/relay?id=vote-package-ring-signature)
-- [Vote Batch](/architecture/components/relay?id=vote-batch)
-- [Vote Summary](/architecture/components/relay?id=vote-summary)
-- [Vote List](/architecture/components/relay?id=vote-list)
+- [Vote Package](/architecture/components/processes?id=vote-package)
