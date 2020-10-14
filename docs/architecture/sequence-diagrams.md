@@ -36,7 +36,7 @@ However, decentralized ecosystems like a distributed vote system need much stron
 --------------------------------------------------------------------------------
 
 ### Set Entity metadata
-An Entity starts existing at the moment it has certain metadata stored on the [EntityResolver](/architecture/components/entity?id=entityresolver) smart contract. 
+An Entity starts existing at the moment it has certain metadata stored on the [Entity Resolver](/architecture/components/entities?id=entityresolver) smart contract. 
 
 ```mermaid
 
@@ -82,7 +82,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Entity metadata](/architecture/components/entity.md)
+- [Entity metadata](/architecture/components/entities?id=json-schema)
 
 ### Entity subscription
 
@@ -152,11 +152,11 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Entity metadata](/architecture/components/entity.md)
+- [Entity metadata](/architecture/components/entities?id=json-schema)
 
 **Related:**
 
-- [Gateway Boot Nodes](/architecture/components/entity?id=gateway-boot-nodes)
+- [Gateway Boot Nodes](/architecture/components/entities?id=gateway-boot-nodes)
 
 **Notes:**
 
@@ -200,7 +200,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Entity metadata](/architecture/components/entity?id=entity-metadata)
+- [Entity metadata](/architecture/components/entities?id=json-schema)
 
 **Notes:**
 

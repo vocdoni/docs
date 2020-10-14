@@ -5,14 +5,14 @@ To see how a decentralized election works, let's see the sequence of actions tha
 ### Prior to voting
 
 - Vocdoni deploys the [smart contracts](https://gitlab.com/vocdoni/dvote-solidity#contracts) to Ethereum
-- The **organizer** registers an [Entity](/architecture/components/entity) to the blockchain
+- The **organizer** registers an [Entity](/architecture/components/entities) to the blockchain
 	- The metadata of the entity is pinned on IPFS
 	- The reference is declared on the ENS resolver of the entity
 - The **app user** creates a self-sovereign identity on a mobile app
 - The **app user** imports an identity (optional)
 	- Importing a recovery mnemonic
 	- Using an encrypted back up
-- The **app user** visits an [Entity](/architecture/components/entity)
+- The **app user** visits an [Entity](/architecture/components/entities)
 	- The user can open a deep link or scan a QR code
 - The **app user** protects the identity
 	- Using a visual pattern or pin
@@ -49,7 +49,7 @@ To see how a decentralized election works, let's see the sequence of actions tha
 	- Push the eligible public keys to the [Census Service](/architecture/components/census-service)
 	- Pin the [Process Metadata](/architecture/components/process?id=process-metadata-json) on IPFS
 	- Send a transaction to the process smart contract, including [Content URI](/architecture/protocol/data-origins?id=content-uri)'s pointing to the [Process Metadata](/architecture/components/process?id=process-metadata-json) and the [Census Merkle Tree](/architecture/census-overview), along with the rest of parameters
-	- Update the list of voting processes on the [ENS Resolver](/architecture/components/entity?id=entity-resolver) contract for the entity
+	- Update the list of voting processes on the [ENS Resolver](/architecture/components/entities?id=entity-resolver) contract for the entity
 - The **app user** fetches the active processes of an **Entity**
 	- Read the description and review the options to vote
 - The **app user** checks that the identity is part of the process' census

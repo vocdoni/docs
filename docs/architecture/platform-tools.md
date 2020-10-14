@@ -19,7 +19,7 @@ This library provides the Smart Contracts that support the integrity transaction
 
 Much of the work involving metadata is delegated to decentralized filesystems, providing the complete metadata. 
 
-- [Entity Resolver smart contract](/architecture/components/entity?id=entity-resolver).
+- [Entity Resolver smart contract](/architecture/components/entities?id=entity-resolver).
 - [Voting Process smart contract](/architecture/components/process?id=smart-contract).
 
 ## Web runtime (for React Native)

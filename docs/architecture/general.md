@@ -7,7 +7,7 @@ Digital voting processes represent a great social and tech challenge. An officia
 + Be 100% transparent, auditable and verifiable
 + Use uncensorable communication channels
 + Ensure that voters from a census can only vote once without revealing anyone's identity
-+ Handle tenths of thousands of transactions per second
++ Handle tenths of thousands of transactions per minute
 
 Vocdoni defines an open architecture and the protocols to empower large communities to exercise full democracy with the aforementioned guarantees. 
 

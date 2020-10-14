@@ -27,7 +27,7 @@ General purpose blockchains are slow and hard to scale, so they are only used to
 
 An Entity is an aggregate of data living on the Entity Resolver smart contract and on IPFS.
 
-For a complete explanation, read the [Entity section](/architecture/components/entity).
+For a complete explanation, read the [Entities section](/architecture/components/entities).
 
 ##### Process Metadata
 
@@ -132,4 +132,4 @@ GW-.->BCH
 
 ### Coming next
 
-See the [Entity](/architecture/components/entity) section.
+See the [Entities](/architecture/components/entities) section.
