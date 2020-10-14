@@ -2,7 +2,7 @@
 
 - [Data Schemas](#data-schemas)
 - [JSON API schemas](#json-api-schemas)
-- [How census works](architecture/census)
+- [How census works](architecture/census-overview)
 
 The Census Service provides a service for both, organizations and users. Its purpose is to store and manage one or multiple census. A census is basically a list of public keys stored as a Merkle Tree.
 

@@ -1,132 +1,122 @@
 # User stories
 
-To understand how a decentralized voting process works, we need to define the sequence of actions that are expected to happen.
+To see how a decentralized election works, let's see the sequence of actions that need to take place.
 
 ### Prior to voting
 
-- Vocdoni deploys the [Entity Resolver](/architecture/components/entity?id=entity-resolver) and [Voting Process](/architecture/components/process?id=smart-contract) smart contracts
-  - Optionally, other organizations can deploy their own instances
+- Vocdoni deploys the [smart contracts](https://gitlab.com/vocdoni/dvote-solidity#contracts) to Ethereum
 - The **organizer** registers an [Entity](/architecture/components/entity) to the blockchain
-- The **user** creates a self-sovereign identity on a mobile app
-  - Identified by a friendly name
-  - Optionally, he/she created additional identities
-- The **user** restores an identity
+	- The metadata of the entity is pinned on IPFS
+	- The reference is declared on the ENS resolver of the entity
+- The **app user** creates a self-sovereign identity on a mobile app
+- The **app user** imports an identity (optional)
 	- Importing a recovery mnemonic
-	- Using an encrypted back up (QR)
-- The **user** subscribes to an [Entity](/architecture/components/entity)
-	- The [Entity](/architecture/components/entity) could be predefined in the parameters of the app in compile time
-	- Entities can also be fetched from a list of boot entities
-		- The app gets the default [Entity Resolver](/architecture/components/entity?id=entity-resolver) address and the Entity ID of Vocdoni from `dvote-js`
-		- The app fetches the boot entities of Vocdoni and displays them
-		- It is also possible to use other instances and fetch the bootnodes of a specific Entity instead
-	- The user can also subscribe to an Entity by following a deep link with the [Entity Resolver](/architecture/components/entity?id=entity-resolver) address and the Entity ID
-- The **user** protects his/her identity with a visual pattern or a pin
-<!-- - The **user** unlocks the app to access the content -->
-- The **user** exports an encrypted backup of his/her identity
+	- Using an encrypted back up
+- The **app user** visits an [Entity](/architecture/components/entity)
+	- The user can open a deep link or scan a QR code
+- The **app user** protects the identity
+	- Using a visual pattern or pin
+	- Using biometric authentication
+- The **app user** unlocks an identity
+- The **app user** exports an encrypted backup of his/her identity
 - The **app** checks the pending actions of the user
 	- For every Entity's action on the metadata, it fetches their visibility status
-- The **user** performs custom requests with the Entity's backend
-	- Sign up
-		- Proove that the user owns the private/public key
-		- Provide personal information
-	- Submit a picture
-		- Run a KYC process with a selfie and ID card pictures
-	- Make a payment
-	- Resolve a captcha
-	- Etc.
-- Eventually, the **organizer** may add the user to one or more census
+<!-- - The **app user** performs custom requests with the Entity's backend -->
+<!--	 - Sign up -->
+<!--		 - Proove that the user owns the private/public key -->
+<!--		 - Provide personal information -->
+<!--	 - Submit a picture -->
+<!--		 - Run a KYC process with a selfie and ID card pictures -->
+<!--	 - Make a payment -->
+<!--	 - Resolve a captcha -->
+<!--	 - Etc. -->
+- The user registers to an organization and the public key is stored on its DB
+	- By receiving an email with a one time password
+	- By scanning a one time QR code
 - The **organizer** manages the user registry
-	- View and edit personal details
-	- Manage the attributes of a public key or account
-	- Trigger a census update when a user's flags are changed
-- The **organizer** manages a certain census
-	- Manage a census
-		- Define the filters that a user must satisfy to be included in such census
-		- Send a transaction to the [Entity Resolver](/architecture/components/entity?id=entity-resolver), stating that the [Census Service](/architecture/general?id=census-service) has to manage a certain Census Id and allowing certain public keys to alter it
-	- Dropping census
+- The **organizer** creates a census snapshot at a given point in time
+	- A set of internal filters determine what members will be included in the snapshot
 - The **organizer** manages public content to be consumed on the client app
-- The **user** accesses the public content of the Entity
-	- Display the entity's details, related organizations, read official content.
+- The **App user** views the public content of the Entity
+	- Display the news feed, voting processes, etc.
 
 ### Voting
 
-- The **organizer** starts a voting process
-	- Choose the Census Id
-	- Get the Merkle Root Hash
-	<!-- - Publish the Merkle Tree to Swarm -->
-	- On ZK Snarks processes:
-		- Push the eligible public keys to the [Census Service](/architecture/general?id=census-service)
-	- With Linkable Ring Signatures:
-		- Push the eligible public keys to the [Census Service](/architecture/general?id=census-service)
-		- Push the settings of the new census so that group modulus can be created (process Id and maximum group size)
-		- Get the modulus number and the [Content URI](/architecture/protocol/data-origins?id=content-uri)'s where the [Census Service](/architecture/general?id=census-service) is pinning every [modulus group](/architecture/protocol/franchise-proof?id=_2-create-census-rings)
-	- Pin the entire [Process Metadata](/architecture/components/process?id=process-metadata-json) (Swarm, IPFS, etc)
-	- Send a transaction to the blockchain with the core data of the process and a [Content URI](/architecture/protocol/data-origins?id=content-uri) to the[ Process Metadata](/architecture/components/process?id=process-metadata-json) file
-	- Update the list of voting processes on the [Entity Resolver](/architecture/components/entity?id=entity-resolver) smart contract
-- The **App user** fetches the active voting processes of an **Entity**
+- The **organizer** creates a voting process
+	- Select the census snapshot to use
+	- Get the census Merkle Root
+	- Pin the Merkle Tree on IPFS or similar
+	- Push the eligible public keys to the [Census Service](/architecture/components/census-service)
+	- Pin the [Process Metadata](/architecture/components/process?id=process-metadata-json) on IPFS
+	- Send a transaction to the process smart contract, including [Content URI](/architecture/protocol/data-origins?id=content-uri)'s pointing to the [Process Metadata](/architecture/components/process?id=process-metadata-json) and the [Census Merkle Tree](/architecture/census-overview), along with the rest of parameters
+	- Update the list of voting processes on the [ENS Resolver](/architecture/components/entity?id=entity-resolver) contract for the entity
+- The **app user** fetches the active processes of an **Entity**
 	- Read the description and review the options to vote
-- The **App user** checks that he/she is part of a process' census
-- The **App user** casts a vote
-	- Using **ZK Snarks**
-		- The app requests the census proof to the **[Census Service](/architecture/general?id=census-service)**
-			- The **[Census service](/architecture/general?id=census-service)** replies with the merkle proof
-		- The app computes the nullifier
-		- The app encrypts the **Vote Value** and a nonce with the public key of the voting process
-		- The app fetches the proving and verification keys and generates the **Zero-Knowledge Proof** that he/she is eligible to cast a valid vote
-		- The app generates the [Vote Package](/architecture/components/relay?id=vote-package-zk-snarks)
-		<!-- - ~POW~ -->
-		- The app chooses a **Relay** among the available ones
-		- The app encrypts the [Vote Package](/architecture/components/relay?id=vote-package-zk-snarks) with the public key of the Relay to get the [Vote Envelope](/architecture/components/relay?id=vote-envelope-zk-snarks)
-		- The app submits the [Vote Envelope](/architecture/components/relay?id=vote-envelope-zk-snarks) to a **Gateway**
-		- The **Gateway** broadcasts the [Vote Envelope](/architecture/components/relay?id=vote-envelope-zk-snarks) to the Relay's public key
-		- The **Relay** receives the **Gateway** message and sends back an ACK message
-	- Using **Ring Signatures**
-		- The app requests the chunk of census ([modulus group](/architecture/protocol/franchise-proof?id=_2-create-census-rings)) where he/she belongs from the given [Content URI](/architecture/protocol/data-origins?id=content-uri) defined on the metadata
-		- The app encrypts the **Vote Value** and a nonce with the public key of the voting process
-		- The app signs the [Vote Package](/architecture/components/relay?id=vote-package-ring-signature) with the **Ring Signature**
-		<!-- - ~POW~ -->
-		- The app chooses a **Relay** among the available ones
-		- The app encrypts the signed [Vote Package](/architecture/components/relay?id=vote-package-ring-signature) with the public key of the Relay to get the [Vote Envelope](/architecture/components/relay?id=vote-envelope-ring-signature)
-		- The app submits the [Vote Envelope](/architecture/components/relay?id=vote-envelope-ring-signature) to a **Gateway**
-		- The **Gateway** broadcasts the [Vote Envelope](/architecture/components/relay?id=vote-envelope-ring-signature) to the Relay's public key
-		- The **Relay** receives the **Gateway** message and sends back an ACK message
-- A **Relay** processes an incoming [Vote Envelope](/architecture/components/relay?id=vote-envelope)
-	- The **Relay** decrypts the [Vote Envelope](/architecture/components/relay?id=vote-envelope) to get the [Vote Package](/architecture/components/relay?id=vote-package)
-	- The **Relay** checks that none if its batches includes the current nullifier or none of the previous signatures is linked to the  new one
-	- The **Relay** checks that the current timestamp is within the start/end blocks
-	- If the [Vote Package](/architecture/components/relay?id=vote-package) contains a **ZK Proof**, the **Relay** checks that the proof is valid
-	- If the [Vote Package](/architecture/components/relay?id=vote-package) contains a **Ring Signature**, the **Relay** checks that the signature belongs to the [modulus group](/architecture/protocol/franchise-proof?id=_2-create-census-rings), and the modulus grouop belongs to the census
-	- The **Relay** adds the [Vote Package](/architecture/components/relay?id=vote-package) into its next batch
-- A **Relay** registers a [Vote Batch](/architecture/components/relay?id=vote-batch)
-	- The **Relay** adds a set of [Vote Packages](/architecture/components/relay?id=vote-package) on Swarm/IPFS
-	- The **Relay** broadcasts a blockchain transaction to the **Process** smart contract to register the [Content URI](/architecture/protocol/data-origins?id=content-uri) of the current [Vote Batch](/architecture/components/relay?id=vote-batch)
-  
+- The **app user** checks that the identity is part of the process' census
+- The **app user** casts a vote
+	- The app requests a proof to the **[Census Service](/architecture/components/census-service)**
+		- The **[Census service](/architecture/components/census-service)** replies with the census Merkle proof if the public key belongs to it
+	- The app computes the user's nullifier for the vote
+	- The app generates the [Vote Package](/architecture/components/process?id=vote-package-zk-snarks) with the election choices
+	- On encrypted processes:
+		- The app fetches the encryption public keys to the **Gateway**
+		- The app encrypts the [Vote Package](/architecture/components/process?id=vote-package-zk-snarks) with the public keys of the voting process
+	- On anonymous processes:
+		- The app fetches the proving and verification keys and then generates the **Zero-Knowledge Proof**
+		- The ZK Proof proves that:
+			- The voter knows a private key, whose public key belongs to the census
+			- The provided nullifier matches the current process ID and the user's private key
+	<!-- - ~POW~ -->
+	- The app generates the [Vote Envelope](/architecture/components/process?id=vote-envelope-zk-snarks)
+	- The app selects a **Gateway** among the available ones and submits the [Vote Envelope](/architecture/components/process?id=vote-envelope-zk-snarks)
+	- The **Gateway** submits the [Vote Envelope](/architecture/components/process?id=vote-envelope-zk-snarks) to the mempool of the Vochain
+- A **Vochain miner** processes an incoming [Vote Envelope](/architecture/components/process?id=vote-envelope)
+	- The **Vochain miner** checks that the current block is within the process start/end blocks
+	- The **Vochain miner** checks that the given nullifier has not been used before
+	- If the process is anonymous:
+		- The **Vochain miner** checks that the **ZK Proof** of the [Vote Envelope](/architecture/components/process?id=vote-envelope) is valid
+	- If the process is not anonymous
+		- The **Vochain miner** checks that the **Merkle Proof** of the [Vote Envelope](/architecture/components/process?id=vote-envelope) matches the vote signature and the Merkle root
+	- The **Vochain miner** adds the [Vote Envelope](/architecture/components/process?id=vote-envelope) to the next block
+
 ### After voting
 
-- The **App User** checks that his/her vots is registered
-	- The app asks a **Gateway** for the batchId from a transaction including his/her nullifier (ZK Snarks) or signature (Linkable Ring Signatures)
-	- The **Gateway** broadcasts the expected Relay
-	- If the **Relay** has sent a transaction to the blockchain with the nullifier/signature in a batch, it replies with the batch submission Id and the batch's [Content URI](/architecture/protocol/data-origins?id=content-uri). NACK otherwise.
-	- The app fetches the value of the given batchId on the Blockchain
-	- The app fetches the contents of the [Vote Batch](/architecture/components/relay?id=vote-batch) on Swarm at the given [Content URI](/architecture/protocol/data-origins?id=content-uri)
-	- The app checks that the nullifier/signature is indeed registered
-- The organizing **Entity** publishes the private key to the blockchain so that the vote count can start and newer batch submissions are rejected
-- A **Scrutinizer** does the vote count
-	- The **Scrutinizer** fetches the [Process Metadata](/architecture/components/process?id=process-metadata-json) and the private key
-	- The **Scrutinizer** fetches the list of batchId's from the `processId` on the Blockchain
-	- The **Scrutinizer** fetches the data of every [Vote Batch](/architecture/components/relay?id=vote-batch) registered
-	- The **Scrutinizer** ensures that [Vote Batches](/architecture/components/relay?id=vote-batch) come from trusted Relays, correspond to the given processId and contain votes with the right `type` of verification
-	- The **Scrutinizer** merges the batch votes into a single list
-	- The **Scrutinizer** detects duplicate nullifiers or singatures
-		- It only keeps the vote submitted in the latest batch
-	- On ZK votes:
-		- The **Scrutinizer** validates the given ZK Snark proof and checks that the given censusMerkleRoot matches the one in the [Process Metadata](/architecture/components/process?id=process-metadata-json)
-	- On LRS votes: 
-		- The **Scrutinizer** groups the [Vote Packages](/architecture/components/relay?id=vote-package) by their [publicKeyModulus](/architecture/protocol/franchise-proof?id=_2-create-census-rings)
-		- For every group, the **Scrutinizer** checks the given ring signature against the rest of the group's votes
-	- The **Scrutinizer** decrypts the encrypted vote of the valid votes and computes the sum of appearences of every Vote Value
-		- Any Vote Value other than the ones defined in the [Process Metadata](/architecture/components/process?id=process-metadata-json) is counted as a **null vote**
-- The **organizer** broadcasts the results of the voting process and the actual Vote Values
+- The **app User** checks that his/her vots is registered
+	- The app asks a **Gateway** for the envelope status of his/her nullifier
+- The **organizer** ends the process
+	- The **organizer** sends a transaction to the process contract and sets the state of the process as ended
+	- A trustless oracle relays the transaction to the Vochain
+	- Further envelope submissions are rejected
+	- On encrypted processes:
+		- Miners create a transaction revealing their private key for the process
+- The process end block is reached
+	- An oracle sends a transaction to the Vochain to signal that a process has ended
+	- Further envelope submissions are rejected
+	- On encrypted processes:
+		- Miners create a transaction revealing their private key for the process
+- An **observer** computes the results
+	- The **observer** fetches the [Process Metadata](/architecture/components/process?id=process-metadata-json) from the process contract and IPFS
+	- On encrypted votes, the **observer** requests the encryption private keys to the **Gateway**
+	- The **observer** fetches all the [Vote Envelopes](/architecture/components/process?id=vote-envelope) registered for the process
+	- The **observer** checks their ZK Proofs or Merkle Proofs, the [Vote Package](/architecture/components/process?id=vote-package-zk-snarks) contents and the restrictions imposed by the process flags
+	- On encrypted votes, the **observer** decrypts the [Vote Package](/architecture/components/process?id=vote-package-zk-snarks)
+	- The **observer** counts the number of appearences of every single vote value
+		- Any vote value beyond the ones defined in the [Process Metadata](/architecture/components/process?id=process-metadata-json) is discarded
+- An **observer** publishes the vote results
+	<!-- - The **observer** deposits an amount as stake to the contract -->
+	- An **observer** computes the results on its own
+	- The **observer** computes a ZK Rollup, proving that the given results have been correctly computed from valid vote envelopes and that the results include the choices of `N` valid voter
+	- The **observer** submits a transaction to the process smart contract, including the results and the ZK Rollup proof of the computation results
+- For some reason, the **observer** skips counting valid votes
+	<!-- - A **third party** deposits an amount of stake higher than the one of the observer -->
+	- The **third party** computes the results including all valid votes available
+	- The **third party** submits a transaction to the process contract, including a higher vote count that the one currently available
+	- The contract validates the proof and updates the results
+	<!-- - The contract validates the proof, updates the results and the stake of the **observer** is slashed -->
+- Process results settlement
+	- After a period of time, nobody else submits result transactions with higher vote counts
+	- Results become final
 
-**Potential alternatives:**
-- Let Scrutinizers publish their vote count after staking ether
+### Coming next
+
+See the [Components](/architecture/components) section.

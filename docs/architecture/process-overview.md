@@ -42,7 +42,7 @@ end
 
 Users need to fetch the metadata of the process, choose the vote options and request a Merkle Proof to generate the vote package. If the process is private, clients also need to fetch the public keys to use for vote encryption. With all the required data, the user computes a Zero Knowledge proof. 
 
-The client submits a Vote envelope (containing the ZK-Proof and the voting choices) to one or several Gateway(s). Gateways are connected to the Vochain P2P network, so Gateways will relay the envelope to the blockchain mempool.
+The client submits a Vote envelope (containing the ZK-Proof and the voting choices) to one or several Gateways. These are connected to the Vochain P2P network, so Gateways will relay the envelope to the blockchain mempool.
 
 The Vochain nodes and miners validate the Zero Knowledge proof. If valid, the vote package is added to the next block and becomes available for computing the results.
 
@@ -112,3 +112,9 @@ end
 ```
 
 **Note**: The ZK-Rollups functionality may need heavy computation resources and development time until it is available. For this reason, intermediary approaches like Optimistic Rollups may be implemented first and iterated later.
+
+---
+
+### Coming next
+
+See the [Census overview](/architecture/census-overview) section.

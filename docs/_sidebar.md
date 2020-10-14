@@ -2,8 +2,8 @@
 - Architecture
     - [General](/architecture/general.md)
     - [Process overview](/architecture/process-overview.md)
+    - [Census overview](/architecture/census-overview.md)
     - [User stories](/architecture/user-stories.md)
-    - [Census](/architecture/census.md)
     - [Components](/architecture/components.md)
         - [Entity](/architecture/components/entity.md)
         - [Voting Process](/architecture/components/process.md)
