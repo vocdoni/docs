@@ -1,43 +1,42 @@
-# Voting Process
+# Governance Processes
 
-- [Voting Process](#voting-process)
-  - [Smart Contract](#smart-contract)
-    - [Internal structs](#internal-structs)
+Governance processes are declared on the Blockchain and they only store the critical information for integrity. However, the metadata of a process lives on a JSON file, containing the information on which voters can make a choice. 
+
+Governance processes follow a declarative fashion. The expected behavior is declared on the Process contract and the Vochain reacts to the currently available settings.
+
+- [Smart Contract](#smart-contract)
+    - [Contract structs](#contract-structs)
     - [Process ID](#process-id)
     - [Methods](#methods)
     - [Getters](#getters)
     - [Flags](#flags)
     - [Status](#status)
-    - [Versioning](#versioning)
-  - [Data schema](#data-schema)
-    - [Process metadata (JSON)](#process-metadata-json)
-    - [Vote Envelope](#vote-envelope)
-      - [Containing Snark votes](#containing-snark-votes)
-      - [Containing Poll votes](#containing-poll-votes)
-    - [Vote Package](#vote-package)
-      - [Snark Vote](#snark-vote)
-      - [Poll Vote](#poll-vote)
-      - [Petition Sign](#petition-sign)
-    - [Results (JSON)](#results-json)
-  - [Future work](#future-work)
-    - [Define a versioning system](#definie-a-versioning-system)
-    - [Define sanity checks](#define-sanity-checks)
-    - [Oracles protocol](#oracles-protocol)
-    - [Support multi-layer vote encryption](#support-multi-layer-vote-encryption)
-
-Voting processes are declared on the Blockchain and store the critical information for integrity. However, the metadata of a process lives on a JSON file with the information on which voters can make a choice. 
-
-The starting point is the **[Voting Process](#smart-contract)** contract, but it is tightly coupled with the **[JSON Process Metadata](#data-schema)** living on P2P filesystems.
+    - [Transparent upgrades](#transparent-upgrades)
+- [Data schema](#data-schema)
+- [Process metadata (JSON)](#process-metadata-json)
+- [Vote Envelope](#vote-envelope)
+    - [Containing Snark votes](#containing-snark-votes)
+    - [Containing Poll votes](#containing-poll-votes)
+- [Vote Package](#vote-package)
+    - [Snark Vote](#snark-vote)
+    - [Poll Vote](#poll-vote)
+    - [Petition Sign](#petition-sign)
+- [Results (JSON)](#results-json)
+- [Future work](#future-work)
+- [Define a versioning system](#definie-a-versioning-system)
+- [Define sanity checks](#define-sanity-checks)
+- [Oracles protocol](#oracles-protocol)
+- [Support multi-layer vote encryption](#support-multi-layer-vote-encryption)
 
 ## Smart Contract
 
-A process is the building block around which governance is made in Vocdoni. As in an operating system, look at the process contract as a Kernel syscall that allows you to spawn a new governance process.
+A process is the building block around which governance is made in Vocdoni. Simmilarly to an OS, think of the process contract like a Kernel that receives syscall's to spawn a new governance process.
 
-The ENS address of the Voting process contract instance is resolved from `voting-process.vocdoni.eth` (soon replaced by `process.vocdoni.eth` and `process.dev.vocdoni.eth`) on the registry.
+The instance of the Voting process contract instance is resolved from `voting-process.vocdoni.eth` (soon replaced by `process.vocdoni.eth` and `process.dev.vocdoni.eth`) on the ENS registry.
 
-While the process contract is the source of truth, the governance process itself will take place on the [Vochain](/architecture/components/vochain). Processes are parameterized and controlled from Ethereum, but real actions will not happen there.
+While the process contract is the source of truth, the vote itself will take place on the [Vochain](/architecture/components/vochain). Processes are parameterized and controlled from Ethereum, but real data will be handled on the Layer 2 blockchain called Vochain.
 
-### Internal structs
+### Contract structs
 
 ```solidity
 
@@ -46,12 +45,14 @@ While the process contract is the source of truth, the governance process itself
 struct Process {
     uint8 mode; // The selected process mode. See: https://docs.vocdoni.io/#/architecture/components/process
     uint8 envelopeType; // One of valid envelope types, see: https://docs.vocdoni.io/#/architecture/components/process
-    address entityAddress; // The Ethereum address of the Entity
+    address entityAddress; // Who created the process
     uint64 startBlock; // Tendermint block number on which the voting process starts
     uint32 blockCount; // Amount of Tendermint blocks during which the voting process should be active
+
     string metadata; // Content Hashed URI of the JSON meta data (See Data Origins)
     string censusMerkleRoot; // Hex string with the Merkle Root hash of the census
     string censusMerkleTree; // Content Hashed URI of the exported Merkle Tree (not including the public keys)
+
     Status status; // One of 0 [ready], 1 [ended], 2 [canceled], 3 [paused], 4 [results]
     uint8 questionIndex; // The index of the currently active question (only assembly processes)
 
@@ -92,7 +93,7 @@ struct Process {
 
     bytes32 paramsSignature; // entity.sign({...}) // fields that the oracle uses to authentify process creation
     
-    string results; // string containing the results
+    uint32[][] results; // Appearence count for every question and option value
 }
 
 // PER-PROCESS DATA
@@ -140,7 +141,7 @@ Where:
     - With the appropriate flags, the creator can set the process to be `READY`, `ENDED`, `CANCELED` or `PAUSED`.
     - See [process status](#status) below
 - `incrementQuestionIndex()`
-    - With the appropriate flags, the creator can define what question can currently be voted on
+    - With the appropriate flags, the creator can define the question that can be voted on
 - `setCensus()`
     - With the appropriate flags, the creator can update the census for long lasting polls
 - `setResults()`
@@ -158,7 +159,7 @@ For more details, see the [implementation here](https://gitlab.com/vocdoni/dvote
     - If available, returns the output of the scrutinizer uploaded by the Oracles
 - `getCreationInstance()`
     - Returns the address of the process contract where the given process is hosted
-    - Useful to determine where an update needs to be sent to (see Versioning next)
+    - Useful to determine where an update needs to be sent to (see Transparent upgrades next)
 
 ### Flags
 
@@ -263,7 +264,7 @@ The status of a process is a simple enum, defined as follows:
 - `RESULTS` (4)
   - Set by the Oracle as soon as the results of a process have become available
 
-### Versioning
+### Transparent upgrades
 
 Even if there are tools to deploy upgradeable smart contracts, we believe that newer versions of a contract should not be able to alter any of processes stored in the past. Data should remain available independently of future contract versions. In order to enforce transparency and full auditability:
 

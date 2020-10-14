@@ -383,7 +383,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/components/process?id=process-metadata-json)
+- [Process Metadata](/architecture/components/processes?id=process-metadata-json)
 - [Modulus group list](/architecture/components/census-service?id=modulus-group-list)
 - [Census Service - addClaimBulk](/architecture/components/census-service?id=census-service-addclaimbulk)
 - [Census Service - getRoot](/architecture/components/census-service?id=census-service-getroot)
@@ -433,7 +433,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/components/process?id=process-metadata-json)
+- [Process Metadata](/architecture/components/processes?id=process-metadata-json)
 
 ### Check census inclusion
 
@@ -467,7 +467,7 @@ sequenceDiagram
 **Notes:**
 
 - `generateProof` may be replaced with a call to `hasClaim`, for efficiency
-- The `censusId` and `censusMessagingURI` should have been fetched from the [Process Metadata](/architecture/components/process)
+- The `censusId` and `censusMessagingURI` should have been fetched from the [Process Metadata](/architecture/components/processes)
 
 ### Casting a vote with ZK Snarks
 
@@ -515,7 +515,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/components/process?id=process-metadata-json)
+- [Process Metadata](/architecture/components/processes?id=process-metadata-json)
 - [Census Service - generateProof](/architecture/components/census-service?id=census-service-generateproof)
 - [Vote Package - ZK Snarks](/architecture/components/relay?id=vote-package-zk-snarks)
 
@@ -569,7 +569,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/components/process?id=process-metadata-json)
+- [Process Metadata](/architecture/components/processes?id=process-metadata-json)
 <!-- - [getChunk](/architecture/components/census-service?id=census-service-getchunk) -->
 - [Vote Package - Ring Signature](/architecture/components/relay?id=vote-package-ring-signature)
 
@@ -789,7 +789,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/components/process?id=process-metadata-json)
+- [Process Metadata](/architecture/components/processes?id=process-metadata-json)
 - [Vote Package - ZK Snarks](/architecture/components/relay?id=vote-package-zk-snarks)
 - [Vote Package - Ring Signature](/architecture/components/relay?id=vote-package-ring-signature)
 - [Vote Batch](/architecture/components/relay?id=vote-batch)

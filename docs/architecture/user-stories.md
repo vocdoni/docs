@@ -47,8 +47,8 @@ To see how a decentralized election works, let's see the sequence of actions tha
 	- Get the census Merkle Root
 	- Pin the Merkle Tree on IPFS or similar
 	- Push the eligible public keys to the [Census Service](/architecture/components/census-service)
-	- Pin the [Process Metadata](/architecture/components/process?id=process-metadata-json) on IPFS
-	- Send a transaction to the process smart contract, including [Content URI](/architecture/protocol/data-origins?id=content-uri)'s pointing to the [Process Metadata](/architecture/components/process?id=process-metadata-json) and the [Census Merkle Tree](/architecture/census-overview), along with the rest of parameters
+	- Pin the [Process Metadata](/architecture/components/processes?id=process-metadata-json) on IPFS
+	- Send a transaction to the process smart contract, including [Content URI](/architecture/protocol/data-origins?id=content-uri)'s pointing to the [Process Metadata](/architecture/components/processes?id=process-metadata-json) and the [Census Merkle Tree](/architecture/census-overview), along with the rest of parameters
 	- Update the list of voting processes on the [ENS Resolver](/architecture/components/entities?id=entity-resolver) contract for the entity
 - The **app user** fetches the active processes of an **Entity**
 	- Read the description and review the options to vote
@@ -57,27 +57,27 @@ To see how a decentralized election works, let's see the sequence of actions tha
 	- The app requests a proof to the **[Census Service](/architecture/components/census-service)**
 		- The **[Census service](/architecture/components/census-service)** replies with the census Merkle proof if the public key belongs to it
 	- The app computes the user's nullifier for the vote
-	- The app generates the [Vote Package](/architecture/components/process?id=vote-package-zk-snarks) with the election choices
+	- The app generates the [Vote Package](/architecture/components/processes?id=vote-package-zk-snarks) with the election choices
 	- On encrypted processes:
 		- The app fetches the encryption public keys to the **Gateway**
-		- The app encrypts the [Vote Package](/architecture/components/process?id=vote-package-zk-snarks) with the public keys of the voting process
+		- The app encrypts the [Vote Package](/architecture/components/processes?id=vote-package-zk-snarks) with the public keys of the voting process
 	- On anonymous processes:
 		- The app fetches the proving and verification keys and then generates the **Zero-Knowledge Proof**
 		- The ZK Proof proves that:
 			- The voter knows a private key, whose public key belongs to the census
 			- The provided nullifier matches the current process ID and the user's private key
 	<!-- - ~POW~ -->
-	- The app generates the [Vote Envelope](/architecture/components/process?id=vote-envelope-zk-snarks)
-	- The app selects a **Gateway** among the available ones and submits the [Vote Envelope](/architecture/components/process?id=vote-envelope-zk-snarks)
-	- The **Gateway** submits the [Vote Envelope](/architecture/components/process?id=vote-envelope-zk-snarks) to the mempool of the Vochain
-- A **Vochain miner** processes an incoming [Vote Envelope](/architecture/components/process?id=vote-envelope)
+	- The app generates the [Vote Envelope](/architecture/components/processes?id=vote-envelope-zk-snarks)
+	- The app selects a **Gateway** among the available ones and submits the [Vote Envelope](/architecture/components/processes?id=vote-envelope-zk-snarks)
+	- The **Gateway** submits the [Vote Envelope](/architecture/components/processes?id=vote-envelope-zk-snarks) to the mempool of the Vochain
+- A **Vochain miner** processes an incoming [Vote Envelope](/architecture/components/processes?id=vote-envelope)
 	- The **Vochain miner** checks that the current block is within the process start/end blocks
 	- The **Vochain miner** checks that the given nullifier has not been used before
 	- If the process is anonymous:
-		- The **Vochain miner** checks that the **ZK Proof** of the [Vote Envelope](/architecture/components/process?id=vote-envelope) is valid
+		- The **Vochain miner** checks that the **ZK Proof** of the [Vote Envelope](/architecture/components/processes?id=vote-envelope) is valid
 	- If the process is not anonymous
-		- The **Vochain miner** checks that the **Merkle Proof** of the [Vote Envelope](/architecture/components/process?id=vote-envelope) matches the vote signature and the Merkle root
-	- The **Vochain miner** adds the [Vote Envelope](/architecture/components/process?id=vote-envelope) to the next block
+		- The **Vochain miner** checks that the **Merkle Proof** of the [Vote Envelope](/architecture/components/processes?id=vote-envelope) matches the vote signature and the Merkle root
+	- The **Vochain miner** adds the [Vote Envelope](/architecture/components/processes?id=vote-envelope) to the next block
 
 ### After voting
 
@@ -95,13 +95,13 @@ To see how a decentralized election works, let's see the sequence of actions tha
 	- On encrypted processes:
 		- Miners create a transaction revealing their private key for the process
 - An **observer** computes the results
-	- The **observer** fetches the [Process Metadata](/architecture/components/process?id=process-metadata-json) from the process contract and IPFS
+	- The **observer** fetches the [Process Metadata](/architecture/components/processes?id=process-metadata-json) from the process contract and IPFS
 	- On encrypted votes, the **observer** requests the encryption private keys to the **Gateway**
-	- The **observer** fetches all the [Vote Envelopes](/architecture/components/process?id=vote-envelope) registered for the process
-	- The **observer** checks their ZK Proofs or Merkle Proofs, the [Vote Package](/architecture/components/process?id=vote-package-zk-snarks) contents and the restrictions imposed by the process flags
-	- On encrypted votes, the **observer** decrypts the [Vote Package](/architecture/components/process?id=vote-package-zk-snarks)
+	- The **observer** fetches all the [Vote Envelopes](/architecture/components/processes?id=vote-envelope) registered for the process
+	- The **observer** checks their ZK Proofs or Merkle Proofs, the [Vote Package](/architecture/components/processes?id=vote-package-zk-snarks) contents and the restrictions imposed by the process flags
+	- On encrypted votes, the **observer** decrypts the [Vote Package](/architecture/components/processes?id=vote-package-zk-snarks)
 	- The **observer** counts the number of appearences of every single vote value
-		- Any vote value beyond the ones defined in the [Process Metadata](/architecture/components/process?id=process-metadata-json) is discarded
+		- Any vote value beyond the ones defined in the [Process Metadata](/architecture/components/processes?id=process-metadata-json) is discarded
 - An **observer** publishes the vote results
 	<!-- - The **observer** deposits an amount as stake to the contract -->
 	- An **observer** computes the results on its own

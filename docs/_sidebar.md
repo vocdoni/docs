@@ -6,7 +6,7 @@
     - [User stories](/architecture/user-stories.md)
     - [Components](/architecture/components.md)
         - [Entities](/architecture/components/entities.md)
-        - [Voting Process](/architecture/components/process.md)
+        - [Governance Processes](/architecture/components/processes.md)
         - [Namespaces](/architecture/components/namespaces.md)
         - [Vochain](/architecture/components/vochain.md)
         - [Census Service](/architecture/components/census-service.md)

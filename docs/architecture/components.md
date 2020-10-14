@@ -33,7 +33,7 @@ For a complete explanation, read the [Entities section](/architecture/components
 
 A Voting Process is also an aggregate of data living on the Voting Process smart contract and on IPFS.
 
-For a complete explanation, read the [Voting Process section](/architecture/components/process).
+For a complete explanation, read the [Governance Processes section](/architecture/components/processes).
 
 ### Vochain Miner
 

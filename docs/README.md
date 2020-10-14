@@ -24,9 +24,9 @@ The algorithms, systems and software that we build are intended to be a contribu
 Organizations maintain a list of public keys from their community, either in a database or in a public ledger. 
 The organizer of an election selects the group of people who are eligible to vote. Their public keys are hashed using a [ZK-Snark](https://z.cash/technology/zksnarks/) friendly function (_Mimc7_ or _Poseidon_), added to a **[Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree)** and distributed through a decentralized file system (_IPFS_).
 
-The _Merkle Tree_ is used as the **[Census](/architecture/census-overview)** of the voting process. The [Process Metadata](/architecture/components/process?id=process-metadata-json) is the subject on which people can vote, and it is also distributed through IPFS. 
+The _Merkle Tree_ is used as the **[Census](/architecture/census-overview)** of the voting process. The [Process Metadata](/architecture/components/processes?id=process-metadata-json) is the subject on which people can vote, and it is also distributed through IPFS. 
 
-The census and metadata pointers are submitted to the [Voting smart contract](/architecture/components/process?id=smart-contract) and the parameters of the new vote become carved in stone on the Ethereum blockchain.
+The census and metadata pointers are submitted to the [Voting smart contract](/architecture/components/processes?id=smart-contract) and the parameters of the new vote become carved in stone on the Ethereum blockchain.
 
 ### Voting process
 Once the process has begun, users can start submitting their votes to the [Voting blockchain](/architecture/components/vochain). In order to enforce uniqueness and anonymity, users wrap their ballot in an envelope using a [Zero-Knowledge Proof (ZK-Snark)](/architecture/protocol/franchise-proof).
@@ -35,7 +35,7 @@ The ZK-Snark proof (or Franchise proof) is an easy-to-verify way of proving that
 
 The custom [Tendermint based blockchain](/architecture/components/vochain) validates the vote envelope and its franchise proof. It stores all valid votes on the public ledger and allows any third party to fetch it and verify its correctness. It is referred to as the Voting Chain (_Vochain_).
 
-A [ballot](/architecture/components/process?id=vote-envelope) contains mainly three parts:
+A [ballot](/architecture/components/processes?id=vote-envelope) contains mainly three parts:
 
 1. Election ID
 2. Vote values (encrypted or unencrypted)
