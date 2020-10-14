@@ -21,7 +21,7 @@ Governance processes follow a declarative fashion. The expected behavior is decl
     - [Snark Vote](#snark-vote)
     - [Poll Vote](#poll-vote)
     - [Petition Sign](#petition-sign)
-- [Results (JSON)](#results-json)
+- [Results](#results)
 - [Future work](#future-work)
 - [Define a versioning system](#definie-a-versioning-system)
 - [Define sanity checks](#define-sanity-checks)
@@ -395,7 +395,7 @@ When `envelopeType.ENCRYPTED_VOTE` is enabled:
 - The package must be encrypted with the public keys used in ascending order.
 - The package must be a base64 representation of the encrypted bytes.
 
-### Results (JSON)
+### Results
 
 Requests to the Results API will return an Array of number arrays. They will contain the number of occurrences of every possible vote option, for every question available.
 

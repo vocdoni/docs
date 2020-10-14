@@ -364,12 +364,11 @@ If the process has encrypted votes and it is on-going, `encryptionPubkeys` and `
 **Used in:**
 - [Checking a submitted vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 
-### Get Process Result List
+### Get Finalized Process List
 
-**only available if scrutinizer enabled on the gateway** - scrutinizer is enabled if `results` API is enabled.  
-Get a list of the processes indexed by the scrutinizer with **final results**. Currently this method returns a non-deterministic set of maximum 64 process ids. 
+Get a list of the processes indexed by the scrutinizer with *final results*. Currently this method returns a non-deterministic set of 64 process ids at most. 
 
-The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastProcIdReceived` to get the next 64 values.
+The `fromId` field works the same as in [Get Process List](#get-process-list).
 
 ```json
 {
@@ -395,12 +394,11 @@ The `fromId` field can be used to seek an specific position and start from it. S
 }
 ```
 
-### Get Live Process Result List
+### Get Live Process List
 
-**only available if scrutinizer enabled on the gateway** - scrutinizer is enabled if `results` API is enabled.  
-Get a list of the processes indexed by the scrutinizer with **partial results**. Only those vote types with a non-encrypted payload can be partialy scrutinized.
+Get a list of processes indexed by the scrutinizer with *partial results*. Only process with non-encrypted votes can be scrutinized in real time.
 
-The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastProcIdReceived` to get the next 64 values.
+The `fromId` field works the same as in [Get Process List](#get-process-list).
 
 ```json
 {
@@ -428,9 +426,9 @@ The `fromId` field can be used to seek an specific position and start from it. S
 
 ### Get Process Results
 
-**only available if scrutinizer enabled on the gateway** - scrutinizer is enabled if `results` API is enabled.  
-Get the results of the processIds indexed by the scrutinizer. If the process is not yet finished and the votes are not encrypted, returns the **partial result**.
-The results are represented in a two-dimension array: `Question1[Option1,Option2,...], Question2[Option1,Option2,...], ...`
+Get the results of the given processId, as indexed by the scrutinizer. If the process doesn't have encrypted votes but it has already started, then returns the **partial results**.
+
+The results of an election are represented in [the following format](/architecture/components/processes?id=results).
 
 ```json
 {
@@ -457,14 +455,12 @@ The results are represented in a two-dimension array: `Question1[Option1,Option2
   "signature": "hexString"
 }
 ```
-- [GitLab issue regarding this feature](https://gitlab.com/vocdoni/go-dvote/issues/106)
 
 ### Get Scrutinizer Entities
 
-**only available if scrutinizer enabled on the gateway** - scrutinizer is enabled if `results` API is enabled.  
-Get a list of the entities indexed by the scrutinizer. Currently this method returns a non-deterministic set of maximum 64 entity ids. 
+Get the list of entities indexed by the scrutinizer. This method returns a non-deterministic list of 64 entity ID's per page. 
 
-The `fromId` field can be used to seek an specific position and start from it. So if the first call with `fromId` empty returns 64 values, a second call may be done using `fromId`=`lastEntityIdReceived` to get the next 64 values.
+The `fromId` field works the same as in [Get Process List](#get-process-list) but for the `entityId` field.
 
 ```json
 {
@@ -494,7 +490,7 @@ The `fromId` field can be used to seek an specific position and start from it. S
 
 ### Fetch File
 
-Fetch a file from the P2P network (currently IPFS or Swarm/BZZ).
+Fetch a file from the P2P network (currently IPFS) and return it encoded in base 64.
 
 ```json
 {
@@ -517,13 +513,12 @@ Fetch a file from the P2P network (currently IPFS or Swarm/BZZ).
     "timestamp": 1556110672
   },
   "signature": "hexString"
-  
 }
 ```
+  
 **Used in:**
 - [Entity subscription](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=entity-subscription)
 - [Voting process retrieval](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=voting-process-retrieval)
-- [Checking a submitted vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
 - [Vote scrutiny](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=vote-scrutiny)
 
 **Related:**
@@ -532,17 +527,16 @@ Fetch a file from the P2P network (currently IPFS or Swarm/BZZ).
 
 ### Add File
 
-This method is aimed to be used by the election organizer. Usually the Gateway running this API is a private server which is only used by the administrators of the organization entity. This method is only available if option `--allow-private` is enabled.
+Uploads a file and pins it on an IPFS cluster. This private method is aimed to be used by the election organizer. The Gateway running the API is usually a private server, only used by entity admins.
 
-Ideally, this methods require authentication following the rules described [in the API standard page](/architecture/protocol/json-api?id=Authentication).
-
+These methods require authentication, following the [JSON API rules](/architecture/protocol/json-api?id=Authentication).
 
 ```json
 {
   "id": "req-2345679",
   "request": {
     "method": "addFile",
-    "type": "swarm|ipfs",
+    "type": "ipfs",
     "content": "base64Payload",  // File contents
     "name": "string",            // Human readable name to help identify the content in the future
     "timestamp": 1556110671
@@ -567,14 +561,13 @@ Ideally, this methods require authentication following the rules described [in t
 **Used in:**
 - [Set Entity metadata](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=set-entity-metadata)
 - [Voting process creation](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=voting-process-creation)
-- [Vote scrutiny](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=vote-scrutiny)
 
 **Related:**
 - [Content URI](/architecture/protocol/data-origins?id=content-uri)
 
 ### List pinned files
 
-This method provides administrators of a Gateway with a list of resources that have been uploaded and or pinned remotely and are still available on Swarm or IPFS.
+This method provides private Gateway users with the list of resources that have been pinned on IPFS.
 
 ```json
 {
@@ -609,7 +602,7 @@ This method provides administrators of a Gateway with a list of resources that h
 
 ### Pin a file
 
-This method allows administrators to pin already existing remote content, so it is available through the Gateway itself. 
+This method allows administrators to pin already existing remote content, so it remains available on IPFS.
 
 ```json
 {
