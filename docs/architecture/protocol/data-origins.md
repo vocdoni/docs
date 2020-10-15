@@ -1,8 +1,8 @@
 # Data origins
 
-Many of the schemas discussed in the present documentation need to point to external data that may be available through various channels.
+Most of the metadata schemes discussed in the documentation need to point to external data that may be available through various channels.
 
-In order to denominate them and provide a prioritized list of fallbacks in a single place, **Content URI's** or **Messaging URI's** are used, depending on the type of resource. 
+To overcome delays or data unavailability, a prioritized list of URI's and fallbacks is used. Depending on the type of resource, **Content URI's** or **Messaging URI's** are used.
 
 ## Content URI
 
@@ -19,8 +19,8 @@ Supported protocols:
 
 - `ipfs://<contentHash>`
 - `https://<url>/<route>`
-- ~~`bzz://<contentHash>`~~
-- ~~`bzz-feed://<feedHash>`~~
+<!-- - ~~`bzz://<contentHash>`~~ -->
+<!-- - ~~`bzz-feed://<feedHash>`~~ -->
 
 URI order matters:
 - Clients are expected to try using URI's from left to right
@@ -40,28 +40,28 @@ Example:
 ipfs://1234...1234,https://host.io/file.txt!1234567890
 ```
 
-This type of link is intended for contents that don't change frequently and that require integrity checks in-place.
+This type of link is intended for contents that don't change frequently and that require integrity checks where underlying HTTP endpoints cannot enforce it.
 
 ## Messaging URI
 
-Intended for two-way communication between two nodes, a Messaging URI field looks similar to a Content URI:
+Intended for two-way communications between nodes, Messaging URI's look similar to a Content URI:
 
-- `pss://<publicKey@address>,ws://<host>/<path>`
-    - Attempt to use PSS in the first place, sending an encrypted message to the given address using the given public key
-    - In case of error, attempt to connect using web sockets
+- `ws://<host1>/<path>,https://<host2>/<path>`
+    - Attempt to use the WebSocket from host1 endpoint in the first place
+    - In case of error, attempt to connect using host2
 
-The messaging protocols supported are PSS (IPFS PubSub and Whisper may be in the future):
+Currently, only *WebSocket* and *HTTP* protocols are supported for messaging. PSS, IPFS PubSub and Whisper may be supported as well in the future.
 
-- `pss://<publicKey@address>`
-  - Uses Ethereum Swarm/PSS protocol
-  - address can be empty
-- `ws://<host>/<path>` and `wss://<host>/<path>`
-  - Uses a web socket
-- ~~`pubsub://<topic>`~~
-  - ~~Uses IPFS pubsub protocol~~
-- ~~`shh://<publicKey>`~~
-  - ~~Uses Ethereum Whisper protocol~~
+Same as before, URI order matters here too:
+- Clients are also expected to try using URI's from left to right
+- In the event of a mismatch, the data from the leftmost functional service is also used
 
-URI order matters here too:
-- Clients are expected to try using URI's from left to right
-- In the event of a mismatch, the data from the leftmost functional service is used
+### Privacy centric messaging
+
+Where protocols like PSS or Whisper allow for pseudo anonymous communication, high stake elections may need additional transport guarantees for anonymity.
+
+In this case, Vocdoni proposes the use of [Nym](https://nymtech.net/) as a mixing infrastructure for anonymous voting submission that cannot be correlated to an IP address.
+
+### Coming next
+
+See the [Integration overview](/integration/overview) section.

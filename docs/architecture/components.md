@@ -35,11 +35,13 @@ A Voting Process is also an aggregate of data living on the Voting Process smart
 
 For a complete explanation, read the [Governance Processes section](/architecture/components/processes).
 
-### Vochain Miner
+### Vochain
 
-The Vochain miner/validator is a node of the PoA voting blockchain. It can generate new blocks and validate the blocks proposed by other miners. At least four nodes of this kind are required.
+The Vochain is a specific purpose [PoA](https://en.wikipedia.org/wiki/Proof_of_authority) blockchain made on top of [Tendermint](https://tendermint.com/), which creates a chain of blocks containing governance processes and votes.
 
-The validator public keys are defined in the Namespace smart contract.
+A Vochain miner is a node of the PoA that can generate new blocks and validate the blocks proposed by other miners. At least four nodes of this kind are required.
+
+The validator public keys are defined on the Namespace smart contract.
 
 ### Oracle
 

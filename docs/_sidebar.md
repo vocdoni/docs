@@ -18,7 +18,7 @@
         - [JSON API](/architecture/protocol/json-api.md)
         - [Franchise proof](/architecture/protocol/franchise-proof.md)
         - [Data origins](/architecture/protocol/data-origins.md)
-        - [Messaging protocol](/architecture/protocol/messaging.md)
+        <!-- - [Messaging](/architecture/protocol/messaging.md) -->
 - Integrating Vocdoni
    - [Overview](/integration/overview.md)
    - [Registry backend](/integration/registry-token-api.md)
