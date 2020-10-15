@@ -171,6 +171,12 @@ The KeyKeeper is a trusted identity that act as temporary cryptographic key admi
 
 *To be extended in a different page*
 
+### Scrutinizer
+
+The scrutinizer is the component that tallies and decode/decrypt (if needed) each vote stored in the voting blockchain for each process of each entity. 
+
+See the [Scrutinizer](/architecture/components/vochain/scrutinizer) section.
+
 ## Transaction lifecycle
 
 In the following diagram the vote transaction lifecycle is shown. ChecTX, DeliverTX and Commit are the main steps of the Vochain. The first decides if a new transaction should be included in the mempool (and broadcasted to other peers), the second decides if a transaction that is going to be included in the next block is valid and the last makes the changes permanent and updates the state.
