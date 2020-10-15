@@ -19,7 +19,7 @@
         - [Franchise proof](/architecture/protocol/franchise-proof.md)
         - [Data origins](/architecture/protocol/data-origins.md)
         <!-- - [Messaging](/architecture/protocol/messaging.md) -->
-- Integrating Vocdoni
+- Integration
    - [Overview](/integration/overview.md)
    - [Voting as a Service](/integration/voting-as-a-service.md)
    - [Registry backend](/integration/registry-token-api.md)
@@ -28,10 +28,10 @@
 <!--  - [Reputation mechanisms](design/entities-reputation-mechanisms.md) -->
 <!--  - [Sketch.systems convention](design/sketch-systems-convention.md) -->
 
-- Others
+- About
   <!--  - - [Vision](about-us/vision.md)-->
   <!--  - - [Problem and solution](about-us/problem-solution.md)-->
-<!--  - - [Alternatives](about-us/alternatives.md)-->
+  <!--  - - [Alternatives](about-us/alternatives.md)-->
   - [How we work](/about-us/how-we-work.md)
-  - [Open positions](/about-us/open-positions.md)
-  - [Contribute to the docs](/other/contribute.md)
+  <!-- - [Open positions](/about-us/open-positions.md) -->
+  <!-- - [Contribute](/contribute.md) -->

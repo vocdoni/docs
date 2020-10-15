@@ -2,9 +2,54 @@
 
 The following section is an excerp of the article published on the [Vocdoni Blog](https://blog.vocdoni.io/), called [Introducing Voting as a Service](https://blog.vocdoni.io/introducing-voting-as-a-service/).
 
+---
 
-<p>This article is an introduction to the operation of Vocdoni's digital voting infrastructure and a guide on how to integrate it into your projects via the API we call "Voting as a Service".</p><p>Since the advent of cryptocurrencies and smart contracts, governance has been the perpetual next thing to come. However, using democracy to trigger binding actions on-chain has been limited to a few small communities where participants have had coins to spend on contract transactions.</p><p>Today we are pleased to announce that decentralized governance can be a first-class citizen within the crypto community. And indeed, it can be for any organization, in general.</p><p>Since its inception, it seemed like the crypto space was the natural entry point for Vocdoni. But the unexpected impact of Covid throughout society has turned a long-term dream into an ad-hoc must.</p><p>If gathering thousands to vote on-site is forbidden and massive offline voting is not viable, then electronic governance becomes the path to go.</p><h2 id="what-is-vocdoni">What is Vocdoni</h2><p>The goal of Vocdoni is to provide a mobile-first, open, decentralized, censorship-resistant, and end-to-end verifiable voting platform that anyone can run from a modest device.</p><p>After two years of development, we already provided dozens of organizations with a complete solution to manage communities and to vote using a smartphone.</p><p>But some organizations have their own software stack to manage their organizational life and user base. That's why we want also to offer an alternative to connect our voting infrastructure via API, what we call Voting as a Service.</p><h2 id="the-voting-infrastructure">The voting infrastructure</h2><p>Conducting secure voting processes is far from simple, and today we are only focusing on the first steps. Vocdoni is conceived as a set of decentralized components that can operate as a whole and can be accessed via the Vocdoni Platform or the API:</p><ul><li>The Ethereum blockchain to register organizations and transparently trace their voting processes' (Layer 1),</li><li>Decentralized metadata retrieved via IPFS,</li><li>Vochain, the purpose-specific voting blockchain, where votes are validated and registered (Layer 2),</li><li>The public gateways, providing easy access to the decentralized components above,</li><li>The census registry (the user database to generate the census).</li></ul><p>Every single one of these components can be replaced by your own instances without any kind of vendor lock-in.</p><h2 id="how-it-works">How it works</h2><h3 id="before-the-voting-process">Before the voting process</h3><p>In Vocdoni, identities arise from cryptographic key pairs (ECDSA). When people are added to a database, their <a href="https://en.wikipedia.org/wiki/Public-key_cryptography">public key</a> is registered.</p><p>To create a voting process, the first step is to generate a snapshot of the census. The census consists of a <a href="https://en.wikipedia.org/wiki/Merkle_tree">Merkle Tree</a> with the <a href="https://en.wikipedia.org/wiki/Public-key_cryptography">public keys</a> of everyone who is eligible to vote. No personal data is involved.</p><p>The census snapshot is then uploaded and pinned to a decentralized storage like <a href="https://ipfs.io/">IPFS</a>, which ensures that everyone will be able to check it out.</p><p>Then the voting process details are registered on the <a href="https://ethereum.org/en/developers/">Ethereum</a> <a href="https://en.wikipedia.org/wiki/Smart_contract">smart contract</a>, so that anyone with internet access can view them, get the metadata, get the location of the census, etc.</p><h3 id="during-the-voting-process">During the voting process</h3><p>Using their private key and a <a href="https://docs.vocdoni.io/#/architecture/components/gateway">decentralized Gateway</a>, eligible voters can fetch a Merkle proof to confirm that their key pair belongs to the census <a href="https://en.wikipedia.org/wiki/Merkle_tree">Merkle Tree</a>. They sign their vote envelope with the key above and submit it using whatever <a href="https://github.com/vocdoni/go-dvote#dvotenode">Gateway</a> they like. Even their own.</p><p>Votes are relayed to the custom voting blockchain (Vochain), validated and included in the next block.</p><p>As the process goes on, anyone with network access can listen for vote transactions, verify them by themselves or even use the <a href="https://explorer.vocdoni.net/">block explorer</a> to do it manually.</p><h3 id="after-the-voting-process">After the voting process</h3><p>When the voting process is over, the oracle will trigger a transaction to end it. At this point, the process will stop accepting valid votes and Gateways will be able to compute the scrutiny of the process. Even your own gateways can.</p><p>Optionally, an oracle can read the final results and publish them on the smart contract where the process was created, so that results are notarized on the Ethereum blockchain.</p><p>Since the process operates on an L2 sidechain, users don't even need to know about <a href="https://metamask.io/">MetaMask</a>, exchanges or <a href="https://etherscan.io/gastracker">gas fees</a>. All they do is open an app or a website and use their keys (under the hood) to sign and submit a voting envelope. The governance infrastructure does the rest.</p><h2 id="get-started-with-voting-as-a-service">Get started with Voting as a Service</h2><p>Enough talk, let's see how you can create an entity and publish your first voting processes! Following this guide you'll see how easy is to interact with a universally verifiable voting system and integrate it in your project in a few minutes. If you need help, don't forgot to <a href="https://discord.gg/sQCxgYs">join our Discord Server</a>.</p><h3 id="entity-creation">Entity creation</h3><p>Make sure you have <a href="https://nodejs.org/">Node.js</a> 12 installed on your computer.</p><p>In an empty folder, create a <code>package.json</code> file by running</p><pre class=" line-numbers language-json">
-<code class="  language-json">$ npm init -y
+Conducting secure voting processes is far from simple, and today we are only focusing on the first steps. Vocdoni is conceived as a set of decentralized components which can operate as a whole.
+
+- The Ethereum blockchain to declare organizations and their voting processes (Layer 1).
+- Decentralized metadata retrieved via IPFS.
+- The purpose-specific voting blockchain, where votes are validated and registered (Layer 2)
+- The public gateways, providing easy access to the decentralized components above.
+- The census registry (the user database to generate the census).
+
+Every single one of these components can be replaced by your own instances without any kind of vendor lock-in.
+
+If your organization already has an existing user database, Vocdoni's Governance as a Service is the best fit.
+
+## How it works
+### Before the process
+In Vocdoni, identities arise from cryptographic key pairs (ECDSA). When people are added to a database, their [public key](https://en.wikipedia.org/wiki/Public-key_cryptography) is registered.
+
+To create a voting process, the first step is to generate a snapshot of the census. The census consists of a [Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree) with the [public keys](https://en.wikipedia.org/wiki/Public-key_cryptography) of everyone who is eligible to vote. No personal data is involved.
+
+The census snapshot is then uploaded and pinned to a decentralized storage like [IPFS](https://ipfs.io), which ensures that everyone will be able to check it out.
+
+Then the voting process details are declared on the [Ethereum](https://ethereum.org/en/developers/) [smart contract](https://en.wikipedia.org/wiki/Smart_contract), so that anyone with internet access can fetch them, get the metadata, get the location of the census, etc.
+
+### During the process
+Using their private key and a [decentralized Gateway](https://docs.vocdoni.io/#/architecture/components/gateway), eligible voters can fetch a Merkle proof to prove that their key pair belongs to the census [Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree). They sign their vote envelope with the key above and submit it using whatever [Gateway](https://github.com/vocdoni/go-dvote#dvotenode) they like. Even their own.
+
+Votes are relayed to the custom voting blockchain, validated and included in the next block.
+
+As the process goes on, anyone with network access can listen for vote transactions, verify them by themselves or even use the [block explorer](https://explorer.vocdoni.net) to do it manually.
+
+### After the process
+When the vote is over, the oracle will trigger a process end transaction. At this point, the process will stop accepting valid votes and Gateways will be able to compute the scrutiny of the process. Even your own gateways can. 
+
+Optionally, an oracle can read the final results and publish them on the smart contract where the process was created, so that results are notarized on the Ethereum blockchain.
+
+Since the process operates on an L2 sidechain, users don't even need to know about [metamask](https://metamask.io/), exchanges or [gas fees](https://etherscan.io/gastracker). All they do is open an app or a web site and use their keys (under the hood) to sign and submit a vote envelope. The governance infrastructure does the rest.
+
+## Get started
+Enough talk, let's see how you can create an entity and publish your first voting process.
+
+
+### Entity creation
+Make sure you have [Node.js](https://nodejs.org) 12 installed on your computer.
+
+In an empty folder, create a `package.json` file by running
+```
+$ npm init -y
 Wrote to /home/user/dev/governance-as-a-service/package.json:
 
 {
@@ -13,194 +58,286 @@ Wrote to /home/user/dev/governance-as-a-service/package.json:
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \\\\"Error: no test specified\\\\" &amp;&amp; exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC"
 }
+```
 
-</code></pre><p>Next, install the DVoteJS dependency and two dev dependencies to support TypeScript:</p><pre><code>$ npm i dvote-js
+Next, install the DVoteJS dependency and two dev dependencies to support TypeScript:
+```
+$ npm i dvote-js
 $ npm i -D typescript ts-node
+```
 
-</code></pre><p>Edit the <code>scripts</code> section of <code>package.json</code> and leave it like this:</p><pre><code>  "scripts": {
+Edit the `scripts` section of `package.json` and leave it like this:
+```
+  "scripts": {
     "main": "ts-node index.ts"
   },
+```
 
-</code></pre><p>Then, let's create a file named <code>index.ts</code> and create a function to generate the wallet of our new entity:</p><pre class=" line-numbers language-javascript"><code class="  language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Wallet <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"ethers"</span>
 
-<span class="token keyword">function</span> <span class="token function">makeEntityWallet</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Creating entity wallet"</span><span class="token punctuation">)</span>
-    <span class="token keyword">const</span> entityWallet <span class="token operator">=</span> Wallet<span class="token punctuation">.</span><span class="token function">createRandom</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+Then, let's create a file named `index.ts` and create a function to generate the wallet of our new entity:
 
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Entity address:"</span><span class="token punctuation">,</span> entityWallet<span class="token punctuation">.</span>address<span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Entity private key:"</span><span class="token punctuation">,</span> entityWallet<span class="token punctuation">.</span>privateKey<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
+```typescript
+import { Wallet } from "ethers"
 
-<span class="token function">makeEntityWallet</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+function makeEntityWallet() {
+    console.log("Creating entity wallet")
+    const entityWallet = Wallet.createRandom()
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>To check that it works, let's run <code>npm run main</code>:</p><pre><code>$ npm run main
+    console.log("Entity address:", entityWallet.address)
+    console.log("Entity private key:", entityWallet.privateKey)
+}
+
+makeEntityWallet()
+
+```
+
+To check that it works, let's run `npm run main`:
+
+```
+$ npm run main
 Creating entity wallet
 Entity address: 0x1048d8cB20fE806389802ba48E2647dc85aB779a
 Entity private key: 0x6d88d78a4a76e42144b6867fdff89477f0a3b805d85b97cd46387a2f770f91f1
+```
 
-</code></pre><p>So here's our wallet, what's next?</p><p>In this example, we will be using an Ethereum testnet called Sokol. Write down your private key and use the address to request some test coins from <a href="https://faucet-sokol.herokuapp.com/">the faucet</a>. You will need them to send some transactions.</p><figure class="kg-card kg-image-card"><img src="https://blog.vocdoni.io/content/images/2020/09/poafaucet.png" class="kg-image" alt=""></figure><p>Now, instead of creating a random wallet, we should use the one that received the test ether. In the lines above, replace this:</p><pre><code>const entityWallet = Wallet.createRandom()
+So here's our wallet, what's next?
 
-</code></pre><p>With this:</p><pre class=" line-numbers language-javascript"><code class="  language-javascript"><span class="token comment">// Use your private key here</span>
-<span class="token keyword">const</span> entityWallet <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Wallet</span><span class="token punctuation">(</span><span class="token string">"0x6d88d78a4a76e42144b6867fdff89477f0a3b805d85b97cd46387a2f770f91f1"</span><span class="token punctuation">)</span>
+In this example, we will be using an Ethereum testnet called Sokol. Write down your private key and and use the address to request some test coins from [the faucet](https://faucet-sokol.herokuapp.com/). You will need them to send some transactions.
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>Obviously, make sure to store any real private key nowhere within the source code or Git in general.</p><p>Now we need to get a pool of gateways and connect to one of them:</p><pre class=" line-numbers language-javascript"><code class="  language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> GatewayPool <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"dvote-js/dist/net/gateway-pool"</span>
+![Sokol Faucet](https://blog.vocdoni.io/content/images/2020/09/poafaucet.png "Sokol faucet")
 
-<span class="token keyword">let</span> pool<span class="token operator">:</span> GatewayPool
+Now, instead of creating a random wallet, we should use the one that received the test ether. In the lines above, replace this:
 
-<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment">// Get a pool of gateways to connect to the network</span>
-    pool <span class="token operator">=</span> <span class="token keyword">await</span> GatewayPool<span class="token punctuation">.</span><span class="token function">discover</span><span class="token punctuation">(</span><span class="token punctuation">{</span> networkId<span class="token operator">:</span> <span class="token constant">NETWORK_ID</span><span class="token punctuation">,</span> bootnodesContentUri<span class="token operator">:</span> <span class="token constant">GATEWAY_BOOTNODE_URI</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
-    <span class="token keyword">await</span> pool<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
+```typescript
+const entityWallet = Wallet.createRandom()
+```
 
-<span class="token keyword">const</span> <span class="token function-variable function">disconnect</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> pool<span class="token punctuation">.</span><span class="token function">disconnect</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+Into this:
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Then, let's define the metadata of our Entity and make it available on IPFS and Ethereum. Add the following code to <code>index.ts</code>:</p><pre class=" line-numbers language-javascript"><code class="  language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> EntityMetadata <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"dvote-js"</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> updateEntity <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"dvote-js/dist/api/entity"</span>
+```typescript
+// Use your private key here
+const entityWallet = new Wallet("0x6d88d78a4a76e42144b6867fdff89477f0a3b805d85b97cd46387a2f770f91f1")
+```
 
-<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">registerEntity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment">// Make a copy of the metadata template and customize it</span>
-    <span class="token keyword">const</span> entityMetadata<span class="token operator">:</span> EntityMetadata <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">assign</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span> Models<span class="token punctuation">.</span>Entity<span class="token punctuation">.</span>EntityMetadataTemplate<span class="token punctuation">)</span>
+Obviously, make sure to store any real private key nowhere within the source code or Git in general.
 
-entityMetadata<span class="token punctuation">.</span>name<span class="token punctuation">.</span>default <span class="token operator">=</span> <span class="token string">"Vilafourier"</span>
-entityMetadata<span class="token punctuation">.</span>description<span class="token punctuation">.</span>default <span class="token operator">=</span> <span class="token string">"Official communication and participation channel of the city council"</span>
-entityMetadata<span class="token punctuation">.</span>media <span class="token operator">=</span> <span class="token punctuation">{</span>
-avatar<span class="token operator">:</span> <span class="token string">'&lt;https://my-organization.org/logo.png&gt;'</span><span class="token punctuation">,</span>
-header<span class="token operator">:</span> <span class="token string">'&lt;https://my-organization.org/header.jpeg&gt;'</span>
-<span class="token punctuation">}</span>
-entityMetadata<span class="token punctuation">.</span>actions <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+Now we need to get a pool of gateways and connect to one of them:
 
-<span class="token keyword">const</span> contentUri <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">updateEntity</span><span class="token punctuation">(</span>entityWallet<span class="token punctuation">.</span>address<span class="token punctuation">,</span> entityMetadata<span class="token punctuation">,</span> entityWallet<span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
+```typescript
+import { GatewayPool } from "dvote-js/dist/net/gateway-pool"
 
-<span class="token comment">// Show stored values</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"The entity has been defined"</span><span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>contentUri<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
+let pool: GatewayPool
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>And then:</p><pre><code>$ npm run main
+async function connect() {
+    // Get a pool of gateways to connect to the network
+    pool = await GatewayPool.discover({ networkId: NETWORK_ID, bootnodesContentUri: GATEWAY_BOOTNODE_URI })
+    await pool.connect()
+}
+
+const disconnect = () => pool.disconnect()
+```
+
+Then, let's define the metadata of our Entity and make it available on IPFS and Ethereum. Add the following code to `index.ts`:
+
+```typescript
+import { EntityMetadata } from "dvote-js"
+import { updateEntity } from "dvote-js/dist/api/entity"
+
+async function registerEntity() {
+    // Make a copy of the metadata template and customize it
+    const entityMetadata: EntityMetadata = Object.assign({}, Models.Entity.EntityMetadataTemplate)
+
+    entityMetadata.name.default = "Vilafourier"
+    entityMetadata.description.default = "Official communication and participation channel of the city council"
+    entityMetadata.media = {
+        avatar: 'https://my-organization.org/logo.png',
+        header: 'https://my-organization.org/header.jpeg'
+    }
+    entityMetadata.actions = []
+
+    const contentUri = await updateEntity(entityWallet.address, entityMetadata, entityWallet, pool)
+
+    // Show stored values
+    console.log("The entity has been defined")
+    console.log(contentUri)
+}
+```
+
+And then:
+
+```
+$ npm run main
 Setting the entity metadata
 WARNING: Multiple definitions for addr
 WARNING: Multiple definitions for setAddr
 The entity has been defined
 ipfs://QmdK5TnHDXPt4xozkuboyKP94RTrUxFr1z9Pkv5qhfahFG
+```
 
-</code></pre><p>Done!</p><p>This is what we just did:</p><ul><li>We created JSON metadata containing the custom details of our entity</li><li>We pinned the JSON content on IPFS using a gateway from the pool</li><li>The hash of our metadata is <code>QmdK5TnHDXPt4xozkuboyKP94RTrUxFr1z9Pkv5qhfahFG</code> and should be available <a href="https://ipfs.io/ipfs/QmdK5TnHDXPt4xozkuboyKP94RTrUxFr1z9Pkv5qhfahFG">from any IPFS peer</a></li><li>An Ethereum transaction was sent to the entities contract, defining the pointer to our new metadata.</li></ul><p>The value on the smart contract can only be updated by our wallet, the blockchain ensures the integrity of our data and IPFS ensures its global availability.</p><h3 id="visualizer">Visualizer</h3><p>To check that our entity is properly declared, we can check it on the visualizer: <code>https://app.dev.vocdoni.net/entities/#/&lt;entity-id&gt;</code></p><p>This is the link <a href="https://app.dev.vocdoni.net/entities/#/0xdeea56f124dd3e73bcbc210fc382154a11f3bab227af55927139c887e15573e4">in our case</a>.</p><blockquote>Note: Keep in mind that we're using a testnet and some of the data might be eventually disposed.</blockquote><h3 id="census-generation">Census generation</h3><p>Our entity is ready, now it can handle voting processes. But before we can create one, we need a census of the people who can vote.</p><p>As we said, digital identities arise from a cryptographic keypair. The ideal scenario is when the identity is generated on the user's device and only the public key is shared, but for the sake of simplicity, we will create a few identities ourselves.</p><pre class=" line-numbers language-javascript"><code class="  language-javascript"><span class="token keyword">let</span> votersPublicKeys<span class="token operator">:</span> string<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+Done! 
 
-<span class="token keyword">function</span> <span class="token function">populateCensusPublicKeys</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-<span class="token keyword">const</span> wallet <span class="token operator">=</span> Wallet<span class="token punctuation">.</span><span class="token function">createRandom</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-votersPublicKeys<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>wallet<span class="token punctuation">[</span><span class="token string">"signingKey"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>publicKey<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Voter's public keys"</span><span class="token punctuation">,</span> votersPublicKeys<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
+This is what we just did:
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Which results in</p><pre><code>Voter's public keys [
+- We created JSON metadata containing the custom details of our entity
+- We pinned the JSON content on IPFS using a gateway from the pool
+- The hash of our metadata is `QmdK5TnHDXPt4xozkuboyKP94RTrUxFr1z9Pkv5qhfahFG` and should be available [from any IPFS peer](https://ipfs.io/ipfs/QmdK5TnHDXPt4xozkuboyKP94RTrUxFr1z9Pkv5qhfahFG)
+- An Ethereum transaction was sent to the entities contract, defining the pointer to our new metadata.
+
+The value on the smart contract can only be updated by our wallet, the blockchain ensures the integrity of our data and IPFS ensures its global availability.
+
+#### Visualizer
+To check that our entity is properly declared, we can check it on the visualizer: `https://app.dev.vocdoni.net/entities/#/<entity-id>`
+
+This is the link [in our case](https://app.dev.vocdoni.net/entities/#/0xdeea56f124dd3e73bcbc210fc382154a11f3bab227af55927139c887e15573e4).
+
+> Note: Keep in mind that we're using a testnet and some of the data might be eventually disposed.
+
+### Census generation
+Our entity is ready, now it can handle voting processes. But before we can create one, we need a census of the people who can vote.
+
+As we said, digital identities arise from a cryptographic keypair. The ideal scenario is when the identity is generated on the user's device and only the public key is shared, but for the sake of simplicity, we will create a few identities ourselves.
+
+```typescript
+let votersPublicKeys: string[] = []
+
+function populateCensusPublicKeys() {
+    for (let i = 0; i < 10; i++) {
+        const wallet = Wallet.createRandom()
+        votersPublicKeys.push(wallet["signingKey"].publicKey)
+    }
+    console.log("Voter's public keys", votersPublicKeys)
+}
+```
+
+Which results in
+
+```
+Voter's public keys [
  '0x046f5ae433845ddc5d93a44b4aa3b9f654861372ada5f074b88bd18623dcbac5e4c3495f2f4f96e9053ce89f8befd3ad5424224948b84ba5a9292ef3f594003c46',
  '0x0460aaecd59d68dc63aa173f77d89476280d77b67c5793c5f166ff951eb4d761df8d57eab31e8064180027386ead992b74bd097461e0a44e80b371650f4c09370b',
   ...
 ]
+```
 
-</code></pre><p>Then we can upload the census claims to a gateway and publish it:</p><pre class=" line-numbers language-javascript"><code class="  language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> addCensus<span class="token punctuation">,</span> addClaimBulk<span class="token punctuation">,</span> getRoot<span class="token punctuation">,</span> publishCensus <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"dvote-js/dist/api/census"</span>
+Then we can upload the census claims to a gateway and publish it:
 
-<span class="token keyword">let</span> merkleTreeOrigin<span class="token operator">:</span> string
-<span class="token keyword">let</span> merkleRoot<span class="token operator">:</span> string
+```typescript
+import { addCensus, addClaimBulk, getRoot, publishCensus } from "dvote-js/dist/api/census"
 
-<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">publishVoteCensus</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-<span class="token comment">// Prepare the census parameters</span>
-<span class="token keyword">const</span> censusName <span class="token operator">=</span> <span class="token string">"Vilafourier all members #"</span> <span class="token operator">+</span> Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">substr</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span>
-<span class="token keyword">const</span> adminPublicKeys <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token keyword">await</span> entityWallet<span class="token punctuation">[</span><span class="token string">"signingKey"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>publicKey<span class="token punctuation">]</span>
-<span class="token keyword">const</span> publicKeyClaims <span class="token operator">=</span> votersPublicKeys<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">k</span> <span class="token operator">=&gt;</span> <span class="token function">digestHexClaim</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// hash the keys</span>
+let merkleTreeOrigin: string
+let merkleRoot: string
 
-<span class="token comment">// As the census does not exist yet, we create it (optional when it exists)</span>
-<span class="token keyword">let</span> <span class="token punctuation">{</span> censusId <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">addCensus</span><span class="token punctuation">(</span>censusName<span class="token punctuation">,</span> adminPublicKeys<span class="token punctuation">,</span> pool<span class="token punctuation">,</span> entityWallet<span class="token punctuation">)</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Census added: "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>censusName<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">" with ID </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>censusId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+async function publishVoteCensus() {
+    // Prepare the census parameters
+    const censusName = "Vilafourier all members #" + Math.random().toString().substr(2, 6)
+    const adminPublicKeys = [await entityWallet["signingKey"].publicKey]
+    const publicKeyClaims = votersPublicKeys.map(k => digestHexClaim(k)) // hash the keys
 
-<span class="token comment">// Add claims to the new census</span>
-<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">addClaimBulk</span><span class="token punctuation">(</span>censusId<span class="token punctuation">,</span> publicKeyClaims<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> pool<span class="token punctuation">,</span> entityWallet<span class="token punctuation">)</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Added"</span><span class="token punctuation">,</span> votersPublicKeys<span class="token punctuation">.</span>length<span class="token punctuation">,</span> <span class="token string">"claims to"</span><span class="token punctuation">,</span> censusId<span class="token punctuation">)</span>
-<span class="token keyword">if</span> <span class="token punctuation">(</span>result<span class="token punctuation">.</span>invalidClaims<span class="token punctuation">.</span>length <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Invalid claims"</span><span class="token punctuation">,</span> result<span class="token punctuation">.</span>invalidClaims<span class="token punctuation">)</span>
+    // As the census does not exist yet, we create it (optional when it exists)
+    let { censusId } = await addCensus(censusName, adminPublicKeys, pool, entityWallet)
+    console.log(`Census added: "${censusName}" with ID ${censusId}`)
 
-merkleRoot <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">getRoot</span><span class="token punctuation">(</span>censusId<span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Census Merkle Root"</span><span class="token punctuation">,</span> merkleRoot<span class="token punctuation">)</span>
+    // Add claims to the new census
+    let result = await addClaimBulk(censusId, publicKeyClaims, true, pool, entityWallet)
+    console.log("Added", votersPublicKeys.length, "claims to", censusId)
+    if (result.invalidClaims.length > 0) console.error("Invalid claims", result.invalidClaims)
 
-<span class="token comment">// Make it available publicly</span>
-merkleTreeOrigin <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">publishCensus</span><span class="token punctuation">(</span>censusId<span class="token punctuation">,</span> pool<span class="token punctuation">,</span> entityWallet<span class="token punctuation">)</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Census published on"</span><span class="token punctuation">,</span> merkleTreeOrigin<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
+    merkleRoot = await getRoot(censusId, pool)
+    console.log("Census Merkle Root", merkleRoot)
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Which results in:</p><pre><code>Census added: "Vilafourier all members #550262" with ID 0x1048d8cB20fE806389802ba48E2647dc85aB779a/0x8e0c00cda17a132e2ce6c89072cc2037b0800c280c1ddba318eb2620fae2ff16
+    // Make it available publicly
+    merkleTreeOrigin = await publishCensus(censusId, pool, entityWallet)
+    console.log("Census published on", merkleTreeOrigin)
+}
+```
+
+Which results in:
+
+```
+Census added: "Vilafourier all members #550262" with ID 0x1048d8cB20fE806389802ba48E2647dc85aB779a/0x8e0c00cda17a132e2ce6c89072cc2037b0800c280c1ddba318eb2620fae2ff16
 Added 10 claims to 0x1048d8cB20fE806389802ba48E2647dc85aB779a/0x8e0c00cda17a132e2ce6c89072cc2037b0800c280c1ddba318eb2620fae2ff16
 Census Merkle Root 0xbf8572159929b4e37c40e2ce18fd46156e750a4aac1f06dbda3237edccc81115
 Census published on ipfs://QmcTuUJbN1tEWA3nqHFU8N8iuUN2ymJoqW4UcKBzHuYrPw
+```
 
-</code></pre><p>Cool! Our entity is ready, and our first census is now public.</p><h3 id="process-creation">Process creation</h3><p>Now we are ready to create our fist process. To do so, we will use the values we generated previously and define the topic, the questions, the vote options, etc.</p><pre class=" line-numbers language-javascript"><code class="  language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> getEntityId <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"dvote-js/dist/api/entity"</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> estimateBlockAtDateTime<span class="token punctuation">,</span> createVotingProcess<span class="token punctuation">,</span> getVoteMetadata <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"dvote-js/dist/api/vote"</span>
+Cool! Our entity is ready, and our first census is now public.
 
-<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">createVotingProcess</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">const</span> myEntityAddress <span class="token operator">=</span> <span class="token keyword">await</span> entityWallet<span class="token punctuation">.</span><span class="token function">getAddress</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">const</span> myEntityId <span class="token operator">=</span> <span class="token function">getEntityId</span><span class="token punctuation">(</span>myEntityAddress<span class="token punctuation">)</span>
+### Process creation
+Now we are ready to create our fist process. To do so, we will use the values we generated previously and define the topic, the questions, the vote options, etc.
 
-    <span class="token keyword">const</span> startBlock <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">estimateBlockAtDateTime</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span>Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1000</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> numberOfBlocks <span class="token operator">=</span> <span class="token number">6</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">24</span> <span class="token comment">// 1 day (10s block time)</span>
+```typescript
+import { getEntityId } from "dvote-js/dist/api/entity"
+import { estimateBlockAtDateTime, createVotingProcess, getVoteMetadata } from "dvote-js/dist/api/vote"
 
-    <span class="token keyword">const</span> processMetadata<span class="token operator">:</span> ProcessMetadata <span class="token operator">=</span> <span class="token punctuation">{</span>
-        <span class="token string">"version"</span><span class="token operator">:</span> <span class="token string">"1.0"</span><span class="token punctuation">,</span>
-        <span class="token string">"type"</span><span class="token operator">:</span> <span class="token string">"poll-vote"</span><span class="token punctuation">,</span>
-        <span class="token string">"startBlock"</span><span class="token operator">:</span> startBlock<span class="token punctuation">,</span>
-        <span class="token string">"numberOfBlocks"</span><span class="token operator">:</span> numberOfBlocks<span class="token punctuation">,</span>
-        <span class="token string">"census"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-            <span class="token string">"merkleRoot"</span><span class="token operator">:</span> merkleRoot<span class="token punctuation">,</span>
-            <span class="token string">"merkleTree"</span><span class="token operator">:</span> merkleTreeOrigin
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token string">"details"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-            <span class="token string">"entityId"</span><span class="token operator">:</span> myEntityId<span class="token punctuation">,</span>
-            <span class="token string">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"Vilafourier public poll"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-            <span class="token string">"description"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-                <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"This is our test poll using a decentralized blockchain to register votes"</span>
-            <span class="token punctuation">}</span><span class="token punctuation">,</span>
-            <span class="token string">"headerImage"</span><span class="token operator">:</span> <span class="token string">"&lt;https://images.unsplash.com/photo-1600190184658-4c4b088ec92c?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1350&amp;q=80&gt;"</span><span class="token punctuation">,</span>
-            <span class="token string">"streamUrl"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
-            <span class="token string">"questions"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-                <span class="token punctuation">{</span>
-                    <span class="token string">"type"</span><span class="token operator">:</span> <span class="token string">"single-choice"</span><span class="token punctuation">,</span>
-                    <span class="token string">"question"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"CEO"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                    <span class="token string">"description"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"Chief Executive Officer"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                    <span class="token string">"voteOptions"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-                        <span class="token punctuation">{</span> <span class="token string">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"Yellow candidate"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"value"</span><span class="token operator">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                        <span class="token punctuation">{</span> <span class="token string">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"Pink candidate"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"value"</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                        <span class="token punctuation">{</span> <span class="token string">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"Abstention"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"value"</span><span class="token operator">:</span> <span class="token number">2</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                        <span class="token punctuation">{</span> <span class="token string">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"White vote"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"value"</span><span class="token operator">:</span> <span class="token number">3</span> <span class="token punctuation">}</span>
-                    <span class="token punctuation">]</span>
-                <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                <span class="token punctuation">{</span>
-                    <span class="token string">"type"</span><span class="token operator">:</span> <span class="token string">"single-choice"</span><span class="token punctuation">,</span>
-                    <span class="token string">"question"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"CFO"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                    <span class="token string">"description"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"Chief Financial Officer"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                    <span class="token string">"voteOptions"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-                        <span class="token punctuation">{</span> <span class="token string">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"Yellow candidate"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"value"</span><span class="token operator">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                        <span class="token punctuation">{</span> <span class="token string">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"Pink candidate"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"value"</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                        <span class="token punctuation">{</span> <span class="token string">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"Abstention"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"value"</span><span class="token operator">:</span> <span class="token number">2</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                        <span class="token punctuation">{</span> <span class="token string">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">"default"</span><span class="token operator">:</span> <span class="token string">"White vote"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"value"</span><span class="token operator">:</span> <span class="token number">3</span> <span class="token punctuation">}</span>
-                    <span class="token punctuation">]</span>
-                <span class="token punctuation">}</span><span class="token punctuation">,</span>
-            <span class="token punctuation">]</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">const</span> processId <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">createVotingProcess</span><span class="token punctuation">(</span>processMetadata<span class="token punctuation">,</span> entityWallet<span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Process created:"</span><span class="token punctuation">,</span> processId<span class="token punctuation">)</span>
+async function createVotingProcess() {
+    const myEntityAddress = await entityWallet.getAddress()
+    const myEntityId = getEntityId(myEntityAddress)
 
-    <span class="token comment">// Reading the process metadata back</span>
-    <span class="token keyword">const</span> metadata <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">getVoteMetadata</span><span class="token punctuation">(</span>processId<span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"The metadata is"</span><span class="token punctuation">,</span> metadata<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
+    const startBlock = await estimateBlockAtDateTime(new Date(Date.now() + 1000 * 60 * 5), pool)
+    const numberOfBlocks = 6 * 60 * 24 // 1 day (10s block time)
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Which looks like this:</p><pre><code>Process created: 0x82f42dc48bfbfa0bb1018bcb0f3a31f77d12ced1fda9566990d64d07be9a48a6
+    const processMetadata: ProcessMetadata = {
+        "version": "1.0",
+        "type": "poll-vote",
+        "startBlock": startBlock,
+        "numberOfBlocks": numberOfBlocks,
+        "census": {
+            "merkleRoot": merkleRoot,
+            "merkleTree": merkleTreeOrigin
+        },
+        "details": {
+            "entityId": myEntityId,
+            "title": { "default": "Vilafourier public poll" },
+            "description": {
+                "default": "This is our test poll using a decentralized blockchain to register votes"
+            },
+            "headerImage": "https://images.unsplash.com/photo-1600190184658-4c4b088ec92c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+            "streamUrl": "",
+            "questions": [
+                {
+                    "type": "single-choice",
+                    "question": { "default": "CEO" },
+                    "description": { "default": "Chief Executive Officer" },
+                    "voteOptions": [
+                        { "title": { "default": "Yellow candidate" }, "value": 0 },
+                        { "title": { "default": "Pink candidate" }, "value": 1 },
+                        { "title": { "default": "Abstention" }, "value": 2 },
+                        { "title": { "default": "White vote" }, "value": 3 }
+                    ]
+                },
+                {
+                    "type": "single-choice",
+                    "question": { "default": "CFO" },
+                    "description": { "default": "Chief Financial Officer" },
+                    "voteOptions": [
+                        { "title": { "default": "Yellow candidate" }, "value": 0 },
+                        { "title": { "default": "Pink candidate" }, "value": 1 },
+                        { "title": { "default": "Abstention" }, "value": 2 },
+                        { "title": { "default": "White vote" }, "value": 3 }
+                    ]
+                },
+            ]
+        }
+    }
+    const processId = await createVotingProcess(processMetadata, entityWallet, pool)
+    console.log("Process created:", processId)
+
+    // Reading the process metadata back
+    const metadata = await getVoteMetadata(processId, pool)
+    console.log("The metadata is", metadata)
+}
+```
+
+Which looks like this:
+
+```
+Process created: 0x82f42dc48bfbfa0bb1018bcb0f3a31f77d12ced1fda9566990d64d07be9a48a6
 The metadata is {
   version: '1.0',
   type: 'poll-vote',
@@ -216,91 +353,126 @@ The metadata is {
     description: {
       default: 'This is our test poll using a decentralized blockchain to register votes'
     },
-    headerImage: '&lt;https://images.unsplash.com/photo-1600190184658-4c4b088ec92c?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1350&amp;q=80&gt;',
+    headerImage: 'https://images.unsplash.com/photo-1600190184658-4c4b088ec92c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80',
     streamUrl: '',
     questions: [ [Object], [Object] ]
   }
 }
+```
 
-</code></pre><p>So, we just...</p><ul><li>Defined the metadata of our process</li><li>Defined the block at which we would like the process to start</li><li>Declare the metadata of the process</li></ul><p>As it happened before, the JSON metadata is pinned on IPFS and pointed to from the process smart contract. In addition, some metadata fields are also stored on the smart contract so they can be accessed on-chain.</p><blockquote>The contract flags define how the process will behave, whereas the metadata is used to store the human readable content.</blockquote><p>In about 2-3 minutes, the Ethereum transaction will be relayed to the voting blockchain as well. When the block number reaches <code>startBlock</code>, the process will become open to those who are part of the census. The <code>startBlock</code> value should be <strong>at least 25 blocks ahead</strong> of the current value.</p><h3 id="visualizer-1">Visualizer</h3><p>To check the new process, there are two web sites we can use:</p><ul><li><code>https://app.dev.vocdoni.net/processes/#/&lt;entity-id&gt;/&lt;process-id&gt;</code></li><li><code>https://explorer.dev.vocdoni.net/process/&lt;process-id&gt;</code></li></ul><p>In our case:</p><ul><li><code>https://app.dev.vocdoni.net/processes/#/0xdeea56f124dd3e73bcbc210fc382154a11f3bab227af55927139c887e15573e4/0x82f42dc48bfbfa0bb1018bcb0f3a31f77d12ced1fda9566990d64d07be9a48a6</code></li><li><code>https://explorer.dev.vocdoni.net/process/0x82f42dc48bfbfa0bb1018bcb0f3a31f77d12ced1fda9566990d64d07be9a48a6</code></li></ul><p>Again, this is a testnet and some of this data may be cleaned up at some point.</p><h3 id="voting">Voting</h3><p>The previous code typically runs on the backend of your organization - you will simply choose to generate a census based on your specific organization's parameters.</p><p>This next portion, however, is meant to be executed on the voter's device. The specific method used to create and manage user keys is an important decision that presents a trade-off you have to make between usability and security.</p><!--kg-card-begin: markdown--><ul>
-<li>Users create the keys on their end
-<ul>
-<li>This allows for a self sovereign identity and provides higher privacy</li>
-<li>However, users have to register the public key on your backend and you need to validate it</li>
-</ul>
-</li>
-<li>The organization creates one-time keys
-<ul>
-<li>The keys are not in the user's control</li>
-<li>They don't need to register</li>
-<li>They can simply receive a link and use it to vote, and then the key expires</li>
-</ul>
-</li>
-</ul>
-<!--kg-card-end: markdown--><p>Whatever your case is, we will illustrate a web browser environment where the voter fetches the process metadata, signs his/her choices and submits them to a gateway.</p><pre class=" line-numbers language-javascript"><code class="  language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Wallet <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"ethers"</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span>
-    getVoteMetadata<span class="token punctuation">,</span>
-    estimateDateAtBlock<span class="token punctuation">,</span>
-    getBlockHeight<span class="token punctuation">,</span>
-    getEnvelopeHeight<span class="token punctuation">,</span>
-    packagePollEnvelope<span class="token punctuation">,</span>
+So, we just...
+
+- Defined the metadata of our process
+- Defined the  block at which we would like the process to start
+- Declare the metadata of the process
+
+As it happened before, the JSON metadata is pinned on IPFS and pointed to from the process smart contract. In addition, some metadata fields are also stored on the smart contract so they can be accessed on-chain. 
+
+> The contract flags define **how** the process will behave, whereas the metadata is used to store the **human readable** content.
+
+In about 2-3 minutes, the Ethereum transaction will be relayed to the voting blockchain as well. When the block number reaches `startBlock`, the process will become open to those who are part of the census. The `startBlock` value should be **at least 25 blocks ahead** of the current value.
+
+#### Visualizer
+To check the new process, there are two web sites we can use:
+- `https://app.dev.vocdoni.net/processes/#/<entity-id>/<process-id>`
+- `https://explorer.dev.vocdoni.net/process/<process-id>`
+
+In our case:
+- `https://app.dev.vocdoni.net/processes/#/0xdeea56f124dd3e73bcbc210fc382154a11f3bab227af55927139c887e15573e4/0x82f42dc48bfbfa0bb1018bcb0f3a31f77d12ced1fda9566990d64d07be9a48a6`
+- `https://explorer.dev.vocdoni.net/process/0x82f42dc48bfbfa0bb1018bcb0f3a31f77d12ced1fda9566990d64d07be9a48a6`
+
+Again, this is a testnet and some of this data may have been cleaned up at some point.
+
+### Voting
+The previous code typically runs on the backend of your organization -you will simply choose to generate a census based on your specific organization's parameters.
+
+This next portion, however, is meant to be executed on the voter's device. The specific method used to create and manage user keys is an important decision which  presents a trade off between usability and security.
+
+- Users create the keys on their end
+	- This allows for a self sovereign identity and provides higher privacy
+	- However, users have to register the public key on your backend and you need to validate it
+- The organization creates one-time keys
+	- The keys are not in the user's control
+	- They don't need to register
+	- They can simply receive a link and use it to vote, and then the key expires
+
+Whatever your case is, we will illustrate a web browser environment where the voter fetches the process metadata, signs his/her choices and submits them to a gateway.
+
+```typescript
+import { Wallet } from "ethers"
+import {
+    getVoteMetadata,
+    estimateDateAtBlock,
+    getBlockHeight,
+    getEnvelopeHeight,
+    packagePollEnvelope,
     submitEnvelope
-<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"dvote-js/dist/api/vote"</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> getCensusSize<span class="token punctuation">,</span> digestHexClaim<span class="token punctuation">,</span> generateProof <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"dvote-js/dist/api/census"</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> waitUntilVochainBlock <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"dvote-js/dist/util/waiters"</span>
+} from "dvote-js/dist/api/vote"
+import { getCensusSize, digestHexClaim, generateProof } from "dvote-js/dist/api/census"
+import { waitUntilVochainBlock } from "dvote-js/dist/util/waiters"
 
-<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">submitSingleVote</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment">// Get the user private key from the appropriate place</span>
-    <span class="token keyword">const</span> wallet <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Wallet</span><span class="token punctuation">(</span><span class="token string">"voter-privkey"</span><span class="token punctuation">)</span>  <span class="token comment">// TODO: Adapt to your case</span>
+async function submitSingleVote() {
+    // Get the user private key from the appropriate place
+    const wallet = new Wallet("voter-privkey")  // TODO: Adapt to your case
 
-    <span class="token comment">// Fetch the metadata</span>
-    <span class="token keyword">const</span> processMeta <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">getVoteMetadata</span><span class="token punctuation">(</span>processId<span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
+    // Fetch the metadata
+    const processMeta = await getVoteMetadata(processId, pool)
 
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"- Starting:"</span><span class="token punctuation">,</span> <span class="token keyword">await</span> <span class="token function">estimateDateAtBlock</span><span class="token punctuation">(</span>processMeta<span class="token punctuation">.</span>startBlock<span class="token punctuation">,</span> pool<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"- Ending:"</span><span class="token punctuation">,</span> <span class="token keyword">await</span> <span class="token function">estimateDateAtBlock</span><span class="token punctuation">(</span>processMeta<span class="token punctuation">.</span>startBlock <span class="token operator">+</span> processMeta<span class="token punctuation">.</span>numberOfBlocks<span class="token punctuation">,</span> pool<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"- Census size:"</span><span class="token punctuation">,</span> <span class="token keyword">await</span> <span class="token function">getCensusSize</span><span class="token punctuation">(</span>processMeta<span class="token punctuation">.</span>census<span class="token punctuation">.</span>merkleRoot<span class="token punctuation">,</span> pool<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"- Current block:"</span><span class="token punctuation">,</span> <span class="token keyword">await</span> <span class="token function">getBlockHeight</span><span class="token punctuation">(</span>pool<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"- Current votes:"</span><span class="token punctuation">,</span> <span class="token keyword">await</span> <span class="token function">getEnvelopeHeight</span><span class="token punctuation">(</span>processId<span class="token punctuation">,</span> pool<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    console.log("- Starting:", await estimateDateAtBlock(processMeta.startBlock, pool))
+    console.log("- Ending:", await estimateDateAtBlock(processMeta.startBlock + processMeta.numberOfBlocks, pool))
+    console.log("- Census size:", await getCensusSize(processMeta.census.merkleRoot, pool))
+    console.log("- Current block:", await getBlockHeight(pool))
+    console.log("- Current votes:", await getEnvelopeHeight(processId, pool))
 
-    <span class="token keyword">await</span> <span class="token function">waitUntilVochainBlock</span><span class="token punctuation">(</span>processMeta<span class="token punctuation">.</span>startBlock<span class="token punctuation">,</span> pool<span class="token punctuation">,</span> <span class="token punctuation">{</span> verbose<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    await waitUntilVochainBlock(processMeta.startBlock, pool, { verbose: true })
 
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Submitting vote envelopes"</span><span class="token punctuation">)</span>
+    console.log("Submitting vote envelopes")
 
-    <span class="token comment">// Hash the voter's public key</span>
-    <span class="token keyword">const</span> publicKeyHash <span class="token operator">=</span> <span class="token function">digestHexClaim</span><span class="token punctuation">(</span>wallet<span class="token punctuation">[</span><span class="token string">"signingKey"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>publicKey<span class="token punctuation">)</span>
+    // Hash the voter's public key
+    const publicKeyHash = digestHexClaim(wallet["signingKey"].publicKey)
 
-    <span class="token comment">// Generate the census proof</span>
-    <span class="token keyword">const</span> merkleProof <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">generateProof</span><span class="token punctuation">(</span>processMeta<span class="token punctuation">.</span>census<span class="token punctuation">.</span>merkleRoot<span class="token punctuation">,</span> publicKeyHash<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
+    // Generate the census proof
+    const merkleProof = await generateProof(processMeta.census.merkleRoot, publicKeyHash, true, pool)
 
-    <span class="token comment">// Sign the vote envelope with our choices</span>
-    <span class="token keyword">const</span> choices <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span>
-    <span class="token keyword">const</span> voteEnvelope <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">packagePollEnvelope</span><span class="token punctuation">(</span><span class="token punctuation">{</span> votes<span class="token operator">:</span> choices<span class="token punctuation">,</span> merkleProof<span class="token punctuation">,</span> processId<span class="token punctuation">,</span> walletOrSigner<span class="token operator">:</span> wallet <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    // Sign the vote envelope with our choices
+    const choices = [1, 2]
+    const voteEnvelope = await packagePollEnvelope({ votes: choices, merkleProof, processId, walletOrSigner: wallet })
 
-    <span class="token comment">// If the process had encrypted votes:</span>
-    <span class="token comment">// const voteEnvelope = await packagePollEnvelope({ votes, merkleProof, processId, walletOrSigner: wallet, encryptionPubKeys: ["..."] })</span>
+    // If the process had encrypted votes:
+    // const voteEnvelope = await packagePollEnvelope({ votes, merkleProof, processId, walletOrSigner: wallet, encryptionPubKeys: ["..."] })
 
-    <span class="token keyword">await</span> <span class="token function">submitEnvelope</span><span class="token punctuation">(</span>voteEnvelope<span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Envelope submitted"</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
+    await submitEnvelope(voteEnvelope, pool)
+    console.log("Envelope submitted")
+}
+```
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>That's quite a lot so far!</p><p>To check for the status of a vote, you can append these extra calls at the end:</p><pre class=" line-numbers language-javascript"><code class="  language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> getPollNullifier<span class="token punctuation">,</span> getEnvelopeStatus <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"dvote-js/dist/api/vote"</span>
+That's quite a lot so far!
 
-<span class="token punctuation">{</span>
-    <span class="token comment">// ...</span>
+To check for the status of a vote, you can append these extra calls at the end:
 
-    <span class="token comment">// wait 10+ seconds</span>
-    <span class="token keyword">await</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">resolve</span> <span class="token operator">=&gt;</span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> <span class="token number">1000</span> <span class="token operator">*</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+```typescript
+import { getPollNullifier, getEnvelopeStatus } from "dvote-js/dist/api/vote"
 
-    <span class="token comment">// Compute our deterministic nullifier to check the status of our vote</span>
-    <span class="token keyword">const</span> nullifier <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">getPollNullifier</span><span class="token punctuation">(</span>wallet<span class="token punctuation">.</span>address<span class="token punctuation">,</span> processId<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> status <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">getEnvelopeStatus</span><span class="token punctuation">(</span>processId<span class="token punctuation">,</span> nullifier<span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
+{
+    // ...
 
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"- Registered: "</span><span class="token punctuation">,</span> status<span class="token punctuation">.</span>registered<span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"- Block: "</span><span class="token punctuation">,</span> status<span class="token punctuation">.</span>block<span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"- Date: "</span><span class="token punctuation">,</span> status<span class="token punctuation">.</span>date<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
+    // wait 10+ seconds
+    await new Promise(resolve => setTimeout(resolve, 1000 * 10))
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>The output:</p><pre><code>- Starting: 2020-09-17T15:50:44.000Z
+    // Compute our deterministic nullifier to check the status of our vote
+    const nullifier = await getPollNullifier(wallet.address, processId)
+    const status = await getEnvelopeStatus(processId, nullifier, pool)
+
+    console.log("- Registered: ", status.registered)
+    console.log("- Block: ", status.block)
+    console.log("- Date: ", status.date)
+}
+```
+
+The output:
+
+```
+- Starting: 2020-09-17T15:50:44.000Z
 - Ending: 2020-09-18T15:50:44.000Z
 - Census size: 10
 - Current block: 5
@@ -317,30 +489,60 @@ Envelope submitted
 - Registered:  true
 - Block:  36
 - Date:  2020-09-17T15:51:06.000Z
+```
 
-</code></pre><p>This is what we just did:</p><ul><li>Initialize the wallet with the voter's private key</li><li>Fetch the vote metadata</li><li>Wait until <code>startBlock</code></li><li>Request a census merkle proof to a random Gateway, proving that the voter's public key matches the census Merkle root</li><li>Package our choices into an envelope signed with the voter's private key (and optionally encrypt it)</li><li>Submit the envelope using a random Gateway</li><li>Retrieve the status of the vote</li></ul><h3 id="process-results">Process results</h3><p>If we look at the visualizer or the block explorer we should see votes already submitted.</p><p>If the process type was set to <code>encrypted-poll</code> then results will remain unavailable until the process ends. As our process is an open poll, however, we can ask for the results in real-time:</p><pre class=" line-numbers language-javascript"><code class="  language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> getResultsDigest <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"dvote-js/dist/api/vote"</span>
+This is what we just did:
 
-<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">fetchResults</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">const</span> <span class="token punctuation">{</span> questions <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">getResultsDigest</span><span class="token punctuation">(</span>processId<span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
+- Initialize the wallet with the voter's private key
+- Fetch the vote metadata
+- Wait until `startBlock`
+- Request a census merkle proof to a random Gateway, proving that the voter's public key matches the census Merkle root
+- Package our choices into an envelope signed with the voter private key (and optionally encrypt it)
+- Submit the envelope using a random Gateway
+- Retrieve the status of the vote
 
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Process results"</span><span class="token punctuation">,</span> questions<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
+### Process results
+If we look at the visualizer or the block explorer we should see votes already submitted.
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>After all users have voted, the visualizer shows:</p><figure class="kg-card kg-image-card"><img src="https://blog.vocdoni.io/content/images/2020/09/vocdoni_vote_count.png" class="kg-image" alt=""></figure><p>However, if you can't wait for an encrypted process to end later or you simply want to stop vote submissions, there's a trick you can use. This will change in the near future, but for now you can <code>cancel</code> the rest of the lifespan of a process, if needed. The vote counting will begin a few seconds later.</p><pre class=" line-numbers language-javascript"><code class="  language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> isCanceled<span class="token punctuation">,</span> cancelProcess <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"dvote-js/dist/api/vote"</span>
+If the process type was set to `encrypted-poll` then, results would remain unavailable until the process ends. As our process is an open poll, however, we can ask for the results in real time:
 
-<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">forceEndingProcess</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment">// Already canceled?</span>
-    <span class="token keyword">const</span> canceled <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">isCanceled</span><span class="token punctuation">(</span>processId<span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>canceled<span class="token punctuation">)</span> <span class="token keyword">return</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Process already canceled"</span><span class="token punctuation">)</span>
+```typescript
+import { getResultsDigest } from "dvote-js/dist/api/vote"
 
-    <span class="token comment">// Already ended?</span>
-    <span class="token keyword">const</span> processMeta <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">getVoteMetadata</span><span class="token punctuation">(</span>processId<span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> currentBlock <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">getBlockHeight</span><span class="token punctuation">(</span>pool<span class="token punctuation">)</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>currentBlock <span class="token operator">&gt;=</span> <span class="token punctuation">(</span>processMeta<span class="token punctuation">.</span>startBlock <span class="token operator">+</span> processMeta<span class="token punctuation">.</span>numberOfBlocks<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Process already ended"</span><span class="token punctuation">)</span>
+async function fetchResults() {
+    const { questions } = await getResultsDigest(processId, pool)
 
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Canceling process"</span><span class="token punctuation">,</span> processId<span class="token punctuation">)</span>
-    <span class="token keyword">await</span> <span class="token function">cancelProcess</span><span class="token punctuation">(</span>processId<span class="token punctuation">,</span> entityWallet<span class="token punctuation">,</span> pool<span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Done"</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
+    console.log("Process results", questions)
+}
+```
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Congratulations! You just conducted an election on your own 🎉🎊</p><p>A recap of the the examples featured on the article are available on this repository:<br><a href="https://github.com/vocdoni/tutorials/tree/master/governance-as-a-service">https://github.com/vocdoni/tutorials/tree/master/governance-as-a-service</a></p>
+After all users have voted, the visualizer shows:
+
+![Process results](https://blog.vocdoni.io/content/images/2020/09/vocdoni_vote_count.png "Process results")
+
+However, if you can't wait for an encrypted process to end later or you simply want to stop vote submissions, there's a trick you can use. This will change in the near future, but for now you can `cancel` the rest of the lifespan of a process, if needed. The scrutiny will begin a few seconds later.
+
+```typescript
+import { isCanceled, cancelProcess } from "dvote-js/dist/api/vote"
+
+async function forceEndingProcess() {
+    // Already canceled?
+    const canceled = await isCanceled(processId, pool)
+    if (canceled) return console.log("Process already canceled")
+
+    // Already ended?
+    const processMeta = await getVoteMetadata(processId, pool)
+    const currentBlock = await getBlockHeight(pool)
+    if (currentBlock >= (processMeta.startBlock + processMeta.numberOfBlocks)) return console.log("Process already ended")
+
+    console.log("Canceling process", processId)
+    await cancelProcess(processId, entityWallet, pool)
+    console.log("Done")
+}
+```
+
+Congratulations! You just conducted an election!
+
+A recap of the the examples featured on the article are available on this repository:
+
+[https://github.com/vocdoni/tutorials/tree/master/voting-as-a-service](https://github.com/vocdoni/tutorials/tree/master/voting-as-a-service)
