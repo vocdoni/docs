@@ -10,6 +10,7 @@
         - [Namespaces](/architecture/components/namespaces.md)
         - [Gateway](/architecture/components/gateway.md)
         - [Vochain](/architecture/components/vochain.md)
+            - [Scrutinizer](/architecture/components/vochain/scrutinizer.md)
         - [Census Service](/architecture/components/census-service.md)
         - [Boot node](/architecture/components/bootnode.md)
     - [Sequence diagrams](/architecture/sequence-diagrams.md)
