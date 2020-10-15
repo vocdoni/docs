@@ -1,10 +1,10 @@
-# registry token API
+# Registry token API
 
 The token API allows organizations to take control over the user tokens required for user registration on the Vocdoni registry backend.
 
 The API can be accessed on a url like this `wss://vocdoni-registry-service/api/token`. It uses websockets with a JSON payload.
 
-### authentication
+### Authentication
 
 There is a common known secret between the entity and the vocdoni backend. This secret is used to compute the authHash field.
 
@@ -33,9 +33,9 @@ secret = "hello"
 
 `authHash = keccack256("0x123456"+"revoke"+"1234567890"+"xxx-yyy-zzz"+"hello")`
 
-### methods
+### Methods
 
-##### revoke a token
+##### Token revokation
 
 ```json
 // Request
@@ -62,7 +62,7 @@ secret = "hello"
 }
 ```
 
-##### status of a token
+##### Token status
 
 ```json
 // Request
@@ -90,7 +90,7 @@ secret = "hello"
 }
 ```
 
-##### generate a batch of tokens
+##### Token batch generation
 
 ```json
 // Request
@@ -114,7 +114,7 @@ secret = "hello"
 }
 ```
 
-#### full example 
+#### Full example 
 
 A full working example with secret=`test`.
 
@@ -142,7 +142,7 @@ A full working example with secret=`test`.
 }
 ```
 
-### reference javascript client
+### Reference JavaScript client
 
 Dependencies (tested versions): [ethers@4.0.47](https://docs.ethers.io/v5/api/utils/hashing/#utils-keccak256), [ws@7.3.1](https://github.com/websockets/ws)
 
@@ -154,7 +154,7 @@ const toUtf8Bytes = require("ethers").utils.toUtf8Bytes
 const ws = new WebSocket('ws://localhost:8000/api/token')
 
 const generateAuthHash = (fields, secret) => {
-  str = fields.reduce((x,y) => String(x)+String(y)) + secret
+  str = fields.reduce((x,y) => String(x) + String(y)) + secret
   return keccak256(toUtf8Bytes(str))  
 }
 
@@ -164,27 +164,28 @@ ws.on('message', function incoming(message) {
 });
 
 ws.on('open', function open() {
-  var secret = "test"
+  const secret = "test"
+
   // Generate request
-  var request = {}
+  const request = {}
   request.method= "status"
+
   // adjust timestamp precision to the server
   request.timestamp = Math.floor(Date.now() / 1000)
   request.authHash = generateAuthHash(new Array(request.entityId, request.method, request.timestamp, request.token), secret)  
 
   // Generate random request id
-  var rand = Math.random().toString(16).split('.')[1]
-  var requestId = keccak256('0x' + rand).substr(2, 10)
-  var msg = {
-  "id": requestId,
-  "request": request
+  const rand = Math.random().toString(16).split('.')[1]
+  const requestId = keccak256('0x' + rand).substr(2, 10)
+  const msg = {
+    "id": requestId,
+    "request": request
   }
-  console.log(msg)
   ws.send(JSON.stringify(msg));
+});
 
 ws.on('error', function error(err) {
   console.error(err)
-  })
 });
 ```
 
@@ -198,5 +199,5 @@ The callback definition looks like this:
 
 The parameters between braces will be replaced on each callback call. So `{EVENT}` will became `register` on the register callback.
 
-The authHash is calculated the same way described above `alphabetical order of field values + shared secret` thus `AUTHASH = Keccak256(event + ts + token + secret)`.
+The `authHash` is computed the same way described above `alphabetical order of field values + shared secret` thus `AUTHASH = Keccak256(event + ts + token + secret)`.
 

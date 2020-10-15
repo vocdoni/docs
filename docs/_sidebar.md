@@ -21,6 +21,7 @@
         <!-- - [Messaging](/architecture/protocol/messaging.md) -->
 - Integrating Vocdoni
    - [Overview](/integration/overview.md)
+   - [Voting as a Service](/integration/voting-as-a-service.md)
    - [Registry backend](/integration/registry-token-api.md)
 <!--- Design
 <!--  - [UI prototype](design/ui-prototype.md) -->
