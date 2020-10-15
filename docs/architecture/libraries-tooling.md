@@ -1,5 +1,11 @@
 # Libraries and Tooling
 
+## Block Explorer
+
+The VocExplorer is a web frontend that allows any third party to query and observe the Vochain processes, votes, organizations, transactions, etc. If is developed in go using Vecty and Web Assembly. 
+
+- See [VocExplorer](https://gitlab.com/vocdoni/vocexplorer)
+
 ## DVote JS
 
 This library is the more versatile and extensive of the ecosystem, since it allows to target both web and app clients, as well as it does with backend services. It provides all wrappers to interact with all decentralized methods andd resources, covering the whole process.
@@ -32,23 +38,45 @@ This library is likely to be refactored into a pure Dart version and a Flutter s
 
 - See [DVote Flutter on GitLab](https://gitlab.com/vocdoni/dvote-flutter)
 
-## DVote Flutter Native
-
-This library provides Dart wrappers around native implementations of the cryptographic functions used by the client app. It bundles Android shared objects and iOS archives and exposes typed Dart functions to invoke them seamlessly.
-
-- See [DVote Flutter Native on GitLab](https://gitlab.com/vocdoni/dvote-flutter-native)
-
-## DVote Rust FFI
-
-A library that imports the cryptographic functions available on [DVote Rust](#dvote-rust) and exposes them in a C compatible format that can be used with the Foreign Function Interface. 
-
-- See [DVote Rust FFI on GitLab](https://gitlab.com/vocdoni/dvote-rs-ffi)
-
 ## DVote Rust
 
 A Rust library that provides fast and performant functions to compute Ethereum wallets, Poseidon hashes, encrypt and decrypt data and generate ZK Proofs on modest hardware. These expenside computations need the lightest implementation possible, and DVote Rust serves exactly this purpose. 
 
 - See [DVote Rust on GitLab](https://gitlab.com/vocdoni/dvote-rs)
+
+## DVote Rust FFI
+
+A library that exports the cryptographic primitives from [DVote Rust](#dvote-rust) in a C compatible format that can be used with the *Foreign Function Interface*. It is mostly used by [DVote Flutter Native](#dvote-flutter-native).
+
+- See [DVote Rust FFI on GitLab](https://gitlab.com/vocdoni/dvote-rs-ffi)
+
+## DVote Flutter Native
+
+This library exposes Dart wrappers around [native bindings](#dvote-rust-ffi) of the cryptographic functions used by the Mobile Client. It bundles Android and iOS libraries and exposes typed Dart functions to invoke them seamlessly.
+
+- See [DVote Flutter Native on GitLab](https://gitlab.com/vocdoni/dvote-flutter-native)
+
+## DVote Protobuf
+
+This library allows to define data models and store data in an efficient and compact way. Data can be easily serialized and deserialized into Dart, Go, JS, etc, objects.
+
+Protobuf empowers the use of GRPC but the data models are currently used by the Mobile Client.
+
+- See [DVote Protobuf on GitLab](https://gitlab.com/vocdoni/dvote-protobuf)
+
+## DVote Wasm
+
+This library provides experimental support for the cryptographic primitives available on dvote-rs for NodeJS and web browsers, importing WASM modules.
+
+- See [DVote WASM on GitLab](https://gitlab.com/vocdoni/dvote-wasm)
+
+## Eventual
+
+Eventual is a Flutter package that provides a convenient path toward a Reactive Programming model on Flutter apps. It allows to create value listeners, track progress of their related remote requests and handle errors, all while repainting the UI in clean and efficient fashion.
+
+A simple and performant alternative to the BLOC pattern or the boilerplate of using Providers.
+
+- See [Eventual on GitLab](https://gitlab.com/vocdoni/eventual)
 
 <!--
 ## Web runtime (for React Native)

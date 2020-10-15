@@ -30,7 +30,6 @@ To provide resilence and avoid any kind of censorship, the network architecture 
 ### Key components
 A voting process makes use of the following components:
 
-<!-- ![Main architecture](./architecture-main.svg "Main architecture") -->
 <div style="padding: 20px; background-color: white;">
 	<img src="https://raw.githubusercontent.com/vocdoni/design/main/docs/main-architecture.png" alt="Main architecture"/>
 </div>

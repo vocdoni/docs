@@ -8,18 +8,16 @@ An entity can have many roles. For the most part, it is the organizer of voting 
 
 ## Index
 
-- [Entity](#entity)
-  - [Index](#index)
-  - [Entity Resolver](#entity-resolver)
-    - [Text Record storage](#text-record-storage)
-    - [Text List Record storage](#text-list-record-storage)
-    - [Resolver keys](#resolver-keys)
-  - [JSON schema](#json-schema)
-    - [Gateway boot node](#gateway-boot-node)
-    - [Gateway update](#gateway-update)
-    - [News Feed](#news-feed)
-    - [Entity Actions](#entity-actions)
-    - [Action visibility](#action-visibility)
+- [Entity Resolver](#entity-resolver)
+  - [Text Record storage](#text-record-storage)
+  - [Text List Record storage](#text-list-record-storage)
+  - [Resolver keys](#resolver-keys)
+- [JSON schema](#json-schema)
+  - [Gateway boot node](#gateway-boot-node)
+  - [Gateway update](#gateway-update)
+  - [News Feed](#news-feed)
+  - [Entity Actions](#entity-actions)
+  - [Action visibility](#action-visibility)
 
 ---
 
@@ -418,4 +416,4 @@ A pointer to the metadata of a specific entity. It can have several purposes.
 
 ### Coming next
 
-See the [Process](/architecture/components/process) section.
+See the [Governance Processes](/architecture/components/processes) section.

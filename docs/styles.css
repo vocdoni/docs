@@ -1,7 +1,8 @@
 body {
     color: #444;
     font-family: "Open Sans", sans-serif, sans-serif;
-    background-color: #F3F0ED;
+    /* background-color: #F3F0ED; */
+    background-color: white;
     font-weight: 300;
 }
 
@@ -100,7 +101,8 @@ section tr:nth-child(2n) {
 .sidebar {
     border: 1px;
     padding:18px 48px;
-    background-color: #F3F0ED;
+    /* background-color: #F3F0ED; */
+    background-color: #f8f8f8;
     padding-right: 0px;
 }
 
@@ -111,7 +113,7 @@ section tr:nth-child(2n) {
 }
 
 .sidebar-toggle {
-    background-color: #f3f0ede8;
+    background-color: #f8f8f8;
     bottom: inherit;
     border-radius: 26px;
     margin: 10px;

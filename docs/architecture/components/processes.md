@@ -13,20 +13,11 @@ Governance processes follow a declarative fashion. The expected behavior is decl
     - [Status](#status)
     - [Transparent upgrades](#transparent-upgrades)
 - [Data schema](#data-schema)
-- [Process metadata (JSON)](#process-metadata-json)
-- [Vote Envelope](#vote-envelope)
-    - [Containing Snark votes](#containing-snark-votes)
-    - [Containing Poll votes](#containing-poll-votes)
-- [Vote Package](#vote-package)
-    - [Snark Vote](#snark-vote)
-    - [Poll Vote](#poll-vote)
-    - [Petition Sign](#petition-sign)
-- [Results](#results)
-- [Future work](#future-work)
-- [Define a versioning system](#definie-a-versioning-system)
-- [Define sanity checks](#define-sanity-checks)
-- [Oracles protocol](#oracles-protocol)
-- [Support multi-layer vote encryption](#support-multi-layer-vote-encryption)
+    - [Process metadata (JSON)](#process-metadata-json)
+    - [Vote Envelope](#vote-envelope)
+    - [Vote Package](#vote-package)
+    - [Results](#results)
+<!-- - [Support multi-layer vote encryption](#support-multi-layer-vote-encryption) -->
 
 ## Smart Contract
 

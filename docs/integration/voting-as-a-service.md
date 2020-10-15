@@ -48,7 +48,8 @@ Enough talk, let's see how you can create an entity and publish your first votin
 Make sure you have [Node.js](https://nodejs.org) 12 installed on your computer.
 
 In an empty folder, create a `package.json` file by running
-```
+
+```json
 $ npm init -y
 Wrote to /home/user/dev/governance-as-a-service/package.json:
 
@@ -73,7 +74,7 @@ $ npm i -D typescript ts-node
 ```
 
 Edit the `scripts` section of `package.json` and leave it like this:
-```
+```json
   "scripts": {
     "main": "ts-node index.ts"
   },
@@ -82,7 +83,7 @@ Edit the `scripts` section of `package.json` and leave it like this:
 
 Then, let's create a file named `index.ts` and create a function to generate the wallet of our new entity:
 
-```typescript
+```javascript
 import { Wallet } from "ethers"
 
 function makeEntityWallet() {
@@ -114,13 +115,13 @@ In this example, we will be using an Ethereum testnet called Sokol. Write down y
 
 Now, instead of creating a random wallet, we should use the one that received the test ether. In the lines above, replace this:
 
-```typescript
+```javascript
 const entityWallet = Wallet.createRandom()
 ```
 
 Into this:
 
-```typescript
+```javascript
 // Use your private key here
 const entityWallet = new Wallet("0x6d88d78a4a76e42144b6867fdff89477f0a3b805d85b97cd46387a2f770f91f1")
 ```
@@ -129,7 +130,7 @@ Obviously, make sure to store any real private key nowhere within the source cod
 
 Now we need to get a pool of gateways and connect to one of them:
 
-```typescript
+```javascript
 import { GatewayPool } from "dvote-js/dist/net/gateway-pool"
 
 let pool: GatewayPool
@@ -145,7 +146,7 @@ const disconnect = () => pool.disconnect()
 
 Then, let's define the metadata of our Entity and make it available on IPFS and Ethereum. Add the following code to `index.ts`:
 
-```typescript
+```javascript
 import { EntityMetadata } from "dvote-js"
 import { updateEntity } from "dvote-js/dist/api/entity"
 
@@ -203,7 +204,7 @@ Our entity is ready, now it can handle voting processes. But before we can creat
 
 As we said, digital identities arise from a cryptographic keypair. The ideal scenario is when the identity is generated on the user's device and only the public key is shared, but for the sake of simplicity, we will create a few identities ourselves.
 
-```typescript
+```javascript
 let votersPublicKeys: string[] = []
 
 function populateCensusPublicKeys() {
@@ -227,7 +228,7 @@ Voter's public keys [
 
 Then we can upload the census claims to a gateway and publish it:
 
-```typescript
+```javascript
 import { addCensus, addClaimBulk, getRoot, publishCensus } from "dvote-js/dist/api/census"
 
 let merkleTreeOrigin: string
@@ -271,7 +272,7 @@ Cool! Our entity is ready, and our first census is now public.
 ### Process creation
 Now we are ready to create our fist process. To do so, we will use the values we generated previously and define the topic, the questions, the vote options, etc.
 
-```typescript
+```javascript
 import { getEntityId } from "dvote-js/dist/api/entity"
 import { estimateBlockAtDateTime, createVotingProcess, getVoteMetadata } from "dvote-js/dist/api/vote"
 
@@ -398,7 +399,7 @@ This next portion, however, is meant to be executed on the voter's device. The s
 
 Whatever your case is, we will illustrate a web browser environment where the voter fetches the process metadata, signs his/her choices and submits them to a gateway.
 
-```typescript
+```javascript
 import { Wallet } from "ethers"
 import {
     getVoteMetadata,
@@ -450,7 +451,7 @@ That's quite a lot so far!
 
 To check for the status of a vote, you can append these extra calls at the end:
 
-```typescript
+```javascript
 import { getPollNullifier, getEnvelopeStatus } from "dvote-js/dist/api/vote"
 
 {
@@ -506,7 +507,7 @@ If we look at the visualizer or the block explorer we should see votes already s
 
 If the process type was set to `encrypted-poll` then, results would remain unavailable until the process ends. As our process is an open poll, however, we can ask for the results in real time:
 
-```typescript
+```javascript
 import { getResultsDigest } from "dvote-js/dist/api/vote"
 
 async function fetchResults() {
@@ -522,7 +523,7 @@ After all users have voted, the visualizer shows:
 
 However, if you can't wait for an encrypted process to end later or you simply want to stop vote submissions, there's a trick you can use. This will change in the near future, but for now you can `cancel` the rest of the lifespan of a process, if needed. The scrutiny will begin a few seconds later.
 
-```typescript
+```javascript
 import { isCanceled, cancelProcess } from "dvote-js/dist/api/vote"
 
 async function forceEndingProcess() {
