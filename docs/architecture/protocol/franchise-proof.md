@@ -15,14 +15,14 @@ In our case:
   2. `Voter`'s `public key` is included in the `census` Merkle Tree
   3. The nullifier provided by `Voter` uniquely corresponds to his/her `private key` and the `process ID`
 
-Although it is a CPU and memory intensive computation, the ZK Proof can be generated from the `user` light-client. The proof is validated by the Vochain Nodes, Miners and any Third Party monitoring the process.
+Although the computation is CPU and memory intensive, ZK Proofs can be generated from the user client running on modest hardware. The proof is validated by the Vochain Nodes, Miners and any Third Party monitoring the process.
 
 ### ZK-SNARK circuit
 
 + Used by the `voter` to generate the `franchise proof`
 + Used by the `relay` and `organizer` to validate the `franchise proof`
-+ The same circuit can be use for any `process`
-+ It relies on a **trusted setup**
++ The same circuit can be used for any `process` with the same census (max) size
++ It relies on a **trusted setup ceremony**
 
 ![ZkSnarks circuit](./zksnarks-circuit-diagram.png "ZkSnarks Circuit")
 
@@ -42,10 +42,7 @@ Steps:
 2. Nullifier generation<br/>
     `nullifier = hash( process_id + user_private_key )`
 
-3. Vote signature<br/>
-    `signature = Sign(encrypted_vote)`
-
-4. Fetching the census Merkle proof<br/>
+3. Fetching the census Merkle proof<br/>
     `census_proof = [list-of-siblings]`
 
 <!--
