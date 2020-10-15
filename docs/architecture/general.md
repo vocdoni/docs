@@ -31,8 +31,8 @@ To provide resilence and avoid any kind of censorship, the network architecture 
 A voting process makes use of the following components:
 
 <!-- ![Main architecture](./architecture-main.svg "Main architecture") -->
-<div style="padding: 20px;">
-	<img src="https://raw.githubusercontent.com/vocdoni/design/main/docs/architecture-main.png" alt="Main architecture"/>
+<div style="padding: 20px; background-color: white;">
+	<img src="https://raw.githubusercontent.com/vocdoni/design/main/docs/main-architecture.png" alt="Main architecture"/>
 </div>
 
 - Mobile app users create a key pair (identity) an sign up to the Registry DB of an organization
