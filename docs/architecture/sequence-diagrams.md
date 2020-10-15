@@ -1,8 +1,6 @@
 # Sequence diagrams
 
-Traditional systems like API's present simple scenarios, in which a centralized service define how data should be encoded.
-
-However, decentralized ecosystems like a distributed vote system need much stronger work on defining every interaction between any two peers on the network.
+Traditional systems like API's present simple scenarios, in which a centralized service define how data should be encoded. However, decentralized ecosystems like a distributed vote system need much stronger work on defining every interaction between any two peers on the network.
 
 - [Prior to voting](#prior-to-voting)
   - [Initial Gateway discovery](#initial-gateway-discovery)
