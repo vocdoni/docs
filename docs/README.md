@@ -16,7 +16,7 @@ The algorithms, systems and software that we build are intended to be a contribu
 **Client** apps or browsers do not need to join decentralized networks themselves. They can connect to any of the discoverable Gateways and retrieve data from the smart contracts, IPFS and the voting blockchain, without the need to open P2P connections on their own.
 
 <!-- ![Main architecture](./architecture-main.svg "Main architecture") -->
-<div style="padding: 20px; text-align: center;">
+<div style="padding: 20px; background-color: white; text-align: center;">
         <img src="https://raw.githubusercontent.com/vocdoni/design/main/docs/vocdoni-family.png" alt="Vocdoni Family"/>
 </div>
 

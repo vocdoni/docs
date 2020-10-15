@@ -15,9 +15,9 @@
     - [Sequence diagrams](/architecture/sequence-diagrams.md)
     - [Libraries and tooling](/architecture/libraries-tooling.md)
     - Protocol
-        - [Data origins](/architecture/protocol/data-origins.md)
         - [JSON API](/architecture/protocol/json-api.md)
         - [Franchise proof](/architecture/protocol/franchise-proof.md)
+        - [Data origins](/architecture/protocol/data-origins.md)
         - [Messaging protocol](/architecture/protocol/messaging.md)
 - Integrating Vocdoni
    - [Overview](/integration/overview.md)

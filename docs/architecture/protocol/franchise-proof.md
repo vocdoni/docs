@@ -1,22 +1,21 @@
 # Franchise Proof
 
-The franchise proof enables user privacy and allows anonymous voting. Currently Vocdoni aims to integrate two different mechanisms to generate zero knowledge proofs (more might be considered in the future):
+The franchise proof enables user privacy and allows anonymous voting.
 
-- ZK-Snarks
-- Linkable Ring Signatures
+The starting point is a [Merkle Proof](/architecture/census-overview?id=the-census), which efficiently proves that a public key belongs to a Merkle Tree (census). However, using this proof alone would allow the organizer to correlate the vote envelopes with the public key on the database, so that votes wouldn't be secret.
 
-----
+To this end, Vocdoni achieves voting anonymity by the use of ZK-Snarks.
 
 ## ZK-Snarks
 
-+ Leverages ZK-SNARK technology
-+ Used to prove two things without revealing critical data
-  1. `Voter` is the owner of the `private key` corresponding to the `public key`
-  2. `Voter`'s `public key` is included in the `census`
-+ Generated in the `user` light-client
-+ Is a CPU and memory intensive process
-+ Is validated by the `relays` before adding the `voting package` in the blockchain
-+ It is validated by the `organizer` once the `process` ends
+Snark stands for *Succinct non-interactive argument of knowledge*. In our case, this means proving to someone that we know something, but without revealing it.
+
+In our case:
+  1. `Voter` is the owner of the `private key` corresponding to a certain `public key`
+  2. `Voter`'s `public key` is included in the `census` Merkle Tree
+  3. The nullifier provided by `Voter` uniquely corresponds to his/her `private key` and the `process ID`
+
+Although it is a CPU and memory intensive computation, the ZK Proof can be generated from the `user` light-client. The proof is validated by the Vochain Nodes, Miners and any Third Party monitoring the process.
 
 ### ZK-SNARK circuit
 
@@ -49,6 +48,7 @@ Steps:
 4. Fetching the census Merkle proof<br/>
     `census_proof = [list-of-siblings]`
 
+<!--
 ----
 
 ## Linkable Ring Signatures
@@ -80,9 +80,9 @@ First, the Voters need to send their public keys to the Census organization serv
 ```mermaid
 graph TD;
 C((Organization Census))
-V1(Voter)-- send public key -->C
-V2(Voter)-- send public key -->C
-V3(Voter)-- send public key -->C
+V1(Voter)-- send public key -- >C
+V2(Voter)-- send public key -- >C
+V3(Voter)-- send public key -- >C
 ```
 
 #### 2. Create census rings
@@ -113,9 +113,9 @@ Once the Rings and the temporary keys are published, the Voter can create its Li
 
 ```mermaid
 graph BT;
-O((Organizer)) -->|Create new election|B
-B[Blockchain] -->|fetch election ID| C((Census))
-B -->|fetch election ID| V1(Voter 1)
+O((Organizer)) -- >|Create new election|B
+B[Blockchain] -- >|fetch election ID| C((Census))
+B -- >|fetch election ID| V1(Voter 1)
 
 C-.->Pub1["PubKey V1 + electionID"]
 C-.->Pub2["PubKey V2 + electionID"]
@@ -123,7 +123,7 @@ C-.->Pub3["PubKey V3 + electionID"]
 
 R[Linkable Ring Signature]
 V1-.->Priv1["Privkey V1 + electionID"]
-Priv1-->|create election signatre| R
+Priv1-- >|create election signatre| R
 
 subgraph 
 Pub1-.-R
@@ -353,3 +353,5 @@ Time and size scales linearly.
 * 100 ring size signature needs 0.8s to be signed and have a size of 19kBytes
 * 1000 ring size signaure needs 7s to be signed and have a size of 193kBytes
 * 5000 ring size signaure needs 38s to be signed and have a size of 964kBytes
+
+-->

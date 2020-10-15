@@ -1,6 +1,6 @@
 # JSON API
 
-Most of the Vocdoni components expose or use a JSON API to communicate with other components of the system. This page defines a common standard which is the foundation to all APIs interactions.
+Most of the components described on the docs expose or use a JSON API to communicate with other components. This page defines the common standard which is the foundation to all APIs interactions.
 
 ## Request
 
@@ -70,7 +70,7 @@ The response API calls take two shapes depending on the result of the request.
 
 ## Authentication
 
-Some methods may require authentication. To authenticate API calls, an ECDSA signature is used.
+Some methods may require authentication. To authenticate API calls, ECDSA signatures are used.
 
 Since not all JS libraries/wallets (Metamask, Web3, Ethers.js, etc) will be able to sign raw messages, Gateways are expected to accept Ethereum signatures. An Ethereum signature is created by prepending `\x19Ethereum Signed Message:\n<len>` to the actual payload to hash and sign.
 
@@ -82,10 +82,10 @@ The verifier (component running the API server) needs a whitelist of accounts en
 
 Any method enforcing authentication needs to provide two additional fields:
 
-+ `request.timestamp`  The current UNIX timestamp, in seconds. Used to avoid replay attacks and to add randomless. The client should only accept the response if the given and the current timestamp differ by 10 seconds, at most.
++ `request.timestamp`  The current UNIX timestamp, in seconds. Used to avoid replay attacks and to add randomless. Clients should only accept the response if the given and the current timestamp differ by 10 seconds, at most.
 + `signature`  The ECDSA signature of the message, which proves that the sender is the owner of the whitelisted address
 
-The signature is a sha256 hash of payload's `request` field stringified.
+The signature is a keccak256 hash of payload's `request` field stringified.
 
 In the following example, the payload is:
 
@@ -105,7 +105,7 @@ In the following example, the payload is:
 
 Then:
 
-`payload.signature` = `ECDSA.SIGN` ( `sha256` ( `stringify` ( `payload.request` ) ) )
+`payload.signature` = `ECDSA.SIGN` ( `keccak256` ( `stringify` ( `payload.request` ) ) )
 
 The verificator will verify the signature, extract the ECDSA public key from the signature, convert it to Ethereum like address and finally compare it with the list of allowed addresses.
 
@@ -150,7 +150,8 @@ Where:
 
 `payload.signature` = `ECDSA.SIGN` ( `sha256` ( `stringify` ( `payload.response` ) ) )
 
-## Encryption
+<!-- ## Encryption -->
 
-TO DO
+### Coming next
 
+See the [Franchise proof](/architecture/protocol/franchise-proof) section.

@@ -453,3 +453,7 @@ sequenceDiagram
 
 - [Process Metadata](/architecture/components/processes?id=process-metadata-json)
 - [Vote Package](/architecture/components/processes?id=vote-package)
+
+### Coming next
+
+See the [Libraries and Tooling](/architecture/libraries-tooling) section.
