@@ -1,4 +1,4 @@
-# Namespaces
+# Namespace Contract
 
 Governance processes are assigned to a namespace when they are created. Namespaces allow to group them by a certain criteria. Most notably, namespaces may refer to something like Mainnet, Testnet, etc.
 
@@ -27,9 +27,7 @@ Note: The `oracles` field may progressively be deprecated as the platform evolve
 
 ## Processes
 
-The process contract needs to define a namespace contract instance. This instance will confirm whether `msg.sender` is an oracle or not when attempting to set the results.
-
-[More details](/architecture/components/process?id=methods)
+The [Process Contract](/architecture/smart-contracts/process) needs to point to a Namespace contract instance. This instance will confirm whether `msg.sender` is an oracle or not when attempting to set the results.
 
 ### Coming next
 

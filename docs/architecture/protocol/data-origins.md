@@ -64,4 +64,4 @@ In this case, Vocdoni proposes the use of [Nym](https://nymtech.net/) as a mixin
 
 ### Coming next
 
-See the [Integration overview](/integration/overview) section.
+See the [Sequence Diagrams](/architecture/sequence-diagrams) section.

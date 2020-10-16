@@ -54,7 +54,7 @@ Eventually:
 - One of Vocdoni's Gateways is used to query the ENS resolver of a certain Entity
 
 ### Set Entity metadata
-An Entity starts existing at the moment it has certain metadata stored on the [Entity Resolver](/architecture/smart-contracts/entities?id=entityresolver) smart contract. 
+An Entity starts existing at the moment it has certain metadata stored on the [Entity Resolver](/architecture/smart-contracts/entity-resolver?id=entityresolver) smart contract. 
 
 ```mermaid
 
@@ -91,7 +91,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Entity metadata](/architecture/smart-contracts/entities?id=json-schema)
+- [Entity metadata](/architecture/data-schemes/entity-metadata)
 
 #### Adding users to a census
 
@@ -179,7 +179,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json)
+- [Process Metadata](/architecture/data-schemes/process?id=process-metadata)
 - [Census Service addClaimBulk](/architecture/services/census-service?id=addclaimbulk)
 - [Census Service getRoot](/architecture/services/census-service?id=getroot)
 - [Census Service dump](/architecture/services/census-service?id=dump)
@@ -227,7 +227,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json)
+- [Process Metadata](/architecture/data-schemes/process?id=process-metadata)
 
 ### Check census inclusion
 
@@ -307,7 +307,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json)
+- [Process Metadata](/architecture/data-schemes/process?id=process-metadata)
 - [Census Service generateProof](/architecture/services/census-service?id=generateproof)
 - [Vote Package](/architecture/smart-contracts/process?id=vote-package)
 
@@ -445,7 +445,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json)
+- [Process Metadata](/architecture/data-schemes/process?id=process-metadata)
 - [Vote Package](/architecture/smart-contracts/process?id=vote-package)
 
 ### Coming next

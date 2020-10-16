@@ -92,3 +92,7 @@ If the `Rollback` function is called on the Vochain, the current non persisted c
 <div style="padding: 20px; background-color: white;">
 	<img src="https://github.com/vocdoni/design/raw/main/docs/scrutinizer-flow.png" alt="Scrutinizer work flow"/>
 </div>
+
+### Coming next
+
+See the [Census Service](/architecture/services/census-service) section.

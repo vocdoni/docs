@@ -23,7 +23,7 @@ The algorithms, systems and software that we build are intended to be a contribu
 Organizations maintain a list of public keys from their community, either in a database or in a public ledger. 
 The organizer of an election selects the group of people who are eligible to vote. Their public keys are hashed using a [ZK-Snark](https://z.cash/technology/zksnarks/) friendly function (_Mimc7_ or _Poseidon_), added to a **[Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree)** and distributed through a decentralized file system (_IPFS_).
 
-The _Merkle Tree_ is used as the **[Census](/architecture/census-overview)** of the voting process. The [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json) is the subject on which people can vote, and it is also distributed through IPFS. 
+The _Merkle Tree_ is used as the **[Census](/architecture/census-overview)** of the voting process. The [Process Metadata](/architecture/data-schemes/process) is the subject on which people can vote, and it is also distributed through IPFS. 
 
 The census and metadata pointers are submitted to the [Voting smart contract](/architecture/smart-contracts/process?id=smart-contract) and the parameters of the new vote become carved in stone on the Ethereum blockchain.
 

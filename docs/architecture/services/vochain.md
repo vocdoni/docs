@@ -128,7 +128,7 @@ The following are data payloads that are packaged by a client app or an oracle, 
 }
 ```
 
-The data stored in Ethereum lives in a [smart contract](/architecture/components/process?id=smart-contract)
+The data stored in Ethereum lives in a [smart contract](/architecture/smart-contracts/namespace)
 
 
 ## Special actors
@@ -188,4 +188,4 @@ In the following diagram the vote transaction lifecycle is shown. ChecTX, Delive
 
 ### Coming next
 
-See the [Census Service](/architecture/services/census-service) section.
+See the [Scrutinizer](/architecture/services/vochain/scrutinizer) section.

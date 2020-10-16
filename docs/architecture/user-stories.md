@@ -5,14 +5,14 @@ To see how a decentralized election works, let's see the sequence of actions tha
 ### Prior to voting
 
 - Vocdoni deploys the [smart contracts](https://gitlab.com/vocdoni/dvote-solidity#contracts) to Ethereum
-- The **organizer** registers an [Entity](/architecture/smart-contracts/entities) to the blockchain
+- The **organizer** registers an [Entity](/architecture/smart-contracts/entity-resolver) to the blockchain
 	- The metadata of the entity is pinned on IPFS
 	- The reference is declared on the ENS resolver of the entity
 - The **app user** creates a self-sovereign identity on a mobile app
 - The **app user** imports an identity (optional)
 	- Importing a recovery mnemonic
 	- Using an encrypted back up
-- The **app user** visits an [Entity](/architecture/smart-contracts/entities)
+- The **app user** visits an [Entity](/architecture/smart-contracts/entity-resolver)
 	- The user can open a deep link or scan a QR code
 - The **app user** protects the identity
 	- Using a visual pattern or pin
@@ -47,9 +47,9 @@ To see how a decentralized election works, let's see the sequence of actions tha
 	- Get the census Merkle Root
 	- Pin the Merkle Tree on IPFS or similar
 	- Push the eligible public keys to the [Census Service](/architecture/services/census-service)
-	- Pin the [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json) on IPFS
-	- Send a transaction to the process smart contract, including [Content URI](/architecture/protocol/data-origins?id=content-uri)'s pointing to the [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json) and the [Census Merkle Tree](/architecture/census-overview), along with the rest of parameters
-	- Update the list of voting processes on the [ENS Resolver](/architecture/smart-contracts/entities?id=entity-resolver) contract for the entity
+	- Pin the [Process Metadata](/architecture/data-schemes/process) on IPFS
+	- Send a transaction to the process smart contract, including [Content URI](/architecture/protocol/data-origins?id=content-uri)'s pointing to the [Process Metadata](/architecture/data-schemes/process) and the [Census Merkle Tree](/architecture/census-overview), along with the rest of parameters
+	- Update the list of voting processes on the [ENS Resolver](/architecture/smart-contracts/entity-resolver?id=entity-resolver) contract for the entity
 - The **app user** fetches the active processes of an **Entity**
 	- Read the description and review the options to vote
 - The **app user** checks that the identity is part of the process' census
@@ -95,13 +95,13 @@ To see how a decentralized election works, let's see the sequence of actions tha
 	- On encrypted processes:
 		- Miners create a transaction revealing their private key for the process
 - An **observer** computes the results
-	- The **observer** fetches the [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json) from the process contract and IPFS
+	- The **observer** fetches the [Process Metadata](/architecture/data-schemes/process) from the process contract and IPFS
 	- On encrypted votes, the **observer** requests the encryption private keys to the **Gateway**
 	- The **observer** fetches all the [Vote Envelopes](/architecture/smart-contracts/process?id=vote-envelope) registered for the process
 	- The **observer** checks their ZK Proofs or Merkle Proofs, the [Vote Package](/architecture/smart-contracts/process?id=vote-package-zk-snarks) contents and the restrictions imposed by the process flags
 	- On encrypted votes, the **observer** decrypts the [Vote Package](/architecture/smart-contracts/process?id=vote-package-zk-snarks)
 	- The **observer** counts the number of appearences of every single vote value
-		- Any vote value beyond the ones defined in the [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json) is discarded
+		- Any vote value beyond the ones defined in the [Process Metadata](/architecture/data-schemes/process) is discarded
 - An **observer** publishes the vote results
 	<!-- - The **observer** deposits an amount as stake to the contract -->
 	- An **observer** computes the results on its own
@@ -119,4 +119,4 @@ To see how a decentralized election works, let's see the sequence of actions tha
 
 ### Coming next
 
-See the [Entities](/architecture/smart-contracts/entities) section.
+See the [Entity Resolver Contract](/architecture/smart-contracts/entity-resolver) section.

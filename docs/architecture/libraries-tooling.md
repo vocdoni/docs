@@ -26,9 +26,9 @@ Its intent is to enable P2P access to its JS counterparts, and process data conf
 Provides the Smart Contracts supporting the trustless management of entities, processes and namespaces. It also provides documentation, TypeScript wrappers and ABI to attach to the contracts from client applications.
 
 - See [DVote Solidity on GitLab](https://gitlab.com/vocdoni/dvote-solidity)
-- See the [Entity Resolver smart contract](/architecture/smart-contracts/entities?id=entity-resolver)
+- See the [Entity Resolver smart contract](/architecture/smart-contracts/entity-resolver?id=entity-resolver)
 - See the [Process smart contract](/architecture/smart-contracts/process?id=smart-contract)
-- See the [Namespace smart contract](/architecture/smart-contracts/namespaces?id=contract)
+- See the [Namespace smart contract](/architecture/smart-contracts/namespace?id=contract)
 
 ## DVote Flutter
 
@@ -89,4 +89,4 @@ Until React Native or Expo ship with native support, the current workaround is t
 
 ### Coming next
 
-See the [JSON API](/architecture/protocol/json-api) section.
+See the [Integration overview](/integration/overview) section.

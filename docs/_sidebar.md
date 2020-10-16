@@ -6,22 +6,25 @@
     - [Component overview](/architecture/components.md)
     - [User stories](/architecture/user-stories.md)
     - Smart Contracts
-        - [Entities](/architecture/smart-contracts/entities.md)
+        - [Entity Resolver](/architecture/smart-contracts/entity-resolver.md)
         - [Process](/architecture/smart-contracts/process.md)
-        - [Namespaces](/architecture/smart-contracts/namespaces.md)
+        - [Namespace](/architecture/smart-contracts/namespace.md)
     - Services
         - [Gateway](/architecture/services/gateway.md)
         - [Vochain](/architecture/services/vochain.md)
             - [Scrutinizer](/architecture/services/vochain/scrutinizer.md)
         - [Census Service](/architecture/services/census-service.md)
         - [Boot node](/architecture/services/bootnode.md)
-    - [Sequence diagrams](/architecture/sequence-diagrams.md)
-    - [Libraries and tooling](/architecture/libraries-tooling.md)
+    - Data schemes
+        - [Entity metadata](/architecture/data-schemes/entity-metadata.md)
+        - [Process](/architecture/data-schemes/process.md)
     - Protocol
         - [JSON API](/architecture/protocol/json-api.md)
         - [Franchise proof](/architecture/protocol/franchise-proof.md)
         - [Data origins](/architecture/protocol/data-origins.md)
         <!-- - [Messaging](/architecture/protocol/messaging.md) -->
+    - [Sequence diagrams](/architecture/sequence-diagrams.md)
+    - [Libraries and tooling](/architecture/libraries-tooling.md)
 - Integration
    - [Overview](/integration/overview.md)
    - [Voting as a Service](/integration/voting-as-a-service.md)

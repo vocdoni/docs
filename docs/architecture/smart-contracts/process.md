@@ -1,31 +1,20 @@
-# Process
-
-Governance processes are declared on the Blockchain and they only store the critical information for integrity. However, the metadata of a process lives on a JSON file, containing the information on which voters can make a choice. 
-
-Governance processes follow a declarative fashion. The expected behavior is declared on the Process contract and the Vochain reacts to the currently available settings.
-
-- [Smart Contract](#smart-contract)
-    - [Contract structs](#contract-structs)
-    - [Process ID](#process-id)
-    - [Methods](#methods)
-    - [Getters](#getters)
-    - [Flags](#flags)
-    - [Status](#status)
-    - [Transparent upgrades](#transparent-upgrades)
-- [Data schema](#data-schema)
-    - [Process metadata (JSON)](#process-metadata-json)
-    - [Vote Envelope](#vote-envelope)
-    - [Vote Package](#vote-package)
-    - [Results](#results)
-<!-- - [Support multi-layer vote encryption](#support-multi-layer-vote-encryption) -->
-
-## Smart Contract
+# Process Contract
 
 A process is the building block around which governance is made in Vocdoni. Simmilarly to an OS, think of the process contract like a Kernel that receives syscall's to spawn a new governance process.
 
+Governance processes span across three diferent components: the Ethereum smart contract, IPFS distributing [their metadata](/architecture/data-schemes/process?id=process-metadata) and the [Vochain](/architecture/services/vochain). Processes are declared on the smart contract, which only stores critical information for integrity. 
+
+Processes follow a declarative fashion. The expected behavior is declared on the smart contract for integrity and the the Layer 2 blockchain (called [Vochain](/architecture/services/vochain)) reacts according to the current settings.
+
 The instance of the Voting process contract instance is resolved from `voting-process.vocdoni.eth` (soon replaced by `process.vocdoni.eth` and `process.dev.vocdoni.eth`) on the ENS registry.
 
-While the process contract is the source of truth, the vote itself will take place on the [Vochain](/architecture/services/vochain). Processes are parameterized and controlled from Ethereum, but real data will be handled on the Layer 2 blockchain called Vochain.
+- [Contract structs](#contract-structs)
+- [Process ID](#process-id)
+- [Methods](#methods)
+- [Getters](#getters)
+- [Flags](#flags)
+- [Status](#process-status)
+- [Transparent upgrades](#transparent-upgrades)
 
 ### Contract structs
 
@@ -34,8 +23,8 @@ While the process contract is the source of truth, the vote itself will take pla
 // GLOBAL STRUCTS
 
 struct Process {
-    uint8 mode; // The selected process mode. See: https://docs.vocdoni.io/#/architecture/components/process
-    uint8 envelopeType; // One of valid envelope types, see: https://docs.vocdoni.io/#/architecture/components/process
+    uint8 mode; // The selected process mode. See: https://docs.vocdoni.io/#/architecture/smart-contracts/process?id=flags
+    uint8 envelopeType; // One of valid envelope types, see: https://docs.vocdoni.io/#/architecture/smart-contracts/process?id=flags
     address entityAddress; // Who created the process
     uint64 startBlock; // Tendermint block number on which the voting process starts
     uint32 blockCount; // Amount of Tendermint blocks during which the voting process should be active
@@ -122,7 +111,7 @@ function getProcessId(address entityAddress, uint256 processCountIndex, uint16 n
 Where:
 - `entityAddress` is the Ethereum address that creates the process
 - `entityProcessCount` is an incremental nonce per `entityAddress`
-- `namespace` is the number to which a process self assigns itself. See [Namespaces](/architecture/smart-contracts/namespaces)
+- `namespace` is the number to which a process self assigns itself. See the [Namespace contract](/architecture/smart-contracts/namespace)
 
 ### Methods
 
@@ -257,200 +246,19 @@ The status of a process is a simple enum, defined as follows:
 
 ### Transparent upgrades
 
-Even if there are tools to deploy upgradeable smart contracts, we believe that newer versions of a contract should not be able to alter any of processes stored in the past. Data should remain available independently of future contract versions. In order to enforce transparency and full auditability:
+Even if there are tools to deploy upgradeable smart contracts, we believe that newer versions of a contract should not be able to alter any of processes stored in the past. Existing data should remain intact, independently of future contract versions. In order to enforce transparency and full auditability:
 
-- The upcoming contract version allows to keep historical data by forking and chaining new instances
-- A common interface is available between old and new instances, so that compatibility is preserved
-- When a new instance is deployed, it can have a **predecessor**, which may `activate` it as a **successor**
-- From successors, clients can navigate back and read processes stored on old instances transparently
-- New processes can only be created on the most recent successor
+- Upcoming contract versions allow to keep historical data by forking and chaining new instances
+- A common interface is available between old and new instances, so that backwards compatibility is preserved
+- When a new instance is deployed, it can have a **predecessor**, which can `activate` the new version as its **successor**
+- New processes can only be created on the last successor of the chain
+- From successors, clients can navigate back in time transparently and read processes stored on old instances
 
 However:
 - [Due to security concerns](https://solidity.readthedocs.io/en/v0.6.0/security-considerations.html#tx-origin), updates on a process coming from a successor are not acceptable
 - Updates on legacy processes need to be sent directly to the original contract instance
 - Use `getCreationInstance(processId)` to retrieve the appropriate address
 
-## Data schema
-
-### Process metadata (JSON)
-
-The creation of this document is critical. Multiple checks should be in place to ensure that the data is coherent (well formatted, all relevant locales present, etc).
-
-The JSON payload below is stored on IPFS.
-
-```json
-{
-    "version": "1.1", // Protocol version
-    "title": {
-        "en": "Universal Basic Income",
-        "ca": "Renda Bàsica Universal"
-    },
-    "description": {
-        "en": "## Markdown text goes here\n### Abstract",
-        "ca": "## El markdown va aquí\n### Resum"
-    },
-    "media": {
-        "header": "<content uri>",
-        "streamUri": "https://.../"
-    },
-    "questions": [
-        {
-            "title": {
-                "en": "Should universal basic income become a human right?",
-                "ca": "Estàs d'acord amb que la renda bàsica universal sigui un dret humà?"
-            },
-            "description": {
-                "en": "## Markdown text goes here\n### Abstract",
-                "ca": "## El markdown va aquí\n### Resum"
-            },
-            "choices": [
-                {
-                    "title": {
-                        "en": "Yes",
-                        "ca": "Sí"
-                    },
-                    "value": 0
-                },
-                {
-                    "title": {
-                        "en": "No",
-                        "ca": "No"
-                    },
-                    "value": 1
-                }
-            ]
-        }
-    ]
-}
-```
-
-### Vote Envelope
-
-The Vote Envelope contains a (possibly encrypted) Vote Package and provides the details to check that the incoming vote is valid. Some fields may be optional depending on the process `mode` and `envelopeType`.
-
-#### When `envelopeType.ANONYMOUS` is enabled
-
-An anonymous Vote Envelope features the proces ID, the ZK Proof, a nonce to prevent replay attacks, the user's nullifier for the vote, the index of the encryption keys used and a base64 representation of the Vote Package.
-
-```json
-{
-    "processId": "0x1234567890...",  // The process for which the vote is casted
-    "proof": "0x1234...",  // ZK Proof
-    "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
-    "nullifier": "0x1234...",   // Hash of the private key + processId
-    "encryptionKeyIndexes": [0, 1, 2, 3, 4],  // (optional) On encrypted votes, contains the (sorted) indexes of the keys used to encrypt
-    "votePackage": "base64-vote-package"  // base64(jsonString) or base64( encrypt(jsonString) )
-}
-```
-
-The `nullifier` uniquely identifies the vote in the blockchain and it is computed as follows: 
-
-`nullifier = keccak256(bytes(hex(addr(signature))) + bytes(hex(processId)))`
-
-#### When `envelopeType.ANONYMOUS` is disabled
-
-A signed (non-anonymous) Vote Envelope features the process ID, the Census Merkle Proof of the user, a nonce to prevent replay attacks, the index of the encryption keys used, a Base64 representation of the Vote Package and the user's signature.
-
-As always, the signature should be generated from a JSON object containing the keys in ascending alphabetical order.
-
-```json
-{
-    "processId": "0x1234567890...",
-    "proof": "0x1234...",  // Merkle Proof of the voter's public key
-    "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
-    "encryptionKeyIndexes": [0, 1, 2, 3, 4],  // (optional) On encrypted polls, contains the (sorted) indexes of the keys used to encrypt
-    "votePackage": "base64-vote-package",  // base64(jsonString) or base64( encrypt(jsonString) )
-    "signature": "0x12345678...",  // sign( JSON.stringify( { processId, proof, nonce, encryptionKeyIndexes?, votePackage } ), privateKey )
-}
-```
-
-### Vote Package
-
-Contains the actual votes and is part of the Vote Envelope.
-
-```json
-{
-    "nonce": "01234567890abcdef", // 8+ byte random string to prevent guessing the encrypted payload before the reveal key is released
-    "votes": [  // Direclty mapped to the `questions` field of the metadata
-        1, 3, 2
-    ]
-}
-```
-
-When `envelopeType.ENCRYPTED_VOTE` is disabled:
-- The `nonce` can be omitted.
-- The package must be used as a plain base-64 string.
-
-When `envelopeType.ENCRYPTED_VOTE` is enabled:
-- The `nonce` is mandatory. Can be omitted otherwise.
-- The package must be encrypted with the public keys used in ascending order.
-- The package must be a base64 representation of the encrypted bytes.
-
-### Results
-
-Requests to the Results API will return an Array of number arrays. They will contain the number of occurrences of every possible vote option, for every question available.
-
-Given diferent process with various parameters, below is an example of the results that would be returned given the votes of 3 users.
-
-<table><thead><tr><th>Name</th><th>Vote examples</th><th>Results</th><th>maxCount</th><th>maxValue</th><th>maxTotalCost</th><th>costExponent</th><th>uniqueValues</th></tr></thead><tbody><tr><td class="cell-title">Rate a product</td>
-	<td class="cell-one">[3] [5] [3]</td>
-<td class="cell-two">[ [0,0,2,0,1] ]</td>
-<td class="cell-three">1</td>
-<td class="cell-four">5</td>
-<td class="cell-five">-</td>
-<td class="cell-six">-</td>
-<td class="cell-seven">false</td></tr>
-<tr><td class="cell-title">Rate 3 candidates: A, B, C ⇒ 0, 1, 2</td>
-	<td class="cell-one">[2,1,2] [0,1,2] [0,0,0]</td>
-<td class="cell-two">[ [2,0,1], [1,2,0], [1,0,2] ]</td>
-<td class="cell-three">3</td>
-<td class="cell-four">2</td>
-<td class="cell-five">-</td>
-<td class="cell-six">-</td>
-<td class="cell-seven">false</td></tr>
-<tr><td class="cell-title">Single choice (1 out of 3)</td>
-	<td class="cell-one">[0,1,0] [0,1,0] [1,0,1]
-</td>
-<td class="cell-two">[ [2,1], [1,2], [2,1] ]</td>
-<td class="cell-three">3</td>
-<td class="cell-four">1</td>
-<td class="cell-five">1</td>
-<td class="cell-six">-</td>
-<td class="cell-seven">false</td></tr>
-<tr><td class="cell-title">Multiple choice (3 out of 5)</td>
-	<td class="cell-one">[1,1,1,0,0] [0,1,1,1,0] [1,1,0,0,0]</td>
-<td class="cell-two">[ [1, 2], [0, 3], [1, 2], [2, 1], [3, 0] ] </td>
-<td class="cell-three">5</td>
-<td class="cell-four">1</td>
-<td class="cell-five">3</td>
-<td class="cell-six">-</td>
-<td class="cell-seven">false</td></tr>
-<tr><td class="cell-title">Weighted choice: Sort the 5 candidates</td>
-	<td class="cell-one">[1,4,2,5,3] [4,1,2,5,3] [2,3,4,5,1]</td>
-<td class="cell-two">[ [0,1,1,0,1,0], [0,1,0,1,1,0], [0,0,2,0,1,1], [0,1,0,2,0,0] ]</td>
-<td class="cell-three">5</td>
-<td class="cell-four">5</td>
-<td class="cell-five">-</td>
-<td class="cell-six">-</td>
-<td class="cell-seven">true</td></tr>
-<tr><td class="cell-title">Quadratic voting: 4 options, 9 credits to spend</td>
-	<td class="cell-one">[2,2,1,0] [1,1,1,1] [0,3,0,0]</td>
-<td class="cell-two">[ [1,1,1,0], [0,1,1,1], [1,2,0,0], [2,1,0,0] ]</td>
-<td class="cell-three">4</td>
-<td class="cell-four">-</td>
-<td class="cell-five">9</td>
-<td class="cell-six">2.0000</td>
-<td class="cell-seven">false</td></tr>
-<tr><td class="cell-title">Election: 3 positions (CEO, COO, CFO), 5 candidates</td>
-	<td class="cell-one">[4,3,2] [4,2,3] [0,1,4]</td>
-<td class="cell-two">[ [1,0,0,0,2], [0,1,1,1,0], [0,0,1,1,1] ]</td>
-<td class="cell-three">3</td>
-<td class="cell-four">4</td>
-<td class="cell-five"></td>
-<td class="cell-six"></td>
-<td class="cell-seven">false</td></tr>
-</tbody></table>
-
 ### Coming next
 
-See the [Namespaces](/architecture/smart-contracts/namespaces) section.
+See the [Namespace Contract](/architecture/smart-contracts/namespace) section.
