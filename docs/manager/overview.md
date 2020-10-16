@@ -8,6 +8,10 @@ It also allows to manage the members and their attributes (for example, age or p
 
 The manager also allows to define the requirements that users have to accomplish for a user to be in a census and export the generated censuses.
 
+<div style="padding: 20px; background-color: white; text-align: center;">
+        <img src="https://raw.githubusercontent.com/vocdoni/design/main/docs/manager-overview.png" alt="Manager overview"/>
+</div>
+
 The manager is made of three components:
 
 - Centralized Backend
