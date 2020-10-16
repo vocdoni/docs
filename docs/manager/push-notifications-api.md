@@ -142,10 +142,11 @@ The API methods below follow the [JSON API](/architecture/protocol/json-api) spe
 }
 ```
 
-
+<!--
 ## Build and run
 
 - Build
+
 ```bash
 go build cmd/dvotenotif/dvotenotif.go
 ``` 
@@ -196,6 +197,8 @@ go run cmd/dvotenotif/dvotenotif.go
   --w3RPCPort int                     web3 RPC port (default 9091)
   --w3Route string                    web3 endpoint API route (default "/web3")
 ```
+-->
+
 
 ### Coming next
 
