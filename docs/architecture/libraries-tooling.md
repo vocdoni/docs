@@ -89,4 +89,4 @@ Until React Native or Expo ship with native support, the current workaround is t
 
 ### Coming next
 
-See the [Integration overview](/integration/overview) section.
+See the [Manager Overview](/manager/overview) section.

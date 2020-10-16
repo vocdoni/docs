@@ -25,6 +25,11 @@
         <!-- - [Messaging](/architecture/protocol/messaging.md) -->
     - [Sequence diagrams](/architecture/sequence-diagrams.md)
     - [Libraries and tooling](/architecture/libraries-tooling.md)
+- Organization Manager
+    - [Overview](/manager/overview.md)
+    - [Manager API](/manager/manager-api.md)
+    - [Registry API](/manager/registry-api.md)
+    - [Push Notifications API](/manager/push-notifications-api.md)
 - Integration
    - [Overview](/integration/overview.md)
    - [Voting as a Service](/integration/voting-as-a-service.md)
