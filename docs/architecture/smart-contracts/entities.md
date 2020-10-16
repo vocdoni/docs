@@ -116,7 +116,7 @@ The [Content URI](/architecture/protocol/data-origins?id=content-uri) is expecte
 
 Client apps may not be able to join P2P networks by themselves, so Vocdoni makes use of Gateways to enable decentralized transactions over HTTP or Web Sockets. A gateway Boot Node is a service provided by the Entity, and it defines a list of active Gateways that a client can use.
 
-By default, Vocdoni (as an Entity) provides its own set of Voting and Web3 Gateways. However, entities may want to use their own infrastructure. To this end, the Entity's ENS Text Record `vnd.vocdoni.boot-nodes` can be set to the Content URI of a [BootNodes JSON file](/architecture/components/bootnode) defining some of them.
+By default, Vocdoni (as an Entity) provides its own set of Voting and Web3 Gateways. However, entities may want to use their own infrastructure. To this end, the Entity's ENS Text Record `vnd.vocdoni.boot-nodes` can be set to the Content URI of a [BootNodes JSON file](/architecture/services/bootnode) defining some of them.
 
 
 <!--
@@ -416,4 +416,4 @@ A pointer to the metadata of a specific entity. It can have several purposes.
 
 ### Coming next
 
-See the [Governance Processes](/architecture/components/processes) section.
+See the [Process](/architecture/smart-contracts/process) section.

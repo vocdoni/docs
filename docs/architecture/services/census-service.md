@@ -419,4 +419,4 @@ Import a previously published remote census. Only valid URIs accepted (depends o
 
 ### Coming next
 
-See the [Boot node](/architecture/components/bootnode) section.
+See the [Boot node](/architecture/services/bootnode) section.

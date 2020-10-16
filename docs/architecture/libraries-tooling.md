@@ -26,9 +26,9 @@ Its intent is to enable P2P access to its JS counterparts, and process data conf
 Provides the Smart Contracts supporting the trustless management of entities, processes and namespaces. It also provides documentation, TypeScript wrappers and ABI to attach to the contracts from client applications.
 
 - See [DVote Solidity on GitLab](https://gitlab.com/vocdoni/dvote-solidity)
-- See the [Entity Resolver smart contract](/architecture/components/entities?id=entity-resolver)
-- See the [Process smart contract](/architecture/components/processes?id=smart-contract)
-- See the [Namespace smart contract](/architecture/components/namespaces?id=contract)
+- See the [Entity Resolver smart contract](/architecture/smart-contracts/entities?id=entity-resolver)
+- See the [Process smart contract](/architecture/smart-contracts/process?id=smart-contract)
+- See the [Namespace smart contract](/architecture/smart-contracts/namespaces?id=contract)
 
 ## DVote Flutter
 

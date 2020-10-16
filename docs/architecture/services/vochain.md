@@ -175,7 +175,7 @@ The KeyKeeper is a trusted identity that act as temporary cryptographic key admi
 
 The scrutinizer is the component that tallies and decode/decrypt (if needed) each vote stored in the voting blockchain for each process of each entity. 
 
-See the [Scrutinizer](/architecture/components/vochain/scrutinizer) section.
+See the [Scrutinizer](/architecture/services/vochain/scrutinizer) section.
 
 ## Transaction lifecycle
 
@@ -188,4 +188,4 @@ In the following diagram the vote transaction lifecycle is shown. ChecTX, Delive
 
 ### Coming next
 
-See the [Census Service](/architecture/components/census-service) section.
+See the [Census Service](/architecture/services/census-service) section.

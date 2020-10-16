@@ -78,4 +78,4 @@ Users with a valid Merkle Proof can efficiently show that their key belongs to a
 
 ### Coming next
 
-See the [User stories](/architecture/user-stories) section.
+See the [Component overview](/architecture/components) section.

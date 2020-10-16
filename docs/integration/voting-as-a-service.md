@@ -27,7 +27,7 @@ The census snapshot is then uploaded and pinned to a decentralized storage like 
 Then the voting process details are declared on the [Ethereum](https://ethereum.org/en/developers/) [smart contract](https://en.wikipedia.org/wiki/Smart_contract), so that anyone with internet access can fetch them, get the metadata, get the location of the census, etc.
 
 ### During the process
-Using their private key and a [decentralized Gateway](https://docs.vocdoni.io/#/architecture/components/gateway), eligible voters can fetch a Merkle proof to prove that their key pair belongs to the census [Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree). They sign their vote envelope with the key above and submit it using whatever [Gateway](https://github.com/vocdoni/go-dvote#dvotenode) they like. Even their own.
+Using their private key and a [decentralized Gateway](https://docs.vocdoni.io/#/architecture/services/gateway), eligible voters can fetch a Merkle proof to prove that their key pair belongs to the census [Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree). They sign their vote envelope with the key above and submit it using whatever [Gateway](https://github.com/vocdoni/go-dvote#dvotenode) they like. Even their own.
 
 Votes are relayed to the custom voting blockchain, validated and included in the next block.
 

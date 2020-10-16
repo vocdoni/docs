@@ -75,13 +75,13 @@ Get an overview wabout the own gateway: available APIs, health and whether priva
 
 ## Census API
 
-The Census API methods can be found on the [Census Service section](/architecture/components/census-service?id=json-api). 
+The Census API methods can be found on the [Census Service section](/architecture/services/census-service?id=json-api). 
 
 ## Vote API
 
 ### Submit Envelope
 
-Send a [Vote Envelope](/architecture/components/processes?id=vote-envelope) to the mempool of the [Vochain](/architecture/components/vochain).
+Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) to the mempool of the [Vochain](/architecture/services/vochain).
 
 ```json
 {
@@ -112,7 +112,7 @@ Send a [Vote Envelope](/architecture/components/processes?id=vote-envelope) to t
 
 ### Get Envelope Status
 
-Check the status of an already submited [Vote Envelope](/architecture/components/processes?id=vote-envelope). The envelope is identified by the voter's nullifier.
+Check the status of an already submited [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope). The envelope is identified by the voter's nullifier.
 
 ```json
 {
@@ -145,7 +145,7 @@ Check the status of an already submited [Vote Envelope](/architecture/components
 
 ### Get Envelope
 
-Get the content of an existing [Vote Envelope](/architecture/components/processes?id=vote-envelope). The envelope is identified by the nullifier.
+Get the content of an existing [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope). The envelope is identified by the nullifier.
 
 ```json
 {
@@ -237,7 +237,7 @@ Get details about the current block and the average block time for the last 1m, 
 
 ### Get Block Height
 
-Get the current block number on the [Vochain](/architecture/components/vochain). 
+Get the current block number on the [Vochain](/architecture/services/vochain). 
 
 ```json
 {
@@ -266,7 +266,7 @@ Get the current block number on the [Vochain](/architecture/components/vochain).
 
 ### Get Process List
 
-Get a list of processes for a specific entity on the [Vochain](/architecture/components/vochain). There is a hardcoded maximum size of 64 per page. The process ID to start from can be specified with the field `fromId`. If empty, the leading 64 process ids will be returned.
+Get a list of processes for a specific entity on the [Vochain](/architecture/services/vochain). There is a hardcoded maximum size of 64 per page. The process ID to start from can be specified with the field `fromId`. If empty, the leading 64 process ids will be returned.
 
 The `fromId` field can be used to seek specific positions and start from them. So if a call without `fromId` returns 64 values, a second call with `fromId = lastProcIdReceived` will get the next 64 values.
 
@@ -332,7 +332,7 @@ Get the available encryption keys for the given process ID.
 
 If the process has encrypted votes and it is on-going, `encryptionPubkeys` and `commitmentKeys` should be available. Once the process has ended, `encryptionPrivKeys` and `revealKeys` will be also be available.
 
-[Vote Package](/architecture/components/processes?id=vote-package) encryption and decryption it is expected to use these keys following the order of their indexes. Smaller indexes are used first and it's important to note that indexes might not be consecutive.
+[Vote Package](/architecture/smart-contracts/process?id=vote-package) encryption and decryption it is expected to use these keys following the order of their indexes. Smaller indexes are used first and it's important to note that indexes might not be consecutive.
 
 ```json
 {
@@ -428,7 +428,7 @@ The `fromId` field works the same as in [Get Process List](#get-process-list).
 
 Get the results of the given processId, as indexed by the scrutinizer. If the process doesn't have encrypted votes but it has already started, then returns the **partial results**.
 
-The results of an election are represented in [the following format](/architecture/components/processes?id=results).
+The results of an election are represented in [the following format](/architecture/smart-contracts/process?id=results).
 
 ```json
 {
@@ -679,4 +679,4 @@ Clients should check the status before attempting to use a certain Gateway.
 
 ### Coming next
 
-See the [Vochain](/architecture/components/vochain) section.
+See the [Vochain](/architecture/services/vochain) section.

@@ -27,13 +27,13 @@ General purpose blockchains are slow and hard to scale, so they are only used to
 
 An Entity is an aggregate of data living on the Entity Resolver smart contract and on IPFS.
 
-For a complete explanation, read the [Entities section](/architecture/components/entities).
+For a complete explanation, read the [Entities section](/architecture/smart-contracts/entities).
 
 ##### Process Metadata
 
 A Voting Process is also an aggregate of data living on the Voting Process smart contract and on IPFS.
 
-For a complete explanation, read the [Governance Processes section](/architecture/components/processes).
+For a complete explanation, read the [Processes section](/architecture/smart-contracts/process).
 
 ### Vochain
 
@@ -134,4 +134,4 @@ GW-.->BCH
 
 ### Coming next
 
-See the [Entities](/architecture/components/entities) section.
+See the [User stories](/architecture/user-stories) section.

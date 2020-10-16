@@ -33,4 +33,4 @@ The process contract needs to define a namespace contract instance. This instanc
 
 ### Coming next
 
-See the [Gateway](/architecture/components/gateway) section.
+See the [Gateway](/architecture/services/gateway) section.

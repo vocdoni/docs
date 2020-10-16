@@ -1,4 +1,4 @@
-# Governance Processes
+# Process
 
 Governance processes are declared on the Blockchain and they only store the critical information for integrity. However, the metadata of a process lives on a JSON file, containing the information on which voters can make a choice. 
 
@@ -25,7 +25,7 @@ A process is the building block around which governance is made in Vocdoni. Simm
 
 The instance of the Voting process contract instance is resolved from `voting-process.vocdoni.eth` (soon replaced by `process.vocdoni.eth` and `process.dev.vocdoni.eth`) on the ENS registry.
 
-While the process contract is the source of truth, the vote itself will take place on the [Vochain](/architecture/components/vochain). Processes are parameterized and controlled from Ethereum, but real data will be handled on the Layer 2 blockchain called Vochain.
+While the process contract is the source of truth, the vote itself will take place on the [Vochain](/architecture/services/vochain). Processes are parameterized and controlled from Ethereum, but real data will be handled on the Layer 2 blockchain called Vochain.
 
 ### Contract structs
 
@@ -122,7 +122,7 @@ function getProcessId(address entityAddress, uint256 processCountIndex, uint16 n
 Where:
 - `entityAddress` is the Ethereum address that creates the process
 - `entityProcessCount` is an incremental nonce per `entityAddress`
-- `namespace` is the number to which a process self assigns itself. See [Namespaces](/architecture/components/namespaces)
+- `namespace` is the number to which a process self assigns itself. See [Namespaces](/architecture/smart-contracts/namespaces)
 
 ### Methods
 
@@ -453,4 +453,4 @@ Given diferent process with various parameters, below is an example of the resul
 
 ### Coming next
 
-See the [Namespaces](/architecture/components/namespaces) section.
+See the [Namespaces](/architecture/smart-contracts/namespaces) section.

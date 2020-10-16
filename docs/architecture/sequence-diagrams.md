@@ -54,7 +54,7 @@ Eventually:
 - One of Vocdoni's Gateways is used to query the ENS resolver of a certain Entity
 
 ### Set Entity metadata
-An Entity starts existing at the moment it has certain metadata stored on the [Entity Resolver](/architecture/components/entities?id=entityresolver) smart contract. 
+An Entity starts existing at the moment it has certain metadata stored on the [Entity Resolver](/architecture/smart-contracts/entities?id=entityresolver) smart contract. 
 
 ```mermaid
 
@@ -91,7 +91,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Entity metadata](/architecture/components/entities?id=json-schema)
+- [Entity metadata](/architecture/smart-contracts/entities?id=json-schema)
 
 #### Adding users to a census
 
@@ -124,8 +124,8 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Census Service addClaim](/architecture/components/census-service?id=addclaim)
-- [Census Service addClaimBulk](/architecture/components/census-service?id=addclaimbulk)
+- [Census Service addClaim](/architecture/services/census-service?id=addclaim)
+- [Census Service addClaimBulk](/architecture/services/census-service?id=addclaimbulk)
 
 ---
 
@@ -179,10 +179,10 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/components/processes?id=process-metadata-json)
-- [Census Service addClaimBulk](/architecture/components/census-service?id=addclaimbulk)
-- [Census Service getRoot](/architecture/components/census-service?id=getroot)
-- [Census Service dump](/architecture/components/census-service?id=dump)
+- [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json)
+- [Census Service addClaimBulk](/architecture/services/census-service?id=addclaimbulk)
+- [Census Service getRoot](/architecture/services/census-service?id=getroot)
+- [Census Service dump](/architecture/services/census-service?id=dump)
 
 ### Voting process retrieval
 
@@ -227,7 +227,7 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/components/processes?id=process-metadata-json)
+- [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json)
 
 ### Check census inclusion
 
@@ -252,12 +252,12 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Census Service generateProof](/architecture/components/census-service?id=generateproof)
+- [Census Service generateProof](/architecture/services/census-service?id=generateproof)
 
 **Notes:**
 
 - `generateProof` may be replaced with a call to `hasClaim`, for efficiency
-- The `censusId` and `censusMessagingURI` should have been fetched from the [Process Metadata](/architecture/components/processes)
+- The `censusId` and `censusMessagingURI` should have been fetched from the [Process Metadata](/architecture/smart-contracts/process)
 
 ### Casting a vote
 
@@ -307,9 +307,9 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/components/processes?id=process-metadata-json)
-- [Census Service generateProof](/architecture/components/census-service?id=generateproof)
-- [Vote Package](/architecture/components/processes?id=vote-package)
+- [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json)
+- [Census Service generateProof](/architecture/services/census-service?id=generateproof)
+- [Vote Package](/architecture/smart-contracts/process?id=vote-package)
 
 **Notes:**
 - The Merkle Proof could be retrieved and stored beforehand
@@ -445,8 +445,8 @@ sequenceDiagram
 
 **Used schemas:**
 
-- [Process Metadata](/architecture/components/processes?id=process-metadata-json)
-- [Vote Package](/architecture/components/processes?id=vote-package)
+- [Process Metadata](/architecture/smart-contracts/process?id=process-metadata-json)
+- [Vote Package](/architecture/smart-contracts/process?id=vote-package)
 
 ### Coming next
 
