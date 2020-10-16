@@ -55,7 +55,7 @@ The **internal scrutinizer database** is used for storing the results, processes
 </div>
 
 
-## How does it work
+## How it works
 
 The scrutinizer is very tied to the Vochain, this is because its functionality relies on state changes on the Vochain application state.
 

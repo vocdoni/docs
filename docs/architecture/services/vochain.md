@@ -18,7 +18,7 @@ Vocdoni uses Ethereum as the source of truth. That has several advantages, like 
 
 For the current version, only one Vochain exists, which handles all processes.
 
-## How does it work
+## How it works
 
 The nicest thing about tendermint is that the [core](https://docs.tendermint.com/) handles the network and consensus layers, so you only need to implement the logic of the application - the state machine itself.
 
@@ -163,13 +163,13 @@ The Oracle is a trusted identity that enables bidirectional communication betwee
 - ... more events comming with new features
 
 
-*To be extended in a different page*
+<!-- *To be extended in a different page* -->
 
 ### KeyKeeper
 
 The KeyKeeper is a trusted identity that act as temporary cryptographic key administrators. If an election is private or anonymous, keykeepers initially publish an addProcessKey transaction with a set of newly generated keys. At the end of the voting process, these keys will be revealed through a revealProcessKey transaction. As long as at least one keykeeper maintains integrity, no keykeepers will be able to act against the system’s specifications, maliciously or otherwise.
 
-*To be extended in a different page*
+<!-- *To be extended in a different page* -->
 
 ### Scrutinizer
 

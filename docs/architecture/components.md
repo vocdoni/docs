@@ -45,11 +45,13 @@ The validator public keys are defined on the Namespace smart contract.
 
 ### Oracle
 
-An oracle is a trustless component that can relay Ethereum transactions (process creation or status update) and signal events within the own Vochain (ended process). 
+An oracle is a component that can relay Ethereum transactions (process creation or status update) and signal events within the own Vochain (ended process). 
 
 On the Ethereum side, it can also compute the results and submit them to the process smart contract, along with a ZK Rollup.
 
 Oracles are a neutral and their role effectively allows for a Layer 2 governance that eventually triggers binding results on the Layer 1.
+
+Currently, oracles are currently implemented as a trusted node. However, our design and roadmap point us to a scenario where oracles increasingly become trustless parties, by simply signaling signed events or relaying results using ZK Rollups.
 
 ### Gateway
 

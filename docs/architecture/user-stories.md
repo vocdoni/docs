@@ -85,7 +85,7 @@ To see how a decentralized election works, let's see the sequence of actions tha
 	- The app asks a **Gateway** for the envelope status of his/her nullifier
 - The **organizer** ends the process
 	- The **organizer** sends a transaction to the process contract and sets the state of the process as ended
-	- A trustless oracle relays the transaction to the Vochain
+	- An oracle relays the transaction to the Vochain
 	- Further envelope submissions are rejected
 	- On encrypted processes:
 		- Miners create a transaction revealing their private key for the process
