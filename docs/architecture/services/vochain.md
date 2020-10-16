@@ -1,16 +1,15 @@
 # Vochain
 
-Vochain is a *Proof-of-Authorithy* blockchain network that uses [Tendermint](https://tendermint.com/) as a consensus algorithm. The main purpose of Vochain is to register polls, votes, and backing processes in a decentralized and verifiable way.
+Vochain is a *Proof-of-Authorithy* blockchain network that uses [Tendermint](https://tendermint.com/) as its consensus algorithm. The main purpose of Vochain is to register polls, votes, and backing processes in a decentralized and verifiable way.
 
-You can think of Vochain as a blockchain specific to voting. Vochain has no cryptocurrency, gas, nor any kind of smart contract; it just has the core logic represented as a state machine that any participation process needs to follow.
-
+You can think of Vochain as a specifig purpose blockchain for voting. Vochain needs no cryptocurrency, gas or smart contract interactions; it just has the core logic represented as a state machine that any participation process needs to follow.
 
 ## Overall
 
-Many Vochains could exist, some might be ephemeral, and others might be permanent.
-It is important to mention that the details of each Vochain are indexed and live on the Ethereum mainnet.
+Many Vochains could exist, some might be ephemeral and others might be permanent.
+It is important to mention that the details of each Vochain are indexed on the Ethereum blockchain.
 
-Vocdoni uses Ethereum as the source of truth. That has several advantages, like having a versioning system for each blockchain, and being able to prune all past and finished processes leaving only one hash representing all the history. We can also use interchain communication in order to pass messages between blockchains and trigger certain actions.
+Vocdoni uses Ethereum as the source of truth. This has several advantages, like having a versioning system for each blockchain and being able to prune legacy processes and leaving only a hash representing all the history. We can also use *interchain* communication in order to pass messages between blockchains and trigger certain actions.
 
 <div style="padding: 20px; background-color: white;">
 	<img src="https://github.com/vocdoni/design/raw/main/docs/vochain-overall.png" alt="Vochain overall architecture"/>
@@ -20,9 +19,9 @@ For the current version, only one Vochain exists, which handles all processes.
 
 ## How it works
 
-The nicest thing about tendermint is that the [core](https://docs.tendermint.com/) handles the network and consensus layers, so you only need to implement the logic of the application - the state machine itself.
+The nicest thing about Tendermint is that its [core](https://docs.tendermint.com/) handles the network and consensus layers, so you only need to implement the logic of the application. This is, the state machine itself.
 
-What must the state machine accomplish?
+What does the state machine have to accomplish?
 - Creation of a voting process
 - Cancellation of an existing voting process
 - Vote casting
