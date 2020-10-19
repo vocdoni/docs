@@ -141,7 +141,7 @@ Check the status of an already submited [Vote Envelope](/architecture/smart-cont
 }
 ```
 **Used in:**
-- [Checking a submitted vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
+- [Checking a Vote Envelope](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-vote-envelope)
 
 ### Get Envelope
 
@@ -173,7 +173,7 @@ Get the content of an existing [Vote Envelope](/architecture/smart-contracts/pro
 ```
 
 **Used in:**
-- [Checking a submitted vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
+- [Checking a Vote Envelope](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-vote-envelope)
 
 ### Get Envelope Height
 
@@ -362,7 +362,7 @@ If the process has encrypted votes and it is on-going, `encryptionPubkeys` and `
 ```
 
 **Used in:**
-- [Checking a submitted vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-submitted-vote)
+- [Checking a Vote Envelope](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-vote-envelope)
 
 ### Get Finalized Process List
 
