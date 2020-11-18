@@ -6,7 +6,7 @@ The starting point is a [Merkle Proof](/architecture/census-overview?id=the-cens
 
 To this end, Vocdoni achieves voting anonymity by the use of ZK-Snarks.
 
-## ZK-Snarks
+## ZK-Snarks for anonymous voters
 
 Snark stands for *Succinct non-interactive argument of knowledge*. In our case, this means proving to someone that we know something, but without revealing it.
 
@@ -49,7 +49,33 @@ Steps:
 3. Vote signature<br/>
     `signature = Sign(encrypted_vote)`
 
-4. Fetching the census Merkle proof<br/>
+
+
+## Zk-Rollups (proposal) for scalability, anti-coersion and deterministic execution
+
+The current approach suffers from a problem that open the door to possible vote buying mechanisms, specially in elections with high stake (such as governamental).
+
+While an election is ongoing (not after), a user could exhibit their vote to a third party in order to receive a bounty. The buyer would need the user to prove that they cast the vote associated with a given nullifier. This would involve generating a valid proof for a different vote option with the same nullifier.
+
+One possible solution to this problem is the usage of **Zk-Rollups**, which function is vote aggregation and mixing, thus making impossible for a voter to demonstrate a third party its intention of vote.
+
+Taking the previous zk-Snark approach (using the same circuit for generating the franchise proof), the voter will not send its envelope (together with its zk-Proof) to a public blockchain but instead they will send it to a Rollup Relay (many might exist) via a private transport channel. The Rollup Relay will compute a batch of valid votes (i.e 10) and will produce a second zk-Proof which is valid for a list of nullifiers and an aggregated vote result.
+This new zk-Proof is the one that will be stored in a public blockchain such as Vocdoni's one (Vochain) or even Ethereum.
+
+On this scenario a voter could demonstrate that she actually participated in a specific election, but cannot demonstrate what was the content of its ballot. 
+In the other side the traceability and transparency properties of the election are still preserverd. 
+
+<div style="padding: 20px; background-color: white; text-align: center;">
+	<img src="https://github.com/vocdoni/design/raw/main/drawio/zk-rollup-vocdoni.png" alt="ZkRollup"/>
+</div>
+
+
+**Notes:**
+
++ With this scenario the commitment and reveal key of the previous schema are not longer necessary.
++ The Rollup Relays should be able to exchange private messages in order to announce on which nullifiers are they working (and avoid colision)
++ For making the election "secret until the end" some tunning on this proposal would be required, but looks possible
++ The Rollup Relays network might be incentivized in order to have better distribution, a mechanism such as the one implemented on the Hermez.io protocol (based on bidding) might be adopted.
 
 <!--
 ----
