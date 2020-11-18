@@ -51,9 +51,9 @@ Steps:
 
 
 
-## Zk-Rollups (proposal) for scalability, anti-coersion and deterministic execution
+## Zk-Rollups (proposal) for anti-coercion, scalable and deterministic execution
 
-The approach mentioned above presents an attack veector that could allow for automated vote buying mechanisms, specially on high stake elections.
+The approach mentioned above presents an attack vector that could allow for automated vote buying mechanisms, specially on high stake elections.
 
 Before the election ends, a user could exhibit his/her vote to a third party in exchange of a bounty. A buyer would need users to prove that their vote is associated with a given nullifier on the Vochain. This would require generating another valid ZK-Proof but for a different vote option, having the same nullifier.
 
@@ -62,7 +62,7 @@ A solution to this problem is to make use of **Zk-Rollups** as a vote aggregatio
 Using the same Zk-snarks circuit as before, the voter will submit an encrypted vote envelope. But instead of sending it to a public blockchain, it will be sent to a Rollup Relay through private transport channel (many can exist). The Rollup Relay will decrypt the vote envelopes, validate them and compute a batch of them (i.e 15) to produce a second ZK-Proof. Such proof can ve verified given the list of nullifiers and the aggregated results of the batch.
 The new ZK-Proof and the results aggregate is what will be stored in a public blockchain, like the Vochain or even Ethereum.
 
-On this scenario voters could verify that their nullifier has been processed, but no mechanism can determine what choices were selected on the ballot. 
+On this scenario voters could still verify that their nullifier has been processed. However, no mechanism could determine what choices were selected by a specific voter. 
 At the same time, the election's traceability and transparency properties are preserverd. 
 
 <div style="padding: 20px; background-color: white; text-align: center;">
