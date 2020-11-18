@@ -53,17 +53,17 @@ Steps:
 
 ## Zk-Rollups (proposal) for scalability, anti-coersion and deterministic execution
 
-The current approach suffers from a problem that open the door to possible vote buying mechanisms, specially in elections with high stake (such as governamental).
+The approach mentioned above presents an attack veector that could allow for automated vote buying mechanisms, specially on high stake elections.
 
-While an election is ongoing (not after), a user could exhibit their vote to a third party in order to receive a bounty. The buyer would need the user to prove that they cast the vote associated with a given nullifier. This would involve generating a valid proof for a different vote option with the same nullifier.
+Before the election ends, a user could exhibit his/her vote to a third party in exchange of a bounty. A buyer would need users to prove that their vote is associated with a given nullifier on the Vochain. This would require generating another valid ZK-Proof but for a different vote option, having the same nullifier.
 
-One possible solution to this problem is the usage of **Zk-Rollups**, which function is vote aggregation and mixing, thus making impossible for a voter to demonstrate a third party its intention of vote.
+A solution to this problem is to make use of **Zk-Rollups** as a vote aggregation and mixing mechanism between voters and the blockchain. This would make it impossible for a third party to verify that a voter chose a specific option.
 
-Taking the previous zk-Snark approach (using the same circuit for generating the franchise proof), the voter will not send its envelope (together with its zk-Proof) to a public blockchain but instead they will send it to a Rollup Relay (many might exist) via a private transport channel. The Rollup Relay will compute a batch of valid votes (i.e 10) and will produce a second zk-Proof which is valid for a list of nullifiers and an aggregated vote result.
-This new zk-Proof is the one that will be stored in a public blockchain such as Vocdoni's one (Vochain) or even Ethereum.
+Using the same Zk-snarks circuit as before, the voter will submit an encrypted vote envelope. But instead of sending it to a public blockchain, it will be sent to a Rollup Relay through private transport channel (many can exist). The Rollup Relay will decrypt the vote envelopes, validate them and compute a batch of them (i.e 15) to produce a second ZK-Proof. Such proof can ve verified given the list of nullifiers and the aggregated results of the batch.
+The new ZK-Proof and the results aggregate is what will be stored in a public blockchain, like the Vochain or even Ethereum.
 
-On this scenario a voter could demonstrate that she actually participated in a specific election, but cannot demonstrate what was the content of its ballot. 
-In the other side the traceability and transparency properties of the election are still preserverd. 
+On this scenario voters could verify that their nullifier has been processed, but no mechanism can determine what choices were selected on the ballot. 
+At the same time, the election's traceability and transparency properties are preserverd. 
 
 <div style="padding: 20px; background-color: white; text-align: center;">
 	<img src="https://github.com/vocdoni/design/raw/main/drawio/zk-rollup-vocdoni.png" alt="ZkRollup"/>
@@ -72,10 +72,10 @@ In the other side the traceability and transparency properties of the election a
 
 **Notes:**
 
-+ With this scenario the commitment and reveal key of the previous schema are not longer necessary.
-+ The Rollup Relays should be able to exchange private messages in order to announce on which nullifiers are they working (and avoid colision)
-+ For making the election "secret until the end" some tunning on this proposal would be required, but looks possible
-+ The Rollup Relays network might be incentivized in order to have better distribution, a mechanism such as the one implemented on the Hermez.io protocol (based on bidding) might be adopted.
++ In such scenario, the commitment and reveal keys of the previous schema are no longer necessary.
++ The Rollup Relays could potentially exchange private messages in order to announce the nullifiers they are being processed (to avoid collisions)
++ To keep the election "secret until the end", some tunning is still required on this proposal, but it looks possible
++ The Rollup Relay network might be incentivized in order to achieve better distribution. A mechanism such as the one implemented on the Hermez.io protocol (based on bidding) might be adopted.
 
 <!--
 ----
