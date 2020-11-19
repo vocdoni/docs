@@ -58,6 +58,13 @@ Steps:
 
 A set of commitment keys are generated for each election process by a set of trusted identities named `keykeepers`. Only if all `keykeepers` are malicious they might tamper the election, so it is important to make a good distribution of these special identities. Once all these keys are revealed, anyone can generate a valid proof. This mechanism is added to the circuit in order to avoid vote buying when the election is over since a voter will not be able to proof anymore that she is the owner of a specific vote nullifier.
 
+#### Implementation
+
+The zk-Snarks circuit uses circom and can be found [in our github repository]( 
+https://github.com/vocdoni/zk-franchise-proof-circuit).
+
+---
+
 ## Zk-Rollups (proposal) for anti-coercive, scalable and deterministic execution
 
 The approach mentioned above presents an attack vector that could allow for automated vote buying mechanisms, especially for high-stakes elections.
