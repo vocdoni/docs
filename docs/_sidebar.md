@@ -47,5 +47,6 @@
   <!--  - - [Problem and solution](about-us/problem-solution.md)-->
   <!--  - - [Alternatives](about-us/alternatives.md)-->
   - [How we work](/about-us/how-we-work.md)
+  - [Vision](/about-us/vision.md)
     <!-- - [Open positions](/about-us/open-positions.md) -->
     <!-- - [Contribute](/contribute.md) -->
