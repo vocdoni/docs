@@ -38,7 +38,7 @@ When using the `gateway`, only the public keys specified in `--allowedAddrs` can
     "pubKeys": ["040012345...", "040123456...", "..."],  // hex pubKeys allowed to request private methods
     "timestamp": 1556110671
   },
-  "signature": "string"
+  "signature": "hexString"
 }
 ```
 
@@ -72,11 +72,12 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
   "request": {
     "method": "addClaim",
     "censusId": "0x12345678/0x23456789", // where to add the claim (must already exist)
-    "digested": false,  // is the claim digested? the Gateway should do it if not
-    "claimData": "base64-string", // the public key in base64 or its hash, also in base64
+    "digested": false,  // is the key digested? the Gateway should do it if not
+    "censusKey": "base64-string", // usually the public key in base64 or its hash, also in base64
+    "censusValue": "hexString", // usually the numeric weight (big num hex encoded). Can be empty (for non-weighted census)
     "timestamp": 1556110671
   },
-  "signature": "string"
+  "signature": "hexString"
 }
 ```
 
@@ -114,15 +115,20 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
   "request": {
     "method": "addClaimBulk",
     "censusId": "0x12345678/0x23456789", // where to add the claims (must already exist)
-    "digested": false,  // are the claims digested? the Gateway should do it if not
-    "claimsData": [  // the public keys in base64 or their hashes, also in base64
+    "digested": false,  // are the keys digested? the Gateway should do it if not
+    "censusKeys": [  // the public keys in base64 or their hashes, also in base64
         "base64-string-0",
         "base64-string-1",
         "base64-string-2"
     ],
+    "censusValues": [  // the weight hexencoded big num. Can be empty (for non-weighted census)
+        "hexString-weight-1",
+        "hexString-weight-2",
+        "hexString-weight-3"
+    ],
     "timestamp": 1556110671
   },
-  "signature": "string"
+  "signature": "hexString"
 }
 ```
 
@@ -205,8 +211,9 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
   "request": {
     "method": "genProof",
     "censusId": "0x123456789", // Merkle Root of the census for which the claim siblings are requested
-    "claimData": "base64-string", // the leaf for which the proof is requested
-    "digested": false,  // is the claim digested? the backend should do it if not
+    "censusKey": "base64-string", // the leaf for which the proof is requested (base64 encoded)
+    "censusValue": "hexString", // if weigthed census, the hexadecimal representation of the numeric big num weight
+    "digested": false,  // is the key digested? the backend should do it if not
     "rootHash": "optional-hexString" // from a specific version
   },
   "signature": ""  // Leave empty
@@ -235,7 +242,8 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
   "request": {
     "method": "checkProof",
     "censusId": "0x123456789", // Merkle Root of the census for which the Merkle Tree's claim will be checked
-    "claimData": "base64-string", // the leaf for which data is requested
+    "censusKey": "base64-string", // the leaf for which data is requested
+    "censusValue": "hexString", // if weighted census, the hexadecimal representation of the weight big num
     "proofData": "hexString", // the siblings, same format obtainet in genProof
     "digested": false,  // is the claim digested? the backend should do it if not
     "rootHash": "optional-hexString" // from a specific version
@@ -271,7 +279,7 @@ Dumps the entire content of the census as an array of hexStrings rady to be impo
     "rootHash": "optional-hexString", // from a specific version
     "timestamp": 1556110671
   },
-  "signature": "string"
+  "signature": "hexString"
 }
 ```
 
@@ -279,11 +287,7 @@ Dumps the entire content of the census as an array of hexStrings rady to be impo
 {
   "id": "req-12345678",
   "response": {
-    "claimsData": [
-        "hexString",
-        "hexString",
-        "hexString"
-    ],
+    "censusDump": "base64-string", // the serialized, base64 encoded, census data (for using with import)
     "request": "req-12345678",
     "timestamp": 1556110672
   },
@@ -306,7 +310,7 @@ Dumps the content of the census in base64 format. The dump cannot be used afterw
     "rootHash": "optional-hexString", // from a specific version
     "timestamp": 1556110671
   },
-  "signature": "string"
+  "signature": "hexString"
 }
 ```
 
@@ -314,11 +318,16 @@ Dumps the content of the census in base64 format. The dump cannot be used afterw
 {
   "id": "req-12345678",
   "response": {
-    "claimsData": [
+    "censusKeys": [
         "base64-string",
         "base64-string",
         "base64-string"
     ],
+    "censusValues": [ // can be empty if not weighted census
+        "hexString-1",
+        "hexString-2",
+        "hexString-3",
+    ]
     "request": "req-12345678",
     "timestamp": 1556110672
   },
@@ -338,7 +347,7 @@ Only works with specific merkletree format used by `dump` method. To add a list 
   "request": {
     "method": "importDump",
     "censusId": "0x12345678/0x23456789", // the censusId where to import the data
-    "claimsData": ["hexString", "hexString", ...], // list of claims to import in hex format
+    "censusDump": "base64-string", // serialized base64 encoded raw census data (generated with dump)
     "timestamp": 1556110671
   },
   "signature": "0x1234..."
@@ -371,7 +380,7 @@ Exports and publish the entire census on the storage of the backend (usually IPF
     "rootHash": "optional-hexString", // the census snapshot to publish, if not specified, use the last one
     "timestamp": 1556110671
   },
-  "signature": "string"
+  "signature": "hexString"
 }
 ```
 
@@ -402,7 +411,7 @@ Import a previously published remote census. Only valid URIs accepted (depends o
     "uri": "uri-string", // where to find the remote census, i.e ipfs://Qmasdf94341...
     "timestamp": 1556110671
   },
-  "signature": "string"
+  "signature": "hexString"
 }
 ```
 
