@@ -61,10 +61,11 @@ When using the `gateway`, only the public keys specified in `--allowedAddrs` can
 **Private Method**
 
 Adds a payload to the census Merkle Tree and returns the updated Root Hash
-- If `digested` is `false`, the receiver will handle `claimData` as a raw public key encoded in base64
+- If `digested` is `false`, the receiver will handle `censusKey` as a raw public key encoded in base64
   - The receiver should compute its Poseidon Hash and store it
-- If `digested` is `true`, the receiver will handle `claimData` as an already hashed public key, encoded in base64
-  - The receiver should store `claimData` as it is
+- If `digested` is `true`, the receiver will handle `censusKey` as an already hashed public key, encoded in base64
+  - The receiver should store `censusKey` as it is
+- On weighted census, `censusValue` contains the amount of power that the given `censusKey` has
 
 ```json
 {
