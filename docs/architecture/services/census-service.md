@@ -87,6 +87,7 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
   "id": "req-12345678",
   "response": {
     "ok": true,
+    "root": "0x1234...",
     "request": "req-12345678", // request ID here as well, to check its integrity
     "timestamp": 1556110672
   },
@@ -138,6 +139,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
   "id": "req-2345679",
   "response": {
     "ok": true,
+    "root": "0x1234...",
     "invalidClaims": [1, 2],   // string-1 and string-2 were not added
     "request": "req-2345679",
     "timestamp": 1556110672
