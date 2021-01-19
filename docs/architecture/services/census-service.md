@@ -104,10 +104,10 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
 
 Adds a set of payloads to the census Merkle Tree and returns the updated Root Hash
 
-- If `digested` is `false`, the receiver will handle `claimsData` as raw public keys encoded in base64
+- If `digested` is `false`, the receiver will handle `censusKey` as raw public keys encoded in base64
   - The receiver should compute their Poseidon Hashes and store them
-- If `digested` is `true`, the receiver will handle `claimsData` as already hashed public keys, encoded in base64
-  - The receiver should store `claimsData` as they are
+- If `digested` is `true`, the receiver will handle `censusKey` as already hashed public keys, encoded in base64
+  - The receiver should store `censusKeys` as they are
 - If any of the claims could not be added, `invalidClaims` contains an array with the indexes that failed
 
 ```json
@@ -118,11 +118,11 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
     "censusId": "0x12345678/0x23456789", // where to add the claims (must already exist)
     "digested": false,  // are the keys digested? the Gateway should do it if not
     "censusKeys": [  // the public keys in base64 or their hashes, also in base64
-        "base64-string-0",
         "base64-string-1",
-        "base64-string-2"
+        "base64-string-2",
+        "base64-string-3"
     ],
-    "censusValues": [  // the weight hexencoded big num. Can be empty (for non-weighted census)
+    "censusValues": [  // the weight hex-encoded big num. Can be empty (for non-weighted census)
         "hexString-weight-1",
         "hexString-weight-2",
         "hexString-weight-3"
