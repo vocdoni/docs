@@ -229,25 +229,6 @@ The envelope type tells how the vote envelope is formatted and handled. Its valu
 - `false` Votes are sent in plain text. Results can be seen in real time.
 - `true` The vote payload will be encrypted. The results will become available once the encryption key is published at the end of the process by the miners.
 
-### Process Status
-The status of a process is a simple enum, defined as follows:
-
-- `READY` (0)
-  - The process is marked as ready. It is intended as a **passive authorization** to open the process
-  - Vochain nodes will accept incoming votes if `AUTO_START` is disabled
-  - Otherwise, they will accept votes when the Vochain block number reaches `startBlock`
-- `ENDED` (1)
-  - Tells the Vochain to stop accepting votes and start computing the results (if not already available)
-  - Only when `INTERRUPTIBLE` is set
-- `CANCELED` (2)
-  - Tells the Vochain to stop accepting votes and drop the existing data. No results will be published.
-  - Only when `INTERRUPTIBLE` is set
-- `PAUSED` (3)
-  - Tells the Vochain to stop processing votes temporarily. The process might be resumed in the future.
-  - Only when `INTERRUPTIBLE` is set, or after creation if `AUTO_START` is not set
-- `RESULTS` (4)
-  - Set by the Oracle as soon as the results of a process have become available
-
 #### Census Origin
 
 The census origin is an unsigned integer holding a value defined by the following enumeration:
@@ -268,6 +249,25 @@ The census origin is an unsigned integer holding a value defined by the followin
     - Same as the ERC20 case, but for ERC777 contracts
 - `MINI_ME` (15)
     - Same as the ERC20 case, but for MiniMe (ERC20) contracts
+
+### Process Status
+The status of a process is a simple enum, defined as follows:
+
+- `READY` (0)
+  - The process is marked as ready. It is intended as a **passive authorization** to open the process
+  - Vochain nodes will accept incoming votes if `AUTO_START` is disabled
+  - Otherwise, they will accept votes when the Vochain block number reaches `startBlock`
+- `ENDED` (1)
+  - Tells the Vochain to stop accepting votes and start computing the results (if not already available)
+  - Only when `INTERRUPTIBLE` is set
+- `CANCELED` (2)
+  - Tells the Vochain to stop accepting votes and drop the existing data. No results will be published.
+  - Only when `INTERRUPTIBLE` is set
+- `PAUSED` (3)
+  - Tells the Vochain to stop processing votes temporarily. The process might be resumed in the future.
+  - Only when `INTERRUPTIBLE` is set, or after creation if `AUTO_START` is not set
+- `RESULTS` (4)
+  - Set by the Oracle as soon as the results of a process have become available
 
 ### Transparent upgrades
 
