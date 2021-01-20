@@ -12,7 +12,7 @@ This library is the more versatile and extensive of the ecosystem, since it allo
 
 The intended functionality is to interact with a public Ethereum blockchain, to fetch data from a decentralized filesystem, to enforce data schema validity, to prepare vote packages and using decentralized messaging networks through Gateways. 
 
-- See [DVote JS on GitLab](https://gitlab.com/vocdoni/dvote-js)
+- See [DVote JS on GitHub](https://github.com/vocdoni/dvote-js)
 - See an example integration of [Voting as a Service](https://blog.vocdoni.io/introducing-voting-as-a-service/) using DVote JS
 
 ## Go DVote
@@ -20,12 +20,12 @@ Similarly to DVote JS, Go DVote provides an extensive toolkit to interact with V
 
 Its intent is to enable P2P access to its JS counterparts, and process data conforming to the standard formats and data structures. 
 
-- See [Go DVote on GitLab](https://gitlab.com/vocdoni/go-dvote)
+- See [Go DVote on GitHub](https://github.com/vocdoni/go-dvote)
 
 ## DVote Solidity
 Provides the Smart Contracts supporting the trustless management of entities, processes and namespaces. It also provides documentation, TypeScript wrappers and ABI to attach to the contracts from client applications.
 
-- See [DVote Solidity on GitLab](https://gitlab.com/vocdoni/dvote-solidity)
+- See [DVote Solidity on GitHub](https://github.com/vocdoni/dvote-solidity)
 - See the [Entity Resolver smart contract](/architecture/smart-contracts/entity-resolver?id=entity-resolver)
 - See the [Process smart contract](/architecture/smart-contracts/process?id=smart-contract)
 - See the [Namespace smart contract](/architecture/smart-contracts/namespace?id=contract)
@@ -36,25 +36,25 @@ This library features a subset of DVote JS features, taylored to the usage on mo
 
 This library is likely to be refactored into a pure Dart version and a Flutter superset in the future.
 
-- See [DVote Flutter on GitLab](https://gitlab.com/vocdoni/dvote-flutter)
+- See [DVote Flutter on GitHub](https://github.com/vocdoni/dvote-flutter)
 
 ## DVote Rust
 
 A Rust library that provides fast and performant functions to compute Ethereum wallets, Poseidon hashes, encrypt and decrypt data and generate ZK Proofs on modest hardware. These expenside computations need the lightest implementation possible, and DVote Rust serves exactly this purpose. 
 
-- See [DVote Rust on GitLab](https://gitlab.com/vocdoni/dvote-rs)
+- See [DVote Rust on GitHub](https://github.com/vocdoni/dvote-rs)
 
 ## DVote Rust FFI
 
 A library that exports the cryptographic primitives from [DVote Rust](#dvote-rust) in a C compatible format that can be used with the *Foreign Function Interface*. It is mostly used by [DVote Flutter Native](#dvote-flutter-native).
 
-- See [DVote Rust FFI on GitLab](https://gitlab.com/vocdoni/dvote-rs-ffi)
+- See [DVote Rust FFI on GitHub](https://github.com/vocdoni/dvote-rs-ffi)
 
-## DVote Flutter Native
+## DVote Flutter Crypto
 
 This library exposes Dart wrappers around [native bindings](#dvote-rust-ffi) of the cryptographic functions used by the Mobile Client. It bundles Android and iOS libraries and exposes typed Dart functions to invoke them seamlessly.
 
-- See [DVote Flutter Native on GitLab](https://gitlab.com/vocdoni/dvote-flutter-native)
+- See [DVote Flutter Crypto on GitHub](https://github.com/vocdoni/dvote-flutter-crypto)
 
 ## DVote Protobuf
 
@@ -62,13 +62,13 @@ This library allows to define data models and store data in an efficient and com
 
 Protobuf empowers the use of GRPC but the data models are currently used by the Mobile Client.
 
-- See [DVote Protobuf on GitLab](https://gitlab.com/vocdoni/dvote-protobuf)
+- See [DVote Protobuf on GitHub](https://github.com/vocdoni/dvote-protobuf)
 
 ## DVote Wasm
 
 This library provides experimental support for the cryptographic primitives available on dvote-rs for NodeJS and web browsers, importing WASM modules.
 
-- See [DVote WASM on GitLab](https://gitlab.com/vocdoni/dvote-wasm)
+- See [DVote WASM on GitHub](https://github.com/vocdoni/dvote-wasm)
 
 ## Eventual
 
@@ -76,7 +76,7 @@ Eventual is a Flutter package that provides a convenient path toward a Reactive 
 
 A simple and performant alternative to the BLOC pattern or the boilerplate of using Providers.
 
-- See [Eventual on GitLab](https://gitlab.com/vocdoni/eventual)
+- See [Eventual on GitHub](https://github.com/vocdoni/eventual)
 
 <!--
 ## Web runtime (for React Native)
