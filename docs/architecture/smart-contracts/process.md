@@ -6,7 +6,7 @@ Governance processes span across three diferent components: the Ethereum smart c
 
 Processes follow a declarative fashion. The expected behavior is declared on the smart contract for integrity and the the Layer 2 blockchain (called [Vochain](/architecture/services/vochain)) reacts according to the current settings.
 
-The instance of the Voting process contract instance is resolved from `voting-process.vocdoni.eth` (soon replaced by `process.vocdoni.eth` and `process.dev.vocdoni.eth`) on the ENS registry.
+The instance of the Voting process contract instance is resolved from `processes.vocdoni.eth` on the ENS registry.
 
 - [Contract structs](#contract-structs)
 - [Process ID](#process-id)
@@ -23,15 +23,17 @@ The instance of the Voting process contract instance is resolved from `voting-pr
 // GLOBAL STRUCTS
 
 struct Process {
-    uint8 mode; // The selected process mode. See: https://docs.vocdoni.io/#/architecture/smart-contracts/process?id=flags
-    uint8 envelopeType; // One of valid envelope types, see: https://docs.vocdoni.io/#/architecture/smart-contracts/process?id=flags
-    address entityAddress; // Who created the process
-    uint64 startBlock; // Tendermint block number on which the voting process starts
-    uint32 blockCount; // Amount of Tendermint blocks during which the voting process should be active
+    uint8 mode; // The selected process mode. See: https://vocdoni.io/docs/#/architecture/smart-contracts/process?id=flags
+    uint8 envelopeType; // One of valid envelope types, see: https://vocdoni.io/docs/#/architecture/smart-contracts/process?id=flags
+    CensusOrigin censusOrigin; // How the census proofs are computed (Off-chain vs EVM Merkle Tree)
+
+    address entity; // The address of the Entity (or contract) holding the process
+    uint32 startBlock; // Vochain block number on which the voting process starts
+    uint32 blockCount; // Amount of Vochain blocks during which the voting process should be active
 
     string metadata; // Content Hashed URI of the JSON meta data (See Data Origins)
-    string censusMerkleRoot; // Hex string with the Merkle Root hash of the census
-    string censusMerkleTree; // Content Hashed URI of the exported Merkle Tree (not including the public keys)
+    string censusRoot; // Hex string with the Census Root. Depending on the census origin, it will be a Merkle Root or a public key.
+    string censusUri; // Content Hashed URI of the exported Merkle Tree (not including the public keys)
 
     Status status; // One of 0 [ready], 1 [ended], 2 [canceled], 3 [paused], 4 [results]
     uint8 questionIndex; // The index of the currently active question (only assembly processes)
@@ -149,6 +151,8 @@ When a process is created, the entity needs to define what options apply to it. 
     - It determines the external behaviour of the process, when it starts, what can be updated, etc.
 - The `envelopeType`
     - Determines the internal behaviour of the votes sent by participants.
+- The `censusOrigin`
+    - Determines the way to compute and validate the voter's census proofs
 
 #### Process Mode
 
@@ -243,6 +247,27 @@ The status of a process is a simple enum, defined as follows:
   - Only when `INTERRUPTIBLE` is set, or after creation if `AUTO_START` is not set
 - `RESULTS` (4)
   - Set by the Oracle as soon as the results of a process have become available
+
+#### Census Origin
+
+The census origin is an unsigned integer holding a value defined by the following enumeration:
+
+- `OFF_CHAIN_TREE` (1)
+    - An exhaustive Merkle Tree contains the list of (hashed) keys allowed to vote and its root is stored on `censusRoot`.
+- `OFF_CHAIN_TREE_WEIGHTED` (2)
+    - An exhaustive Merkle Tree contains the list of (hashed) keys allowed to vote and their respective voting power. Its root is also stored on `censusRoot`.
+- `OFF_CHAIN_CA` (3)
+    - A certification authority issues signatures for all eligible voters on a per-process basis. The public key of the CA is stored on `censusRoot`.
+- `ERC20` (11)
+    - All the token holders of an ERC20 token (under the contract at the address of `entity`) are eligible to vote. `censusRoot` contains the storage (Merkle) root of the token contract at the `evmBlockHeight`.
+- `ERC721` (12)
+    - Same as the ERC20 case, but for ERC721 contracts
+- `ERC1155` (13)
+    - Same as the ERC20 case, but for ERC1155 contracts
+- `ERC777` (14)
+    - Same as the ERC20 case, but for ERC777 contracts
+- `MINI_ME` (15)
+    - Same as the ERC20 case, but for MiniMe (ERC20) contracts
 
 ### Transparent upgrades
 
