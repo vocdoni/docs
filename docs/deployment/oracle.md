@@ -8,27 +8,29 @@ To get more information about the oracle component, read the [component docs](ht
 
 ### Hardware
 
+- 4 Cores
 - 16GB RAM
-- 2 Cores (4 Cores recommended)
-- 40GB SSD disk space (80GB recommended)
+- 80GB SSD disk space
+
+Note: 2 Cores or 40GB SSD might be enough, but it is not recommended.
 
 ### Software
 
 - GNU/Linux based operating system
 - Git
-- Docker (version 19.03 or above) [Installation](https://docs.docker.com/engine/install/#server)
-- Docker compose (version or above) [Installation](https://docs.docker.com/compose/install)
+- Docker engine (version 19.03 or above) [Installation](https://docs.docker.com/engine/install/#server)
+- Docker compose (version 1.24 or above) [Installation](https://docs.docker.com/compose/install)
 
 ### Network
 
-The list of exposed ports to the Internet is as follows
+The list of exposed ports to the Internet is as follows:
 
 - 9090
 - 26656
 - 26657
 - 37671
 
-Note: All all ports are TCP
+Note: All all ports are TCP.
 
 ## Deploy with docker compose
 
