@@ -8,16 +8,16 @@ To get more information about the oracle component, read the [component docs](ht
 
 ### Hardware
 
-16GB RAM
-2 Cores (4 Cores recommended)
-40GB SSD disk space (80GB recommended)
+- 16GB RAM
+- 2 Cores (4 Cores recommended)
+- 40GB SSD disk space (80GB recommended)
 
 ### Software
 
-GNU/Linux based operating system
-Git
-Docker (version 19.03 or above) [Installation](https://docs.docker.com/engine/install/#server)
-Docker compose (version or above) [Installation](https://docs.docker.com/compose/install)
+- GNU/Linux based operating system
+- Git
+- Docker (version 19.03 or above) [Installation](https://docs.docker.com/engine/install/#server)
+- Docker compose (version or above) [Installation](https://docs.docker.com/compose/install)
 
 ### Network
 
