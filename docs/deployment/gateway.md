@@ -4,21 +4,21 @@ This section shows how to deploy a node with the gateway role running on Vocdoni
 
 ### Docker compose
 
-Hands on! Clone the repository [go-dvote](https://gitlab.com/vocdoni/go-dvote) in your current path:
+Hands on! Clone the repository [vocdoni-node](https://github.com/vocdoni/vocdoni-node) in your current path:
 
 ```bash
-git clone go-dvote
-cd go-dvote
+git clone https://github.com/vocdoni/vocdoni-node
+cd vocdoni-node
 ```
 
-This is the source path of the go-dvote. We are going to use files provided for a docker compose deploy:
+This is the source path of the vocdoni-node. We are going to use files provided for a docker compose deploy:
 
 ```bash
 cd dockerfiles/dvotenode
 ls
 ```
 
-As you can see here, there are many YAML files. The main one we are going to use is `docker-compose.yml`. This file uses the `env` file to configure the node with environment variables. There are many parameters to configure, but we are going to show a basic selection of them just to get started with the mainnet. To get a reference of all the variables, check the `env.example` file.
+As you can see, there are many YAML files. The main one we are going to use is `docker-compose.yml`. This file uses the `env` file to configure the node with environment variables. There are many parameters to configure, but we are going to show a basic selection of them just to get started with the mainnet. To get a reference of all the variables, check the `env.example` file.
 
 First, we are going to generate a random number of 32bits we will use as a private key, to have a fixed public address derived from it. Run the following command, and copy the output:
 
