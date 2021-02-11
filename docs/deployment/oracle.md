@@ -104,3 +104,5 @@ dvotenode_1  | 2021-02-08T20:25:05Z	INFO	chain/chain.go:206	my Ethereum address 
 ```
 
 Copy and paste the last part, this public key will be needed to add it to the list of trusted oracles.
+
+**Warning:** Do not share the private key with other oracles of the network, and save a backup as it could be needed in case of data loss.
