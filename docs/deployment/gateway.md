@@ -34,11 +34,12 @@ It is also required for the API to have a public DNS domain available and with A
 
 ### Docker compose
 
-Hands on! Clone the repository [vocdoni-node](https://github.com/vocdoni/vocdoni-node) in your current path:
+Hands on! Clone the repository [vocdoni-node](https://github.com/vocdoni/vocdoni-node) in your current path, and change the branch:
 
 ```bash
 git clone https://github.com/vocdoni/vocdoni-node
 cd vocdoni-node
+git checkout stage
 ```
 
 This is the source path of the vocdoni-node. We are going to use files provided for a docker compose deploy:
