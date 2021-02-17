@@ -65,6 +65,7 @@ DVOTE_W3CONFIG_W3EXTERNAL=/app/eth/jsonrpc.ipc
 DVOTE_METRICS_ENABLED=True
 DVOTE_METRICS_REFRESHINTERVAL=10
 DVOTE_VOCHAIN=stage
+DVOTE_ETHCONFIG_CHAINTYPE=xdaistage
 ```
 
 **Warning:** The `DVOTE_VOCHAINCONFIG_KEYKEEPERINDEX` value is specific for every oracle, so you will need to coordinate with the rest and make sure you have the correct index configured.
