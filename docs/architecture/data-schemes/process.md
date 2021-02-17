@@ -173,7 +173,7 @@ Given diferent process with various parameters, below is an example of the resul
 <td class="cell-seven">true</td></tr>
 <tr><td class="cell-title">Quadratic voting: 4 options, 9 credits to spend</td>
 	<td class="cell-one">[2,2,1,0] [1,1,1,1] [0,3,0,0]</td>
-<td class="cell-two">[ [1,1,1,0], [0,1,1,1], [1,2,0,0], [2,1,0,0] ]</td>
+<td class="cell-two">[ [2,1,0], [2,1,3], [1,1,0], [0,1,0] ]</td>
 <td class="cell-three">4</td>
 <td class="cell-four">-</td>
 <td class="cell-five">9</td>
