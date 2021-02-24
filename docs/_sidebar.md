@@ -41,6 +41,7 @@
     <!--  - [Sketch.systems convention](design/sketch-systems-convention.md) -->
 - Deployment
   - [Gateway](/deployment/gateway.md)
+  - [Miner](/deployment/miner.md)
   - [Oracle](/deployment/oracle.md)
   <!-- - [Custom vochain](/deployment/custom-vochain.md)-->
 - About
