@@ -266,17 +266,22 @@ Get the current block number on the [Vochain](/architecture/services/vochain).
 
 ### Get Process List
 
-Get a list of processes for a specific entity on the [Vochain](/architecture/services/vochain). There is a hardcoded maximum size of 64 per page. The process ID to start from can be specified with the field `fromId`. If empty, the leading 64 process ids will be returned.
+Get a list of processes for a specific entity or namespace on the [Vochain](/architecture/services/vochain). There is a hardcoded maximum size of 64 per page. 
 
-The `fromId` field can be used to seek specific positions and start from them. So if a call without `fromId` returns 64 values, a second call with `fromId = lastProcIdReceived` will get the next 64 values.
+The `from` field can be used to seek specific positions and start from them. So if a call without `from` (`from = 0`) returns 64 values, a second call with `from = 64` will get the next 64 values.
+
+The `namespace` field can be used for querying only a specific namespace. The namespace zero (default value) means all existing namespaces.
+
+The `entityId` field can be used for retreiving the list of processes from a specific entity organization.
 
 ```json
 {
   "id": "req-2345679",
   "request": {
     "method": "getProcessList",
-	  "entityId": "hexString",
-    "fromId": "hexString",  // Optional
+    "entityId": "hexString", // Optional
+    "namespace": int, // Optional
+    "from": int,  // Optional
     "timestamp": 1556110671
   },
   "signature": ""  // Might be empty
@@ -287,13 +292,44 @@ The `fromId` field can be used to seek specific positions and start from them. S
 {
   "id": "req-2345679",
   "response": {
-    "processIds": ["hexString1","hexString2", ...], // List of process ID's for the entity on the blockchain
+    "processIds": ["hexString1","hexString2", ...], // List of process ID's
     "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
 }
 ```
+
+### Get Entity List
+
+Get a list of entities that created at least 1 process into the [Vochain](/architecture/services/vochain). 
+
+The `from` field can be used to seek specific positions and start from them. So if a call without `from` (`from = 0`) returns 64 values, a second call with `from = 64` will get the next 64 values.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getEntityList",
+    "from": int,  // Optional
+    "timestamp": 1556110671
+  },
+  "signature": ""  // Might be empty
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "processIds": ["hexString1","hexString2", ...], // List of entity ID's
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
 
 ### Get Envelope List
 
@@ -366,16 +402,16 @@ If the process has encrypted votes and it is on-going, `encryptionPubkeys` and `
 
 ### Get Finalized Process List
 
-Get a list of the processes indexed by the scrutinizer with *final results*. Currently this method returns a non-deterministic set of 64 process ids at most. 
+Get a list of the processes indexed by the scrutinizer with *final results*. Currently this method returns a set of 64 process ids at most. 
 
-The `fromId` field works the same as in [Get Process List](#get-process-list).
+The `from` field works the same as in [Get Process List](#get-process-list).
 
 ```json
 {
   "id": "req-2345679",
   "request": {
     "method": "getProcListResults",
-    "fromId": "hexString",
+    "from": int, // Optional
     "timestamp": 1556110671
   },
   "signature": ""  // Might be empty
@@ -398,14 +434,14 @@ The `fromId` field works the same as in [Get Process List](#get-process-list).
 
 Get a list of processes indexed by the scrutinizer with *partial results*. Only process with non-encrypted votes can be scrutinized in real time.
 
-The `fromId` field works the same as in [Get Process List](#get-process-list).
+The `from` field works the same as in [Get Process List](#get-process-list).
 
 ```json
 {
   "id": "req-2345679",
   "request": {
     "method": "getProcListLiveResults",
-    "fromId": "hexString",
+    "from": int, // Optional
     "timestamp": 1556110671
   },
   "signature": ""  // Might be empty
