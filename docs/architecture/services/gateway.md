@@ -458,6 +458,59 @@ The results of an election are represented in [the following format](/architectu
 }
 ```
 
+### Get Process Count
+
+Returns the number of processes registered in the Vochain.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getProcessCount",
+    "timestamp": 1556110671
+  }
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "request": "req-2345679",
+    "size": 198,
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+### Get Entity Count
+
+Returns the number of entities registered in the Vochain (those that have at least created one process).
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getEntityCount",
+    "timestamp": 1556110671
+  }
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "request": "req-2345679",
+    "size": 14,
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+
 
 ## File API
 
