@@ -291,15 +291,13 @@ Get a list of processes for a specific entity or namespace on the [Vochain](/arc
 
 The results are ordered from process creation date. So processes created recently will appear first on the list.
 
-The `from` field can be used to seek specific positions and start from them. So if a call without `from` (`from = 0`) returns 64 values, a second call with `from = 64` will get the next 64 values.
+The following query filters can be used:
 
-The `namespace` field can be used for querying only a specific namespace. The namespace zero (default value) means all existing namespaces.
-
-The `entityId` field can be used for retreiving the list of processes from a specific entity organization.
-
-The `status` field can be used for querying processes on a specific status (READY, PAUSED, CANCELED, ENDED or RESULTS).
-
-The `withResults` bool filter can be used for quering only those processes that already have results (live or finished).
++ `from` can be used to seek specific positions and start from them. So if a call without `from` (`from = 0`) returns 64 values, a second call with `from = 64` will get the next 64 values.
++ `namespace` can be used for querying only a specific namespace. The namespace zero (default value) means all existing namespaces.
++ `entityId` can be used for retreiving the list of processes from a specific entity organization.
++ `status` can be used for querying processes on a specific status (READY, PAUSED, CANCELED, ENDED or RESULTS).
++ `withResults` bool filter can be used for quering only those processes that already have results (open process or finished with revealed keys).
 
 ```json
 {
@@ -309,11 +307,10 @@ The `withResults` bool filter can be used for quering only those processes that 
     "entityId": "hexString", // Optional
     "namespace": int, // Optional
     "status": "string", // Optional
-    "withResults:" bool, // Optional
+    "withResults": bool, // Optional
     "from": int,  // Optional
     "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
+  }
 }
 ```
 
