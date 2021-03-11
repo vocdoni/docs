@@ -51,11 +51,10 @@ Get an overview wabout the own gateway: available APIs, health and whether priva
 {
   "id": "req-2345679",
   "request": {
-    "method": "getGatewayInfo",
+    "method": "getInfo",
     "timestamp": 1556110671 // optional, not required
-  },
-  "signature": "hexString" // optional, not required
-}
+  }
+ }
 ```
 
 ```json
@@ -87,7 +86,7 @@ Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) t
   "id": "req-2345679",
   "request": {
     "method": "submitRawTx",
-    "payload": "base64string", // A raw transaction (protobuf encoded) in base64 format
+    "payload": "base64string", // A raw transaction (protobuf encoded) payload in base64
     "timestamp": 1556110671
   }
 }
@@ -98,7 +97,7 @@ Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) t
   "id": "req-2345679",
   "response": {
     "ok": true,
-    "request": "req-2345679", // Request ID here as well, to check its integrity
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
@@ -115,7 +114,7 @@ Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) t
   "id": "req-2345679",
   "request": {
     "method": "submitEnvelope",
-    "payload": "base64string", // vote envelope encoded payload
+    "payload": "base64string", // Vote envelope (protobuf encoded) payload in base64
     "signature": "hexString", // signature of the payload if the process requires it
     "timestamp": 1556110671
   }
@@ -127,7 +126,7 @@ Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) t
   "id": "req-2345679",
   "response": {
     "ok": true,
-    "request": "req-2345679", // Request ID here as well, to check its integrity
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
@@ -250,7 +249,7 @@ Get details about the current block and the average block time for the last 1m, 
     "blockTimestamp": 1556110672, // in seconds
     "height": 12345,
     "ok": true,
-    "request": "req-2345679", // Request ID here as well, to check its integrity
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
@@ -278,7 +277,7 @@ Get the current block number on the [Vochain](/architecture/services/vochain).
     "blockTimestamp": 1556110672,
     "ok": true,
     "height": 12345,
-    "request": "req-2345679", // Request ID here as well, to check its integrity
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
