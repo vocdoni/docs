@@ -37,7 +37,6 @@ A Gateway exposes APIs that enable accesing peer-to-peer networks. The currently
 + `Vote API` access to the Vochain methods for voting
 + `Results API` access to the Vochain methods for computing election results
 + `File API` access to P2P file storage methods
-+ `Web3 API` access to the Ethereum blockchain (xDAI or Sokol)
 
 These APIs can be used by web and mobile clients using an HTTP/WS endpoint.
 
@@ -79,6 +78,34 @@ The Census API methods can be found on the [Census Service section](/architectur
 
 ## Vote API
 
+### Submit Raw Vochain Transaction
+
+Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) to the mempool of the [Vochain](/architecture/services/vochain).
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "submitRawTx",
+    "payload": "base64string", // A raw transaction (protobuf encoded) in base64 format
+    "timestamp": 1556110671
+  }
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "ok": true,
+    "request": "req-2345679", // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+
 ### Submit Envelope
 
 Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) to the mempool of the [Vochain](/architecture/services/vochain).
@@ -88,10 +115,10 @@ Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) t
   "id": "req-2345679",
   "request": {
     "method": "submitEnvelope",
-    "payload": { <VoteEnvelope> },   // See Vote Envelope from "Voting Process"
+    "payload": "base64string", // vote envelope encoded payload
+    "signature": "hexString", // signature of the payload if the process requires it
     "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
+  }
 }
 ```
 
@@ -122,8 +149,7 @@ Check the status of an already submited [Vote Envelope](/architecture/smart-cont
     "processId": "hexString",
     "nullifier": "hexString",
     "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
+  }
 }
 ```
 
@@ -131,9 +157,9 @@ Check the status of an already submited [Vote Envelope](/architecture/smart-cont
 {
   "id": "req-2345679",
   "response": {
-    "blockTimestamp": 1556110672, // if registered == true
-    "height": 1234, // if registered == true
-    "registered": true,  // Whether the vote is registered in a vote batch on the Blockchain
+    "registered": true,  // Whether the vote is registered or not
+    "blockTimestamp": 1556110672, // only if registered == true
+    "height": 1234, // only if registered == true
     "request": "req-2345679",
     "timestamp": 1556110672
   },
@@ -155,8 +181,7 @@ Get the content of an existing [Vote Envelope](/architecture/smart-contracts/pro
     "processId": "hexString",
     "nullifier": "hexString",
     "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
+  }
 }
 ```
 
@@ -186,8 +211,7 @@ Get the number of envelopes registered on a given process.
     "method": "getEnvelopeHeight",
     "processId": "hexString",
     "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
+  }
 }
 ```
 
@@ -214,8 +238,7 @@ Get details about the current block and the average block time for the last 1m, 
   "request": {
     "method": "getBlockStatus",
     "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
+  }
 }
 ```
 
@@ -223,8 +246,7 @@ Get details about the current block and the average block time for the last 1m, 
 {
   "id": "req-2345679",
   "response": {
-    "blockTime": [10000, 12000, 12200, 12500, 12600], // In milliseconds, average for 1 minute, 10m, 1h, 6h, 24h
-                                                      // If there is no average yet, values are 0
+    "blockTime": [10000, 12000, 12200, 12500, 12600], // In milliseconds, average for 1 minute, 10m, 1h, 6h, 24h. If no average yet, values are 0
     "blockTimestamp": 1556110672, // in seconds
     "height": 12345,
     "ok": true,
@@ -245,8 +267,7 @@ Get the current block number on the [Vochain](/architecture/services/vochain).
   "request": {
     "method": "getBlockHeight",
     "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
+  }
 }
 ```
 
@@ -268,11 +289,17 @@ Get the current block number on the [Vochain](/architecture/services/vochain).
 
 Get a list of processes for a specific entity or namespace on the [Vochain](/architecture/services/vochain). There is a hardcoded maximum size of 64 per page. 
 
+The results are ordered from process creation date. So processes created recently will appear first on the list.
+
 The `from` field can be used to seek specific positions and start from them. So if a call without `from` (`from = 0`) returns 64 values, a second call with `from = 64` will get the next 64 values.
 
 The `namespace` field can be used for querying only a specific namespace. The namespace zero (default value) means all existing namespaces.
 
 The `entityId` field can be used for retreiving the list of processes from a specific entity organization.
+
+The `status` field can be used for querying processes on a specific status (READY, PAUSED, CANCELED, ENDED or RESULTS).
+
+The `withResults` bool filter can be used for quering only those processes that already have results (live or finished).
 
 ```json
 {
@@ -281,6 +308,8 @@ The `entityId` field can be used for retreiving the list of processes from a spe
     "method": "getProcessList",
     "entityId": "hexString", // Optional
     "namespace": int, // Optional
+    "status": "string", // Optional
+    "withResults:" bool, // Optional
     "from": int,  // Optional
     "timestamp": 1556110671
   },
@@ -311,10 +340,9 @@ The `from` field can be used to seek specific positions and start from them. So 
   "id": "req-2345679",
   "request": {
     "method": "getEntityList",
-    "from": int,  // Optional
+    "from": int, // Optional
     "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
+  }
 }
 ```
 
@@ -345,8 +373,7 @@ The `fromId` field works the same as in [Get Process List](#get-process-list).
     "processId": "hexString",
     "fromId": "hexString",
     "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
+  }
 }
 ```
 
@@ -377,8 +404,7 @@ If the process has encrypted votes and it is on-going, `encryptionPubkeys` and `
     "method": "getProcessKeys",
     "processId": "hexString",
     "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
+  }
 }
 ```
 
@@ -400,65 +426,6 @@ If the process has encrypted votes and it is on-going, `encryptionPubkeys` and `
 **Used in:**
 - [Checking a Vote Envelope](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-vote-envelope)
 
-### Get Finalized Process List
-
-Get a list of the processes indexed by the scrutinizer with *final results*. Currently this method returns a set of 64 process ids at most. 
-
-The `from` field works the same as in [Get Process List](#get-process-list).
-
-```json
-{
-  "id": "req-2345679",
-  "request": {
-    "method": "getProcListResults",
-    "from": int, // Optional
-    "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
-}
-```
-
-```json
-{
-  "id": "req-2345679",
-  "response": {
-    "processIds": ["hexString1","hexString2", ...],
-    "request": "req-2345679",
-    "timestamp": 1556110672
-  },
-  "signature": "hexString"
-}
-```
-
-### Get Live Process List
-
-Get a list of processes indexed by the scrutinizer with *partial results*. Only process with non-encrypted votes can be scrutinized in real time.
-
-The `from` field works the same as in [Get Process List](#get-process-list).
-
-```json
-{
-  "id": "req-2345679",
-  "request": {
-    "method": "getProcListLiveResults",
-    "from": int, // Optional
-    "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
-}
-```
-
-```json
-{
-  "id": "req-2345679",
-  "response": {
-    "processIds": ["hexString1","hexString2", ...],
-    "request": "req-2345679",
-    "timestamp": 1556110672
-  },
-  "signature": "hexString"
-}
-```
 
 ### Get Process Results
 
@@ -473,8 +440,7 @@ The results of an election are represented in [the following format](/architectu
     "method": "getResults",
     "processId": "hexString",
     "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
+  }
 }
 ```
 
@@ -484,43 +450,14 @@ The results of an election are represented in [the following format](/architectu
   "response": {
     "request": "req-2345679",
     "type": "poll-vote",
-    "state": "active",     // "scheduled|active|paused|finished|canceled"
-    "results": [ [12, 2], [3, 11, 24], [0, 43] ],
+    "status": "RESULTS",
+    "results": [ ["12", "2"], ["3", "11", "24"], ["0", "43"] ],
     "timestamp": 1556110672
   },
   "signature": "hexString"
 }
 ```
 
-### Get Scrutinizer Entities
-
-Get the list of entities indexed by the scrutinizer. This method returns a non-deterministic list of 64 entity ID's per page. 
-
-The `fromId` field works the same as in [Get Process List](#get-process-list) but for the `entityId` field.
-
-```json
-{
-  "id": "req-2345679",
-  "request": {
-    "method": "getScrutinizerEntities",
-    "fromId": "hexString",
-    "timestamp": 1556110671
-  },
-  "signature": ""  // Might be empty
-}
-```
-
-```json
-{
-  "id": "req-2345679",
-  "response": {
-    "entityIds": ["hexString1","hexString2", ...],
-    "request": "req-2345679",
-    "timestamp": 1556110672
-  },
-  "signature": "hexString"
-}
-```
 
 ## File API
 
@@ -545,7 +482,7 @@ Fetch a file from the P2P network (currently IPFS) and return it encoded in base
   "id": "req-2345679",
   "response": {
     "content": "base64Payload",  // The contents of the file
-    "request": "req-2345679",      // Request ID here as well, to check its integrity
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
@@ -586,7 +523,7 @@ These methods require authentication, following the [JSON API rules](/architectu
   "id": "req-2345679",
   "response": {
     "uri": "<content uri>",
-    "request": "req-2345679",    // Request ID here as well, to check its integrity
+    "request": "req-2345679",
     "timestamp": 1556110672
   },
   "signature": "hexString"
