@@ -346,7 +346,7 @@ The `from` field can be used to seek specific positions and start from them. So 
 {
   "id": "req-2345679",
   "response": {
-    "processIds": ["hexString1","hexString2", ...], // List of entity ID's
+    "entityIds": ["hexString1","hexString2", ...], // List of entity ID's
     "request": "req-2345679",
     "timestamp": 1556110672
   },
