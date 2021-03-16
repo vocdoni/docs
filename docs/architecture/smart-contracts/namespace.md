@@ -1,34 +1,24 @@
 # Namespace Contract
 
-Governance processes are assigned to a namespace when they are created. Namespaces allow to group them by a certain criteria. Most notably, namespaces may refer to something like Mainnet, Testnet, etc.
+Concurrent Process contract instances may not be chained together and this could cause `processId` duplication issues if the same entity created processes among them. This is why Process contracts are assigned a unique namespace Id when they are created. 
 
-At the same time, every Vochain is set to only react to processes created on a specific namespace.
+Same as the Genesis Contract, the Namespaces also acts as a central registry where Process instances register for a unique Id. This Id also allows to filter processes when querying the Vochain or a Gateway. 
+
+The instance of the Namespaces contract is resolved from `namespaces.vocdoni.eth` on the ENS registry.
 
 ## Contract
 
-To define the parameters of every namespace, Vocdoni defines the following struct:
+The struct defining a namespace is so simple:
 
 ```solidity
-struct NamespaceItem {
-    string chainId;
-    string genesis;
-    string[] validators;
-    address[] oracles;
-}
-mapping(uint16 => NamespaceItem) internal namespaces;
+mapping(uint32 => address) public namespaces;
+uint32 public namespaceCount;
 ```
 
-- `chainId` is the name given to the chain (mainnet, testnet, etc)
-- `genesis` provides the data that will be used as the chain genesis
-- `validators` contains the public keys of the nodes that can validate Vochain transactions
-- `oracles` contains the Ethereum addresses of the hosts that can submit processes to the Vochain and publish results on the process contract
+## Methods
 
-Note: The `oracles` field may progressively be deprecated as the platform evolves toward a trustless oracles model. When oracles become trustless, any participant from the network could signal events on-chain, relay signed transactions or publish results following an optimistic rollup approach.
-
-## Processes
-
-The [Process Contract](/architecture/smart-contracts/process) needs to point to a Namespace contract instance. This instance will confirm whether `msg.sender` is an oracle or not when attempting to set the results.
+- `register()` is called by process contracts upon deployment. They receive a unique `namespaceId` and are registered as the contract assigned to this index.
 
 ### Coming next
 
-See the [Gateway](/architecture/services/gateway) section.
+See the [Results Contract](/architecture/smart-contracts/results) section.

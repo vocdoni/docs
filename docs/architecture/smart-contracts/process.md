@@ -1,12 +1,12 @@
 # Process Contract
 
-A process is the building block around which governance is made in Vocdoni. Simmilarly to an OS, think of the process contract like a Kernel that receives syscall's to spawn a new governance process.
+A process is the building block around which governance is made in Vocdoni. Simmilarly to an Operating System, think of the Processes contract like a Kernel that receives syscall's to spawn a new governance process.
 
-Governance processes span across three diferent components: the Ethereum smart contract, IPFS distributing [their metadata](/architecture/data-schemes/process?id=process-metadata) and the [Vochain](/architecture/services/vochain). Processes are declared on the smart contract, which only stores critical information for integrity. 
+Governance processes span across three diferent components: the Ethereum smart contract, IPFS to ditribute [the vote metadata](/architecture/data-schemes/process?id=process-metadata) and the [Vochain](/architecture/services/vochain).
 
 Processes follow a declarative fashion. The expected behavior is declared on the smart contract for integrity and the the Layer 2 blockchain (called [Vochain](/architecture/services/vochain)) reacts according to the current settings.
 
-The instance of the Voting process contract instance is resolved from `processes.vocdoni.eth` on the ENS registry.
+The instance of the Voting process contract is resolved from `processes.vocdoni.eth` on the ENS registry.
 
 - [Contract structs](#contract-structs)
 - [Process ID](#process-id)
@@ -52,9 +52,6 @@ struct Process {
 
     uint8 maxVoteOverwrites; // How many times a vote can be replaced (only the last one counts)
 
-    // Choices for a question cannot appear twice or more
-    bool uniqueValues;
-
     // Limits up to how much cost, the values of a vote can add up to (if applicable).
     // 0 => No limit / Not applicable
     uint16 maxTotalCost;
@@ -68,24 +65,10 @@ struct Process {
     // - 65535 => 6.5535
     uint16 costExponent;
 
-    // Self-assign to a certain namespace.
-    // This will determine the oracles that listen and react to it.
-    // Indirectly, it will also determine the Vochain that hosts this process.
-    uint16 namespace;
+    uint256 evmBlockHeight; // EVM block number to use as a snapshot for the on-chain census
 
     bytes32 paramsSignature; // entity.sign({...}) // fields that the oracle uses to authentify process creation
-    
-    uint32[][] results; // Appearence count for every question and option value
 }
-
-// PER-PROCESS DATA
-
-struct ProcessCheckpoint {
-    uint256 index; // The index of this process within the entity's history, including parent instances
-}
-
-mapping(address => ProcessCheckpoint[]) internal entityCheckpoints; // Array of ProcessCheckpoint indexed by entity address
-mapping(bytes32 => Process) internal processes; // Mapping of all processes indexed by the Process ID
 ```
 
 ### Process ID
@@ -98,27 +81,28 @@ It is the result of combining and hashing these three values:
 - `namespace`
 
 ```solidity
-function getNextProcessId(address entityAddress, uint16 namespace) public view returns (bytes32){
+function getNextProcessId(address entityAddress) public view override returns (bytes32) {
     // From 0 to N-1, the next index is N
-
     uint256 processCount = getEntityProcessCount(entityAddress);
-    return getProcessId(entityAddress, processCount, namespace);
+    return getProcessId(entityAddress, processCount, namespaceId, ethChainId);
 }
 
-function getProcessId(address entityAddress, uint256 processCountIndex, uint16 namespace) public view returns (bytes32) {
-    return keccak256(abi.encodePacked(entityAddress, processCountIndex, namespace));
+function getProcessId(address entityAddress, uint256 processCountIndex, uint32 namespaceIdNum, uint32 ethereumChainId) public pure override returns (bytes32) {
+    return keccak256(abi.encodePacked(entityAddress, processCountIndex, namespaceIdNum, ethereumChainId));
 }
 ```
 
 Where:
-- `entityAddress` is the Ethereum address that creates the process
+- `entityAddress` is the Ethereum address that creates the process (or the token address)
 - `entityProcessCount` is an incremental nonce per `entityAddress`
-- `namespace` is the number to which a process self assigns itself. See the [Namespace contract](/architecture/smart-contracts/namespace)
+- `ethereumChainId` is the Ethereum chain Id where this contract has been deployed to
+- `namespaceId` is a number that the process contract is assigned when it is deployed. See the [Namespace contract](/architecture/smart-contracts/namespace)
 
 ### Methods
 
 - `newProcess()`
     - Sets the parameters of a new process to be run on the Vochain
+    - If `processPrice` is defined to prevent spam, the transaction must include a `value` with at least such amount.
 - `setStatus()`
     - With the appropriate flags, the creator can set the process to be `READY`, `ENDED`, `CANCELED` or `PAUSED`.
     - See [process status](#status) below
@@ -126,10 +110,8 @@ Where:
     - With the appropriate flags, the creator can define the question that can be voted on
 - `setCensus()`
     - With the appropriate flags, the creator can update the census for long lasting polls
-- `setResults()`
-    - Once the scrutiny is completed, registered Oracles can set the results of a process
 
-For more details, see the [implementation here](https://gitlab.com/vocdoni/dvote-solidity/raw/master/contracts/process.sol)
+For more details, you can see the [implementation here](https://gitlab.com/vocdoni/dvote-solidity/raw/master/contracts/process.sol)
 
 ### Getters
 
@@ -137,8 +119,6 @@ For more details, see the [implementation here](https://gitlab.com/vocdoni/dvote
     - Retrieves all the parameters and flags defined for the given process
 - `getParamsSignature()`
     - Retrieves the signature of the parameters above
-- `getResults()`
-    - If available, returns the output of the scrutinizer uploaded by the Oracles
 - `getCreationInstance()`
     - Returns the address of the process contract where the given process is hosted
     - Useful to determine where an update needs to be sent to (see Transparent upgrades next)
@@ -159,39 +139,33 @@ When a process is created, the entity needs to define what options apply to it. 
 The process mode affects both the Vochain, the contract itself and even the metadata. Its value is generated by combining the flags below.
 
 ```
-0x00011111
-     |||||
-     ||||`- AUTO_START
-     |||`-- INTERRUPTIBLE
-     ||`--- DYNAMIC_CENSUS
-     |`---- ALLOW_VOTE_OVERWRITE
-     `----- ENCRYPTED_METADATA
+0b00001111
+      ||||
+      |||`- autoStart
+      ||`-- interruptible
+      |`--- dynamicCensus
+      `---- encryptedMetadata
 ```
 
 ##### AUTO_START
 
-- `false` ⇒ Needs to be set to `READY` by the creator. Starts `PAUSED` by default.
-- `true` ⇒ Will start by itself at block `startBlock`.
+- `false` ⇒ The process needs to be set to `READY` by the creator before it can start. Processes start `PAUSED` by default.
+- `true` ⇒ Votes will be processes starting at block `startBlock`.
 
 `newProcess()` enforces `startBlock` > 0 accordingly
 
 ##### INTERRUPTIBLE
 
-- `false` ⇒ Only the Vochain can `END` the process at block `startBlock + blockCount`
-- `true` ⇒ In addition to the above, the admin can `END`, `PAUSE` and `CANCEL`
-    - Pausing a process prevents votes from being received, `blockCount` stays unchanged by now
+- `false` ⇒ The Vochain will `END` the process when the block `startBlock + blockCount` is reached
+- `true` ⇒ In addition to the above, the admin can `END`, `PAUSE` and `CANCEL` it
+    - Pausing a process prevents votes from being received and `blockCount` stays unchanged by now
 
 ##### DYNAMIC_CENSUS
 
-- `false` ⇒ Census is immutable
-- `true` ⇒ Census can be edited during the life-cycle of the process. Allowing to add, subtract new keys, or change the census entirely, to a process that has already started.
-    - Intended for long-term polls
-    - Warning: The admin has the opportunity to obscurely cheat by enabling keys and then removing them
-
-##### ALLOW_VOTE_OVERWRITE
-
-- `false` ⇒ Only the first vote is counted
-- `true` ⇒ The last vote is counted. The previous vote can be overwritten up to `maxVoteOverwrites` times.
+- `false` ⇒ The census is immutable
+- `true` ⇒ The census can be edited during the life-cycle of the process. Allowing to add, subtract new keys, or change the census entirely, to a process that has already started.
+    - Intended for low stake, long-term polls only
+    - Warning: The admin would have the opportunity to cheat by enabling keys and then removing them later on
 
 ##### ENCRYPTED_METADATA
 
@@ -205,17 +179,18 @@ It requires a prior process to share the encryption key with the users with the 
 The envelope type tells how the vote envelope is formatted and handled. Its value is generated by combining the flags below.
 
 ```
-0x00000111
-       |||
-       ||`- SERIAL
-       |`-- ANONYMOUS
-       `--- ENCRYPTED_VOTE
+0b00001111
+      ||||
+      |||`- serial
+      ||`-- anonymous
+      |`--- encryptedVote
+      `---- uniqueValues
 ```
 
 ##### SERIAL
 
 - `false` A single envelope is expected with all votes in it
-- `true` An envelope needs to be sent for each question, as `questionIndex` increases
+- `true` An envelope needs to be sent for each question, as `questionIndex` is incremented
 
 ##### ANONYMOUS
 
@@ -228,6 +203,11 @@ The envelope type tells how the vote envelope is formatted and handled. Its valu
 
 - `false` Votes are sent in plain text. Results can be seen in real time.
 - `true` The vote payload will be encrypted. The results will become available once the encryption key is published at the end of the process by the miners.
+
+##### UNIQUE_VALUES
+
+- `false` The same vote value can be chosen more than once
+- `true` Choices must be unique across a field
 
 #### Census Origin
 
@@ -267,7 +247,7 @@ The status of a process is a simple enum, defined as follows:
   - Tells the Vochain to stop processing votes temporarily. The process might be resumed in the future.
   - Only when `INTERRUPTIBLE` is set, or after creation if `AUTO_START` is not set
 - `RESULTS` (4)
-  - Set by the Oracle as soon as the results of a process have become available
+  - Set by the Oracle from the Results contract as soon as the tally of a process has become available
 
 ### Transparent upgrades
 
@@ -279,6 +259,8 @@ Even if there are tools to deploy upgradeable smart contracts, we believe that n
 - New processes can only be created on the last successor of the chain
 - From successors, clients can navigate back in time transparently and read processes stored on old instances
 
+This behavior is encapsulated [into the `Chained`](https://github.com/vocdoni/dvote-solidity/blob/main/contracts/base.sol#L22) base contract. 
+
 However:
 - [Due to security concerns](https://solidity.readthedocs.io/en/v0.6.0/security-considerations.html#tx-origin), updates on a process coming from a successor are not acceptable
 - Updates on legacy processes need to be sent directly to the original contract instance
@@ -286,4 +268,4 @@ However:
 
 ### Coming next
 
-See the [Namespace Contract](/architecture/smart-contracts/namespace) section.
+See the [Genesis Contract](/architecture/smart-contracts/genesis.md) section.

@@ -9,7 +9,10 @@
   - Smart Contracts
     - [Entity Resolver](/architecture/smart-contracts/entity-resolver.md)
     - [Process](/architecture/smart-contracts/process.md)
+    - [Genesis](/architecture/smart-contracts/genesis.md)
     - [Namespace](/architecture/smart-contracts/namespace.md)
+    - [Results](/architecture/smart-contracts/results.md)
+    - [Storage Proofs](/architecture/smart-contracts/storage-proofs.md)
   - Services
     - [Gateway](/architecture/services/gateway.md)
     - [Vochain](/architecture/services/vochain.md)

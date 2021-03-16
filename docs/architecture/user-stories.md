@@ -67,17 +67,17 @@ To see how a decentralized election works, let's see the sequence of actions tha
 			- The voter knows a private key, whose public key belongs to the census
 			- The provided nullifier matches the current process ID and the user's private key
 	<!-- - ~POW~ -->
-	- The app generates the [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope-zk-snarks)
-	- The app selects a **Gateway** among the available ones and submits the [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope-zk-snarks)
-	- The **Gateway** submits the [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope-zk-snarks) to the mempool of the Vochain
-- A **Vochain miner** processes an incoming [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope)
+	- The app generates the [Vote Envelope](/architecture/data-schemes/process?id=vote-envelope-zk-snarks)
+	- The app selects a **Gateway** among the available ones and submits the [Vote Envelope](/architecture/data-schemes/process?id=vote-envelope-zk-snarks)
+	- The **Gateway** submits the [Vote Envelope](/architecture/data-schemes/process?id=vote-envelope-zk-snarks) to the mempool of the Vochain
+- A **Vochain miner** processes an incoming [Vote Envelope](/architecture/data-schemes/process?id=vote-envelope)
 	- The **Vochain miner** checks that the current block is within the process start/end blocks
 	- The **Vochain miner** checks that the given nullifier has not been used before
 	- If the process is anonymous:
-		- The **Vochain miner** checks that the **ZK Proof** of the [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) is valid
+		- The **Vochain miner** checks that the **ZK Proof** of the [Vote Envelope](/architecture/data-schemes/process?id=vote-envelope) is valid
 	- If the process is not anonymous
-		- The **Vochain miner** checks that the **Merkle Proof** of the [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) matches the vote signature and the Merkle root
-	- The **Vochain miner** adds the [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) to the next block
+		- The **Vochain miner** checks that the **Merkle Proof** of the [Vote Envelope](/architecture/data-schemes/process?id=vote-envelope) matches the vote signature and the Merkle root
+	- The **Vochain miner** adds the [Vote Envelope](/architecture/data-schemes/process?id=vote-envelope) to the next block
 
 ### After voting
 
@@ -97,7 +97,7 @@ To see how a decentralized election works, let's see the sequence of actions tha
 - An **observer** computes the results
 	- The **observer** fetches the [Process Metadata](/architecture/data-schemes/process) from the process contract and IPFS
 	- On encrypted votes, the **observer** requests the encryption private keys to the **Gateway**
-	- The **observer** fetches all the [Vote Envelopes](/architecture/smart-contracts/process?id=vote-envelope) registered for the process
+	- The **observer** fetches all the [Vote Envelopes](/architecture/data-schemes/process?id=vote-envelope) registered for the process
 	- The **observer** checks their ZK Proofs or Merkle Proofs, the [Vote Package](/architecture/smart-contracts/process?id=vote-package-zk-snarks) contents and the restrictions imposed by the process flags
 	- On encrypted votes, the **observer** decrypts the [Vote Package](/architecture/smart-contracts/process?id=vote-package-zk-snarks)
 	- The **observer** counts the number of appearences of every single vote value

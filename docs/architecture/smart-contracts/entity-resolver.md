@@ -18,7 +18,7 @@ The ENS Resolver Smart Contract allows entities to register and set the [Content
 
 The **Entity Resolver** is the smart contract where [the metadata of each entity](/architecture/data-schemes/entity-metadata) is indexed. It leverages a standard ENS Resolver contract for its Text records, used as a key-value store.
 
-The ENS domain of the contract instance is `entity-resolver.vocdoni.eth` on the ENS registry (soon replaced by `entities.vocdoni.eth` and `entities.dev.vocdoni.eth`).
+The instance of the Results contract is resolved from `entities.vocdoni.eth` on the ENS registry. In the case of Ethereum chains like `xdai` or `sokol`, the contract can also act as a global ENS resolver. 
 
 The `entityId` is the unique identifier of each entity, being a hash of its Ethereum address:
 
@@ -54,7 +54,7 @@ See [Entity Metadata](/architecture/data-schemes/entity-metadata?id=json-schema)
 
 #### Gateway boot nodes
 
-Client apps may not be able to join P2P networks by themselves, so Vocdoni makes use of Gateways to enable decentralized transactions over HTTP or Web Sockets. A gateway Boot Node is a service provided by the Entity, and it defines a list of active Gateways that a client can use.
+Client apps may not be able to join P2P networks by themselves, so Vocdoni makes use of [Gateways](/architecture/services/gateway) to enable decentralized transactions over HTTP or Web Sockets. A gateway Boot Node is a service provided by the Entity, and it defines a list of active Gateways that a client can use.
 
 By default, Vocdoni (as an Entity) provides its own set of Voting and Web3 Gateways. However, entities may want to use their own infrastructure. To this end, the Entity's ENS Text Record `vnd.vocdoni.boot-nodes` can be set to the Content URI of a [BootNodes JSON file](/architecture/services/bootnode) defining some of them.
 
