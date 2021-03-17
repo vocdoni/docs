@@ -14,6 +14,8 @@ Along the different stages of a governance process, the following data schemes a
 
 The creation of this data structure is critical. Multiple checks should be in place to ensure that the data is coherent (well formatted, all relevant locales present, etc).
 
+Since the Process Metadata defines the human readable information, it should not be confused with the [Process Parameters](/architecture/smart-contracts/process?id=contract-structs) in the Smart Contract, which define how the process should behave.
+
 The metadata of a process is represented as follows:
 
 ```json
@@ -24,8 +26,8 @@ The metadata of a process is represented as follows:
         "ca": "Renda Bàsica Universal"
     },
     "description": {
-        "en": "## Markdown text goes here\n### Abstract",
-        "ca": "## El markdown va aquí\n### Resum"
+        "en": "The description goes here",
+        "ca": "La descripció va aquí"
     },
     "media": {
         "header": "<content uri>",
@@ -38,8 +40,8 @@ The metadata of a process is represented as follows:
                 "ca": "Estàs d'acord amb que la renda bàsica universal sigui un dret humà?"
             },
             "description": {
-                "en": "## Markdown text goes here\n### Abstract",
-                "ca": "## El markdown va aquí\n### Resum"
+                "en": "The description goes here",
+                "ca": "La descripció va aquí"
             },
             "choices": [
                 {
@@ -58,9 +60,15 @@ The metadata of a process is represented as follows:
                 }
             ]
         }
-    ]
+    ],
+    "results": {
+        "aggregation": "index-weighted", // "index-weighted" | "discrete-counting",
+        "display": "rating" // "rating" | "simple-question" | "multiple-choice" | "linear-weighted" | "quadratic-voting" | "multiple-question" | "raw"
+    }
 }
 ```
+
+The `results` fields are informational only. Regardless of the chosen `aggregation` or `display`, the scrutiny is the same for all cases. However, these fields help the UI components to know how results should be interpreted and displayed. 
 
 ## Vote Envelope
 
@@ -68,6 +76,9 @@ The Vote Envelope contains a (possibly encrypted) Vote Package and provides the 
 
 ##### When `envelopeType.ANONYMOUS` is enabled
 
+This section will be available soon.
+
+<!--
 An anonymous Vote Envelope features the proces ID, the ZK Proof, a nonce to prevent replay attacks, the user's nullifier for the vote, the index of the encryption keys used and a base64 representation of the Vote Package.
 
 ```json
@@ -85,21 +96,44 @@ The `nullifier` uniquely identifies the vote in the blockchain and it is compute
 
 `nullifier = keccak256(bytes(hex(addr(signature))) + bytes(hex(processId)))`
 
+-->
+
 ##### When `envelopeType.ANONYMOUS` is disabled
 
 A signed (non-anonymous) Vote Envelope features the process ID, the Census Merkle Proof of the user, a nonce to prevent replay attacks, the index of the encryption keys used, a Base64 representation of the Vote Package and the user's signature.
 
-As always, the signature should be generated from a JSON object containing the keys in ascending alphabetical order.
+In order to guarantee a 100% reproduceability of the signature, the Vote Envelope is encoded as a Protobuf model and serialized into a byte array. Such byte array is then signed and both fields are sent via a `SignedTx` model to a Gateway. 
 
-```json
-{
-    "processId": "0x1234567890...",
-    "proof": "0x1234...",  // Merkle Proof of the voter's public key
-    "nonce": "1234567890",  // Unique number per vote attempt, so that replay attacks can't reuse this payload
-    "encryptionKeyIndexes": [0, 1, 2, 3, 4],  // (optional) On encrypted polls, contains the (sorted) indexes of the keys used to encrypt
-    "votePackage": "base64-vote-package",  // base64(jsonString) or base64( encrypt(jsonString) )
-    "signature": "0x12345678...",  // sign( JSON.stringify( { processId, proof, nonce, encryptionKeyIndexes?, votePackage } ), privateKey )
+```proto
+// Protobuf models
+
+message VoteEnvelope {
+        bytes nonce = 1;  // Unique number per vote attempt, so that replay attacks can't reuse this payload
+        bytes processId = 2;  // The process for which the vote is casted
+        Proof proof = 3;  // One of ProofGraviton, ProofIden3, ProofEthereumStorage, ProofEthereumAccount, or ProofCA
+        bytes votePackage = 4;   // JSON string of the Vote Package, encoded as bytes. It may be encrypted.
+        bytes nullifier = 5;  // Hash of the private key + processId (optional, depending on the type)
+
+        repeated uint32 encryptionKeyIndexes = 6; // On encrypted votes, contains the (sorted) indexes of the keys used to encrypt
 }
+
+// ...
+
+message Tx {
+	oneof payload {
+		VoteEnvelope vote = 1;
+		// ...
+	}
+}
+
+message SignedTx {
+	bytes tx = 1; // The bytes produced by Marshaling a Tx{} message
+	optional bytes signature = 2; // The signature for the tx bytes. 
+	// signature is only required in those transactions that actually need signature.
+        // I.e zk-Snarks based transactions won't needed, however the transaction should use
+        // this message type in order to preserve consistency on the Vochain
+}
+
 ```
 
 ## Vote Package
@@ -117,18 +151,21 @@ Contains the actual votes and is part of the Vote Envelope.
 
 ##### When `envelopeType.ENCRYPTED_VOTE` is disabled
 - The `nonce` can be omitted.
-- The package must be used as a plain base-64 string.
+- The package has to be serialized as a JSON string and encoded as bytes.
 
 ##### When `envelopeType.ENCRYPTED_VOTE` is enabled
-- The `nonce` is mandatory. Can be omitted otherwise.
-- The package must be encrypted with the public keys used in ascending order.
-- The package must be a base64 representation of the encrypted bytes.
+- The `nonce` is mandatory.
+- The package has to be serialized as a JSON string encoded as bytes.
+- It must be encrypted with a subset of the public keys or all of them.
+- The index of the public keys used to encrypt must be included in the Vote Envelope in the exact order they have been used.
 
 ## Results
 
-Requests to the Results API will return an Array of number arrays. They will contain the number of occurrences of every possible vote option, for every question available.
+Requests to the Results API will return an Array of number arrays, following the Ballot Protocol. They will contain a bidimensional array of integers, aggregating the values currently stored on the Vochain.
 
-Given diferent process with various parameters, below is an example of the results that would be returned given the votes of 3 users.
+The interpretation of these values is left to the Client apps, and is determined by the `results.aggregation` and `results.display` fields of the Process Metadata, listed above.
+
+Given diferent processes with various parameters, below is an example of the results that would be returned given the votes of 3 users.
 
 <table><thead><tr><th>Name</th><th>Vote examples</th><th>Results</th><th>maxCount</th><th>maxValue</th><th>maxTotalCost</th><th>costExponent</th><th>uniqueValues</th></tr></thead><tbody><tr><td class="cell-title">Rate a product</td>
 	<td class="cell-one">[3] [5] [3]</td>
