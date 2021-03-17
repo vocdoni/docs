@@ -325,6 +325,58 @@ The following query filters can be used:
 }
 ```
 
+### Get Process Info
+
+Get the full information from an existing process.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getProcessInfo",
+    "processId": "hexString",
+    "timestamp": 1556110671
+  }
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "processInfo": {
+      "censusOrigin": 1,
+      "censusRoot": "7bc6e95b3e4a4e6aedb67a4eef28cbdb5bea2a02398309453015663721d7119f",
+      "censusURI": "ipfs://Qmd5gWjB6mDGpZKkqR9CfM3E4KXkrWmnV6bM1C7icHs4BH",
+      "creationTime": "2021-03-09T08:51:30+01:00",
+      "endBlock": 7422,
+      "entityId": "9add080f390c01d6c8421f61aabf311bf5a1d839",
+      "envelopeType": {
+        "encryptedVotes": true
+      },
+      "finalResults": true,
+      "haveResults": true,
+      "namespace": 2,
+      "processId": "194451f33542975467c859966f05a6de9b60557e7184998774821389db74a68d",
+      "processMode": {
+        "autoStart": true,
+        "interruptible": true
+      },
+      "questionIndex": 0,
+      "startBlock": 6922,
+      "status": 2,
+      "voteOptions": {
+        "maxCount": 16,
+        "maxValue": 8
+      }
+    },
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+```
+
+
 ### Get Entity List
 
 Get a list of entities that created at least 1 process into the [Vochain](/architecture/services/vochain). 
@@ -448,6 +500,34 @@ The results of an election are represented in [the following format](/architectu
     "type": "poll-vote",
     "status": "RESULTS",
     "results": [ ["12", "2"], ["3", "11", "24"], ["0", "43"] ],
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+### Get Results Weight
+
+The results weight is the total amount of voting power that have been cast for a processId. 
+For a non-weighted processes the weight will be equal to the number of votes.
+This information can be real-time queried on encrypted elections too.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getResultsWeight",
+    "timestamp": 1556110671
+  }
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "request": "req-2345679",
+    "weight": 500,
     "timestamp": 1556110672
   },
   "signature": "hexString"
