@@ -22,6 +22,7 @@
   - Data schemes
     - [Entity metadata](/architecture/data-schemes/entity-metadata.md)
     - [Process](/architecture/data-schemes/process.md)
+    - [Ballot protocol](/architecture/data-schemes/ballot-protocol.md)
   - Protocol
     - [JSON API](/architecture/protocol/json-api.md)
     - [Franchise proof](/architecture/protocol/franchise-proof.md)

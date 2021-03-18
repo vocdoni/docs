@@ -161,7 +161,7 @@ Contains the actual votes and is part of the Vote Envelope.
 
 ## Results
 
-Requests to the Results API will return an Array of number arrays, following the Ballot Protocol. They will contain a bidimensional array of integers, aggregating the values currently stored on the Vochain.
+Requests to the Results API will return an Array of number arrays, following the [Ballot Protocol](/architecture/data-schemes/ballot-protocol). They will contain a bidimensional array of integers, aggregating the values currently stored on the Vochain.
 
 The interpretation of these values is left to the Client apps, and is determined by the `results.aggregation` and `results.display` fields of the Process Metadata, listed above.
 
@@ -228,4 +228,4 @@ Given diferent processes with various parameters, below is an example of the res
 
 ### Coming next
 
-See the [JSON API](/architecture/protocol/json-api) section.
+See the [Ballot Protocol](/architecture/data-schemes/ballot-protocol) section.
