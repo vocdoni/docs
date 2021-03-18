@@ -4,7 +4,7 @@ To see how a decentralized election works, let's see the sequence of actions tha
 
 ### Prior to voting
 
-- Vocdoni deploys the [smart contracts](https://gitlab.com/vocdoni/dvote-solidity#contracts) to Ethereum
+- Vocdoni deploys the [smart contracts](https://github.com/vocdoni/dvote-solidity#contracts) to Ethereum
 - The **organizer** registers an [Entity](/architecture/smart-contracts/entity-resolver) to the blockchain
 	- The metadata of the entity is pinned on IPFS
 	- The reference is declared on the ENS resolver of the entity

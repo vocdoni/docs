@@ -4,7 +4,7 @@
 
 The VocExplorer is a web frontend that allows any third party to query and observe the Vochain processes, votes, organizations, transactions, etc. If is developed in go using Vecty and Web Assembly. 
 
-- See [VocExplorer](https://gitlab.com/vocdoni/vocexplorer)
+- See [VocExplorer](https://github.com/vocdoni/vocexplorer)
 
 ## DVote JS
 

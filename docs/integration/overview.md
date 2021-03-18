@@ -16,5 +16,8 @@ See the [Registry backend](/integration-registry-backend) section for examples o
 
 We are working on further integration examples. Meanwhile, you can also check the example sections of the following libraries:
 
-- [DVote JS](https://gitlab.com/vocdoni/dvote-js/-/blob/master/example/index.ts)
-- [DVote Flutter](https://gitlab.com/vocdoni/dvote-flutter/-/tree/master/example/lib)
+- [DVote JS](https://github.com/vocdoni/dvote-js/blob/main/example/index.ts)
+    - [Standard process](https://github.com/vocdoni/dvote-js/blob/main/example/standard/index.ts)
+    - [CA process](https://github.com/vocdoni/dvote-js/blob/main/example/ca/index.ts)
+    - [ERC20 process](https://github.com/vocdoni/dvote-js/blob/main/example/bridge/index.ts)
+- [DVote Flutter](https://github.com/vocdoni/dvote-flutter/blob/main/example/lib)

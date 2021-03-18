@@ -111,7 +111,7 @@ Where:
 - `setCensus()`
     - With the appropriate flags, the creator can update the census for long lasting polls
 
-For more details, you can see the [implementation here](https://gitlab.com/vocdoni/dvote-solidity/raw/master/contracts/process.sol)
+For more details, you can see the [implementation here](https://github.com/vocdoni/dvote-solidity/blob/main/contracts/processes.sol)
 
 ### Getters
 
