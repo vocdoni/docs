@@ -517,6 +517,7 @@ This information can be real-time queried on encrypted elections too.
   "id": "req-2345679",
   "request": {
     "method": "getResultsWeight",
+    "processId": "hexString",
     "timestamp": 1556110671
   }
 }

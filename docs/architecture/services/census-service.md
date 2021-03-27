@@ -75,7 +75,7 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
     "censusId": "0x12345678/0x23456789", // where to add the claim (must already exist)
     "digested": false,  // is the key digested? the Gateway should do it if not
     "censusKey": "base64-string", // usually the public key in base64 or its hash, also in base64
-    "censusValue": "hexString", // usually the numeric weight (big num hex encoded). Can be empty (for non-weighted census)
+    "censusValue": "base64-string", // usually the numeric weight (big num). Can be empty (for non-weighted census)
     "timestamp": 1556110671
   },
   "signature": "hexString"
@@ -123,11 +123,11 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
         "base64-string-2",
         "base64-string-3"
     ],
-    "censusValues": [  // the weight hex-encoded big num. Can be empty (for non-weighted census)
-        "hexString-weight-1",
-        "hexString-weight-2",
-        "hexString-weight-3"
-    ],
+    "censusValues": [  // can be empty (for non-weighted census)
+        "base64-string-1",
+        "base64-string-2",
+        "base64-string-3"
+],
     "timestamp": 1556110671
   },
   "signature": "hexString"
