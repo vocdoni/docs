@@ -477,7 +477,7 @@ If the process has encrypted votes and it is on-going, `encryptionPubkeys` and `
 
 ### Get Process Results
 
-Get the results of the given processId, as indexed by the scrutinizer. If the process doesn't have encrypted votes but it has already started, then returns the **partial results**.
+Get the results of the given processId, as indexed by the scrutinizer. If the process doesn't have encrypted votes but it has already started, then returns the **partial results**. Only if `final` is true the results can be considered final.
 
 The results of an election are represented in [the following format](/architecture/smart-contracts/process?id=results).
 
@@ -499,6 +499,7 @@ The results of an election are represented in [the following format](/architectu
     "request": "req-2345679",
     "type": "poll-vote",
     "status": "RESULTS",
+    "final": "true",
     "results": [ ["12", "2"], ["3", "11", "24"], ["0", "43"] ],
     "timestamp": 1556110672
   },
