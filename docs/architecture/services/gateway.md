@@ -36,6 +36,7 @@ A Gateway exposes APIs that enable accesing peer-to-peer networks. The currently
 + `Census API` access to the Census Service
 + `Vote API` access to the Vochain methods for voting
 + `Results API` access to the Vochain methods for computing election results
++ `Indexer API` access to the Indexer methods for analyzing the Vochain
 + `File API` access to P2P file storage methods
 
 These APIs can be used by web and mobile clients using an HTTP/WS endpoint.
@@ -168,37 +169,6 @@ Check the status of an already submited [Vote Envelope](/architecture/smart-cont
 **Used in:**
 - [Checking a Vote Envelope](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-vote-envelope)
 
-### Get Envelope
-
-Get the content of an existing [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope). The envelope is identified by the nullifier.
-
-```json
-{
-  "id": "req-2345679",
-  "request": {
-    "method": "getEnvelope",
-    "processId": "hexString",
-    "nullifier": "hexString",
-    "timestamp": 1556110671
-  }
-}
-```
-
-```json
-{
-  "id": "req-2345679",
-  "response": {
-    "payload": "base64-data", // Payload of the enveolope in base64
-    "request": "req-2345679", 
-    "timestamp": 1556110672
-  },
-  "signature": "hexString"
-}
-```
-
-**Used in:**
-- [Checking a Vote Envelope](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-vote-envelope)
-
 ### Get Envelope Height
 
 Get the number of envelopes registered on a given process.
@@ -227,35 +197,6 @@ Get the number of envelopes registered on a given process.
 }
 ```
 
-### Get Block Status
-
-Get details about the current block and the average block time for the last 1m, 10m, 1h, 6h and 24h.
-
-```json
-{
-  "id": "req-12345678",
-  "request": {
-    "method": "getBlockStatus",
-    "timestamp": 1556110671
-  }
-}
-```
-
-```json
-{
-  "id": "req-2345679",
-  "response": {
-    "blockTime": [10000, 12000, 12200, 12500, 12600], // In milliseconds, average for 1 minute, 10m, 1h, 6h, 24h. If no average yet, values are 0
-    "blockTimestamp": 1556110672, // in seconds
-    "height": 12345,
-    "ok": true,
-    "request": "req-2345679",
-    "timestamp": 1556110672
-  },
-  "signature": "hexString"
-}
-```
-
 ### Get Block Height
 
 Get the current block number on the [Vochain](/architecture/services/vochain). 
@@ -277,159 +218,6 @@ Get the current block number on the [Vochain](/architecture/services/vochain).
     "blockTimestamp": 1556110672,
     "ok": true,
     "height": 12345,
-    "request": "req-2345679",
-    "timestamp": 1556110672
-  },
-  "signature": "hexString"
-}
-```
-
-### Get Process List
-
-Get a list of processes for a specific entity or namespace on the [Vochain](/architecture/services/vochain). There is a hardcoded maximum size of 64 per page. 
-
-The results are ordered from process creation date. So processes created recently will appear first on the list.
-
-The following query filters can be used:
-
-+ `from` can be used to seek specific positions and start from them. So if a call without `from` (`from = 0`) returns 64 values, a second call with `from = 64` will get the next 64 values.
-+ `namespace` can be used for querying only a specific namespace. The namespace zero (default value) means all existing namespaces.
-+ `entityId` can be used for retreiving the list of processes from a specific entity organization.
-+ `status` can be used for querying processes on a specific status (READY, PAUSED, CANCELED, ENDED or RESULTS).
-+ `withResults` bool filter can be used for quering only those processes that already have results (open process or finished with revealed keys).
-
-```json
-{
-  "id": "req-2345679",
-  "request": {
-    "method": "getProcessList",
-    "entityId": "hexString", // Optional
-    "namespace": int, // Optional
-    "status": "string", // Optional
-    "withResults": bool, // Optional
-    "from": int,  // Optional
-    "timestamp": 1556110671
-  }
-}
-```
-
-```json
-{
-  "id": "req-2345679",
-  "response": {
-    "processIds": ["hexString1","hexString2", ...], // List of process ID's
-    "request": "req-2345679",
-    "timestamp": 1556110672
-  },
-  "signature": "hexString"
-}
-```
-
-### Get Process Info
-
-Get the full information from an existing process.
-
-```json
-{
-  "id": "req-2345679",
-  "request": {
-    "method": "getProcessInfo",
-    "processId": "hexString",
-    "timestamp": 1556110671
-  }
-}
-```
-
-```json
-{
-  "id": "req-2345679",
-  "response": {
-    "processInfo": {
-      "censusOrigin": 1,
-      "censusRoot": "7bc6e95b3e4a4e6aedb67a4eef28cbdb5bea2a02398309453015663721d7119f",
-      "censusURI": "ipfs://Qmd5gWjB6mDGpZKkqR9CfM3E4KXkrWmnV6bM1C7icHs4BH",
-      "creationTime": "2021-03-09T08:51:30+01:00",
-      "endBlock": 7422,
-      "entityId": "9add080f390c01d6c8421f61aabf311bf5a1d839",
-      "envelopeType": {
-        "encryptedVotes": true
-      },
-      "finalResults": true,
-      "haveResults": true,
-      "namespace": 2,
-      "processId": "194451f33542975467c859966f05a6de9b60557e7184998774821389db74a68d",
-      "processMode": {
-        "autoStart": true,
-        "interruptible": true
-      },
-      "questionIndex": 0,
-      "startBlock": 6922,
-      "status": 2,
-      "voteOptions": {
-        "maxCount": 16,
-        "maxValue": 8
-      }
-    },
-    "request": "req-2345679",
-    "timestamp": 1556110672
-  },
-  "signature": "hexString"
-```
-
-
-### Get Entity List
-
-Get a list of entities that created at least 1 process into the [Vochain](/architecture/services/vochain). 
-
-The `from` field can be used to seek specific positions and start from them. So if a call without `from` (`from = 0`) returns 64 values, a second call with `from = 64` will get the next 64 values.
-
-```json
-{
-  "id": "req-2345679",
-  "request": {
-    "method": "getEntityList",
-    "from": int, // Optional
-    "timestamp": 1556110671
-  }
-}
-```
-
-```json
-{
-  "id": "req-2345679",
-  "response": {
-    "entityIds": ["hexString1","hexString2", ...], // List of entity ID's
-    "request": "req-2345679",
-    "timestamp": 1556110672
-  },
-  "signature": "hexString"
-}
-```
-
-
-### Get Envelope List
-
-Get a list of nullifiers for votes registered on a given process ID (at most, 64 per request).
-
-The `fromId` field works the same as in [Get Process List](#get-process-list).
-
-```json
-{
-  "id": "req-2345679",
-  "request": {
-    "method": "getEnvelopeList",
-    "processId": "hexString",
-    "fromId": "hexString",
-    "timestamp": 1556110671
-  }
-}
-```
-
-```json
-{
-  "id": "req-2345679",
-  "response": {
-    "nullifiers": ["hexString1","hexString2", ...], // List of nullifiers already processed by the blockchain
     "request": "req-2345679",
     "timestamp": 1556110672
   },
@@ -475,18 +263,15 @@ If the process has encrypted votes and it is on-going, `encryptionPubkeys` and `
 - [Checking a Vote Envelope](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-vote-envelope)
 
 
-### Get Process Results
+### Get Block Status
 
-Get the results of the given processId, as indexed by the scrutinizer. If the process doesn't have encrypted votes but it has already started, then returns the **partial results**. Only if `final` is true the results can be considered final.
-
-The results of an election are represented in [the following format](/architecture/smart-contracts/process?id=results).
+Get details about the current block and the average block time for the last 1m, 10m, 1h, 6h and 24h.
 
 ```json
 {
-  "id": "req-2345679",
+  "id": "req-12345678",
   "request": {
-    "method": "getResults",
-    "processId": "hexString",
+    "method": "getBlockStatus",
     "timestamp": 1556110671
   }
 }
@@ -496,54 +281,139 @@ The results of an election are represented in [the following format](/architectu
 {
   "id": "req-2345679",
   "response": {
+    "blockTime": [10000, 12000, 12200, 12500, 12600], // In milliseconds, average for 1 minute, 10m, 1h, 6h, 24h. If no average yet, values are 0
+    "blockTimestamp": 1556110672, // in seconds
+    "height": 12345,
+    "ok": true,
     "request": "req-2345679",
-    "type": "poll-vote",
-    "status": "RESULTS",
-    "final": "true",
-    "results": [ ["12", "2"], ["3", "11", "24"], ["0", "43"] ],
     "timestamp": 1556110672
   },
   "signature": "hexString"
 }
 ```
 
-### Get Results Weight
+## Results API
 
-The results weight is the total amount of voting power that have been cast for a processId. 
-For a non-weighted processes the weight will be equal to the number of votes.
-This information can be real-time queried on encrypted elections too.
+### Get Process List
+
+Get a list of processes for a specific entity or namespace on the [Vochain](/architecture/services/vochain). There is a hardcoded maximum size of 64 per page. 
+
+The results are ordered from process creation date. So processes created recently will appear first on the list.
+
+The following query filters can be used:
+
++ `entityId` can be used for retreiving the list of processes from a specific entity organization.
++ `from` can be used to seek specific positions and start from them. So if a call without `from` (`from = 0`) returns 64 values, a second call with `from = 64` will get the next 64 values.
++ `namespace` can be used for querying only a specific namespace. The namespace zero (default value) means all existing namespaces.
++ `searchTerm` can be used for querying a specific process ID or partial ID. 
++ `status` can be used for querying processes on a specific status (READY, PAUSED, CANCELED, ENDED or RESULTS).
++ `withResults` bool filter can be used for quering only those processes that already have results (open process or finished with revealed keys).
 
 ```json
 {
-  "id": "req-2345679",
   "request": {
-    "method": "getResultsWeight",
-    "processId": "hexString",
-    "timestamp": 1556110671
-  }
+    "entityId": "hexString",
+    "from": 8,
+    "listSize": 10,
+    "method": "getProcessList",
+    "namespace": 0,
+    "searchTerm": "hexString",
+    "status": "",
+    "timestamp": 1620066207,
+    "withResults": false
+  },
+  "id": "847",
 }
 ```
 
 ```json
 {
-  "id": "req-2345679",
   "response": {
-    "request": "req-2345679",
-    "weight": 500,
-    "timestamp": 1556110672
+    "ok": true,
+    "processList": [
+      "hexString",
+      "hexString",
+      "hexString",
+      "hexString",
+    ],
+    "request": "847",
+    "size": 10,
+    "timestamp": 1620066207
   },
+  "id": "847",
   "signature": "hexString"
 }
 ```
+
+### Get Process Info
+
+Get the full information from an existing process.
+
+
+```json
+{
+  "request": {
+    "method": "getProcessInfo",
+    "processId": "hexString",
+    "timestamp": 1620060163
+  },
+  "id": "410",
+}
+```
+
+```json
+{
+  "response": {
+    "ok": true,
+    "process": {
+      "censusOrigin": 11,
+      "censusRoot": "hexString",
+      "censusURI": "",
+      "creationTime": "2021-05-03T11:38:03-04:00",
+      "endBlock": 103991,
+      "entityId": "hexString",
+      "envelopeType": {
+        "encryptedVotes": true
+      },
+      "finalResults": false,
+      "haveResults": false,
+      "namespace": 2,
+      "processId": "hexString",
+      "processMode": {
+        "autoStart": true
+      },
+      "questionIndex": 0,
+      "startBlock": 26464,
+      "status": 1,
+      "voteOptions": {
+        "costExponent": 10000,
+        "maxCount": 1,
+        "maxValue": 2,
+        "maxVoteOverwrites": 1
+      }
+    },
+    "request": "410",
+    "timestamp": 1620060163
+  },
+  "id": "410",
+  "signature": "hexString"
+}
+```
+
 
 ### Get Process Count
 
-Returns the number of processes registered in the Vochain.
+Returns the number of processes registered on the [Vochain](/architecture/services/vochain).
+
+The following query filters can be used:
+
++ `entityId` can be used for retreiving the number of processes registered by a specific entity organization.
 
 ```json
 {
   "id": "req-2345679",
   "request": {
+    "entityId": "hexString",
     "method": "getProcessCount",
     "timestamp": 1556110671
   }
@@ -562,9 +432,132 @@ Returns the number of processes registered in the Vochain.
 }
 ```
 
+
+### Get Process Results
+
+Get the results of the given processId, as indexed by the scrutinizer. If the process doesn't have encrypted votes but it has already started, then the gateway returns the **partial results**. The results can only be considered final if `final` is true.
+
+The results of an election are represented in [the following format](/architecture/smart-contracts/process?id=results).
+
+```json
+{
+  "request": {
+    "method": "getResults",
+    "processId": "hexString",
+    "timestamp": 1620076071
+  },
+  "id": "235",
+}
+```
+
+```json
+{
+  "response": {
+    "final": false,
+    "height": 4,
+    "ok": true,
+    "request": "235",
+    "results": [
+      [
+        "0",
+        "2",
+        "2",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "4"
+      ]
+    ],
+    "state": "READY",
+    "timestamp": 1620076071,
+    "type": "poll open single",
+    "weight": "4"
+  },
+  "id": "235",
+  "signature": "hexString"
+}
+```
+
+
+### Get Results Weight
+
+The results weight is the total amount of voting power that have been cast for a processId. 
+For a non-weighted process the weight will be equal to the number of votes.
+This information can be queried in real-time on encrypted elections too.
+
+```json
+{
+  "request": {
+    "method": "getResultsWeight",
+    "processId": "hexString",
+    "timestamp": 1620076071
+  },
+  "id": "236",
+}
+```
+
+```json
+{
+  "response": {
+    "weight": "4"
+  },
+  "id": "236",
+  "signature": "hexString"
+}
+```
+
+
+
+### Get Entity List
+
+Get a list of entities that created at least 1 process on the [Vochain](/architecture/services/vochain). 
+
+The `from` field can be used to seek specific positions and start from them. So if a call without `from` (`from = 0`) returns 64 values, a second call with `from = 64` will get the next 64 values.
+
+The following query filters can be used:
+
++ `searchTerm` can be used for querying a specific entity ID or partial ID. 
+
+
+```json
+{
+  "request": {
+    "from": 0,
+    "listSize": 6,
+    "method": "getEntityList",
+    "searchTerm": "hexString",
+    "timestamp": 1620075711
+  },
+  "id": "511",
+}
+```
+
+```json
+{
+  "response": {
+    "entityIds": [
+      "hexString",
+      "hexString",
+      "hexString",
+      "hexString",
+      "hexString",
+      "hexString"
+    ],
+    "ok": true,
+    "request": "511",
+    "timestamp": 1620075711
+  },
+  "id": "511",
+  "signature": "hexString"
+}
+```
+
 ### Get Entity Count
 
-Returns the number of entities registered in the Vochain (those that have at least created one process).
+Returns the number of entities registered on the [Vochain](/architecture/services/vochain) (those that have created at least one process).
 
 ```json
 {
@@ -588,199 +581,396 @@ Returns the number of entities registered in the Vochain (those that have at lea
 }
 ```
 
+### Get Envelope
 
-
-## File API
-
-### Fetch File
-
-Fetch a file from the P2P network (currently IPFS) and return it encoded in base 64.
+Get the content of an existing [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope). The envelope is identified by the nullifier. `height` and `txIndex` refer to the block height and the index on that block, respectively, of the transaction containing this vote envelope. These fields can be used with [Get Tx](/architecture/services/gateway?id=get-tx) to fetch this transaction.
 
 ```json
 {
-  "id": "req-2345679",
   "request": {
-    "method": "fetchFile",
-    "uri": "<content uri>",
-    "timestamp": 1556110671
+    "method": "getEnvelope",
+    "nullifier": "hexString",
+    "timestamp": 1620074081
   },
-  "signature": "hexString"
+  "id": "81",
 }
 ```
 
 ```json
 {
-  "id": "req-2345679",
   "response": {
-    "content": "base64Payload",  // The contents of the file
-    "request": "req-2345679",
-    "timestamp": 1556110672
+    "envelope": {
+      "encryption_key_indexes": null,
+      "meta": {
+        "height": 357,
+        "nullifier": "hexString",
+        "process_id": "hexString",
+        "tx_hash": "hexString",
+        "tx_index": 0
+      },
+      "nonce": "hexString",
+      "signature": "hexString",
+      "vote_package": "base64String",
+      "weight": "1"
+    },
+    "ok": true,
+    "registered": true,
+    "request": "81",
+    "timestamp": 1620225283
   },
+  "id": "81",
   "signature": "hexString"
 }
 ```
-  
-**Used in:**
-- [Entity subscription](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=entity-subscription)
-- [Voting process retrieval](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=voting-process-retrieval)
-- [Vote scrutiny](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=vote-scrutiny)
 
-**Related:**
-- [Content URI](/architecture/protocol/data-origins?id=content-uri)
+## Indexer API
 
+### Get Stats
 
-### Add File
-
-Uploads a file and pins it on an IPFS cluster. This private method is aimed to be used by the election organizer. The Gateway running the API is usually a private server, only used by entity admins.
-
-These methods require authentication, following the [JSON API rules](/architecture/protocol/json-api?id=Authentication).
+Get general information & statistics about the current [Vochain](/architecture/services/vochain) status. 
 
 ```json
 {
-  "id": "req-2345679",
   "request": {
-    "method": "addFile",
-    "type": "ipfs",
-    "content": "base64Payload",  // File contents
-    "name": "string",            // Human readable name to help identify the content in the future
-    "timestamp": 1556110671
+    "method": "getStats",
+    "timestamp": 1620059835
   },
-  "signature": "hexString"
+  "id": "887",
 }
 ```
 
 ```json
 {
-  "id": "req-2345679",
   "response": {
-    "uri": "<content uri>",
-    "request": "req-2345679",
-    "timestamp": 1556110672
+    "ok": true,
+    "request": "887",
+    "stats": {
+      "block_height": 26680,
+      "block_time": [
+        10000,
+        11000,
+        10000,
+        10000,
+        10000
+      ],
+      "block_time_stamp": 1620059824,
+      "chain_id": "vocdoni-development-39",
+      "entity_count": 9,
+      "envelope_count": 602,
+      "genesis_time_stamp": "2021-04-30T11:43:28.668436552Z",
+      "process_count": 19,
+      "syncing": false,
+      "validator_count": 4
+    },
+    "timestamp": 1620059835
   },
+  "id": "887",
   "signature": "hexString"
-  
 }
+
 ```
 
-**Used in:**
-- [Set Entity metadata](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=set-entity-metadata)
-- [Voting process creation](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=voting-process-creation)
 
-**Related:**
-- [Content URI](/architecture/protocol/data-origins?id=content-uri)
+### Get Envelope List
+Get a list of nullifiers for votes registered on a given process ID (at most, 64 per request).
 
-### List pinned files
-
-This method provides private Gateway users with the list of resources that have been pinned on IPFS.
+The `fromId` field works the same as in [Get Process List](#get-process-list).
 
 ```json
 {
-  "id": "req-2345679",
   "request": {
-    "method": "pinList",
-    "timestamp": 1556110671
+    "from": 1,
+    "listSize": 3,
+    "method": "getEnvelopeList",
+    "processId": "hexString",
+    "timestamp": 1620067128
   },
-  "signature": "hexString"
+  "id": "356",
 }
 ```
 
 ```json
 {
-  "id": "req-2345679",
   "response": {
-    "files": [
-      { "name": "file1.txt", "uri": "<content-uri>" },
-      { "name": "file2.png", "uri": "<content-uri>" },
-      { "name": "file3.bin", "uri": "<content-uri>" },
-      ...
+    "envelopes": [
+      {
+        "height": 357,
+        "nullifier": "hexString",
+        "process_id": "hexString",
+        "tx_hash": "hexString",
+        "tx_index": 0
+      },
+      {
+        "height": 359,
+        "nullifier": "hexString",
+        "process_id": "hexString",
+        "tx_hash": "hexString",
+        "tx_index": 0
+      },
+      {
+        "height": 306,
+        "nullifier": "hexString",
+        "process_id": "hexString",
+        "tx_hash": "hexString",
+        "tx_index": 0
+      }
     ],
-    "request": "req-2345679",
-    "timestamp": 1556110672
+    "ok": true,
+    "request": "356",
+    "timestamp": 1620222421
   },
+  "id": "356",
   "signature": "hexString"
 }
 ```
 
-**Related:**
-- [Content URI](/architecture/protocol/data-origins?id=content-uri)
 
-### Pin a file
+### Get Block
 
-This method allows administrators to pin already existing remote content, so it remains available on IPFS.
+Get the metadata for a single block on the [Vochain](/architecture/services/vochain) by its height. `num_txs` contains the number of transactions contained in this block. In order to access these transactions (the contents of the block), use [Get Tx List for Block](/architecture/services/gateway?id=get-tx-list-for-block).
 
 ```json
 {
-  "id": "req-2345679",
   "request": {
-    "method": "pinFile",
-    "uri": "<content-uri>", // Multiple origins can be pinned at once
-    "timestamp": 1556110671
+    "blockHeight": 24061,
+    "method": "getBlock",
+    "timestamp": 1620661000
   },
+  "id": "561",
+}
+```
+
+```json
+{
+  "response": {
+    "block": {
+      "chain_id": "vocdoni-development-42",
+      "hash": "hexString",
+      "height": 24061,
+      "last_block_hash": "hexString",
+      "num_txs": 0,
+      "proposer_address": "hexString",
+      "timestamp": "2021-05-10T15:37:50.477536778Z"
+    },
+    "ok": true,
+    "request": "561",
+    "timestamp": 1620661094
+  },
+  "id": "561",
   "signature": "hexString"
 }
 ```
+
+### Get Block By Hash
+
+Get the metadata for a single block on the [Vochain](/architecture/services/vochain) by its hash. `num_txs` contains the number of transactions contained in this block. In order to access these transactions (the contents of the block), use [Get Tx List for Block](/architecture/services/gateway?id=get-tx-list-for-block).
+
 ```json
 {
-  "id": "req-2345679",
+  "request": {
+    "payload": "hexString",
+    "method": "getBlockByHash",
+    "timestamp": 1620661000
+  },
+  "id": "561",
+}
+```
+
+```json
+{
+  "response": {
+    "block": {
+      "chain_id": "vocdoni-development-42",
+      "hash": "hexString",
+      "height": 24061,
+      "last_block_hash": "hexString",
+      "num_txs": 0,
+      "proposer_address": "hexString",
+      "timestamp": "2021-05-10T15:37:50.477536778Z"
+    },
+    "ok": true,
+    "request": "561",
+    "timestamp": 1620661094
+  },
+  "id": "561",
+  "signature": "hexString"
+}
+```
+
+### Get Block List
+
+Get a list of confirmed blocks on the [Vochain](/architecture/services/vochain) (at most, 64 per request).
+
+The `fromId` field works the same as in [Get Process List](#get-process-list).
+
+```json
+{
+  "request": {
+    "from": 24031,
+    "listSize": 2,
+    "method": "getBlockList",
+    "timestamp": 1620660800
+  },
+  "id": "847",
+}
+```
+
+```json
+{
+  "response": {
+    "blockList": [
+      {
+        "chain_id": "vocdoni-development-42",
+        "hash": "hexString",
+        "height": 24031,
+        "last_block_hash": "hexString",
+        "num_txs": 0,
+        "proposer_address": "hexString",
+        "timestamp": "2021-05-10T15:32:40.122987363Z"
+      },
+      {
+        "chain_id": "vocdoni-development-42",
+        "hash": "hexString",
+        "height": 24032,
+        "last_block_hash": "hexString",
+        "num_txs": 1,
+        "proposer_address": "hexString",
+        "timestamp": "2021-05-10T15:32:50.540679299Z"
+      },
+
+    ],
+    "ok": true,
+    "request": "847",
+    "timestamp": 1620660882
+  },
+  "id": "847",
+  "signature": "hexString"
+}
+```
+
+### Get Tx
+
+Get a single tx from the [Vochain](/architecture/services/vochain). `blockHeight` is the block containing a transaction and `txIndex` in the transaction's index on that block. 
+
+```json
+{
+  "request": {
+    "blockHeight": 27522,
+    "method": "getTx",
+    "timestamp": 1620068626,
+    "txIndex": 27522,
+  },
+  "id": "632",
+}
+```
+
+```json
+{
   "response": {
     "ok": true,
-    "request": "req-2345679",
-    "timestamp": 1556110672
+    "request": "632",
+    "timestamp": 1620068626,
+    "tx": {
+      "BlockHeight": 27522,
+      "Hash": "hexString",
+      "Index": 0,
+      "Tx": "base64String",
+    }
   },
+  "id": "632",
   "signature": "hexString"
 }
 ```
 
+### Get Validator List
 
-### Unpin a file
-
-This method is the counterpart of `pin` and `addFile`. It allows administrators to unpin and drop content from a Gateway so it doesn't eventually run out of space.
-
+Get the list of all addresses currently validating blocks on the [Vochain](/architecture/services/vochain). 
 
 ```json
 {
-  "id": "req-2345679",
   "request": {
-    "method": "unpinFile",
-    "uri": "<content-uri>",  // Multiple origins can be unpinned at once
-    "timestamp": 1556110671
+    "method": "getValidatorList",
+    "timestamp": 1620059997
   },
-  "signature": "hexString"
+  "id": "199",
 }
 ```
+
 ```json
 {
-  "id": "req-2345679",
   "response": {
     "ok": true,
-    "request": "req-2345679",
-    "timestamp": 1556110672
+    "request": "199",
+    "timestamp": 1620059998,
+    "validatorlist": [
+      {
+        "address": "base64string",
+        "power": 10,
+        "pubKey": "base64string"
+      },
+      {
+        "address": "base64string",
+        "power": 10,
+        "pubKey": "base64string"
+      },
+      {
+        "address": "base64string",
+        "power": 10,
+        "pubKey": "base64string"
+      },
+      {
+        "address": "base64string",
+        "power": 10,
+        "pubKey": "base64string"
+      }
+    ]
   },
+  "id": "199",
   "signature": "hexString"
 }
 ```
 
-**Related:**
-- [Content URI](/architecture/protocol/data-origins?id=content-uri)
 
-## Health Status
+### Get Tx List For Block
 
-The health of a DVote Gateway can be checked quite simply:
+Get a list of transactions contained in the given block (at most, 64 per request).
 
-- Request:
-  - `HTTP GET https://<host-name>/ping`
-- Response:
-  - `HTTP 200` with the text `"pong"` in the body
+The `fromId` field works the same as in [Get Process List](#get-process-list).
 
-Example:
-
-```sh
-$ curl https://my.gateway.net/ping
-pong
+```json
+{
+  "request": {
+    "blockHeight": 27522,
+    "listSize": 1,
+    "method": "getTxListForBlock",
+    "timestamp": 1620070701
+  },
+  "id": "887",
+}
 ```
 
-Clients should check the status before attempting to use a certain Gateway. 
-
-### Coming next
-
-See the [Vochain](/architecture/services/vochain) section.
+```json
+{
+  "response": {
+    "ok": true,
+    "request": "887",
+    "timestamp": 1620070701,
+    "txList": [
+      {
+        "BlockHeight": 27522,
+        "Hash": "hexString",
+        "Index": 0,
+        "Tx": "base64String"
+      },
+      {
+        "BlockHeight": 27522,
+        "Hash": "hexString",
+        "Index": 1,
+        "Tx": "base64String"
+      }
+    ]
+  },
+  "id": "887",
+  "signature": "hexString"
+}
+```
