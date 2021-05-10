@@ -858,7 +858,7 @@ Get a single tx from the [Vochain](/architecture/services/vochain). `blockHeight
     "blockHeight": 27522,
     "method": "getTx",
     "timestamp": 1620068626,
-    "txIndex": 27522,
+    "txIndex": 2,
   },
   "id": "632",
 }
@@ -873,7 +873,7 @@ Get a single tx from the [Vochain](/architecture/services/vochain). `blockHeight
     "tx": {
       "BlockHeight": 27522,
       "Hash": "hexString",
-      "Index": 0,
+      "Index": 2,
       "Tx": "base64String",
     }
   },
