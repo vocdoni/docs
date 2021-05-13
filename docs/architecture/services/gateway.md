@@ -383,6 +383,7 @@ Get the full information from an existing process.
         "autoStart": true
       },
       "questionIndex": 0,
+      "sourceBlockHeight": 812000,
       "startBlock": 26464,
       "status": 1,
       "voteOptions": {
@@ -744,9 +745,7 @@ Get the metadata for a single block on the [Vochain](/architecture/services/voch
 {
   "response": {
     "block": {
-      "chain_id": "vocdoni-development-42",
       "hash": "hexString",
-      "height": 24061,
       "last_block_hash": "hexString",
       "num_txs": 0,
       "proposer_address": "hexString",
@@ -768,7 +767,7 @@ Get the metadata for a single block on the [Vochain](/architecture/services/voch
 ```json
 {
   "request": {
-    "payload": "hexString",
+    "hash": "hexString",
     "method": "getBlockByHash",
     "timestamp": 1620661000
   },
@@ -780,8 +779,6 @@ Get the metadata for a single block on the [Vochain](/architecture/services/voch
 {
   "response": {
     "block": {
-      "chain_id": "vocdoni-development-42",
-      "hash": "hexString",
       "height": 24061,
       "last_block_hash": "hexString",
       "num_txs": 0,
@@ -820,7 +817,6 @@ The `fromId` field works the same as in [Get Process List](#get-process-list).
   "response": {
     "blockList": [
       {
-        "chain_id": "vocdoni-development-42",
         "hash": "hexString",
         "height": 24031,
         "last_block_hash": "hexString",
@@ -829,7 +825,6 @@ The `fromId` field works the same as in [Get Process List](#get-process-list).
         "timestamp": "2021-05-10T15:32:40.122987363Z"
       },
       {
-        "chain_id": "vocdoni-development-42",
         "hash": "hexString",
         "height": 24032,
         "last_block_hash": "hexString",
@@ -871,9 +866,9 @@ Get a single tx from the [Vochain](/architecture/services/vochain). `blockHeight
     "request": "632",
     "timestamp": 1620068626,
     "tx": {
-      "BlockHeight": 27522,
       "Hash": "hexString",
       "Index": 2,
+      "Signature": "hexString",
       "Tx": "base64String",
     }
   },
@@ -957,16 +952,14 @@ The `fromId` field works the same as in [Get Process List](#get-process-list).
     "timestamp": 1620070701,
     "txList": [
       {
-        "BlockHeight": 27522,
         "Hash": "hexString",
         "Index": 0,
-        "Tx": "base64String"
+        "Type": "vote"
       },
       {
-        "BlockHeight": 27522,
         "Hash": "hexString",
         "Index": 1,
-        "Tx": "base64String"
+        "Type": "vote"
       }
     ]
   },
