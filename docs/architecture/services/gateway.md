@@ -733,7 +733,7 @@ Get the metadata for a single block on the [Vochain](/architecture/services/voch
 ```json
 {
   "request": {
-    "blockHeight": 24061,
+    "height": 24061,
     "method": "getBlock",
     "timestamp": 1620661000
   },
@@ -845,12 +845,12 @@ The `fromId` field works the same as in [Get Process List](#get-process-list).
 
 ### Get Tx
 
-Get a single tx from the [Vochain](/architecture/services/vochain). `blockHeight` is the block containing a transaction and `txIndex` in the transaction's index on that block. 
+Get a single tx from the [Vochain](/architecture/services/vochain). `height` is the block containing a transaction and `txIndex` in the transaction's index on that block. 
 
 ```json
 {
   "request": {
-    "blockHeight": 27522,
+    "height": 27522,
     "method": "getTx",
     "timestamp": 1620068626,
     "txIndex": 2,
@@ -935,7 +935,7 @@ The `fromId` field works the same as in [Get Process List](#get-process-list).
 ```json
 {
   "request": {
-    "blockHeight": 27522,
+    "height": 27522,
     "listSize": 1,
     "method": "getTxListForBlock",
     "timestamp": 1620070701
