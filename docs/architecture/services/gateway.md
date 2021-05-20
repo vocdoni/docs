@@ -369,18 +369,26 @@ Get the full information from an existing process.
       "censusOrigin": 11,
       "censusRoot": "hexString",
       "censusURI": "",
+      "metadata": "ipfs://QmTtSkt9BQyXhCAAThG6JgdQcCdSJXKRVzoeQz6mjusTZ6",
       "creationTime": "2021-05-03T11:38:03-04:00",
       "endBlock": 103991,
       "entityId": "hexString",
       "envelopeType": {
-        "encryptedVotes": true
+        "encryptedVotes": true,
+        "serial": false,
+	      "anonymous": false,
+	      "uniqueValues": false,
+	      "costFromWeight": false
       },
       "finalResults": false,
       "haveResults": false,
       "namespace": 2,
       "processId": "hexString",
       "processMode": {
-        "autoStart": true
+        "autoStart": true,
+        "interruptible": false,
+	      "dynamicCensus": false,
+	      "encryptedMetaData": false
       },
       "questionIndex": 0,
       "sourceBlockHeight": 812000,
@@ -390,7 +398,8 @@ Get the full information from an existing process.
         "costExponent": 10000,
         "maxCount": 1,
         "maxValue": 2,
-        "maxVoteOverwrites": 1
+        "maxVoteOverwrites": 1,
+        "maxTotalCost": 4
       }
     },
     "request": "410",
