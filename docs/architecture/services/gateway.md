@@ -410,6 +410,38 @@ Get the full information from an existing process.
 }
 ```
 
+### Get Process Meta
+
+Get minimal metadata for the given process.
+
+
+```json
+{
+  "request": {
+    "method": "getProcessMeta",
+    "processId": "hexString",
+    "timestamp": 1620098163
+  },
+  "id": "490",
+}
+```
+
+```json
+{
+  "response": {
+    "entityId": "hexString",
+    "height": 14241,
+    "ok": true,
+    "request": "490",
+    "state": "ENDED",
+    "timestamp": 1620099123,
+    "type": "poll encrypted single"
+  },
+  "id": "490",
+  "signature": "hexString"
+}
+```
+
 
 ### Get Process Count
 
