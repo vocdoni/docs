@@ -377,6 +377,7 @@ Get the full information from an existing process.
       "creationTime": "2021-05-03T11:38:03-04:00",
       "endBlock": 103991,
       "entityId": "hexString",
+      "entityIndex": 5,
       "envelopeType": {
         "encryptedVotes": true,
         "serial": false,
