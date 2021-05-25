@@ -305,6 +305,9 @@ The following query filters can be used:
 + `entityId` can be used for retreiving the list of processes from a specific entity organization.
 + `from` can be used to seek specific positions and start from them. So if a call without `from` (`from = 0`) returns 64 values, a second call with `from = 64` will get the next 64 values.
 + `namespace` can be used for querying only a specific namespace. The namespace zero (default value) means all existing namespaces.
++ `sourceNetworkId` can be used for querying only a specific network origin (where the process has been created). Current possible values are:
+	UNKNOWN, ETH_MAINNET, ETH_RINKEBY, ETH_GOERLI, POA_XDAI, POA_SOKOL, POLYGON, BSC, ETH_MAINNET_SIGNALING, ETH_RINKEBY_SIGNALING
+  An empty string is also allowed (means no filter).
 + `searchTerm` can be used for querying a specific process ID or partial ID. 
 + `status` can be used for querying processes on a specific status (READY, PAUSED, CANCELED, ENDED or RESULTS).
 + `withResults` bool filter can be used for quering only those processes that already have results (open process or finished with revealed keys).
@@ -317,6 +320,7 @@ The following query filters can be used:
     "listSize": 10,
     "method": "getProcessList",
     "namespace": 0,
+    "sourceNetworkId": "ETH_MAINNET",
     "searchTerm": "hexString",
     "status": "",
     "timestamp": 1620066207,
@@ -383,6 +387,7 @@ Get the full information from an existing process.
       "finalResults": false,
       "haveResults": false,
       "namespace": 2,
+      "sourceNetworkId": "ETH_RINKEBY",
       "processId": "hexString",
       "processMode": {
         "autoStart": true,
