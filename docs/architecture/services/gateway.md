@@ -426,9 +426,9 @@ Get a minimal summary for the given process.
   "request": {
     "method": "getProcessSummary",
     "processId": "hexString",
-    "timestamp": 1621995284
+    "timestamp": 1622039347
   },
-  "id": "540",
+  "id": "59",
   "signature": "hexString"
 }
 ```
@@ -436,26 +436,29 @@ Get a minimal summary for the given process.
 ```json
 {
   "response": {
-    "blockCount": 4205,
-    "entityId": "hexString",
-    "entityIndex": 2,
-    "height": 1,
     "ok": true,
-    "request": "540",
-    "sourceNetworkID": "UNKNOWN",
-    "startBlock": 64367,
-    "status": "RESULTS",
-    "timestamp": 1621995490,
-    "type": {
-      "anonymous": true,
-      "encrypted": true,
-      "costFromWeight": true,
-      "serial": true,
-      "uniqueValues": true
-    }
-  },
-  "id": "540",
-  "signature": "hexString"
+    "processSummary": {
+      "blockCount": 500,
+      "entityId": "hexString",
+      "entityIndex": 1,
+      "metadata": "ipfs://...",
+      "envelopeHeight": 41156,
+      "envelopeType": {
+        "anonymous": true,
+        "encrypted": true,
+        "costFromWeight": true,
+        "serial": true,
+        "uniqueValues": true
+      },
+      "sourceNetworkID": "UNKNOWN",
+      "startBlock": 82326,
+      "state": "RESULTS",
+    },
+    "request": "59",
+    "timestamp": 1622039356
+  }
+  "id": "59",
+  "signature": "776ee4eaeed05dd840c43e81d73422379d8d2ab583889afb16a5f5fd240cfd6a175d4a9595057402f98a457e2aabb7d9cdf3cc507c7ebce927a629935568170300"
 }
 ```
 
