@@ -416,34 +416,45 @@ Get the full information from an existing process.
 }
 ```
 
-### Get Process Meta
+### Get Process Summary
 
-Get minimal metadata for the given process.
+Get a minimal summary for the given process.
 
 
 ```json
 {
   "request": {
-    "method": "getProcessMeta",
+    "method": "getProcessSummary",
     "processId": "hexString",
-    "timestamp": 1620098163
+    "timestamp": 1621995284
   },
-  "id": "490",
+  "id": "540",
+  "signature": "hexString"
 }
 ```
 
 ```json
 {
   "response": {
+    "blockCount": 4205,
     "entityId": "hexString",
-    "height": 14241,
+    "entityIndex": 2,
+    "height": 1,
     "ok": true,
-    "request": "490",
-    "state": "ENDED",
-    "timestamp": 1620099123,
-    "type": "poll encrypted single"
+    "request": "540",
+    "sourceNetworkID": "UNKNOWN",
+    "startBlock": 64367,
+    "status": "RESULTS",
+    "timestamp": 1621995490,
+    "type": {
+      "anonymous": true,
+      "encrypted": true,
+      "costFromWeight": true,
+      "serial": true,
+      "uniqueValues": true
+    }
   },
-  "id": "490",
+  "id": "540",
   "signature": "hexString"
 }
 ```
