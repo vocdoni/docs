@@ -1028,3 +1028,153 @@ The `fromId` field works the same as in [Get Process List](#get-process-list).
   "signature": "hexString"
 }
 ```
+
+## Using the API (for beginners)
+
+If you don't have experience using a [JSON API](/architecture/protocol/json-api), let's run through an example. Here we'll be using [curl](https://linux.die.net/man/1/curl) to make requests to https://gw1.vocdoni.net, one of the gateways hosted by Vocdoni.
+
+Open a terminal emulator and run the following command:
+
+```bash
+curl https://gw1.vocdoni.net/dvote -X POST -H Content-Type:application/json --data '{"id": "req00'$RANDOM'", "request": {"method": "getInfo", "timestamp":'$(date +%s)'}}'
+```
+
+you should see a response:
+```json
+{
+  "response": {
+    "apiList": [
+      "file",
+      "vote",
+      "results",
+      "indexer"
+    ],
+    "health": 77,
+    "ok": true,
+    "request": "req0015529",
+    "timestamp": 1623410118
+  },
+  "id": "req0015529",
+  "signature": "a80f11f32190c5ae55ac6ed1494daf7fc570baa2d275403e6d497455d4a513e37ac42dbbee7e16ae38ce55850756038e7d88822d4bcdec00d6b2047601610ba301"
+}
+```
+
+now we know that the gateway hosted at gw1.vocdoni.net enables the file, [vote](/architecture/services/gateway?id=vote-api), [results](/architecture/services/gateway?id=results-api), and [indexer](/architecture/services/gateway?id=indexer-api) apis. 
+
+Let's do some simple requests to learn more about the state of the Vochain.
+
+```bash
+curl https://gw1.vocdoni.net/dvote -X POST -H Content-Type:application/json --data '{"id": "req00'$RANDOM'", "request": {"method": "getStats", "timestamp":'$(date +%s)'}}'
+```
+
+```json
+{
+  "response": {
+    "ok": true,
+    "request": "req005711",
+    "stats": {
+      "block_height": 216810,
+      "block_time": [
+        12000,
+        11764,
+        11920,
+        11900,
+        11912
+      ],
+      "block_time_stamp": 1623417292,
+      "chain_id": "vocdoni-release-1.0.1",
+      "entity_count": 73,
+      "envelope_count": 1804,
+      "genesis_time_stamp": "2021-05-12T12:38:33.672114557Z",
+      "process_count": 202,
+      "syncing": false,
+      "validator_count": 5
+    },
+    "timestamp": 1623417311
+  },
+  "id": "req005711",
+  "signature": "e91bd3394104b416a2cacd9bf0f47d36e7e17a53edef072105f477c85bbbb9642865350182758e723048eb4c4c36a6e49844e99da3428933a5ec0384e87909f201"
+}
+```
+
+we know there are 73 entities. Let's list the first 10:
+
+```bash
+curl https://gw1.vocdoni.net/dvote -X POST -H Content-Type:application/json --data '{"id": "req00'$RANDOM'", "request": {"method": "getEntityList", "from": 0, "listSize": 10, "timestamp":'$(date +%s)'}}'
+```
+
+```json
+{
+  "response": {
+    "entityIds": [
+      "6b175474e89094c44da98b954eedeac495271d0f",
+      "a117000000f279d81a1d3cc75430faa017fa5a2e",
+      "c02f9e6f32841d1d827b5a4d4a4f1762fddeca8f",
+      "df329aaf25131e47dc33c0bec24d5be1987cc821",
+      "ba5dbe351ef455b876d9faff3286dc60bf2a0b74",
+      "8a77ba9ec4c9fbb2adb9ccdf73f5cfab54986607",
+      "0924e2baa477d3b3ec1668369337bf574a4190d4",
+      "4564c9bc8db2f83a6c448ee542d2cef6c24c69ff",
+      "f7306afac9abf11ec49dc30e2a9a2cfe5cb76c5a",
+      "d41665e0f8b8b6b2e076723e05850a443660566d"
+    ],
+    "ok": true,
+    "request": "req0026064",
+    "timestamp": 1623419048
+  },
+  "id": "req0026064",
+  "signature": "1ec2daddbc811f19bef08eaf5d922e0d8c030ee4e12d4cf888b82744899731d333831fb0ed5c804757f373b064be7451833e268056d5ef7e6534760bf2cd652a00"
+}
+```
+
+Now let's see the list of processes started by the first entity:
+
+```bash
+curl https://gw1.vocdoni.net/dvote -X POST -H Content-Type:application/json --data '{"id": "req00'$RANDOM'", "request": {"method": "getProcessList", "from": 0, "listSize": 64, "entityID": "6b175474e89094c44da98b954eedeac495271d0f", "timestamp":'$(date +%s)'}}'
+```
+
+```json
+{
+  "response": {
+    "ok": true,
+    "processList": [
+      "b21982b7a69d0a8b1e6645afbe12c9dec42703cd994f9b02bd8922a921325d15"
+    ],
+    "request": "req007487",
+    "size": 1,
+    "timestamp": 1623418108
+  },
+  "id": "req007487",
+  "signature": "c9fdf2faf545d1d4e669b4a61bb6165a33258df6c3033913002f4924aa3e5ba83157202639cf8508a0e80aee1ee44976a8a7ab174e2ff546cf71e4bcd6e5cb7001"
+}
+```
+
+And finally, let's get the details of this process:
+
+```bash
+curl https://gw1.vocdoni.net/dvote -X POST -H Content-Type:application/json --data '{"id": "req00'$RANDOM'", "request": {"method": "getProcessSummary", "processID": "b21982b7a69d0a8b1e6645afbe12c9dec42703cd994f9b02bd8922a921325d15", "timestamp":'$(date +%s)'}}'
+```
+
+```json
+{
+  "response": {
+    "ok": true,
+    "processSummary": {
+      "blockCount": 50738,
+      "entityId": "6b175474e89094c44da98b954eedeac495271d0f",
+      "entityIndex": 1,
+      "envelopeHeight": 0,
+      "envelopeType": {},
+      "sourceNetworkID": "UNKNOWN",
+      "startBlock": 15593,
+      "state": "RESULTS"
+    },
+    "request": "req009439",
+    "timestamp": 1623418186
+  },
+  "id": "req009439",
+  "signature": "b188b512c46446a8b23d1fc0dffd585076d8745c799a377db71bb63ff8aab1090d42df2d4fdef9f0ee6e736e38475b4babcf65dbe956fafcd3ffee163d44a27e01"
+}
+```
+
+Hopefully now you have a rough idea of how to use the Gateway APIs. 
