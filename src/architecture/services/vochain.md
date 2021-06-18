@@ -1,8 +1,8 @@
 # Vochain
 
-Vochain is a *Proof-of-Authorithy* blockchain network that uses [Tendermint](https://tendermint.com/) as its consensus algorithm. The main purpose of Vochain is to register polls, votes, and backing processes in a decentralized and verifiable way.
+Vochain is a *Proof-of-Authority* blockchain network that uses [Tendermint](https://tendermint.com/) as its consensus algorithm. The main purpose of Vochain is to register polls, votes, and backing processes in a decentralized and verifiable way.
 
-You can think of Vochain as a specifig purpose blockchain for voting. Vochain needs no cryptocurrency, gas or smart contract interactions; it just has the core logic represented as a state machine that any participation process needs to follow.
+You can think of Vochain as a specific purpose blockchain for voting. Vochain needs no cryptocurrency, gas or smart contract interactions; it just has the core logic represented as a state machine that any participation process needs to follow.
 
 ## Overall
 
@@ -144,7 +144,7 @@ However all nodes of the network (miners or not) will execute the same transacti
 
 Currently as Vochain is proof-of-authority, only a set of nodes will be able to propose and include new blocks on the blockchain. These nodes (identified by a public key) are listed in the genesis file (the initial set) and later the list can be modified by executing the required transactions for doing so.
 
-In the future, miners would get reward for validating new blocks and they would also be required to keep an economic stake on Ethereum in order to demonstrate its commitment for good behaviour.
+In the future, miners would get reward for validating new blocks and they would also be required to keep an economic stake on Ethereum in order to demonstrate its commitment for good behavior.
 
 ### Oracle
 
@@ -178,10 +178,10 @@ See the [Scrutinizer](/architecture/services/vochain/scrutinizer) section.
 
 ## Transaction lifecycle
 
-In the following diagram the vote transaction lifecycle is shown. ChecTX, DeliverTX and Commit are the main steps of the Vochain. The first decides if a new transaction should be included in the mempool (and broadcasted to other peers), the second decides if a transaction that is going to be included in the next block is valid and the last makes the changes permanent and updates the state.
+In the following diagram the vote transaction lifecycle is shown. CheckTX, DeliverTX and Commit are the main steps of the Vochain. The first decides if a new transaction should be included in the mempool (and broadcasted to other peers), the second decides if a transaction that is going to be included in the next block is valid and the last makes the changes permanent and updates the state.
 
 <div style="padding: 20px; background-color: white;">
-	<img src="https://github.com/vocdoni/design/raw/main/docs/vochain-transaction-lifecicle.png" alt="Vochain transaction cicle"/>
+	<img src="https://github.com/vocdoni/design/raw/main/docs/vochain-transaction-lifecicle.png" alt="Vochain transaction cycle"/>
 </div>
 
 

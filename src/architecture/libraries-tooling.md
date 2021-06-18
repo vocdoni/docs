@@ -32,7 +32,7 @@ Provides the Smart Contracts supporting the trustless management of entities, pr
 
 ## DVote Flutter
 
-This library features a subset of DVote JS features, taylored to the usage on mobile apps consuming decentralized metadata and governance processes. While most of the plumbing is developed in Dart, all performance sensitive computations are handled by native versions. See DVote Flutter Native below. 
+This library features a subset of DVote JS features, tailored to the usage on mobile apps consuming decentralized metadata and governance processes. While most of the plumbing is developed in Dart, all performance sensitive computations are handled by native versions. See DVote Flutter Native below. 
 
 This library is likely to be refactored into a pure Dart version and a Flutter superset in the future.
 
@@ -80,7 +80,7 @@ A simple and performant alternative to the BLOC pattern or the boilerplate of us
 
 <!--
 ## Web runtime (for React Native)
-Environments like React Native allow to develop mobile app clients with an efficient and consistent platform but lack the support of cryptographic API's present by default on Web browsers or NodeJS. Several crypto libraries rely on such API's, which are not available on RN. 
+Environments like React Native allow to develop mobile app clients with an efficient and consistent platform but lack the support of cryptographic APIs present by default on Web browsers or NodeJS. Several crypto libraries rely on such APIs, which are not available on RN. 
 
 Until React Native or Expo ship with native support, the current workaround is to mount a virtual web view and load them in a bundle, so the app code can queue operations to a web environment, pretty much like a WebWorker. 
 

@@ -14,7 +14,7 @@ Smart contracts are a piece of immutable code running on a decentralized blockch
 General purpose blockchains are slow and hard to scale, so they are only used to signal and declare parameters of organizations and governance processes. The following contracts are used:
 
 * **ENS Resolver**
-	* Simmilarly to DNS Text Records, the ENS Resolver is used as a global key-value store for entities
+	* Similarly to DNS Text Records, the ENS Resolver is used as a global key-value store for entities
     * Organizations can declare the origin to their metadata, among other values
 * **Process**
     * Global registry of governance processes created by entities

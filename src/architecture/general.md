@@ -2,7 +2,7 @@
 
 Digital voting processes represent a great social and tech challenge. An official binding vote with standard requirements should at least be able to:
 
-+ Enforce vote anonimity
++ Enforce vote anonymity
 + Rely on an open source platform
 + Be 100% transparent, auditable and verifiable
 + Use censorship-resistant communication channels
@@ -18,7 +18,7 @@ A functional implementation of Vocdoni will typically involve two types of servi
 
 ## Service architecture
 
-To provide resilence and avoid any kind of censorship, the network architecture should accomplish the following requirements:
+To provide resilience and avoid any kind of censorship, the network architecture should accomplish the following requirements:
 
 + Do not depend on any specific company or cloud infrastructure
 + Do not depend on specific IPs

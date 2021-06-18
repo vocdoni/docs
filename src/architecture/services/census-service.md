@@ -215,7 +215,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
     "method": "genProof",
     "censusId": "0x123456789", // Merkle Root of the census for which the claim siblings are requested
     "censusKey": "base64-string", // the leaf for which the proof is requested (base64 encoded)
-    "censusValue": "hexString", // if weigthed census, the hexadecimal representation of the numeric big num weight
+    "censusValue": "hexString", // if weighted census, the hexadecimal representation of the numeric big num weight
     "digested": false,  // is the key digested? the backend should do it if not
     "rootHash": "optional-hexString" // from a specific version
   },
@@ -247,7 +247,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
     "censusId": "0x123456789", // Merkle Root of the census for which the Merkle Tree's claim will be checked
     "censusKey": "base64-string", // the leaf for which data is requested
     "censusValue": "hexString", // if weighted census, the hexadecimal representation of the weight big num
-    "proofData": "hexString", // the siblings, same format obtainet in genProof
+    "proofData": "hexString", // the siblings, same format obtained in genProof
     "digested": false,  // is the claim digested? the backend should do it if not
     "rootHash": "optional-hexString" // from a specific version
   },
@@ -269,7 +269,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
 
 ### Census Dump
 
-Dumps the entire content of the census as an array of hexStrings rady to be imported to another census service.
+Dumps the entire content of the census as an array of hexStrings ready to be imported to another census service.
 
 **Private Method**
 
@@ -340,7 +340,7 @@ Dumps the content of the census in base64 format. The dump cannot be used afterw
 
 ### Census Import Local Dump
 
-Only works with specific merkletree format used by `dump` method. To add a list of plain claims use `addClaimBulk` instead.
+Only works with specific merkle tree format used by `dump` method. To add a list of plain claims use `addClaimBulk` instead.
 
 **Private Method**
 

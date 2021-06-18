@@ -23,7 +23,7 @@ To see how a decentralized election works, let's see the sequence of actions tha
 	- For every Entity's action on the metadata, it fetches their visibility status
 <!-- - The **app user** performs custom requests with the Entity's backend -->
 <!--	 - Sign up -->
-<!--		 - Proove that the user owns the private/public key -->
+<!--		 - Prove that the user owns the private/public key -->
 <!--		 - Provide personal information -->
 <!--	 - Submit a picture -->
 <!--		 - Run a KYC process with a selfie and ID card pictures -->
@@ -81,7 +81,7 @@ To see how a decentralized election works, let's see the sequence of actions tha
 
 ### After voting
 
-- The **app User** checks that his/her vots is registered
+- The **app User** checks that their vote is registered
 	- The app asks a **Gateway** for the envelope status of his/her nullifier
 - The **organizer** ends the process
 	- The **organizer** sends a transaction to the process contract and sets the state of the process as ended
@@ -100,7 +100,7 @@ To see how a decentralized election works, let's see the sequence of actions tha
 	- The **observer** fetches all the [Vote Envelopes](/architecture/data-schemes/process?id=vote-envelope) registered for the process
 	- The **observer** checks their ZK Proofs or Merkle Proofs, the [Vote Package](/architecture/smart-contracts/process?id=vote-package-zk-snarks) contents and the restrictions imposed by the process flags
 	- On encrypted votes, the **observer** decrypts the [Vote Package](/architecture/smart-contracts/process?id=vote-package-zk-snarks)
-	- The **observer** counts the number of appearences of every single vote value
+	- The **observer** counts the number of appearances of every single vote value
 		- Any vote value beyond the ones defined in the [Process Metadata](/architecture/data-schemes/process) is discarded
 - An **observer** publishes the vote results
 	<!-- - The **observer** deposits an amount as stake to the contract -->

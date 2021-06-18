@@ -17,7 +17,7 @@ H5-.->HashPubKey2
 H6-.->HashPubKey3
 ```
 
-A Merkle Tree allows to efficiently prove that a leave belongs to the tree. For a tree of size `N` elements, only `log(N)` elements are needed to generate a proof. As an example, a tree with 1 million leaves would only need 20 hashes to proove the inclusion of any leave.
+A Merkle Tree allows to efficiently prove that a leave belongs to the tree. For a tree of size `N` elements, only `log(N)` elements are needed to generate a proof. As an example, a tree with 1 million leaves would only need 20 hashes to prove the inclusion of any leave.
 
 The tree structure is made of nodes. Terminal nodes contain the actual values and the rest of them contain the hash of their two children. If a leaf is updated, all its parent nodes are affected.
 
@@ -72,7 +72,7 @@ With the census details and the rest of parameters, a process is ready to be cre
 
 ### Accessing the census
 
-The Gateways deployed by Vocdoni and third parties will be monitorizing the Process Smart Contract. As they see a new process and a census, they will fetch and import the Merkle Tree. At this point, users can use any available Gateway to check whether they are eligible for voting and then fetch their Merkle Proof.
+The Gateways deployed by Vocdoni and third parties will be monitoring the Process Smart Contract. As they see a new process and a census, they will fetch and import the Merkle Tree. At this point, users can use any available Gateway to check whether they are eligible for voting and then fetch their Merkle Proof.
 
 Users with a valid Merkle Proof can efficiently show that their key belongs to a large census by providing a very small fraction of the whole tree.
 

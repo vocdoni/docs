@@ -80,7 +80,7 @@ After this step, we are ready to deploy the miner node with:
 docker-compose -f docker-compose.watchtower.yml -f docker-compose.yml up -d
 ```
 
-After this step, the miner node will start to syncronize and propose blocks.
+After this step, the miner node will start to synchronize and propose blocks.
 
 ## Obtain miner's public key
 
