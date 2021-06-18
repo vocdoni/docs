@@ -52,6 +52,4 @@ Client apps may not be able to join P2P networks by themselves, so Vocdoni makes
 
 By default, Vocdoni (as an Entity) provides its own set of Voting and Web3 Gateways. However, entities may want to use their own infrastructure. To this end, the Entity's ENS Text Record `vnd.vocdoni.boot-nodes` can be set to the Content URI of a [BootNodes JSON file](/architecture/services/bootnode) defining some of them.
 
-### Coming next
 
-See the [Process Contract](/architecture/smart-contracts/process) section.

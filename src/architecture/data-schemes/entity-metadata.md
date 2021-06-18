@@ -121,6 +121,4 @@ The response from the backend should look like like:
 }
 ```
 
-### Coming next
 
-See the [Process Data Schemes](/architecture/data-schemes/process) section.

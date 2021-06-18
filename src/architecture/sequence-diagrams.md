@@ -451,6 +451,4 @@ sequenceDiagram
 - [Process Metadata](/architecture/data-schemes/process?id=process-metadata)
 - [Vote Package](/architecture/smart-contracts/process?id=vote-package)
 
-### Coming next
 
-See the [Libraries and Tooling](/architecture/libraries-tooling) section.

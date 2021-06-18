@@ -185,6 +185,4 @@ In the following diagram the vote transaction lifecycle is shown. CheckTX, Deliv
 </div>
 
 
-### Coming next
 
-See the [Scrutinizer](/architecture/services/vochain/scrutinizer) section.

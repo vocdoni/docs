@@ -52,8 +52,3 @@ A voting process makes use of the following components:
 - Gateways are trustless, since cryptography is used on the peer side
 	- The only intent of a Gateway is to act as a P2P proxy for clients that can't open sockets by themselves (web browsers)
 
----
-
-### Coming next
-
-See the [Process overview](/architecture/process-overview) section.

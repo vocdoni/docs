@@ -87,6 +87,4 @@ Until React Native or Expo ship with native support, the current workaround is t
 [More information](https://github.com/vocdoni/clientApp/tree/master/web-runtime)
 -->
 
-### Coming next
 
-See the [Manager Overview](/manager/overview) section.

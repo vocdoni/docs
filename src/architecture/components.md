@@ -134,6 +134,4 @@ GW-.->BCH
 
 ```
 
-### Coming next
 
-See the [User stories](/architecture/user-stories) section.

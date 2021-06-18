@@ -112,9 +112,3 @@ end
 ```
 
 **Note**: The ZK-Rollups functionality may need heavy computation resources and development time until it is available. For this reason, intermediary approaches like Optimistic Rollups may be implemented first and iterated later.
-
----
-
-### Coming next
-
-See the [Census overview](/architecture/census-overview) section.

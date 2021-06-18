@@ -282,6 +282,4 @@ However:
 - Updates on legacy processes need to be sent directly to the original contract instance
 - Use `getCreationInstance(processId)` to retrieve the appropriate address
 
-### Coming next
 
-See the [Genesis Contract](/architecture/smart-contracts/genesis.md) section.

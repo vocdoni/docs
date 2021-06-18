@@ -60,6 +60,4 @@ Where protocols like PSS or Whisper allow for pseudo anonymous communication, hi
 
 In this case, Vocdoni proposes the use of [Nym](https://nymtech.net/) as a mixing infrastructure for anonymous voting submission that cannot be correlated to an IP address.
 
-### Coming next
 
-See the [Sequence Diagrams](/architecture/sequence-diagrams) section.

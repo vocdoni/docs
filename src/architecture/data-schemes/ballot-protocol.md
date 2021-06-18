@@ -315,6 +315,4 @@ As this format can only accept binary (yes/no) input for each option, it is only
 
 ![https://blog.aragon.org/content/images/2021/04/results-generic-discrete-1.png](https://blog.aragon.org/content/images/2021/04/results-generic-discrete-1.png)
 
-### Coming next
 
-See the [JSON API](/architecture/protocol/json-api) section.

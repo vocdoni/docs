@@ -113,6 +113,4 @@ The API methods below follow the [JSON API](/architecture/protocol/json-api) spe
 }
 ```
 
-### Coming next
 
-See the [Push Notifications API](/manager/push-notifications-api) section.

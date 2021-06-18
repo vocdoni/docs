@@ -32,6 +32,4 @@ uint32 public tokenCount = 0;
 - `getBalanceMappingPosition` Retrieves the offset where the balance mapping is located. Used to generate the storage proofs from the client side.
 
 
-### Coming next
 
-See the [Gateway](/architecture/services/gateway) section.

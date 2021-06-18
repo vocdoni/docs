@@ -19,6 +19,4 @@ uint32 public namespaceCount;
 
 - `register()` is called by process contracts upon deployment. They receive a unique `namespaceId` and are registered as the contract assigned to this index.
 
-### Coming next
 
-See the [Results Contract](/architecture/smart-contracts/results) section.

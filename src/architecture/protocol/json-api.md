@@ -152,6 +152,4 @@ Where:
 
 <!-- ## Encryption -->
 
-### Coming next
 
-See the [Franchise proof](/architecture/protocol/franchise-proof) section.
