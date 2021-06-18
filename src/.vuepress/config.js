@@ -1,0 +1,161 @@
+const { description } = require('../../package')
+
+module.exports = {
+  /**
+   * Ref：https://v1.vuepress.vuejs.org/config/#title
+   */
+  title: 'Vocdoni',
+  /**
+   * Ref：https://v1.vuepress.vuejs.org/config/#description
+   */
+  description: description,
+
+  /**
+   * Extra tags to be injected to the page HTML `<head>`
+   *
+   * ref：https://v1.vuepress.vuejs.org/config/#head
+   */
+  head: [
+    ['meta', { name: 'theme-color', content: '#3eaf7c' }],
+    ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
+    ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }]
+  ],
+
+  /**
+   * Theme configuration, here is the default theme configuration for VuePress.
+   *
+   * ref：https://v1.vuepress.vuejs.org/theme/default-theme-config.html
+   */
+  themeConfig: {
+    repo: '',
+    editLinks: false,
+    docsDir: '',
+    editLinkText: '',
+    lastUpdated: false,
+    nav: [
+      {
+        text: 'Architecture',
+        link: '/architecture/general',
+      },
+      {
+        text: 'Deployment',
+        link: '/deployment/'
+      },
+      {
+        text: 'Integration',
+        link: '/integration/'
+      },
+      {
+        text: 'Manager',
+        link: '/manager/'
+      },
+      {
+        text: 'Blog',
+        link: 'https://blog.vocdoni.io/'
+      },
+      {
+        text: 'About us',
+        link: '/about-us/'
+      },
+      {
+        text: 'Discord',
+        link: 'https://discord.gg/sQCxgYs'
+      }
+    ],
+    sidebar: [
+      {
+        title: 'Architecture',
+        path: "/architecture/general",
+        collapsable: false,
+        children: [
+          '/architecture/general',
+          '/architecture/process-overview',
+          '/architecture/census-overview',
+          '/architecture/user-stories',
+          {
+            title: 'Smart Contracts',
+            collapsible: false,
+            path: '/architecture/smart-contracts/entity-resolver',
+            children: [
+              '/architecture/smart-contracts/entity-resolver',
+              '/architecture/smart-contracts/process',
+              '/architecture/smart-contracts/genesis',
+              '/architecture/smart-contracts/namespace',
+              '/architecture/smart-contracts/results',
+              '/architecture/smart-contracts/storage-proofs',
+            ]
+          },
+          {
+            title: 'Services',
+            collapsible: false,
+            path: '/architecture/services/gateway',
+            children: [
+              '/architecture/services/gateway',
+              {
+                title: 'Vochain',
+                collapsible: false,
+                path: '/architecture/services/vochain',
+                children: [
+                  '/architecture/services/vochain',
+                  '/architecture/services/vochain/scrutinizer'
+                ]
+              },
+              '/architecture/services/census-service',
+              '/architecture/services/bootnode',
+            ]
+          },
+        ]
+      },
+      {
+        title: 'Organization Manager',
+        path: "/manager/overview",
+        collapsable: false,
+        children: [
+          '/manager/overview',
+          '/manager/manager-api',
+          '/manager/registry-api',
+          '/manager/push-notifications-api',
+        ]
+      },
+      {
+        title: 'Integration',
+        path: "/integration/overview",
+        collapsable: false,
+        children: [
+          '/integration/overview',
+          '/integration/voting-as-a-service',
+          '/integration/registry-token-api',
+        ]
+      },
+      {
+        title: 'Deployment',
+        path: '/deployment/gateway',
+        collapsable: false,
+        children: [
+          '/deployment/gateway',
+          '/deployment/miner',
+          '/deployment/oracle',
+          '/deployment/custom-vochain',
+        ]
+      },
+      {
+        title: 'About',
+        path: '/about-us/vision',
+        collapsable: false,
+        children: [
+          '/about-us/vision',
+          '/about-us/how-we-work',
+        ],
+      },
+    ]
+  },
+
+  /**
+   * Apply plugins，ref：https://v1.vuepress.vuejs.org/zh/plugin/
+   */
+  plugins: [
+    '@vuepress/plugin-back-to-top',
+    '@vuepress/plugin-medium-zoom',
+    'vuepress-plugin-mermaidjs'
+  ]
+}

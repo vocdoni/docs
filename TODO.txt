@@ -1,0 +1,3 @@
+AUTO SIDEBAR
+
+https://github.com/vuejs/vuepress/issues/613
