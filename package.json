@@ -1,0 +1,23 @@
+{
+  "name": "vocdoni",
+  "version": "0.0.1",
+  "description": "A decentralized self sovereign governance platform",
+  "main": "index.js",
+  "authors": {
+    "name": "Vocdoni",
+    "email": "root@vocdoni.io"
+  },
+  "repository": "https://github.com/vocdoni/docs/vocdoni",
+  "scripts": {
+    "dev": "vuepress dev src",
+    "build": "vuepress build src"
+  },
+  "license": "AGPL",
+  "devDependencies": {
+    "vuepress": "^1.5.3",
+    "vuepress-plugin-mermaidjs": "^1.8.1"
+  },
+  "dependencies": {
+    "vuepress-bar": "^0.4.2"
+  }
+}
