@@ -88,7 +88,7 @@ After this step, we are ready to deploy the oracle node with:
 docker-compose -f docker-compose.watchtower.yml -f docker-compose.web3.yml -f docker-compose.yml up -d
 ```
 
-After this step, the oracle node will start and the Ethereum node will start to syncronize. It can take many hours to complete the process.
+After this step, the oracle node will start and the Ethereum node will start to synchronize. It can take many hours to complete the process.
 
 ## Obtain oracle's public key
 

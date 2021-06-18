@@ -2,7 +2,7 @@
 
 The push notifications service allows organizations to send pop up messages to their users devices. Organizations can send notifications at any time and their users do not have to be in the app or using their devices to receive them.
 
-Currenty the push notifications system used is the Google Firebase Cloud Messassing but any other provider can be easily integrated.
+Currently the push notifications system used is the Google Firebase Cloud Messassing but any other provider can be easily integrated.
 
 Each user can be subscribed to any organization she wants and be notified for one or more events.
 
@@ -31,7 +31,7 @@ Another fundamental component of the notifications service is the IPFS node. Dat
 This data can be:
 - Voting process metadata (type, mode, questions ...)
 - Organization metadata (name, email, ID ...)
-- Prefered organization bootnodes and gateways to connect with
+- Preferred organization bootnodes and gateways to connect with
 
 The actual URI of this data is stored on Ethereum and changes every time any of the data is changed. This is an IPFS property which is a content-addressed system.
 
@@ -74,7 +74,7 @@ Is composed by the following components:
     - Once the `Process` contract address is fetched a component called `ethEvents` starts to listen for logs on the contract.
     - Each time a new process is created (the case currently supported) an Ethereum smart contract event is triggered and the `ethEvents` component
       handles it.
-    - The event will be processed and a notification anouncing the creation of a process will be created and sended to Firebase.
+    - The event will be processed and a notification announcing the creation of a process will be created and sended to Firebase.
     - The users subscribed to the corresponding topic will receive the notification
       
 
@@ -99,7 +99,7 @@ Is composed by the following components:
 
 ## API
 
-The notifications API is used to generate user tokens that can be useful for certain circunstances.
+The notifications API is used to generate user tokens that can be useful for certain circumstances.
 
 Available by default under `/notifications`
 

@@ -35,7 +35,7 @@ secret = "hello"
 
 ### Methods
 
-##### Token revokation
+##### Token revocation
 
 ```json
 // Request

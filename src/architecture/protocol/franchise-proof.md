@@ -77,7 +77,7 @@ Under this proposal, voters submit their encrypted vote envelopes using the same
 The new ZK-Proof and the results aggregate is what will be stored in a public blockchain, such as the Vochain or Ethereum.
 
 In this scenario voters are able to verify that their vote has been processed. No outsider, however, can determine what choices were selected by a specific voter. 
-At the same time, the election's traceability and transparency properties are preserverd. 
+At the same time, the election's traceability and transparency properties are preserved. 
 
 <div style="padding: 20px; background-color: white; text-align: center;">
 	<img src="https://github.com/vocdoni/design/raw/main/drawio/zk-rollup-vocdoni.png" alt="ZkRollup"/>
@@ -117,7 +117,7 @@ Unlike ZK Snarks, **LRS do not rely on a trusted setup**.
 
 #### 1. Registration to an organization
 
-First, the Voters need to send their public keys to the Census organization service (each organization can choose which method to use for veryfing and identity). This is done just once so the same public key can be used for multiple elections.
+First, the Voters need to send their public keys to the Census organization service (each organization can choose which method to use for verifying an identity). This is done just once so the same public key can be used for multiple elections.
 
 ```mermaid
 graph TD;
@@ -135,17 +135,17 @@ The usage of LRS requires the census to be published, so Voters can create their
 + If Census > 1000, census must be split on several groups of keys
 	+ the organizer will publish a number (N) which will be used by the voters to know to which group of keys are they assigned by using the following formula: 
 	`GroupNumber = VoterPubKey % N`
-	+ before publishing N the census must pre-compute all the keys to check that if accomplish the minimum size grup of keys. So in case N generates a group with too few, that number must be discarted and try a new one
+	+ before publishing N the census must pre-compute all the keys to check that if accomplish the minimum size group of keys. So in case N generates a group with too few, that number must be discarted and try a new one
 
 #### 3. Derivate election keys
 
-In addition to `N`, the Organizer will publish a uniq ID that will identify the election (`processID`). This ID will be used by both parties (Voter and Organizer) to derivate the temporary election pulic keys using the following mechanism:
+In addition to `N`, the Organizer will publish a uniq ID that will identify the election (`processID`). This ID will be used by both parties (Voter and Organizer) to derivate the temporary election public keys using the following mechanism:
 
-+ On ECDSA the PubKey derivates from the PrivKey as follows:
++ On ECDSA the PubKey deviates from the PrivKey as follows:
 `PubKeyVoter = PrivKeyVoter * G`
 + The Organizer derivate the new temporary PublicKey for each voter this way:
 `PubKeyElectionVoter = PubKeyVoter + G*Hash(ElectionID)`
-+ Each voter derivates its new Private Key this way: 
++ Each voter deviates their new Private Key this way: 
 `PrivKeyElectionVoter = PrivKeyVoter + Hash(ElectionID)`
 
 
@@ -165,7 +165,7 @@ C-.->Pub3["PubKey V3 + electionID"]
 
 R[Linkable Ring Signature]
 V1-.->Priv1["Privkey V1 + electionID"]
-Priv1-- >|create election signatre| R
+Priv1-- >|create election signature| R
 
 subgraph 
 Pub1-.-R
@@ -393,8 +393,8 @@ true
 Time and size scales linearly. 
 
 * 100 ring size signature needs 0.8s to be signed and have a size of 19kBytes
-* 1000 ring size signaure needs 7s to be signed and have a size of 193kBytes
-* 5000 ring size signaure needs 38s to be signed and have a size of 964kBytes
+* 1000 ring size signature needs 7s to be signed and have a size of 193kBytes
+* 5000 ring size signature needs 38s to be signed and have a size of 964kBytes
 
 -->
 

@@ -1,19 +1,22 @@
 # Sequence diagrams
 
-Traditional systems like API's present simple scenarios, in which a centralized service define how data should be encoded. However, decentralized ecosystems like a distributed vote system need much stronger work on defining every interaction between any two peers on the network.
+Traditional systems like APIs present simple scenarios, in which a centralized service define how data should be encoded. However, decentralized ecosystems like a distributed vote system need much stronger work on defining every interaction between any two peers on the network.
 
-- [Prior to voting](#prior-to-voting)
-  - [Initial Gateway discovery](#initial-gateway-discovery)
-  - [Set Entity metadata](#set-entity-metadata)
-- [Voting](#voting)
-  - [Voting process creation](#voting-process-creation)
-  - [Voting process retrieval](#voting-process-retrieval)
-  - [Check census inclusion](#check-census-inclusion)
-  - [Casting a vote](#casting-a-vote)
-- [After voting](#after-voting)
-  - [Checking a Vote Envelope](#checking-a-vote-envelope)
-  - [Closing a Voting Process](#closing-a-voting-process)
-  - [Vote Scrutiny](#vote-scrutiny)
+- [Sequence diagrams](#sequence-diagrams)
+  - [Prior to voting](#prior-to-voting)
+    - [Initial Gateway discovery](#initial-gateway-discovery)
+    - [Set Entity metadata](#set-entity-metadata)
+      - [Adding users to a census](#adding-users-to-a-census)
+  - [Voting](#voting)
+    - [Voting process creation](#voting-process-creation)
+    - [Voting process retrieval](#voting-process-retrieval)
+    - [Check census inclusion](#check-census-inclusion)
+    - [Casting a vote](#casting-a-vote)
+  - [After voting](#after-voting)
+    - [Checking a Vote Envelope](#checking-a-vote-envelope)
+    - [Closing a Voting Process](#closing-a-voting-process)
+    - [Vote Scrutiny](#vote-scrutiny)
+    - [Coming next](#coming-next)
 
 ---
 

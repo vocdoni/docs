@@ -4,7 +4,7 @@ The  Manager API allows organizations to perform all the necessary management ac
 - Managing `Members` and their information. Related to `Member` management, some `Token` calls are also featured
 - Creating and managing `Tags` for these members
 - Creating and managing `Targets` that combine member attributes and tags in order to provide the ability to segment the members
-- Creating and managing `Censuses` based that eacho of them is related with one concrete `Target` 
+- Creating and managing `Censuses` based that each of them is related with one concrete `Target` 
 
 Available by default under `/manager`
 
@@ -258,7 +258,7 @@ Retrieve a list of members with the given constraints.
 
 ### updateMember
 
-**Note**: All attributes execpet`tags`  if are included in the request but are empty they are ingored. If `tags == []` this value is stored in the database. 
+**Note**: All attributes execpet`tags`  if are included in the request but are empty they are ignored. If `tags == []` this value is stored in the database. 
 
 - Request
 
@@ -349,7 +349,7 @@ Imports the given array of members with their info into the database.
 ```
 
 ### sendValidationLink
-Uses the `SMTP` module to send an email to the  selected member, containing the necesary info to register his public key. See also `validateToken`
+Uses the `SMTP` module to send an email to the  selected member, containing the necessary info to register his public key. See also `validateToken`
 - Request
 
 ```json

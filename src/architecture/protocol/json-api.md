@@ -107,7 +107,7 @@ Then:
 
 `payload.signature` = `ECDSA.SIGN` ( `keccak256` ( `stringify` ( `payload.request` ) ) )
 
-The verificator will verify the signature, extract the ECDSA public key from the signature, convert it to Ethereum like address and finally compare it with the list of allowed addresses.
+The verifier will verify the signature, extract the ECDSA public key from the signature, convert it to Ethereum like address and finally compare it with the list of allowed addresses.
 
 **Important**: To avoid signature mismatches, the stringified data of the `request` has to be computed always the JSON fields **sorted alphabetically**.
 

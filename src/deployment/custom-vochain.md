@@ -1,6 +1,6 @@
 # Custom Vochain Deployment
 
-In this document we will guide through the steps of deploying a full Vochain (Vocdoni's blockchain) stack using a custom arquitecture. It is meant to give the reader a general idea on how Vocdoni components work, and it is not meant to be production ready chain.
+In this document we will guide through the steps of deploying a full Vochain (Vocdoni's blockchain) stack using a custom architecture. It is meant to give the reader a general idea on how Vocdoni components work, and it is not meant to be production ready chain.
 
 The Vocdoni's mainnet chain genesis is 'hardcoded' into the project's code itself, but it is also possible to generate any other tendermint based chain at will for testing, forking or any other purposes.
 

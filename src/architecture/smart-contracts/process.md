@@ -1,8 +1,8 @@
 # Process Contract
 
-A process is the building block around which governance is made in Vocdoni. Simmilarly to an Operating System, think of the Processes contract like a Kernel that receives syscall's to spawn a new governance process.
+A process is the building block around which governance is made in Vocdoni. Similarly to an Operating System, think of the Processes contract like a Kernel that receives syscalls to spawn a new governance process.
 
-Governance processes span across three diferent components: the Ethereum smart contract, IPFS to ditribute [the vote metadata](/architecture/data-schemes/process?id=process-metadata) and the [Vochain](/architecture/services/vochain).
+Governance processes span across three different components: the Ethereum smart contract, IPFS to ditribute [the vote metadata](/architecture/data-schemes/process?id=process-metadata) and the [Vochain](/architecture/services/vochain).
 
 Processes follow a declarative fashion. The expected behavior is declared on the smart contract for integrity and the the Layer 2 blockchain (called [Vochain](/architecture/services/vochain)) reacts according to the current settings.
 
@@ -67,7 +67,7 @@ struct Process {
 
     uint256 evmBlockHeight; // EVM block number to use as a snapshot for the on-chain census
 
-    bytes32 paramsSignature; // entity.sign({...}) // fields that the oracle uses to authentify process creation
+    bytes32 paramsSignature; // entity.sign({...}) // fields that the oracle uses to authenticate process creation
 }
 ```
 
@@ -128,9 +128,9 @@ For more details, you can see the [implementation here](https://github.com/vocdo
 When a process is created, the entity needs to define what options apply to it. The combination of them produces:
 
 - The process `mode`
-    - It determines the external behaviour of the process, when it starts, what can be updated, etc.
+    - It determines the external behavior of the process, when it starts, what can be updated, etc.
 - The `envelopeType`
-    - Determines the internal behaviour of the votes sent by participants.
+    - Determines the internal behavior of the votes sent by participants.
 - The `censusOrigin`
     - Determines the way to compute and validate the voter's census proofs
 

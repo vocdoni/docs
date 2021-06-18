@@ -1,6 +1,6 @@
 # Voting as a Service
 
-The following section is an excerp of the article published on the [Vocdoni Blog](https://blog.vocdoni.io/), called [Introducing Voting as a Service](https://blog.vocdoni.io/introducing-voting-as-a-service/).
+The following section is an excerpt of the article published on the [Vocdoni Blog](https://blog.vocdoni.io/), called [Introducing Voting as a Service](https://blog.vocdoni.io/introducing-voting-as-a-service/).
 
 ---
 

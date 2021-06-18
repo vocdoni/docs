@@ -10,7 +10,7 @@ The following diagram shows the gateway's overall architecture and components.
 
 ### Discovery mechanism
 
-A Gateway is a neutral piece of the ecosystem which can be contributed by any third party. Any kind of organization might run Gateway instances to improve network access and increase resilence against potential attacks.
+A Gateway is a neutral piece of the ecosystem which can be hosted by any third party. Any kind of organization might run Gateway instances to improve network access and increase resilience against potential attacks.
 
 To this end, Gateways use an automatic discovery system through a P2P messaging network so that Bootnodes know of their existence. Clients make requests to Bootnodes and fetch a fresh list of working Gateways.
 
@@ -30,7 +30,7 @@ MS-->BO2
 
 ## API definition
 
-A Gateway exposes APIs that enable accesing peer-to-peer networks. The currently supported API schemes are the following:
+A Gateway exposes APIs that enable accessing peer-to-peer networks. The currently supported API schemes are the following:
 
 + `Info API`: details about the gateway
 + `Census API` access to the Census Service
@@ -46,7 +46,7 @@ The API methods below follow the [JSON API](/architecture/protocol/json-api) spe
 ## Info API
 
 ### Get Gateway Info
-Get an overview wabout the own gateway: available APIs, health and whether private methods are available or not.
+Get an overview of the gateway status: available APIs, health and whether private methods are available or not.
 
 ```json
 {
@@ -139,7 +139,7 @@ Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) t
 
 ### Get Envelope Status
 
-Check the status of an already submited [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope). The envelope is identified by the voter's nullifier.
+Check the status of an already submitted [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope). The envelope is identified by the voter's nullifier.
 
 ```json
 {
@@ -231,7 +231,7 @@ Get the available encryption keys for the given process ID.
 
 If the process has encrypted votes and it is on-going, `encryptionPubkeys` and `commitmentKeys` should be available. Once the process has ended, `encryptionPrivKeys` and `revealKeys` will be also be available.
 
-[Vote Package](/architecture/smart-contracts/process?id=vote-package) encryption and decryption it is expected to use these keys following the order of their indexes. Smaller indexes are used first and it's important to note that indexes might not be consecutive.
+[Vote Package](/architecture/smart-contracts/process?id=vote-package) encryption and decryption keys are expected to follow the order of their indexes. Smaller indexes are used first and it's important to note that indexes might not be consecutive.
 
 ```json
 {
