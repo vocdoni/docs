@@ -21,6 +21,4 @@ The manager is made of three components:
 - Push Notification service
    - [Push Notifications API](/manager/push-notifications-api.md)
 
-### Coming next
 
-See the [Manager API](/manager/manager-api.md) section.

@@ -913,6 +913,4 @@ Remove Tag from Members
 }
 ```
 
-### Coming next
 
-See the [Registry API](/manager/registry-api) section.

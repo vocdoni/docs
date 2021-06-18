@@ -398,6 +398,4 @@ Time and size scales linearly.
 
 -->
 
-### Coming next
 
-See the [Data origins](/architecture/protocol/data-origins) section.

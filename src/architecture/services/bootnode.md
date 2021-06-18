@@ -35,6 +35,4 @@ The data schema used to define a set of boot nodes is a JSON file like the examp
 }
 ```
 
-### Coming next
 
-See the [Entity Metadata](/architecture/data-schemes/entity-metadata) section.

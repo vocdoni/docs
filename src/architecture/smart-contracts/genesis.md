@@ -26,6 +26,4 @@ Chains are indexed by the `chainId`, which is unique.
 
 Note: The `oracles` field may progressively be deprecated as the platform evolves toward a trustless oracles model. When oracles become trustless, any participant from the network could signal events on-chain, relay signed transactions or publish results following an optimistic rollup approach.
 
-### Coming next
 
-See the [Namespace Contract](/architecture/smart-contracts/namespace) section.

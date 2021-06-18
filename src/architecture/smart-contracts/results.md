@@ -22,6 +22,4 @@ mapping(bytes32 => ProcessResults) internal results; // Mapping of all processes
 - `setResults` Used by Oracles to register the tally of a process. It will also try to update the `status` of the process on the Processes contract defined in `processesAddress`.
 - `setProcessesAddress` Allows the creator to define which Processes contract should be notified about results being available.
 
-### Coming next
 
-See the [Storage Proofs contracts](/architecture/smart-contracts/storage-proofs) section.

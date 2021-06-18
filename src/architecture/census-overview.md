@@ -36,12 +36,12 @@ Organizations have to publish their census before launching any governance proce
 
 The user registry is a private component used by entities to manage and generate census of voters. The registry may have a standard database with the private details of the entity's members and their public keys.
 
-| id | name | age | country | pubkeyHash
-| --- | --- | --- | --- | ---
-| 0 | John | 27 | Winterfell | 0x123e...
-| 1 | Tyrion | 36 | Lannisport | 0x567c...
-| 2 | Daenerys | 22 | Dragonstone | 0xaabb...
-| 3 | Jorah | 65 | Bear Island | 0xcc11...
+| id  | name     | age | country     | pubkeyHash |
+| --- | -------- | --- | ----------- | ---------- |
+| 0   | John     | 27  | Winterfell  | 0x123e...  |
+| 1   | Tyrion   | 36  | Lannisport  | 0x567c...  |
+| 2   | Daenerys | 22  | Dragonstone | 0xaabb...  |
+| 3   | Jorah    | 65  | Bear Island | 0xcc11...  |
 
 When the entity wants to create a governance process, the administrator will use the registry to select the group of users matching a certain criteria. For example `age < 40`. The backend would select users `0,1,2` and create a Merkle tree with the corresponding public key hashes.
 
@@ -75,7 +75,3 @@ With the census details and the rest of parameters, a process is ready to be cre
 The Gateways deployed by Vocdoni and third parties will be monitoring the Process Smart Contract. As they see a new process and a census, they will fetch and import the Merkle Tree. At this point, users can use any available Gateway to check whether they are eligible for voting and then fetch their Merkle Proof.
 
 Users with a valid Merkle Proof can efficiently show that their key belongs to a large census by providing a very small fraction of the whole tree.
-
-### Coming next
-
-See the [Component overview](/architecture/components) section.

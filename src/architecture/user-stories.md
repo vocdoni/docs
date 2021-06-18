@@ -117,6 +117,4 @@ To see how a decentralized election works, let's see the sequence of actions tha
 	- After a period of time, nobody else submits result transactions with higher vote counts
 	- Results become final
 
-### Coming next
 
-See the [Entity Resolver Contract](/architecture/smart-contracts/entity-resolver) section.

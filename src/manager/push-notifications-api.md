@@ -194,6 +194,4 @@ go run cmd/dvotenotif/dvotenotif.go
 -->
 
 
-### Coming next
 
-See the [Integration overview](/integration/overview) section.

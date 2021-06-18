@@ -165,6 +165,4 @@ Requests to the Results API will return an Array of number arrays, following the
 
 The interpretation of these values is left to the Client apps, and is determined by the `results.aggregation` and `results.display` fields of the Process Metadata, listed above.
 
-### Coming next
 
-See the [Ballot Protocol](/architecture/data-schemes/ballot-protocol) section.
