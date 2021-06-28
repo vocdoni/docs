@@ -31,23 +31,11 @@ module.exports = {
     editLinks: false,
     docsDir: '',
     editLinkText: '',
-    lastUpdated: false,
+    lastUpdated: true,
     nav: [
       {
         text: 'Architecture',
         link: '/architecture/general',
-      },
-      {
-        text: 'Deployment',
-        link: '/deployment/'
-      },
-      {
-        text: 'Integration',
-        link: '/integration/'
-      },
-      {
-        text: 'Manager',
-        link: '/manager/'
       },
       {
         text: 'Blog',
@@ -55,7 +43,7 @@ module.exports = {
       },
       {
         text: 'About us',
-        link: '/about-us/'
+        link: '/about-us/vision'
       },
       {
         text: 'Discord',
