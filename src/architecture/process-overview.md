@@ -14,7 +14,13 @@ Given a user database, the organizer builds a Merkle Tree with the public keys (
 
 To create one, its metadata is pinned on a decentralized filesystem and a transaction is sent to the blockchain to persist the vote details.
 
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.css">
+</head>
+
 ```mermaid
+
+
 graph TD
 APP(<center>App user<br/><br/><i class='fa fa-2x fa-mobile-alt'/></center>)
 REG(<center>User Registry<br/><br/><i class='fa fa-2x fa-users-cog'/></center>)
