@@ -16,7 +16,6 @@ To create one, its metadata is pinned on a decentralized filesystem and a transa
 
 ```mermaid
 graph TD
-
 APP(<center>App user<br/><br/><i class='fa fa-2x fa-mobile-alt'/></center>)
 REG(<center>User Registry<br/><br/><i class='fa fa-2x fa-users-cog'/></center>)
 OG(<center>Vote organizer<br/><br/><i class='fa fa-2x fa-user'/></center>)
@@ -32,7 +31,7 @@ PM --> |Export Merkle tree|CS
 PM -.- |Pin metadata and census|DATA
 PM --> |Declare voting process|BP
 
-subgraph 
+subgraph Decentralized storage
 	BP
 	DATA
 end
