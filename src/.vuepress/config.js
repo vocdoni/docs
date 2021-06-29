@@ -167,6 +167,38 @@ module.exports = {
   plugins: [
     '@vuepress/plugin-back-to-top',
     '@vuepress/plugin-medium-zoom',
-    'vuepress-plugin-mermaidjs'
+    ['mermaidjs', {
+      theme:'default',
+      logLevel: 5, // corresponds with "fatal"
+      securityLevel:'loose',
+      startOnLoad:true,
+      arrowMarkerAbsolute:false,
+      sequence: {
+        diagramMarginX: 0,
+        diagramMarginY: 20,
+        actorMargin: 30,
+        boxMargin: 5,
+        boxTextMargin: 5,
+        noteMargin: 10,
+        messageMargin: 35,
+        messageAlign: 'center',
+        mirrorActors: true,
+        wrap: true,
+        rightAngles: false,
+        showSequenceNumbers: false,
+      },
+      // er: {
+      //   diagramPadding: 0,
+      //   layoutDirection: 'TB',
+      //   minEntityWidth: 100,
+      //   minEntityHeight: 75,
+      //   entityPadding: 15,
+      //   stroke: 'gray',
+      //   fill: 'honeydew',
+      //   fontSize: 12,
+      //   useMaxWidth: true,
+      // },
+    }
+    ]
   ]
 }
