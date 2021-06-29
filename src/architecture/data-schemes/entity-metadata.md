@@ -7,7 +7,6 @@ The metadata of an entity provides human readable content, featuring names, desc
 - [Entity Metadata](#entity-metadata)
   - [JSON schema](#json-schema)
       - [Register](#register)
-    - [Coming next](#coming-next)
 
 ## JSON schema
 

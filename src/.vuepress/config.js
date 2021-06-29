@@ -59,6 +59,7 @@ module.exports = {
           '/architecture/general',
           '/architecture/process-overview',
           '/architecture/census-overview',
+          '/architecture/components',
           '/architecture/user-stories',
           {
             title: 'Smart Contracts',
@@ -92,6 +93,28 @@ module.exports = {
               '/architecture/services/bootnode',
             ]
           },
+          {
+            title: 'Data Schemes',
+            collapsible: false,
+            path: '/architecture/data-schemes/entity-metadata',
+            children: [
+              '/architecture/data-schemes/entity-metadata',
+              '/architecture/data-schemes/process',
+              '/architecture/data-schemes/ballot-protocol',
+            ]
+          },
+          {
+            title: 'Protocol',
+            collapsible: false,
+            path: '/architecture/protocol/json-api',
+            children: [
+              '/architecture/protocol/json-api',
+              '/architecture/protocol/franchise-proof',
+              '/architecture/protocol/data-origins',
+            ]
+          },
+          '/architecture/sequence-diagrams',
+          '/architecture/libraries-tooling',
         ]
       },
       {
