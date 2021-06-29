@@ -14,6 +14,10 @@ A Gateway is a neutral piece of the ecosystem which can be hosted by any third p
 
 To this end, Gateways use an automatic discovery system through a P2P messaging network so that Bootnodes know of their existence. Clients make requests to Bootnodes and fetch a fresh list of working Gateways.
 
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.css">
+</head>
+
 ```mermaid
 graph TD
 GW1(<center>Gateway<br/><br/><i class='fa fa-2x fa-archway'/></center>)
