@@ -2,7 +2,7 @@
 
 A process is the building block around which governance is made in Vocdoni. Similarly to an Operating System, think of the Processes contract like a Kernel that receives syscalls to spawn a new governance process.
 
-Governance processes span across three different components: the Ethereum smart contract, IPFS to ditribute [the vote metadata](/architecture/data-schemes/process?id=process-metadata) and the [Vochain](/architecture/services/vochain).
+Governance processes span across three different components: the Ethereum smart contract, IPFS to ditribute [the vote metadata](/architecture/data-schemes/process.html#process-metadata) and the [Vochain](/architecture/services/vochain).
 
 Processes follow a declarative fashion. The expected behavior is declared on the smart contract for integrity and the the Layer 2 blockchain (called [Vochain](/architecture/services/vochain)) reacts according to the current settings.
 
@@ -23,8 +23,8 @@ The instance of the Voting process contract is resolved from `processes.vocdoni.
 // GLOBAL STRUCTS
 
 struct Process {
-    uint8 mode; // The selected process mode. See: https://vocdoni.io/docs/#/architecture/smart-contracts/process?id=flags
-    uint8 envelopeType; // One of valid envelope types, see: https://vocdoni.io/docs/#/architecture/smart-contracts/process?id=flags
+    uint8 mode; // The selected process mode. See: https://vocdoni.io/docs/#/architecture/smart-contracts/process.html#flags
+    uint8 envelopeType; // One of valid envelope types, see: https://vocdoni.io/docs/#/architecture/smart-contracts/process.html#flags
     CensusOrigin censusOrigin; // How the census proofs are computed (Off-chain vs EVM Merkle Tree)
 
     address entity; // The address of the Entity (or contract) holding the process

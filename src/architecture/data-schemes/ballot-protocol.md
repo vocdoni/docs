@@ -13,7 +13,7 @@ _A more thorough introduction is available on [our blog](https://blog.aragon.org
 
 ![https://blog.aragon.org/content/images/2021/04/process-generic-1-1.png](https://blog.aragon.org/content/images/2021/04/process-generic-1-1.png)
 
-The protocol is composed by a set of numeric and boolean variables that restrict the format of the ballot. They are defined in the [Process Parameters](/architecture/smart-contracts/process?id=contract-structs).
+The protocol is composed by a set of numeric and boolean variables that restrict the format of the ballot. They are defined in the [Process Parameters](/architecture/smart-contracts/process.html#contract-structs).
 
 - `uint8 maxCount`
 Max number of fields per ballot. 1 <= maxCount <= 100.

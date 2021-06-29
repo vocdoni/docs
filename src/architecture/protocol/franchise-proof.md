@@ -2,7 +2,7 @@
 
 The franchise proof enables user privacy and allows anonymous voting.
 
-The starting point is a [Merkle Proof](/architecture/census-overview?id=the-census), which efficiently proves that a public key belongs to a Merkle Tree (census). However, using this proof alone would allow the organizer to correlate the vote envelopes with the public key on the database, so that votes wouldn't be secret.
+The starting point is a [Merkle Proof](/architecture/census-overview.html#the-census), which efficiently proves that a public key belongs to a Merkle Tree (census). However, using this proof alone would allow the organizer to correlate the vote envelopes with the public key on the database, so that votes wouldn't be secret.
 
 To this end, Vocdoni achieves voting anonymity by the use of ZK-Snarks.
 
@@ -106,7 +106,7 @@ Unlike ZK Snarks, **LRS do not rely on a trusted setup**.
 **Academic papers**
 
 - https://eprint.iacr.org/2018/379.pdf
-- https://dl.acm.org/citation.cfm?id=2103015
+- https://dl.acm.org/citation.cfm.html#2103015
 
 **Libraries**
 - Go implementation: https://github.com/noot/ring-go (linkable branch)

@@ -10,9 +10,9 @@ The metadata of an entity provides human readable content, featuring names, desc
 
 ## JSON schema
 
-To fetch the metadata of an entity, client applications are expected to fetch the value of the [ENS Text Record](/architecture/smart-contracts/entity-resolver?id=text-record-storage) `vnd.vocdoni.meta`, which contains a [Content URI](/architecture/protocol/data-origins?id=content-uri).
+To fetch the metadata of an entity, client applications are expected to fetch the value of the [ENS Text Record](/architecture/smart-contracts/entity-resolver.html#text-record-storage) `vnd.vocdoni.meta`, which contains a [Content URI](/architecture/protocol/data-origins.html#content-uri).
 
-The [Content URI](/architecture/protocol/data-origins?id=content-uri) is expected to point to a JSON file, conforming to the following schema:
+The [Content URI](/architecture/protocol/data-origins.html#content-uri) is expected to point to a JSON file, conforming to the following schema:
 
 ```json
 {
@@ -55,8 +55,8 @@ The [Content URI](/architecture/protocol/data-origins?id=content-uri) is expecte
 
 **Sequence diagrams:**
 
-- [Set Entity metadata](/architecture/sequence-diagrams?id=set-entity-metadata)
-- [Entity subscription](/architecture/sequence-diagrams?id=entity-subscription)
+- [Set Entity metadata](/architecture/sequence-diagrams.html#set-entity-metadata)
+- [Entity subscription](/architecture/sequence-diagrams.html#entity-subscription)
 
 
 #### Register
@@ -105,7 +105,7 @@ The body of the POST request submitted to `url` will contain a JSON body like:
 ̣}
 ```
 
-As this all happens through [Gateway requests](/architecture/protocol/json-api?id=authentication), `signature` is computed from the stringified JSON of `request`, where its keys are sorted alphabetically.
+As this all happens through [Gateway requests](/architecture/protocol/json-api.html#authentication), `signature` is computed from the stringified JSON of `request`, where its keys are sorted alphabetically.
 
 The response from the backend should look like like:
 

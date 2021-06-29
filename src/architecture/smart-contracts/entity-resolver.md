@@ -4,7 +4,7 @@ Voters may want to access an index of the available elections. The best way to o
 
 In Vocdoni, entities publish [human readable metadata](/architecture/data-schemes/entity-metadata), but such metadata needs to be securely indexed on a Smart Contract.
 
-The ENS Resolver Smart Contract allows entities to register and set the [Content URI](/architecture/protocol/data-origins?id=content-uri) that points to the actual [JSON metadata](/architecture/data-schemes/entity-metadata).
+The ENS Resolver Smart Contract allows entities to register and set the [Content URI](/architecture/protocol/data-origins.html#content-uri) that points to the actual [JSON metadata](/architecture/data-schemes/entity-metadata).
 
 --
 
@@ -32,9 +32,9 @@ Entities may define the following Text Records:
 
 | Key                                 | Example                                                       | Description                                                                                                           |
 | ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `vnd.vocdoni.meta`                  | 'ipfs://12345,https://server/json'                                    | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch the Entity's JSON metadata. <br/>See [JSON schema](#meta). |
-| `vnd.vocdoni.boot-nodes`            | 'ipfs://12345,https://server/gw.json'                                 | [Content URI](/architecture/protocol/data-origins?id=content-uri) to fetch a set of Gateways for the Entity. <br/>See [Gateway Boot Nodes](#gateway-boot-nodes) below. |
-| `vnd.vocdoni.gateway-heartbeat`     | 'wss://host/path'                                      | [Messaging URI](/architecture/protocol/data-origins?id=messaging-uri) where the Gateways of the entity should report their health status. |
+| `vnd.vocdoni.meta`                  | 'ipfs://12345,https://server/json'                                    | [Content URI](/architecture/protocol/data-origins.html#content-uri) to fetch the Entity's JSON metadata. <br/>See [JSON schema](#meta). |
+| `vnd.vocdoni.boot-nodes`            | 'ipfs://12345,https://server/gw.json'                                 | [Content URI](/architecture/protocol/data-origins.html#content-uri) to fetch a set of Gateways for the Entity. <br/>See [Gateway Boot Nodes](#gateway-boot-nodes) below. |
+| `vnd.vocdoni.gateway-heartbeat`     | 'wss://host/path'                                      | [Messaging URI](/architecture/protocol/data-origins.html#messaging-uri) where the Gateways of the entity should report their health status. |
 
 - Required
   - `vnd.vocdoni.meta`
@@ -44,7 +44,7 @@ Entities may define the following Text Records:
 
 #### JSON Metadata
 
-See [Entity Metadata](/architecture/data-schemes/entity-metadata?id=json-schema).
+See [Entity Metadata](/architecture/data-schemes/entity-metadata.html#json-schema).
 
 #### Gateway boot nodes
 

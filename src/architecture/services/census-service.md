@@ -97,7 +97,7 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
 
 **Used in:**
 
-- [Adding users to a census](/architecture/sequence-diagrams?id=adding-users-to-a-census)
+- [Adding users to a census](/architecture/sequence-diagrams.html#adding-users-to-a-census)
 
 ### Add Claim Bulk
 

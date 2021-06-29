@@ -74,13 +74,13 @@ Get an overview of the gateway status: available APIs, health and whether privat
 
 ## Census API
 
-The Census API methods can be found on the [Census Service section](/architecture/services/census-service?id=json-api). 
+The Census API methods can be found on the [Census Service section](/architecture/services/census-service.html#json-api). 
 
 ## Vote API
 
 ### Submit Raw Vochain Transaction
 
-Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) to the mempool of the [Vochain](/architecture/services/vochain).
+Send a [Vote Envelope](/architecture/smart-contracts/process.html#vote-envelope) to the mempool of the [Vochain](/architecture/services/vochain).
 
 ```json
 {
@@ -108,7 +108,7 @@ Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) t
 
 ### Submit Envelope
 
-Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) to the mempool of the [Vochain](/architecture/services/vochain).
+Send a [Vote Envelope](/architecture/smart-contracts/process.html#vote-envelope) to the mempool of the [Vochain](/architecture/services/vochain).
 
 ```json
 {
@@ -135,11 +135,11 @@ Send a [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope) t
 ```
 
 **Used in:**
-- [Casting a vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=casting-a-vote)
+- [Casting a vote](https://docs.vocdoni.io/#/architecture/sequence-diagrams.html#casting-a-vote)
 
 ### Get Envelope Status
 
-Check the status of an already submitted [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope). The envelope is identified by the voter's nullifier.
+Check the status of an already submitted [Vote Envelope](/architecture/smart-contracts/process.html#vote-envelope). The envelope is identified by the voter's nullifier.
 
 ```json
 {
@@ -167,7 +167,7 @@ Check the status of an already submitted [Vote Envelope](/architecture/smart-con
 }
 ```
 **Used in:**
-- [Checking a Vote Envelope](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-vote-envelope)
+- [Checking a Vote Envelope](https://docs.vocdoni.io/#/architecture/sequence-diagrams.html#checking-a-vote-envelope)
 
 ### Get Envelope Height
 
@@ -231,7 +231,7 @@ Get the available encryption keys for the given process ID.
 
 If the process has encrypted votes and it is on-going, `encryptionPubkeys` and `commitmentKeys` should be available. Once the process has ended, `encryptionPrivKeys` and `revealKeys` will be also be available.
 
-[Vote Package](/architecture/smart-contracts/process?id=vote-package) encryption and decryption keys are expected to follow the order of their indexes. Smaller indexes are used first and it's important to note that indexes might not be consecutive.
+[Vote Package](/architecture/smart-contracts/process.html#vote-package) encryption and decryption keys are expected to follow the order of their indexes. Smaller indexes are used first and it's important to note that indexes might not be consecutive.
 
 ```json
 {
@@ -260,7 +260,7 @@ If the process has encrypted votes and it is on-going, `encryptionPubkeys` and `
 ```
 
 **Used in:**
-- [Checking a Vote Envelope](https://docs.vocdoni.io/#/architecture/sequence-diagrams?id=checking-a-vote-envelope)
+- [Checking a Vote Envelope](https://docs.vocdoni.io/#/architecture/sequence-diagrams.html#checking-a-vote-envelope)
 
 
 ### Get Block Status
@@ -499,7 +499,7 @@ The following query filters can be used:
 
 Get the results of the given processId, as indexed by the scrutinizer. If the process doesn't have encrypted votes but it has already started, then the gateway returns the **partial results**. The results can only be considered final if `final` is true.
 
-The results of an election are represented in [the following format](/architecture/smart-contracts/process?id=results).
+The results of an election are represented in [the following format](/architecture/smart-contracts/process.html#results).
 
 ```json
 {
@@ -645,7 +645,7 @@ Returns the number of entities registered on the [Vochain](/architecture/service
 
 ### Get Envelope
 
-Get the content of an existing [Vote Envelope](/architecture/smart-contracts/process?id=vote-envelope). The envelope is identified by the nullifier. `height` and `txIndex` refer to the block height and the index on that block, respectively, of the transaction containing this vote envelope. These fields can be used with [Get Tx](/architecture/services/gateway?id=get-tx) to fetch this transaction.
+Get the content of an existing [Vote Envelope](/architecture/smart-contracts/process.html#vote-envelope). The envelope is identified by the nullifier. `height` and `txIndex` refer to the block height and the index on that block, respectively, of the transaction containing this vote envelope. These fields can be used with [Get Tx](/architecture/services/gateway.html#get-tx) to fetch this transaction.
 
 ```json
 {
@@ -789,7 +789,7 @@ The `fromId` field works the same as in [Get Process List](#get-process-list).
 
 ### Get Block
 
-Get the metadata for a single block on the [Vochain](/architecture/services/vochain) by its height. `num_txs` contains the number of transactions contained in this block. In order to access these transactions (the contents of the block), use [Get Tx List for Block](/architecture/services/gateway?id=get-tx-list-for-block).
+Get the metadata for a single block on the [Vochain](/architecture/services/vochain) by its height. `num_txs` contains the number of transactions contained in this block. In order to access these transactions (the contents of the block), use [Get Tx List for Block](/architecture/services/gateway.html#get-tx-list-for-block).
 
 ```json
 {
@@ -823,7 +823,7 @@ Get the metadata for a single block on the [Vochain](/architecture/services/voch
 
 ### Get Block By Hash
 
-Get the metadata for a single block on the [Vochain](/architecture/services/vochain) by its hash. `num_txs` contains the number of transactions contained in this block. In order to access these transactions (the contents of the block), use [Get Tx List for Block](/architecture/services/gateway?id=get-tx-list-for-block).
+Get the metadata for a single block on the [Vochain](/architecture/services/vochain) by its hash. `num_txs` contains the number of transactions contained in this block. In order to access these transactions (the contents of the block), use [Get Tx List for Block](/architecture/services/gateway.html#get-tx-list-for-block).
 
 ```json
 {
@@ -1059,7 +1059,7 @@ you should see a response:
 }
 ```
 
-now we know that the gateway hosted at gw1.vocdoni.net enables the file, [vote](/architecture/services/gateway?id=vote-api), [results](/architecture/services/gateway?id=results-api), and [indexer](/architecture/services/gateway?id=indexer-api) apis. 
+now we know that the gateway hosted at gw1.vocdoni.net enables the file, [vote](/architecture/services/gateway.html#vote-api), [results](/architecture/services/gateway.html#results-api), and [indexer](/architecture/services/gateway.html#indexer-api) apis. 
 
 Let's do some simple requests to learn more about the state of the Vochain.
 
