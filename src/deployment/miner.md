@@ -2,7 +2,7 @@
 
 This section shows how to deploy a node with the miner role running on Vocdoni network, to propose and include blocks in the Vochain.
 
-To get more information about the miner role, read the [docs](https://docs.vocdoni.io/#/architecture/services/vochain?id=miner).
+To get more information about the miner role, read the [docs](https://docs.vocdoni.io/#/architecture/services/vochain.html#miner).
 
 ## Requirements
 

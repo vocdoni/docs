@@ -14,7 +14,7 @@ Along the different stages of a governance process, the following data schemes a
 
 The creation of this data structure is critical. Multiple checks should be in place to ensure that the data is coherent (well formatted, all relevant locales present, etc).
 
-The Process Metadata defines the human readable information and should not be confused with the [Process Parameters](/architecture/smart-contracts/process?id=contract-structs) in the Smart Contract, which define how the process should behave.
+The Process Metadata defines the human readable information and should not be confused with the [Process Parameters](/architecture/smart-contracts/process.html#contract-structs) in the Smart Contract, which define how the process should behave.
 
 The metadata of a process is represented as follows:
 
