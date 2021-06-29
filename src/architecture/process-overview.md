@@ -52,8 +52,8 @@ The client submits a Vote envelope (containing the ZK-Proof and the voting choic
 The Vochain nodes and miners validate the Zero Knowledge proof. If valid, the vote package is added to the next block and becomes available for computing the results.
 
 ```mermaid
-graph TD
 
+graph TD
 APP(<center>App user<br/><br/><i class='fa fa-2x fa-mobile-alt'/></center>)
 DATA[<center>P2P Filesystem<br/><br/><i class='fa fa-2x fa-database'/></center>]
 GW[<center>Gateway<br/><br/><i class='fa fa-2x fa-network-wired'/></center>]
@@ -62,9 +62,9 @@ CS[<center>Census Service<br/><br/><i class='fa fa-2x fa-address-book'/></center
 VN[<center>Vochain node<br/><br/><i class='fa fa-2x fa-cubes'/></center>]
 VM[<center>Vochain Miner<br/><br/><i class='fa fa-2x fa-cubes'/></center>]
 
-APP --> |<center>0 Fetch entity <br/>open processes</center>| GW
+APP --> |<center>0 Fetch entity's <br/>open processes</center>| GW
 APP -->|<center>1 Fetch process metadata<br/>2 Get census proof<br/>3 Generate Zero Knowledge<br/>4 Submit voting package</center>| GW
-GW -->|<center>Get metadata</center>|DATA
+GW -->|Get metadata|DATA
 GW -.- PSS
 PSS -.-|Get/check merkle proof|CS
 PSS -.-|Relay voting package|VN

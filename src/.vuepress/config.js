@@ -187,17 +187,6 @@ module.exports = {
         rightAngles: false,
         showSequenceNumbers: false,
       },
-      // er: {
-      //   diagramPadding: 0,
-      //   layoutDirection: 'TB',
-      //   minEntityWidth: 100,
-      //   minEntityHeight: 75,
-      //   entityPadding: 15,
-      //   stroke: 'gray',
-      //   fill: 'honeydew',
-      //   fontSize: 12,
-      //   useMaxWidth: true,
-      // },
     }
     ]
   ]
