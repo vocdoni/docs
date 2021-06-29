@@ -88,6 +88,9 @@ The Vocdoni manager features a user registry out of the box.
 ## Public vs Private relationship
 
 Below is the relationship between publicly accessible and private services that interact within a voting process.
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.css">
+</head>
 
 ```mermaid
 graph TD;
