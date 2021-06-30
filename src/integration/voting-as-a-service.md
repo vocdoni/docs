@@ -31,7 +31,7 @@ Using their private key and a [decentralized Gateway](https://docs.vocdoni.io/#/
 
 Votes are relayed to the custom voting blockchain, validated and included in the next block.
 
-As the process goes on, anyone with network access can listen for vote transactions, verify them by themselves or even use the [block explorer](https://explorer.vocdoni.net) to do it manually.
+As the process goes on, anyone with network access can listen for vote transactions, verify them by themselves or even use the [block explorer](https://explorer.vote) to do it manually.
 
 ### After the process
 When the vote is over, the oracle will trigger a process end transaction. At this point, the process will stop accepting valid votes and Gateways will be able to compute the scrutiny of the process. Even your own gateways can. 

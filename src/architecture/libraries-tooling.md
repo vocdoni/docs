@@ -2,7 +2,9 @@
 
 ## Block Explorer
 
-The VocExplorer is a web frontend that allows any third party to query and observe the Vochain processes, votes, organizations, transactions, etc. If is developed in go using Vecty and Web Assembly. 
+The VocExplorer is a web frontend that allows any third party to query and observe the Vochain processes, votes, organizations, transactions, etc. It is developed in golang using the [Vecty](https://github.com/hexops/vecty) framework and compiling to Web Assembly. 
+
+The VocExplorer frontend queries the [Gateway Api](/architecture/services/gateway.html#api-definition) for publicly-available information from the Vochain. Users can host their own combination of explorer frontend and gateway node and can also manually query gateway nodes. 
 
 - See [VocExplorer](https://github.com/vocdoni/vocexplorer)
 
