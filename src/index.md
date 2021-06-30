@@ -1,9 +1,14 @@
 ---
 home: true
-heroImage: https://v1.vuepress.vuejs.org/hero.png
+heroImage: /Logotype.svg
+heroText: 
 tagline: A decentralized self sovereign governance platform
 actionText: Get started →
 actionLink: /architecture/general
+lang: en-US
+meta:
+  - name: keywords
+    content: voting, open source, governance, vocdoni, aragon, digital
 features:
 - title: L2 voting Blockchain
   details: Purpose specific voting blockchain built on top of Tendermint
