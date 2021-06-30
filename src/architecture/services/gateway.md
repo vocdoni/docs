@@ -726,6 +726,7 @@ Get general information & statistics about the current [Vochain](/architecture/s
       "genesis_time_stamp": "2021-04-30T11:43:28.668436552Z",
       "process_count": 19,
       "syncing": false,
+      "transaction_count": 861,
       "validator_count": 4
     },
     "timestamp": 1620059835
@@ -931,13 +932,47 @@ Get a single tx from the [Vochain](/architecture/services/vochain). `height` is 
     "request": "632",
     "timestamp": 1620068626,
     "tx": {
-      "Hash": "hexString",
-      "Index": 2,
-      "Signature": "hexString",
-      "Tx": "base64String",
+      "hash": "hexString",
+      "signature": "hexString",
+      "tx": "base64String",
     }
   },
   "id": "632",
+  "signature": "hexString"
+}
+```
+
+### Get Tx By Height
+
+Get a single tx from the [Vochain](/architecture/services/vochain). `height` is that transaction's height on the vochain as a whole, and each height value references a unique transaction. Transaction height corresponds to the order in which that transaction was mined.
+
+```json
+{
+  "request": {
+    "height": 851,
+    "method": "getTxByHeight",
+    "timestamp": 1625063686
+  },
+  "id": "137",
+  "signature": "hexString"
+}
+```
+
+```json
+{
+  "response": {
+    "ok": true,
+    "request": "137",
+    "timestamp": 1625063686,
+    "tx": {
+      "block_height": 354792,
+      "hash": "hexString",
+      "height": 851,
+      "signature": "hexString",
+      "tx": "base64String"
+    }
+  },
+  "id": "137",
   "signature": "hexString"
 }
 ```
