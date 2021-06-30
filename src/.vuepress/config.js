@@ -86,7 +86,7 @@ module.exports = {
                 path: '/architecture/services/vochain',
                 children: [
                   '/architecture/services/vochain',
-                  '/architecture/services/vochain/scrutinizer'
+                  '/architecture/services/vochain/indexer'
                 ]
               },
               '/architecture/services/census-service',
