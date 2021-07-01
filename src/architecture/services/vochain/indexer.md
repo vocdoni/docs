@@ -101,9 +101,9 @@ When the `Commit` function is called on the Vochain,  a signal is triggered in o
 
 In the commit stage all the pools are iterated in order compute the results of each process that is meant to be tallied. As said, there are different situations in which the indexer must compute the results of a process:
 
-- If the process is real time, the votes on the vote pool are fetched in order to be computed at the given Vochain height.
-- If the process keys are revealed.
+- The process keys are revealed.
 - The process end block is reached.
+- The process is real time (in this case, the votes on the vote pool are fetched in order to be computed live at the given Vochain height).
 
 ### Rollback
 
@@ -141,7 +141,7 @@ When the Vochain signals that a process' results are available, the results are 
 
 
 <div style="padding: 20px; background-color: white;">
-	<img src="https://github.com/vocdoni/design/raw/main/docs/scrutinizer-flow.png" alt="indexer work flow"/>
+	<img src="https://github.com/vocdoni/design/raw/main/docs/indexer-flow.svg" alt="indexer work flow"/>
 </div>
 
 
