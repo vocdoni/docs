@@ -1,6 +1,6 @@
 # Global architecture
 
-Digital voting processes represent a great social and tech challenge. An official binding vote with standard requirements should at least be able to:
+Digital voting represents a great social and technological challenge. An official binding vote with standard requirements should at least be able to:
 
 + Enforce vote anonymity
 + Rely on an open source platform
@@ -11,10 +11,10 @@ Digital voting processes represent a great social and tech challenge. An officia
 
 Vocdoni defines an open architecture and the protocols to empower large communities to exercise full democracy with the aforementioned guarantees. 
 
-A functional implementation of Vocdoni will typically involve two types of services. 
+A functional implementation of Vocdoni relies mainly on a set of **Decentralized** services: A public Ethereum blockchain, Gateways, Census Service, voting blockchain Miners, Oracles, and decentralized storage systems<br/>
 
-**Decentralized**: A public Ethereum blockchain, Gateways, Census Service, voting blockchain Miners, Oracles, and decentralized storage systems<br/>
-**Private**: Private custom services so that Entities can maintain a census of users (with personal data that should not be disclosed)
+
+The core voting protocol can be extended to include user management with a set of **Private** services: A private database that Entities can use to maintain a census of users (with personal data that should not be disclosed)
 
 ## Service architecture
 
@@ -31,11 +31,12 @@ To provide resilience and avoid any kind of censorship, the network architecture
 A voting process makes use of the following components:
 
 <div style="padding: 20px; background-color: white;">
-	<img src="https://raw.githubusercontent.com/vocdoni/design/main/docs/main-architecture.png" alt="Main architecture"/>
+	<img src="https://raw.githubusercontent.com/vocdoni/design/main/docs/main-architecture.svg" alt="Main architecture"/>
 </div>
 
-- Mobile app users create a key pair (identity) and sign up to the Registry DB of an organization
-- The Registry DB creates a Merkle Tree with a snapshot of the census and publishes it through IPFS
+- A Merkle Tree is generated with a snapshot of the census and published to IPFS. The census can be generated in one of many ways, including:
+  - Mobile app users create a key pair (self-sovereign identity) and sign up to a Registry DB for an organization with their public key. Users in the registry can be filtered on different attributes, and their public keys are included in the Merkle Tree. Users can prove their census inclusion with the private key they own. 
+  - The organization creates a CSV spreadsheet containing voter information (i.e. name, ID number, etc). This information is encrypted to create a key pair for each eligible user, the public key of which is added to the Merkle Tree. Web client users can enter their correct information to ephemerally generate their one-time private key and prove census inclusion.
 - Voting processes are declared on an Ethereum Smart Contract
 	- This acts as the source of truth and contains pointers to the metadata, census root and parameters defining how a process should behave
 - Metadata is obtained from distributed filesystems such as IPFS
