@@ -63,17 +63,23 @@ Gateways are neutral and their goal is to provide P2P access to web and app clie
 
 A server handling the public census of an Entity. It stores Merkle trees with user claims, it allows entities to trigger updates (using asymmetric key signature authentication) and allows clients to ask for data on a particular Merkle tree.
 
-### Mobile client
+### Client
 
+Multiple types of client could be used. 
+
+#### App 
 A mobile App that generates and manages cryptographic self-sovereign identities. It interacts with network Gateways to participate in the Vocdoni ecosystem.
 
 It allows to visit entities, browse their content, see governance processes, cast votes and see the results.
+
+#### Web
+A web app that allows users to generate a proof that they belong in a process' CSV Registry and vote from the browser without any sign-up process or local storage. It interacts with network Gateways to participate in the Vocdoni ecosystem.
 
 ## Manager
 
 A private service providing organizations with a UI to manage their community and public content. This includes a news feed, voting processes, assemblies, events, etc.
 
-It also allows to manage the members and their attributes (age, payment status, etc.). Such data typically lives on a private database that will compute updated snapshots of the census at a given point in time.
+It also allows to manage the members and their attributes (age, payment status, etc.). Such data typically lives on a private database (or a CSV registry) that will compute updated snapshots of the census at a given point in time.
 
 The manager also allows to export new census and define the requirements that users have to accomplish for a user to be in a census. These requirements depend on each organization's policies.
 
