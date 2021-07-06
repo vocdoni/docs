@@ -117,17 +117,17 @@ module.exports = {
           '/architecture/libraries-tooling',
         ]
       },
-      {
-        title: 'Organization Manager',
-        path: "/manager/overview",
-        collapsable: false,
-        children: [
-          '/manager/overview',
-          '/manager/manager-api',
-          '/manager/registry-api',
-          '/manager/push-notifications-api',
-        ]
-      },
+      // {
+      //   title: 'Organization Manager',
+      //   path: "/manager/overview",
+      //   collapsable: false,
+      //   children: [
+      //     '/manager/overview',
+      //     '/manager/manager-api',
+      //     '/manager/registry-api',
+      //     '/manager/push-notifications-api',
+      //   ]
+      // },
       {
         title: 'Integration',
         path: "/integration/overview",
