@@ -150,6 +150,12 @@ module.exports = {
         ]
       },
       {
+        title: "Development",
+        children: [
+          ["https://docs-staging.aragon.org/contributors-guide", "Contributor's Guide"]
+        ]
+      },
+      {
         title: 'About',
         path: '/about-us/vision',
         collapsable: false,
