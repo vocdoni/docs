@@ -168,11 +168,11 @@ module.exports = {
     '@vuepress/plugin-back-to-top',
     '@vuepress/plugin-medium-zoom',
     ['mermaidjs', {
-      theme:'default',
+      theme: 'default',
       logLevel: 5, // corresponds with "fatal"
-      securityLevel:'loose',
-      startOnLoad:true,
-      arrowMarkerAbsolute:false,
+      securityLevel: 'loose',
+      startOnLoad: true,
+      arrowMarkerAbsolute: false,
       sequence: {
         diagramMarginX: 0,
         diagramMarginY: 20,
