@@ -109,7 +109,16 @@ module.exports = {
             path: '/architecture/protocol/json-api',
             children: [
               '/architecture/protocol/json-api',
-              '/architecture/protocol/franchise-proof',
+              {
+                title: 'Anonymous voting',
+                collapsible: false,
+                path: '/architecture/protocol/anonymous-voting/anonymous-voting',
+                children: [
+                  '/architecture/protocol/anonymous-voting/zk-census-proof',
+                  '/architecture/protocol/anonymous-voting/blind-signatures',
+                ]
+              },
+              '/architecture/protocol/rollup',
               '/architecture/protocol/data-origins',
             ]
           },
