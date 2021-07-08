@@ -4,7 +4,7 @@ A process is the building block around which governance is made in Vocdoni. Simi
 
 Governance processes span across three different components: the Ethereum smart contract, IPFS to ditribute [the vote metadata](/architecture/data-schemes/process.html#process-metadata) and the [Vochain](/architecture/services/vochain).
 
-Processes follow a declarative fashion. The expected behavior is declared on the smart contract for integrity and the the Layer 2 blockchain (called [Vochain](/architecture/services/vochain)) reacts according to the current settings.
+Processes follow a declarative fashion. The expected behavior is declared on the smart contract for integrity and the the voting blockchain (called [Vochain](/architecture/services/vochain)) reacts according to the current settings.
 
 The instance of the Voting process contract is resolved from `processes.vocdoni.eth` on the ENS registry.
 
