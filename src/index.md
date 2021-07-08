@@ -10,7 +10,7 @@ meta:
   - name: keywords
     content: voting, open source, governance, vocdoni, aragon, digital
 features:
-- title: L2 voting Blockchain
+- title: Voting Blockchain
   details: Purpose specific voting blockchain built on top of Tendermint
 - title: End to end verifiable
   details: Network participants can check the integrity of the whole election
