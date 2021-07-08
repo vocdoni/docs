@@ -1,0 +1,18 @@
+name: Build and Deploy
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    if:  github.ref == 'refs/heads/master' 
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: vuepress-deploy
+      uses: jenkey2011/vuepress-deploy@master
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        TARGET_BRANCH: deploy
+        BUILD_SCRIPT: npm install && npm run build 
+        BUILD_DIR: src/.vuepress/dist/
+        CNAME: docs.vocdoni.io
