@@ -1,8 +1,8 @@
 # ZK Census Proof
 
-This document is splitted in two main sections:
-- **Protocol design**: high level overview of the protocol, without giving much specific details, but showing the main idea.
-- **Implementation spec**: step by step specification, explaining all the details, the data structures used, how things are hashed, etc. With the aim to avoid leaving any ambiguous concept.
+This document is divided in two sections:
+- **Protocol design**: high level overview of the protocol.
+- **Implementation spec**: detailed specification, featuring the relevant data structures, how things are hashed, etc.
 
 ## Protocol design
 
@@ -29,7 +29,7 @@ Voters use the proving key generated for the circuit below to generate a ZK Proo
 
 Data that could reveal the identity of the voter are kept private (gray boxes in the diagram). Public inputs are submitted within the Vote Envelope, so that validators can check them against the proof and make sure that the user hasn't voted twice.
 
-+ The same circuit can be used for any `process` with the same census (max) size
++ The same circuit can be used for any `process` with a census size of the same range (10k, 100k, 1M, etc).
 + It relies on a **trusted setup ceremony**
 
 <div style="padding: 20px; background-color: white; text-align: center;">
@@ -109,11 +109,11 @@ Vochain->>Vochain: 14. verify zkSNARK proof, accept the vote
     - User's *private key*: `sk = Hash(login_key | user_secret)`
     - User's *public key*: `pk = eddsa.prv2pub(sk)`
         - method: [`eddsa.prv2pub(sk)`](https://github.com/iden3/circomlib/blob/master/src/eddsa.js#L34)
-    - User's *voting key* (censustree leaf key): `leafKey = poseidon(pk.x, pk.y)`
+    - User's *voting key* (censustree leaf key): `leafKey = poseidon([pk.x, pk.y])`
         - This is the key that will be added into the *CensusTree*
 5. *[U+V]* **Register voting key** using **login key** (registerKeyTx)
 6. *[V]* Build voting **census merkle tree** (in state)
-    - Where each leaf contains each hash of user's `pk` (*voting key*)
+    - Where each leaf contains the hash of each user's `pk` (*voting key*)
     - MerkleTree type: circom compatible
         - Hash function: [Poseidon](https://github.com/iden3/go-iden3-crypto/blob/master/poseidon/poseidon.go)
         - Tree [Go impl](https://github.com/vocdoni/vocdoni-node/blob/master/censustree/arbotree/wrapper.go)
@@ -208,9 +208,9 @@ Origin of each zkInput parameter:
 
 ### Circuit identification
 There will be different circuits of the `zk-census-proof` depending on the census size, also there might be more use cases with different circuit designs.
-The client & Vochain need a way to unequivocally identify those circuits, in order to user the proper `Proving key`, `Witness calculator` and `Verification key` for each circuit.
+Both the client and the Vochain need a way to univocally identify those circuits, in order to user the proper `Proving key`, `Witness calculator` and `Verification key` for each circuit.
 
-The following defines the way how the circuits are identified in the client and also inside the Vochain through a Protobuf enum type. Each `ProofZkSNARK` protobuf packet will have a `Type` identifier that states to which circuit belongs the proof, so the Vochain knows which `Verification Key` to use to verify the proof.
+Circuits are identified across the stack by using a Protobuf enum type. Each `ProofZkSNARK` protobuf package will have a `Type` identifier indicating which circuit the proof belongs to, so the Vochain knows which `Verification Key` to use for verifying the proof.
 
 Format: `CIRCUITNAME_PARAMETER1_PARAMETER2`
 
@@ -221,5 +221,4 @@ List of current types:
     - Example:
         - `ZKCENSUSPROOF_100_5`
         - `ZKCENSUSPROOF_1000_20`
-
 
