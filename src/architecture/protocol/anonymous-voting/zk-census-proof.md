@@ -8,7 +8,7 @@ This document is divided in two sections:
 
 The census proof (also called franchise proof) enables user privacy and allows anonymous voting.
 
-The starting point is a [Merkle Proof](/architecture/census-overview?id=the-census), which efficiently proves that a public key belongs to a Merkle Tree (census). However, using this proof alone would allow the organizer to correlate the vote envelopes with the public key on the database, so that votes wouldn't be secret.
+The starting point is a [Merkle Proof](/architecture/census-overview), which efficiently proves that a public key belongs to a Merkle Tree (census). However, using this proof alone would allow the organizer to correlate the vote envelopes with the public key on the database, so that votes wouldn't be secret.
 
 To this end, Vocdoni achieves voting anonymity by the use of ZK-Snarks.
 
@@ -151,7 +151,7 @@ The MerkleTree uses the Poseidon hash, which is a 'snark-friendly' hash function
 
 In the following diagram there is a visual representation of the data structure of the Leafs of the MerkleTree being used in the scheme of the zk-census-proof.
 
-![](https://i.imgur.com/RVnFDqP.png)
+![](./zk-census-proof-poseidon-merkletree-diagram.png)
 
 
 
@@ -179,6 +179,7 @@ Origin of each zkInput parameter:
 > *all the parameters are `string` or `[]string` that represent `bigInt` or `[]bigInt`*
 - *censusRoot*: computed by the *CensusAuthorithy* from the *Census Tree*
 - *censusSiblings*: computed by the *CensusAuthorithy*, it's the *Merkle Proof*
+    - the *User* retreives the *siblings* from the *Vochain* through the *Gateway*
     - the length of *censusSyblings* will depend on the *zkCircuit*:
         - The design of the *MerkleTree* used in circomlib provokes different lengths in the siblings returned when generating a *MerkleProof*
         - In order to input those siblings into the circuit, the `nLevels` of the circuit is fixed, so the length of *siblings* needs to be fixed also.
@@ -203,7 +204,9 @@ Origin of each zkInput parameter:
 - *relayerProof*: computed by the *User*
     - `relayerProof = poseidon.Hash(nullifier, relayerPublicKey)`
 - *revealKey*: not known by the user at the proof generation moment
+    - the length of this array is determined by the `nMiners` parameter of the circuit
 - *commitKey*: given by the *KeyKeeper*
+    - the length of this array is determined by the `nMiners` parameter of the circuit
     - `poseidon.Hash(relayerPublicKey)`
 
 ### Circuit identification
