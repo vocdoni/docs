@@ -1,3 +1,3 @@
 # Blind signatures
 
-> WIP
+> This section is still a work in progress.
