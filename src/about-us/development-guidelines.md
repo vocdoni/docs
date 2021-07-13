@@ -4,9 +4,9 @@
 > current page is what we are using while the shared doc with Aragon gets done.*
 
 ## Intro
-- The 'motto'is: **keep it simple**
-    - If we extend too much the explainations or the 'rules', will be harder to read, and by consequence harder to be followed
-    - This kind of documents can end up being too much 'opinionated', we try to write down the *'minimum common base layer'*, and then if a specific team want to add some extra concrete step is free to do it so.
+- The 'motto' is: **keep it simple**
+    - If we over-extend the explanations or the 'rules', these guidelines will be harder to read and therefore harder to follow.
+    - Development guidelines can easily fall into the trap of being very opinionated and subjective. To avoid this, we aim to specify a *'minimum common base layer'* for our development. If a specific team wants to add some extra concrete steps particular to their area of expertise, they are free to do so. 
 
 ## Tasks management
 - Description of current status:
@@ -19,15 +19,15 @@
     
 ## Docs/Specs strategy
 - Code should be well documented (following the specific language guidelines)
-- When adding a new feature, first it should be documented
+- New features should be documented before being implemented
     - Reasons:
         - Avoid inefficiencies due incompatibilities on the client & server sides
         - Make it easier for the reviewer to verify that the implementation follows the spec
 
 ### Layers of documentation
 - **Tasks related to PR discussions**: discuss the problem, possible solutions, ideas, agreements, related issues
-- **Commit message**: describe what & why the commit adds
-- **Code inline documentation**: describe the method & logic of the code, to help the future reader of the code
+- **Commit message**: describe what the commit adds & why
+- **Inline code documentation**: describe the method & logic of the code, to help the future reader of the code
 - **Package README.md**: if needed, add global description of the package
 - **docs.vocdoni.io**: document the spec & architecture. If a new protocol/feature is being added, should appear here before the implementation starts.
 
@@ -39,9 +39,9 @@
 - **Integration**: where individual units and components are combined and tested as a group with a clear scope. Usually using multiple packages.
     - example:
         - https://github.com/vocdoni/vocdoni-node/tree/master/test
-- **End-to-end**: uses a service that is not in the repo, and performs the full flow. Can test the user behaviour.
+- **End-to-end**: uses a service that is not in the repo, and performs the full flow. Can test the user behavior.
     - examples:
-        - The docker-compose test suit on vocdoni-node: https://github.com/vocdoni/vocdoni-node/tree/master/dockerfiles/testsuite
+        - The docker-compose test suite on vocdoni-node: https://github.com/vocdoni/vocdoni-node/tree/master/dockerfiles/testsuite
 
 
 Priority of test layers:
@@ -68,7 +68,7 @@ The idea is to be able prove with code that the bug is fixed: to create a test t
 - PRs can be merged once:
     - the tests pass
     - the linters pass (if activated)
-- It's responsability of the repo creator/owner to configure the Github Actions with the automated Tests & Linters for each commit & PR
+- It's the responsability of the repo creator/owner to configure the Github Actions with the automated Tests & Linters for each commit & PR
 
 ## Linters
 There will be an 'official' minimum linter configuration file, that all the repos of each language must include in the automated tests.
