@@ -12,7 +12,10 @@
 - Description of current status:
     - Each project uses different tool
     - Concrete tasks are defined in `Github issues`
-    - General tasks are defined in `Linear` + `Jira` + `Notion` *(document: 'Monday commitments' (priorities of the week & forecast for month))*
+    - General tasks are defined in
+        - `Linear`: *Will be replaced by Jira eventually*
+        - `Jira` 
+        - `Notion`: *document: 'Monday commitments' (priorities of the week & forecast for month)*
     
 ## Docs/Specs strategy
 - Code should be well documented (following the specific language guidelines)
@@ -65,7 +68,7 @@ The idea is to be able prove with code that the bug is fixed: to create a test t
 - PRs can be merged once:
     - the tests pass
     - the linters pass (if activated)
-- It's responsability of the repo creator/owner to configure the Github Actions with the automated Tests & Linters for each commit&PR
+- It's responsability of the repo creator/owner to configure the Github Actions with the automated Tests & Linters for each commit & PR
 
 ## Linters
 There will be an 'official' minimum linter configuration file, that all the repos of each language must include in the automated tests.
