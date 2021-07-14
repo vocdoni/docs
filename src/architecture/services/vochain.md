@@ -12,7 +12,7 @@ It is important to mention that the details of each Vochain are indexed on the E
 Vocdoni uses Ethereum as the source of truth. This has several advantages, like having a versioning system for each blockchain and being able to prune legacy processes and leaving only a hash representing all the history. We can also use *interchain* communication in order to pass messages between blockchains and trigger certain actions.
 
 <div style="padding: 20px; background-color: white;">
-	<img src="https://github.com/vocdoni/design/raw/main/docs/vochain-overall.png" alt="Vochain overall architecture"/>
+	<img src="/vochain-overall.png" alt="Vochain overall architecture"/>
 </div>
 
 For the current version, only one Vochain exists, which handles all processes.
@@ -133,7 +133,7 @@ The data stored in Ethereum lives in a [smart contract](/architecture/smart-cont
 ## Special actors
 
 <div style="padding: 20px; background-color: white;">
-	<img src="https://github.com/vocdoni/design/raw/main/docs/vochain-actors.png" alt="Vochain actors"/>
+	<img src="/vochain-actors.png" alt="Vochain actors"/>
 </div>
 
 
@@ -181,7 +181,7 @@ See the [Scrutinizer](/architecture/services/vochain/scrutinizer) section.
 In the following diagram the vote transaction lifecycle is shown. CheckTX, DeliverTX and Commit are the main steps of the Vochain. The first decides if a new transaction should be included in the mempool (and broadcasted to other peers), the second decides if a transaction that is going to be included in the next block is valid and the last makes the changes permanent and updates the state.
 
 <div style="padding: 20px; background-color: white;">
-	<img src="https://github.com/vocdoni/design/raw/main/docs/vochain-transaction-lifecicle.png" alt="Vochain transaction cycle"/>
+	<img src="/vochain-transaction-lifecycle.png" alt="Vochain transaction cycle"/>
 </div>
 
 

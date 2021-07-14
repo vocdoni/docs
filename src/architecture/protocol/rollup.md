@@ -14,7 +14,7 @@ In this scenario voters are able to verify that their vote has been processed. N
 At the same time, the election's traceability and transparency properties are preserved. 
 
 <div style="padding: 20px; background-color: white; text-align: center;">
-	<img src="https://github.com/vocdoni/design/raw/main/drawio/zk-rollup-vocdoni.png" alt="ZkRollup"/>
+	<img src="/zk-rollup-vocdoni.png" alt="ZkRollup"/>
 </div>
 
 

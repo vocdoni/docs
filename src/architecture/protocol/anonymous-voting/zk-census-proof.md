@@ -32,7 +32,9 @@ Data that could reveal the identity of the voter are kept private (gray boxes in
 + The same circuit can be used for any `process` with a census size of the same range (10k, 100k, 1M, etc).
 + It relies on a [**trusted setup ceremony**](https://medium.com/qed-it/diving-into-the-snarks-setup-phase-b7660242a0d7)
 
-![](./circuit-diagram.png)
+<div style="padding: 20px; background-color: white;">
+	<img src="/circuit-diagram.png" alt="Circuit diagram"/>
+</div>
 
 The circuit above verifies that:
 - the prover is the owner of the secret key
@@ -136,7 +138,9 @@ The MerkleTree uses the Poseidon hash, which is a 'snark-friendly' hash function
 
 The following diagram contains a visual representation of the data structure of the Leaves of the MerkleTree being used in the scheme of the zk-census-proof.
 
-![](./zk-census-proof-poseidon-merkletree-diagram.png)
+<div style="padding: 20px; background-color: white;">
+	<img src="/zk-census-proof-poseidon-merkletree-diagram.png" alt="Poseidon merkle tree with zk census proof"/>
+</div>
 
 
 
@@ -193,7 +197,9 @@ List of current types:
 
 A set of commitment keys are generated for each election process by a set of trusted identities named `keykeepers`. Only if all `keykeepers` are malicious could they tamper with the election, so it is crucial to distribute these special identities well. Once all these keys are revealed, anyone can generate a valid proof. This mechanism is added to the circuit in order to avoid vote buying when the election is over. Since anyone can now generate a valid proof, a voter will no longer be able to prove that they are the owner of a specific vote nullifier.
 
-![](./circuit-with-keykeepers-keys-diagram.png)
+<div style="padding: 20px; background-color: white;">
+	<img src="/circuit-with-keykeepers-keys-diagram.png" alt="Circuit with keykeepers diagram"/>
+</div>
 
 zkInputs of this alternative scheme:
 ```json=

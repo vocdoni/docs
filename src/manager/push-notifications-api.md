@@ -54,7 +54,7 @@ Is composed by the following components:
 
 
 <div style="padding: 20px; background-color: white;">
-	<img src="https://github.com/vocdoni/design/raw/main/docs/manager-push-notifications.png" alt="Manager Push Notifications"/>
+	<img src="/manager-push-notifications.png" alt="Manager Push Notifications"/>
 </div>
 
 <br>
