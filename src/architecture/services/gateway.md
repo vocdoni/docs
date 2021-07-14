@@ -5,7 +5,7 @@ Gateways provide redundant entry points to the P2P networks. They allow clients 
 The following diagram shows the gateway's overall architecture and components.
 
 <div style="padding: 20px;">
-	<img src="https://raw.githubusercontent.com/vocdoni/design/main/docs/gateway-components.png" alt="Gateway Components"/>
+	<img src="/gateway-components.png" alt="Gateway Components"/>
 </div>
 
 ### Discovery mechanism

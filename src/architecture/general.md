@@ -31,7 +31,7 @@ To provide resilience and avoid any kind of censorship, the network architecture
 A voting process makes use of the following components:
 
 <div style="padding: 20px; background-color: white;">
-	<img src="https://raw.githubusercontent.com/vocdoni/design/main/docs/main-architecture.svg" alt="Main architecture"/>
+	<img src="/main-architecture.svg" alt="Main architecture"/>
 </div>
 
 - A Merkle Tree is generated with a snapshot of the census and published to IPFS. The census can be generated in one of many ways, including:

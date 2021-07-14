@@ -85,7 +85,7 @@ It also maintains six pools and an internal database for data persistence:
 
 
 <div style="padding: 5px; background-color: white;">
-	<img src="https://github.com/vocdoni/design/raw/main/docs/indexer-comp.svg" alt="indexer components"/>
+	<img src="/indexer-comp.svg" alt="indexer components"/>
 </div>
 
 
@@ -141,7 +141,7 @@ When the Vochain signals that a process' results are available, the results are 
 
 
 <div style="padding: 20px; background-color: white;">
-	<img src="https://github.com/vocdoni/design/raw/main/docs/indexer-flow.svg" alt="indexer work flow"/>
+	<img src="/indexer-flow.svg" alt="indexer work flow"/>
 </div>
 
 
