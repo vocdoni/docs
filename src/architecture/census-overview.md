@@ -24,9 +24,9 @@ The tree structure is made of nodes. Terminal nodes contain the actual values an
 + The **verifier** only needs to know the Root Hash
 + The **prover** only needs to provide the Leaf and its Siblings
 
-The owner of PubKey1 only needs `HashPubKey1 + H4 + H1` to prove anyone that the key is part of the Merkle Tree (census).
+The owner of PubKey1 only needs `HashPubKey1 + H4 + H2` to prove anyone that the key is part of the Merkle Tree (census).
 
-The verifier then will compute `hash( hash( hash(HashPubKey1) + H4 ) + H1 )` and compare the result with the Root hash that he/she already knows.
+The verifier then will compute `hash( hash( hash(HashPubKey1) + H4 ) + H2 )` and compare the result with the Root hash that he/she already knows.
 
 Vocdoni stores a hash of public keys instead of public keys themselves to provide an additional privacy layer when publishing the census.
 
