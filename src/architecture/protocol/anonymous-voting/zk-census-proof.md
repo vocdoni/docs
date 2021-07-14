@@ -30,7 +30,7 @@ Voters use the proving key generated for the circuit below to generate a ZK Proo
 Data that could reveal the identity of the voter are kept private (gray boxes in the diagram). Public inputs are submitted within the Vote Envelope, so that validators can check them against the proof and make sure that the user hasn't voted twice.
 
 + The same circuit can be used for any `process` with a census size of the same range (10k, 100k, 1M, etc).
-+ It relies on a **trusted setup ceremony**
++ It relies on a [**trusted setup ceremony**](https://medium.com/qed-it/diving-into-the-snarks-setup-phase-b7660242a0d7)
 
 ![](./circuit-diagram.png)
 
@@ -128,7 +128,7 @@ Vochain->>Vochain: 14. verify zkSNARK proof, accept the vote
 
 
 ### Merkle Tree
-The MerkleTree needs to be a zkSNARK-friendly implementation. As currently we are using [Circom]() for the zkSNARK circuits, we need to be compatible with the [circomlib](https://github.com/iden3/circomlib/tree/master/circuits/smt) MerkleTree implementation. A specification of the MerkleTree [can be found here](https://docs.iden3.io/publications/pdfs/Merkle-Tree.pdf).
+The MerkleTree needs to be a zkSNARK-friendly implementation. As currently we are using [Circom](https://github.com/iden3/circom) for the zkSNARK circuits, we need to be compatible with the [circomlib](https://github.com/iden3/circomlib/tree/master/circuits/smt) MerkleTree implementation. A specification of the MerkleTree [can be found here](https://docs.iden3.io/publications/pdfs/Merkle-Tree.pdf).
 
 In the Vochain, we're using the [arbo](https://github.com/vocdoni/arbo) MerkleTree, which is a Go implementation compatible with the Circom spec.
 
@@ -160,6 +160,7 @@ Origin of each zkInput parameter:
     - the *User* retrieves the *siblings* from the *Vochain* through the *Gateway*
     - the length of *censusSiblings* will depend on the *zkCircuit*:
         - The design of the *MerkleTree* used in circomlib provokes different lengths in the siblings returned when generating a *MerkleProof*
+	  - This is due the design of the *MerkleTree* defines a tree in which the deep of the tree (from the root to the leafs) will depend on each leaf and its neighbours. More details can be found in the [*MerkleTree* spec](https://docs.iden3.io/publications/pdfs/Merkle-Tree.pdf).
         - In order to input those siblings into the circuit, the `nLevels` of the circuit is fixed, so the length of *siblings* needs to be fixed also.
         - So, the len(siblings) will depend on the *zkCircuit* being used, specifically from the `nLevels` parameter of the circuit
         - The logic needed to be implemented in the User side can be found [here (go) lines 67-70](https://github.com/vocdoni/zk-franchise-proof-circuit/blob/feature/go-code-inputs-generation/test/go-inputs-generator/census_test.go#L67), and [here (js) line 23](https://github.com/vocdoni/zk-franchise-proof-circuit/blob/feature/go-code-inputs-generation/src/franchise.js#L33):
