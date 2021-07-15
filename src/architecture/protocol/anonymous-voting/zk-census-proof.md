@@ -17,9 +17,9 @@ To this end, Vocdoni achieves voting anonymity by the use of ZK-Snarks.
 Snark stands for *Succinct non-interactive argument of knowledge*. In our case, this means proving to someone that we know something, but without revealing the contents of what we know.
 
 In our case:
-  1. `Voter` is the owner of the `private key` corresponding to a certain `public key`
+  1. `Voter` is the owner of the `secret key` corresponding to a certain `public key`
   2. `Voter`'s `public key` is included in the `census` Merkle Tree
-  3. The nullifier provided by `Voter` uniquely corresponds to their `private key` and the `process ID` for a specific voting process
+  3. The nullifier provided by `Voter` uniquely corresponds to their `secret key` and the `process ID` for a specific voting process
 
 Although the computation is CPU and memory intensive, ZK Proofs can be generated from the user client running on modest hardware. The proof is validated by the Vochain Nodes, Miners, and any Third Party monitoring the process.
 
@@ -36,8 +36,8 @@ Data that could reveal the identity of the voter are kept private (gray boxes in
 
 The circuit above verifies that:
 - the prover is the owner of the secret key
-- the public key of the private key is inside a Hash, which is inside the Merkle Tree with the CensusRoot (`key=Poseidon(pk.X, pk.Y), value=0`)
-- `H(privateKey, electionID) == nullifier`
+- the public key of the secret key is inside a Hash, which is inside the Merkle Tree with the CensusRoot (`key=Poseidon(secretKey), value=0`)
+- `H(secretKey, electionID) == nullifier`
 
 #### Proof generation
 
@@ -51,7 +51,7 @@ Steps:
 1. **Vote encryption**
     - `encrypted_vote = encrypt( selected_voting_options + random_nonce )`
 2. **Nullifier generation**
-    - `nullifier = hash( process_id + user_private_key )`
+    - `nullifier = hash( process_id + user_secret_key )`
 3. **Fetch merkle proof**
     - From any source that has the census merkle tree such as a Vocdoni Gateway or directly from IPFS.
 
@@ -98,7 +98,7 @@ Vochain->>Vochain: 14. verify zkSNARK proof, accept the vote
         - This is the key that will be added into the *CensusTree*
 5. *[U+V]* **Register voting key** using **login key** (registerKeyTx)
 6. *[V]* Build voting **census merkle tree** (in state)
-    - Where each leaf contains the hash of each user's `pk` (*voting key*)
+    - Where each leaf contains the hash of each user's `secretKey` (*voting key*)
     - MerkleTree type: circom compatible
         - Hash function: [Poseidon](https://github.com/iden3/go-iden3-crypto/blob/master/poseidon/poseidon.go)
         - Tree [Go impl](https://github.com/vocdoni/vocdoni-node/blob/master/censustree/arbotree/wrapper.go)
@@ -146,7 +146,7 @@ The following diagram contains a visual representation of the data structure of 
 {
 	"censusRoot": "51642541620950251760298704744678482162425252475654827255045491135352807540162",
 	"censusSiblings": ["0","0","0","0"],
-	"privateKey": "6190793965647866647574058687473278714480561351424348391693421151024369116465",
+	"secretKey": "6190793965647866647574058687473278714480561351424348391693421151024369116465",
 	"voteValue": "1",
 	"electionId": "10",
 	"nullifier": "1938187656076799017313903315498318464349291455761501098436114043715056719301",
@@ -201,10 +201,7 @@ zkInputs of this alternative scheme:
 {
 	"censusRoot": "51642541620950251760298704744678482162425252475654827255045491135352807540162",
 	"censusSiblings": ["0","0","0","0"],
-	"privateKey": "6190793965647866647574058687473278714480561351424348391693421151024369116465",
-	"voteSigS": "2093461910575977345603199789919760192811763972089699387324401771367839603655",
-	"voteSigR8x": "8553678144208642175027223770335048072652078621216414881653012537434846327449",
-	"voteSigR8y": "5507837342589329113352496188906367161790372084365285966741761856353367255709",
+	"secretKey": "6190793965647866647574058687473278714480561351424348391693421151024369116465",
 	"voteValue": "1",
 	"electionId": "10",
 	"nullifier": "1938187656076799017313903315498318464349291455761501098436114043715056719301",
