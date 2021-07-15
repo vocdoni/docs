@@ -24,6 +24,8 @@
         - Avoid inefficiencies due incompatibilities on the client & server sides
         - Make it easier for the reviewer to verify that the implementation follows the spec
 
+[discuss.vocdoni.io](https://discuss.vocdoni.io) is used for discussing new features and protocol proposals.
+
 ### Layers of documentation
 - **Tasks related to PR discussions**: discuss the problem, possible solutions, ideas, agreements, related issues
 - **Commit message**: describe what the commit adds & why
