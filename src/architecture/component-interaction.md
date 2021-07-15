@@ -247,7 +247,7 @@ sequenceDiagram
             GW-->>DV: (metadata,<br/> merkleRoot, params)
 
             alt Process is active or in the future
-                DV->>GW: fetchFile(metadataHash)
+                DV->>GW: fetchFile(<br/>metadataHash)
                 GW->>IPFS: IPFS.get(metadataHash)
                 IPFS-->>GW: processMetadata
                 GW-->>DV: processMetadata
@@ -373,9 +373,9 @@ sequenceDiagram
 	- The **indexer** checks their ZK Proofs or Merkle Proofs, the [Vote Package](/architecture/smart-contracts/process.html#vote-package-zk-snarks) contents and the restrictions imposed by the process flags
 	- The **indexer** counts the number of appearances of every single vote value
     	- Any vote value beyond the ones defined in the [Process Metadata](/architecture/data-schemes/process) is discarded
-- The **indexer** and any third-party **observers** publish the vote results
+<!-- - The **indexer** and any third-party **observers** publish the vote results
 	- The **indexer** computes a ZK Rollup, proving that the given results have been correctly computed from valid vote envelopes and that the results include the choices of `N` valid voter
-	- The **observer** submits a transaction to the process smart contract, including the results and the ZK Rollup proof of the computation results
+	- The **observer** submits a transaction to the process smart contract, including the results and the ZK Rollup proof of the computation results -->
 
 ### Checking a Vote Envelope
 
@@ -425,7 +425,8 @@ sequenceDiagram
 
 ### Vote Scrutiny
 
-Anyone with network access can compute the scrutiny of a given processId. The node can even compute a ZK Rollup proof to let the contract verify the correctness of the provided results on-chain.
+Anyone with network access can compute the scrutiny of a given processId. 
+<!-- The node can even compute a ZK Rollup proof to let the contract verify the correctness of the provided results on-chain. -->
 
 ```mermaid
 %%{init: {'theme':'forest'}}%%
@@ -447,7 +448,7 @@ sequenceDiagram
 
     SC->>+DV: IPFS.get(metadataHash)
 
-        DV->>+GW: fetchFile(metadataHash)
+        DV->>+GW: fetchFile(<br/>metadataHash)
         GW->>+IPFS: IPFS.get(metadataHash)
         IPFS-->>-GW: processMetadata
         GW-->>-DV: processMetadata
@@ -492,19 +493,6 @@ sequenceDiagram
 
         SC->>SC: updateVoteCount(<br/>voteValue)
     end
-
-    alt
-        SC->>+DV: setResults(<br/>processId, voteCounts)
-            DV->>DV: computeZkRollup(<br/>voteCount, params)
-
-            DV->>+GW: Process.setResults(<br/>processId, results, <br/>voteCount, proof)
-                GW->>+BC: setResults(<br/>processId, results,<br/> voteCount, proof)
-                    BC->>BC: verify(proof)
-                BC-->>-GW: success
-            GW-->>DV: success
-        DV-->>-SC: success
-    end
-
 ```
 
 **Used schemas:**
