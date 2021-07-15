@@ -22,7 +22,7 @@ The [Content URI](/architecture/protocol/data-origins.html#content-uri) is expec
   "languages": ["en", "fr"],
   "name": {
     "en": "Free Republic of Liberland",
-    "fr": "République Livre de Liberland"
+    "fr": "République Libre de Liberland"
   },
   "description": {
     "en": "In a sovereign state...",
