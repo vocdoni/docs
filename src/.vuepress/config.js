@@ -60,7 +60,6 @@ module.exports = {
           '/architecture/process-overview',
           '/architecture/census-overview',
           '/architecture/components',
-          '/architecture/user-stories',
           {
             title: 'Smart Contracts',
             collapsible: false,
@@ -122,7 +121,7 @@ module.exports = {
               '/architecture/protocol/data-origins',
             ]
           },
-          '/architecture/sequence-diagrams',
+          '/architecture/component-interaction',
           '/architecture/libraries-tooling',
         ]
       },
