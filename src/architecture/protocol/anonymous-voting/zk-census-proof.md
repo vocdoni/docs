@@ -85,44 +85,46 @@ Vochain->>Vochain: 14. verify zkSNARK proof, accept the vote
 ```
 
 #### Steps description
-> - *[O]* = Organizer
-> - *[U]* = User
-> - *[V]* = Vochain
-> - *[G]* = Gateway
+::: tip
+ - *[O]* = Organizer
+ - *[U]* = User
+ - *[V]* = Vochain
+ - *[G]* = Gateway
+:::
 
-0. Circom [circuit](https://github.com/vocdoni/zk-franchise-proof-circuit) is compiled & **Trusted Setup** generated
-1. *[O]* Create user **login keys**
+1. Circom [circuit](https://github.com/vocdoni/zk-franchise-proof-circuit) is compiled & **Trusted Setup** generated
+2. *[O]* Create user **login keys**
     - from csv data (+ user_secret?)
-2. *[O]* Build **merkleTree** with login keys
-3. *[O+V]* Create **new voting process** (newProcessTx)
-4. *[U]* Generate **voting key** (used as leaf key)
+3. *[O]* Build **merkleTree** with login keys
+4. *[O+V]* Create **new voting process** (newProcessTx)
+5. *[U]* Generate **voting key** (used as leaf key)
     - User's *voting key*: `sk = Hash(login_key | user_secret)`
         - This is the key that will be added into the *CensusTree*
-5. *[U+V]* **Register voting key** using **login key** (registerKeyTx)
-6. *[V]* Build voting **census merkle tree** (in state)
+6. *[U+V]* **Register voting key** using **login key** (registerKeyTx)
+7. *[V]* Build voting **census merkle tree** (in state)
     - Where each leaf contains the hash of each user's `secretKey` (*voting key*)
     - MerkleTree type: circom compatible
         - Hash function: [Poseidon](https://github.com/iden3/go-iden3-crypto/blob/master/poseidon/poseidon.go)
         - Tree [Go impl](https://github.com/vocdoni/vocdoni-node/blob/master/censustree/arbotree/wrapper.go)
-7. *[V]* StartBlock is reached, **election starts**
-8. *[V]* Last merkle tree root becomes **censusRoot**
-9. *[V+U]* **Get MerkleProof**
+8. *[V]* StartBlock is reached, **election starts**
+9. *[V]* Last merkle tree root becomes **censusRoot**
+10. *[V+U]* **Get MerkleProof**
     - Vochain will send the *'compressed MerkleProof'* (which are the siblings compressed)
     - Client side will need to 'decompress' it
         - The logic to decompress the siblings [can be found here](https://github.com/vocdoni/arbo/blob/master/tree.go#L606)
         - And [here](https://github.com/vocdoni/arbo/blob/master/tree.go#L577) the explaination of the encoding
-10. *[U+G]* **Get ProvingKey & WitnessCalc**
+11. *[U+G]* **Get ProvingKey & WitnessCalc**
     - *Proving Key & Witness Calc* depend on the circuit being used
-11. *[U]* **Generate zkInputs**
+12. *[U]* **Generate zkInputs**
     - check the [zkInputs generation](#zkInputs-generation) section for more details
-12. *[U]* **Generate zkSNARK proof**
+13. *[U]* **Generate zkSNARK proof**
     - using: *zkInputs + Proving Key + Witness Calculator*
-13. *[U]* **Cast the vote** with zkSNARK proof
+14. *[U]* **Cast the vote** with zkSNARK proof
     - contains:
         - *public inputs*
         - *zkProof*
         - *vote*
-14. *[V]* **Verify zkSNARK proof**, accept the vote
+15. *[V]* **Verify zkSNARK proof**, accept the vote
     - Needs to know:
         - ElectionID
         - Verification Key (depends on the circuit being used (census size))
@@ -158,7 +160,10 @@ The following diagram contains a visual representation of the data structure of 
 ```
 
 Origin of each zkInput parameter:
-> *all the parameters are `string` or `[]string` that represent `bigInt` or `[]bigInt`*
+::: tip
+*all the parameters are `string` or `[]string` that represent `bigInt` or `[]bigInt`*
+:::
+
 - *censusRoot*: computed by the *CensusAuthority* from the *Census Tree*
 - *censusSiblings*: computed by the *CensusAuthority*, is the *Merkle Proof*
     - the *User* retrieves the *siblings* from the *Vochain* through the *Gateway*

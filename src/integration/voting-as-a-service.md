@@ -197,7 +197,9 @@ To check that our entity is properly declared, we can check it on the visualizer
 
 This is the link [in our case](https://app.dev.vocdoni.net/entities/#/0xdeea56f124dd3e73bcbc210fc382154a11f3bab227af55927139c887e15573e4).
 
-> Note: Keep in mind that we're using a testnet and some of the data might be eventually disposed.
+::: tip
+Keep in mind that we're using a testnet and some of the data might be eventually disposed.
+:::
 
 ### Census generation
 Our entity is ready, now it can handle voting processes. But before we can create one, we need a census of the people who can vote.
@@ -369,7 +371,9 @@ So, we just...
 
 As it happened before, the JSON metadata is pinned on IPFS and pointed to from the process smart contract. In addition, some metadata fields are also stored on the smart contract so they can be accessed on-chain. 
 
-> The contract flags define **how** the process will behave, whereas the metadata is used to store the **human readable** content.
+::: tip
+The contract flags define **how** the process will behave, whereas the metadata is used to store the **human readable** content.
+:::
 
 In about 2-3 minutes, the Ethereum transaction will be relayed to the voting blockchain as well. When the block number reaches `startBlock`, the process will become open to those who are part of the census. The `startBlock` value should be **at least 25 blocks ahead** of the current value.
 

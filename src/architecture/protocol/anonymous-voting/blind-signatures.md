@@ -1,3 +1,4 @@
 # Blind signatures
-
-> This section is still a work in progress.
+::: tip
+ This section is still a work in progress.
+:::
