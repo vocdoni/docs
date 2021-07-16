@@ -97,8 +97,8 @@ Vochain->>Vochain: 13. verify zkSNARK proof, accept the vote
 0. Circom [circuit](https://github.com/vocdoni/zk-franchise-proof-circuit) is compiled & **Trusted Setup** generated
 1. *[O+V]* Create new voting process (newProcessTx) & define the **CensusRegisterFunction**
     - The **CensusRegisterFunction** could be for example:	
-        - Using **csv file**: MerkleTree made from a `csv` data file, and the **CensusRegisterFunction** being the verification of the MerkleProof of that MerkleTree (check [flow-for-csv-votations section](#flow-for-csv-votations) for more details)
-        - Using **Ethereum storage proofs**: The root of EthereumTree at a certain block, and the **CensusRegisterFunction** being the verification of the MerkleProof of that Ethereum MerkleTree (check [flow-for-ethereumstorageproofs-votations section](#flow-for-ethereumstorageproofs-votations) for more details)
+        - Using **csv file**: Generate MerkleTree from a `csv` data file, where the **CensusRegisterFunction** is the verification of the MerkleProof of that MerkleTree (check [flow-for-csv-votations section](#flow-for-csv-votations) for more details)
+        - Using **Ethereum storage proofs**: The MerkleTree is the root of the EthereumTree at a certain block, and the **CensusRegisterFunction** is the verification of the MerkleProof of that Ethereum MerkleTree (check [flow-for-ethereumstorageproofs-votations section](#flow-for-ethereumstorageproofs-votations) for more details)
 2. *[U]* Generate CensusRegisterProof, more details:
     - [flow for csv votations](#flow-for-csv-votations)
     - [flow for ethereumstorageproofs votations](#flow-for-ethereumstorageproofs-votations)
@@ -136,12 +136,11 @@ Vochain->>Vochain: 13. verify zkSNARK proof, accept the vote
         - User's *public inputs* + *zkProof*
 
 #### Flow for csv votations
-> **Important**: This scheme assumes fully trusting the *organization*, as the
-> *organization* could add non-real users to the census that later can be used
-> to issue valid votes.
->
-> Also the organization could directly register in the *Vochain* the *Users*
-> secret keys, avoiding to need the registration phase.
+::: tip
+**Important**: This scheme assumes fully trusting the *organization*, as the
+*organization* could add non-real users to the census that later can be used
+to issue valid votes.
+:::
 
 ```mermaid
 %%{init: {'theme':'forest'}}%%
@@ -173,6 +172,11 @@ Note over Organizer,User: From here continues with the normal flow
         - This is the key that will be added into the *CensusTree*
 - 4. *[U+V]* **Register zkCensusKey** using **CensusRegisterProof** (registerKeyTx)
   - Vochain checks that the **CensusRegistryProof** can be validated for the **CensusRegisterFunction**
+
+::: tip
+The organization could also directly register *Users'*
+secret keys to the Vochain, avoiding to need the registration phase.
+:::
 
 #### Flow for EthereumStorageProofs votations
 ```mermaid
