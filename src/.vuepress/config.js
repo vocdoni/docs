@@ -175,6 +175,7 @@ module.exports = {
   plugins: [
     '@vuepress/plugin-back-to-top',
     '@vuepress/plugin-medium-zoom',
+    '@vuepress/last-updated',
     ['mermaidjs', {
       theme: 'default',
       logLevel: 5, // corresponds with "fatal"
