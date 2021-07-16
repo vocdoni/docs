@@ -145,7 +145,7 @@ The following diagram contains a visual representation of the data structure of 
 
 
 ### zkInputs generation
-```json=
+```json
 // Example of zkInputs
 {
 	"censusRoot": "51642541620950251760298704744678482162425252475654827255045491135352807540162",
@@ -202,7 +202,7 @@ A set of commitment keys are generated for each election process by a set of tru
 </div>
 
 zkInputs of this alternative scheme:
-```json=
+```json
 // Example of zkInputs
 {
 	"censusRoot": "51642541620950251760298704744678482162425252475654827255045491135352807540162",
