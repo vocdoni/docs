@@ -5,7 +5,7 @@ There are two types of census origins: Those who depend on a list of public keys
 In the second case, the Token holder balances are used as a weighted census. But to this end, it is needed that tokens are registered and that the balance mapping position is properly validated.
 
 
-This way, token holders can proof that they held funds at a given point in time and the storage proofs contract acts as a registry that enables just that. 
+This way, token holders can prove that they held funds at a given point in time and the storage proofs contract acts as a registry that enables just that. 
 
 The instance of the ERC20 Token Storage contract is resolved from `results.vocdoni.eth` on the ENS registry.
 
