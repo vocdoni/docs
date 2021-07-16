@@ -178,6 +178,15 @@ module.exports = {
     '@vuepress/last-updated',
     '@vuepress/active-header-links',
     '@vuepress/nprogress',
+    [
+      'vuepress-plugin-container',
+      {
+        type: 'tip',
+        defaultTitle: {
+          '/': '',
+        },
+      },
+    ],
     ['mermaidjs', {
       theme: 'default',
       logLevel: 5, // corresponds with "fatal"
