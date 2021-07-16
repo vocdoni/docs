@@ -177,6 +177,7 @@ module.exports = {
     '@vuepress/plugin-medium-zoom',
     '@vuepress/last-updated',
     '@vuepress/active-header-links',
+    '@vuepress/nprogress',
     ['mermaidjs', {
       theme: 'default',
       logLevel: 5, // corresponds with "fatal"
