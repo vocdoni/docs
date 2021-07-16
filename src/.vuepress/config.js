@@ -164,6 +164,7 @@ module.exports = {
         children: [
           '/about-us/vision',
           '/about-us/how-we-work',
+          '/about-us/development-guidelines',
         ],
       },
     ]
