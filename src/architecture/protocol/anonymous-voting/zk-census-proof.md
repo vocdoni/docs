@@ -67,21 +67,23 @@ Steps:
 %%{init: {'theme':'forest'}}%%
 
 sequenceDiagram
-Organizer->>Organizer: 1. create user login keys
-Organizer->>Organizer: 2. build merkleTree with login keys
-Organizer->>Vochain: 3. create new voting process (newProcessTx)
-User->>User: 4. generate voting key
-User->>Vochain: 5. register voting key using login key (registerKeyTx)
-Vochain->>Vochain: 6. build voting census merkle tree (in state)
-Vochain->>Vochain: 7. startBlock is reached, election starts
-Vochain->>Vochain: 8. last merkle tree root becomes censusRoot
-Vochain->>User: 9.get MerkleProof
+opt Steps 1-2 depend on the kind of census being used (csv, EthStorageProofs, ...)
+  Organizer->>Vochain: 1. create new voting process (newProcessTx) & define the CensusRegisterFunction
+  User->>User: 2. generate CensusRegisterProof
+end
+
+User->>User: 3. generate zkCensusKey
+User->>Vochain: 4. register zkCensusKey using CensusRegisterProof that matches the CensusRegisterFunction
+Vochain->>Vochain: 5. build voting census merkle tree (in state)
+Vochain->>Vochain: 6. startBlock is reached, election starts
+Vochain->>Vochain: 7. last merkle tree root becomes censusRoot
+Vochain->>User: 8.get MerkleProof
 # note, next line goes from User->User instead of User->IPFS to avoid spending a full column just for 1 query to IPFS
-User->>User: 10. get ProvingKey & WitnessCalc (from IPFS GW)
-User->>User: 11. generate zkInputs
-User->>User: 12. generate zkSNARK proof
-User->>Vochain: 13. cast the vote with zkSNARK proof
-Vochain->>Vochain: 14. verify zkSNARK proof, accept the vote
+User->>User: 9. get ProvingKey & WitnessCalc (from IPFS GW)
+User->>User: 10. generate zkInputs
+User->>User: 11. generate zkSNARK proof
+User->>Vochain: 12. cast the vote with zkSNARK proof
+Vochain->>Vochain: 13. verify zkSNARK proof, accept the vote
 ```
 
 #### Steps description
@@ -92,47 +94,119 @@ Vochain->>Vochain: 14. verify zkSNARK proof, accept the vote
  - *[G]* = Gateway
 :::
 
-1. Circom [circuit](https://github.com/vocdoni/zk-franchise-proof-circuit) is compiled & **Trusted Setup** generated
-2. *[O]* Create user **login keys**
-    - from csv data (+ user_secret?)
-3. *[O]* Build **merkleTree** with login keys
-4. *[O+V]* Create **new voting process** (newProcessTx)
-5. *[U]* Generate **voting key** (used as leaf key)
-    - User's *voting key*: `sk = Hash(login_key | user_secret)`
-        - This is the key that will be added into the *CensusTree*
-6. *[U+V]* **Register voting key** using **login key** (registerKeyTx)
-7. *[V]* Build voting **census merkle tree** (in state)
-    - Where each leaf contains the hash of each user's `secretKey` (*voting key*)
+0. Circom [circuit](https://github.com/vocdoni/zk-franchise-proof-circuit) is compiled & **Trusted Setup** generated
+1. *[O+V]* Create new voting process (newProcessTx) & define the **CensusRegisterFunction**
+    - The **CensusRegisterFunction** could be for example:	
+        - Using **csv file**: MerkleTree made from a `csv` data file, and the **CensusRegisterFunction** being the verification of the MerkleProof of that MerkleTree (check [flow-for-csv-votations section](#flow-for-csv-votations) for more details)
+        - Using **Ethereum storage proofs**: The root of EthereumTree at a certain block, and the **CensusRegisterFunction** being the verification of the MerkleProof of that Ethereum MerkleTree (check [flow-for-ethereumstorageproofs-votations section](#flow-for-ethereumstorageproofs-votations) for more details)
+2. *[U]* Generate CensusRegisterProof, more details:
+    - [flow for csv votations](#flow-for-csv-votations)
+    - [flow for ethereumstorageproofs votations](#flow-for-ethereumstorageproofs-votations)
+3. *[U]* Generate **zkCensusKey** (used as leaf key)
+      - This is the key that will be added into the *CensusTree*
+4. *[U+V]* **Register zkCensusKey** using **CensusRegisterProof** (registerKeyTx)
+  - Vochain checks that the **CensusRegistryProof** can be validated for the **CensusRegisterFunction**
+5. *[V]* Build voting **census merkle tree** (in state)
+    - Where each leaf contains the hash of each user's `secretKey` (*zkCensusKey*)
     - MerkleTree type: circom compatible
         - Hash function: [Poseidon](https://github.com/iden3/go-iden3-crypto/blob/master/poseidon/poseidon.go)
         - Tree [Go impl](https://github.com/vocdoni/vocdoni-node/blob/master/censustree/arbotree/wrapper.go)
-8. *[V]* StartBlock is reached, **election starts**
-9. *[V]* Last merkle tree root becomes **censusRoot**
-10. *[V+U]* **Get MerkleProof**
+6. *[V]* StartBlock is reached, **election starts**
+7. *[V]* Last merkle tree root becomes **censusRoot**
+8. *[V+U]* **Get MerkleProof**
     - Vochain will send the *'compressed MerkleProof'* (which are the siblings compressed)
     - Client side will need to 'decompress' it
         - The logic to decompress the siblings [can be found here](https://github.com/vocdoni/arbo/blob/master/tree.go#L606)
         - And [here](https://github.com/vocdoni/arbo/blob/master/tree.go#L577) the explaination of the encoding
-11. *[U+G]* **Get ProvingKey & WitnessCalc**
+9. *[U+G]* **Get ProvingKey & WitnessCalc**
     - *Proving Key & Witness Calc* depend on the circuit being used
-12. *[U]* **Generate zkInputs**
+10. *[U]* **Generate zkInputs**
     - check the [zkInputs generation](#zkInputs-generation) section for more details
-13. *[U]* **Generate zkSNARK proof**
+11. *[U]* **Generate zkSNARK proof**
     - using: *zkInputs + Proving Key + Witness Calculator*
-14. *[U]* **Cast the vote** with zkSNARK proof
+12. *[U]* **Cast the vote** with zkSNARK proof
     - contains:
         - *public inputs*
         - *zkProof*
         - *vote*
-15. *[V]* **Verify zkSNARK proof**, accept the vote
+13. *[V]* **Verify zkSNARK proof**, accept the vote
     - Needs to know:
         - ElectionID
         - Verification Key (depends on the circuit being used (census size))
         - User's *public inputs* + *zkProof*
 
+#### Flow for csv votations
+> **Important**: This scheme assumes fully trusting the *organization*, as the
+> *organization* could add non-real users to the census that later can be used
+> to issue valid votes.
+>
+> Also the organization could directly register in the *Vochain* the *Users*
+> secret keys, avoiding to need the registration phase.
+
+```mermaid
+%%{init: {'theme':'forest'}}%%
+
+sequenceDiagram
+opt Steps 1-2 for the csv processes
+  Organizer->>Organizer: 0.1. create user login keys
+  Organizer->>Organizer: 0.2. build merkleTree with login keys
+  Organizer->>Vochain: 1. create new voting process (newProcessTx) & define the CensusRegisterFunction=CSVCensus
+  User->>User: 2. generate CensusRegisterProof of type csv-merkletree
+end
+User->>User: 3. generate zkCensusKey
+User->>Vochain: 4. register zkCensusKey using CensusRegisterProof (registerKeyTx)
+Note over Organizer,User: From here continues with the normal flow
+```
+
+- 0.1. *[O]* Create user **login keys**
+    - from csv data
+- 0.2. *[O]* Build **MerkleTree** with login keys
+- 1. *[O+V]* Create **new voting process** (newProcessTx) & define the CensusRegisterFunction=CSVCensus
+    - **CensusRegisterFunction** checks that:
+      - the given *MerkleProof* matches with the defined *Ethereum Root*
+      - the sender of the *MerkleProof* is the owner of that address (check eth-signature)
+- 2. *[U]* Generate **CensusRegisterProof**
+    - which is the MerkleProof that the user 'login key' is in the tree 
+- 3. *[U]* Generate **zkCensusKey** (used as leaf key)
+    - User's *zkCensusKey*: `zkCensusKey = Hash(userSecret)`
+        - Here `userSecret` can be `csv user's data + secret from user`
+        - This is the key that will be added into the *CensusTree*
+- 4. *[U+V]* **Register zkCensusKey** using **CensusRegisterProof** (registerKeyTx)
+  - Vochain checks that the **CensusRegistryProof** can be validated for the **CensusRegisterFunction**
+
+#### Flow for EthereumStorageProofs votations
+```mermaid
+%%{init: {'theme':'forest'}}%%
+
+sequenceDiagram
+opt Steps 1-2 for the Ethereum Storage Proofs processes
+  Organizer->>Vochain: 1.0. create new voting process (newProcessTx) & define the CensusRegisterFunction=EthStorageProofsCensus
+  User->>User: 2. generate CensusRegisterProof of type EthStorageProof
+end
+User->>User: 3. generate zkCensusKey
+User->>Vochain: 4. register zkCensusKey using CensusRegisterProof (registerKeyTx)
+Note over Organizer,User: From here continues with the normal flow
+```
+
+- 1. *[O+V]* Create **new voting process** (newProcessTx) & define the CensusRegisterFunction=EthStorageProofsCensus
+    - CensusRegisterFunction: checks that:
+      - the given *MerkleProof* matches with the defined *Ethereum Root*
+      - the sender of the *MerkleProof* is the owner of that address (check eth-signature)
+    - *[O]* Define the *EthTreeRoot* for the **CensusRegisterFunction**
+- 2. *[U]* Generate **CensusRegisterProof**
+    - which is the EthereumStorageProof + an ethereum signature by the address of the EthereumStorageProof (to prove ownership of the proof)
+- 3. *[U]* Generate **zkCensusKey** (used as leaf key)
+    - User's *zkCensusKey*: `zkCensusKey = Hash(userSecret)`
+	- Here `userSecret` can be the value of the signature of a public known constant made by the user's EthereumKey (where the output is only known by the user, as it is used as a 'secret key'). This is the approach that Hermez zkRollup uses to derive 'snark friendly' keys from Metamask's Ethereum Keys
+        - This is the key that will be added into the *CensusTree*
+- 4. *[U+V]* **Register zkCensusKey** using **CensusRegisterProof** (registerKeyTx)
+  - Vochain checks that the **CensusRegistryProof** can be validated for the **CensusRegisterFunction**
+
+
+
 
 ### Merkle Tree
-The MerkleTree needs to be a zkSNARK-friendly implementation. As currently we are using [Circom](https://github.com/iden3/circom) for the zkSNARK circuits, we need to be compatible with the [circomlib](https://github.com/iden3/circomlib/tree/master/circuits/smt) MerkleTree implementation. A specification of the MerkleTree [can be found here](https://docs.iden3.io/publications/pdfs/Merkle-Tree.pdf).
+The MerkleTree used for building the *anonymous census* needs to be a zkSNARK-friendly implementation. As currently we are using [Circom](https://github.com/iden3/circom) for the zkSNARK circuits, we need to be compatible with the [circomlib](https://github.com/iden3/circomlib/tree/master/circuits/smt) MerkleTree implementation. A specification of the MerkleTree [can be found here](https://docs.iden3.io/publications/pdfs/Merkle-Tree.pdf).
 
 In the Vochain, we're using the [arbo](https://github.com/vocdoni/arbo) MerkleTree, which is a Go implementation compatible with the Circom spec.
 
