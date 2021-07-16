@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Manager API | Vocdoni</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="A decentralized self sovereign governance platform">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.b126b69f.css" as="style"><link rel="preload" href="/assets/js/app.a4c6e69e.js" as="script"><link rel="preload" href="/assets/js/2.66139f8f.js" as="script"><link rel="preload" href="/assets/js/44.aff093db.js" as="script"><link rel="prefetch" href="/assets/js/10.f5b7f029.js"><link rel="prefetch" href="/assets/js/11.ce83535d.js"><link rel="prefetch" href="/assets/js/12.0e1ce3b1.js"><link rel="prefetch" href="/assets/js/13.7d83eb54.js"><link rel="prefetch" href="/assets/js/14.179faf6e.js"><link rel="prefetch" href="/assets/js/15.790dd313.js"><link rel="prefetch" href="/assets/js/16.9c69114d.js"><link rel="prefetch" href="/assets/js/17.87b0d5bc.js"><link rel="prefetch" href="/assets/js/18.8de256b8.js"><link rel="prefetch" href="/assets/js/19.5966ca80.js"><link rel="prefetch" href="/assets/js/20.e04b1f63.js"><link rel="prefetch" href="/assets/js/21.f9ce7729.js"><link rel="prefetch" href="/assets/js/22.e7b601b8.js"><link rel="prefetch" href="/assets/js/23.0ac83a53.js"><link rel="prefetch" href="/assets/js/24.1ff34c33.js"><link rel="prefetch" href="/assets/js/25.ced7ee88.js"><link rel="prefetch" href="/assets/js/26.20690ec5.js"><link rel="prefetch" href="/assets/js/27.83c79185.js"><link rel="prefetch" href="/assets/js/28.cd005ba5.js"><link rel="prefetch" href="/assets/js/29.d10d56ad.js"><link rel="prefetch" href="/assets/js/3.4c59c649.js"><link rel="prefetch" href="/assets/js/30.7ecbd670.js"><link rel="prefetch" href="/assets/js/31.8f2fbd80.js"><link rel="prefetch" href="/assets/js/32.ad5643eb.js"><link rel="prefetch" href="/assets/js/33.92e87cd9.js"><link rel="prefetch" href="/assets/js/34.b1ba1d20.js"><link rel="prefetch" href="/assets/js/35.c1f8268f.js"><link rel="prefetch" href="/assets/js/36.1daa3482.js"><link rel="prefetch" href="/assets/js/37.9ed091c7.js"><link rel="prefetch" href="/assets/js/38.4d79153b.js"><link rel="prefetch" href="/assets/js/39.cac3b790.js"><link rel="prefetch" href="/assets/js/4.fc229f8e.js"><link rel="prefetch" href="/assets/js/40.bbdd887f.js"><link rel="prefetch" href="/assets/js/41.00fa185b.js"><link rel="prefetch" href="/assets/js/42.06fb3cdf.js"><link rel="prefetch" href="/assets/js/43.85de11da.js"><link rel="prefetch" href="/assets/js/45.ce8659b1.js"><link rel="prefetch" href="/assets/js/46.166d0f0f.js"><link rel="prefetch" href="/assets/js/47.be23f323.js"><link rel="prefetch" href="/assets/js/48.c447fd9b.js"><link rel="prefetch" href="/assets/js/5.0a56a5ba.js"><link rel="prefetch" href="/assets/js/6.b1533a7f.js"><link rel="prefetch" href="/assets/js/7.45da8dae.js"><link rel="prefetch" href="/assets/js/8.84028b5e.js"><link rel="prefetch" href="/assets/js/9.16067db2.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.b126b69f.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Vocdoni</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/architecture/general.html" class="nav-link">
+  Architecture
+</a></div><div class="nav-item"><a href="https://blog.vocdoni.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Blog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="/about-us/vision.html" class="nav-link">
+  About us
+</a></div><div class="nav-item"><a href="https://discord.gg/sQCxgYs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Discord
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/architecture/general.html" class="nav-link">
+  Architecture
+</a></div><div class="nav-item"><a href="https://blog.vocdoni.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Blog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="/about-us/vision.html" class="nav-link">
+  About us
+</a></div><div class="nav-item"><a href="https://discord.gg/sQCxgYs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Discord
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><a href="/architecture/general" class="sidebar-heading clickable open"><span>Architecture</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/architecture/general.html" class="sidebar-link">Global architecture</a></li><li><a href="/architecture/process-overview.html" class="sidebar-link">Process overview</a></li><li><a href="/architecture/census-overview.html" class="sidebar-link">The Census</a></li><li><a href="/architecture/components.html" class="sidebar-link">Component Overview</a></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/architecture/smart-contracts/entity-resolver" class="sidebar-heading clickable"><span>Smart Contracts</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/architecture/services/gateway" class="sidebar-heading clickable"><span>Services</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/architecture/data-schemes/entity-metadata" class="sidebar-heading clickable"><span>Data Schemes</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/architecture/protocol/json-api" class="sidebar-heading clickable"><span>Protocol</span> <span class="arrow right"></span></a> <!----></section></li><li><a href="/architecture/component-interaction.html" class="sidebar-link">Component Interaction</a></li><li><a href="/architecture/libraries-tooling.html" class="sidebar-link">Libraries and Tooling</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/integration/overview" class="sidebar-heading clickable"><span>Integration</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/integration/overview.html" class="sidebar-link">Overview</a></li><li><a href="/integration/voting-as-a-service.html" class="sidebar-link">Voting as a Service</a></li><li><a href="/integration/registry-token-api.html" class="sidebar-link">Registry token API</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/deployment/gateway" class="sidebar-heading clickable"><span>Deployment</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/deployment/gateway.html" class="sidebar-link">Gateway deployment (stage)</a></li><li><a href="/deployment/miner.html" class="sidebar-link">Miner deployment</a></li><li><a href="/deployment/oracle.html" class="sidebar-link">Oracle deployment (stage)</a></li><li><a href="/deployment/custom-vochain.html" class="sidebar-link">Custom Vochain Deployment</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/about-us/vision" class="sidebar-heading clickable"><span>About</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/about-us/vision.html" class="sidebar-link">Vision</a></li><li><a href="/about-us/how-we-work.html" class="sidebar-link">How we work</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="manager-api"><a href="#manager-api" class="header-anchor">#</a> Manager API</h1> <p>The  Manager API allows organizations to perform all the necessary management actions on the backend that are related to their members and the corresponding censuses. This invloves:</p> <ul><li>Registering new <code>Entities</code> and managing their info</li> <li>Managing <code>Members</code> and their information. Related to <code>Member</code> management, some <code>Token</code> calls are also featured</li> <li>Creating and managing <code>Tags</code> for these members</li> <li>Creating and managing <code>Targets</code> that combine member attributes and tags in order to provide the ability to segment the members</li> <li>Creating and managing <code>Censuses</code> based that each of them is related with one concrete <code>Target</code></li></ul> <p>Available by default under <code>/manager</code></p> <p>The API methods below follow the <a href="/architecture/protocol/json-api">JSON API</a> specifications.</p> <h2 id="entity-methods"><a href="#entity-methods" class="header-anchor">#</a> Entity methods</h2> <p>The follow methods allow entities to manage their account on the server by sending signed requests to the backend.</p> <h3 id="sign-up"><a href="#sign-up" class="header-anchor">#</a> sign Up</h3> <p>Registers an entity to the backend. The address of the Entity is calculated by the signature of the request.</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>    
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;signUp&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;entityName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Name&quot;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="getentity"><a href="#getentity" class="header-anchor">#</a> getEntity</h4> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getEntity&quot;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;entity&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;address&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x.....&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;callbackUrl&quot;</span><span class="token operator">:</span> <span class="token string">&quot;http&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;callbackSecret&quot;</span><span class="token operator">:</span> <span class="token string">&quot;x45gse53wedfg&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;email&quot;</span><span class="token operator">:</span> <span class="token string">&quot;mail@entity.org&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;EntityName&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;censusManagersAddresses&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;0x434223edfa&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;0x434223edfc&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;origin&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Token&quot;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="updateentity"><a href="#updateentity" class="header-anchor">#</a> updateEntity</h4> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>    
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;updateEntity&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;entity&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;address&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x.....&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;callbackUrl&quot;</span><span class="token operator">:</span> <span class="token string">&quot;http&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;callbackSecret&quot;</span><span class="token operator">:</span> <span class="token string">&quot;x45gse53wedfg&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;email&quot;</span><span class="token operator">:</span> <span class="token string">&quot;mail@entity.org&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;EntityName&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;censusManagersAddresses&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;0x434223edfa&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;0x434223edfc&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;origin&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Token&quot;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="member-methods"><a href="#member-methods" class="header-anchor">#</a> Member methods</h2> <p>The following methods allow to manage users and their attributes on the database.</p> <h3 id="countmembers"><a href="#countmembers" class="header-anchor">#</a> countMembers</h3> <p>Counts the number of members for a given entity.</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;countMembers&quot;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span> 
+   <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;count&quot;</span><span class="token operator">:</span> <span class="token number">10</span> <span class="token comment">// number of members</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+    
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="listmembers"><a href="#listmembers" class="header-anchor">#</a> listMembers</h3> <p>Retrieve a list of members with the given constraints.</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;listMembers&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;listOptions&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">&quot;skip&quot;</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+          <span class="token property">&quot;count&quot;</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+          <span class="token property">&quot;sortBy&quot;</span><span class="token operator">:</span> <span class="token string">&quot;lastName&quot;</span><span class="token punctuation">,</span> <span class="token comment">// &quot;name&quot; | &quot;lastName&quot; | &quot;email&quot; | &quot;dateOfBirth&quot;</span>
+          <span class="token property">&quot;order&quot;</span><span class="token operator">:</span> <span class="token string">&quot;asc&quot;</span><span class="token punctuation">,</span>  <span class="token comment">// &quot;asc&quot; | &quot;desc&quot;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;filter&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>  
+             <span class="token property">&quot;target&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234...&quot;</span><span class="token punctuation">,</span>
+             <span class="token property">&quot;tags&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2345...&quot;</span><span class="token punctuation">,</span>
+             <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;John...&quot;</span><span class="token punctuation">,</span>  
+             <span class="token property">&quot;lastName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Smith...&quot;</span><span class="token punctuation">,</span>
+             <span class="token property">&quot;email&quot;</span><span class="token operator">:</span> <span class="token string">&quot;john@s...&quot;</span> <span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span> 
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;members&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span> <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234...&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;John&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;lastName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Smith&quot;</span><span class="token punctuation">,</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token comment">//all member info</span>
+            <span class="token punctuation">{</span> <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2345...&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Jane&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;lastName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Smith&quot;</span><span class="token punctuation">,</span><span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="getmember"><a href="#getmember" class="header-anchor">#</a> getMember</h3> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getMember&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234-1234...&quot;</span>  <span class="token comment">// uuid</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span> <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;member&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234...&quot;</span><span class="token punctuation">,</span> 
+            <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;John&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;lastName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Smith&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;email&quot;</span><span class="token operator">:</span> <span class="token string">&quot;john@smith.com&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;phone&quot;</span><span class="token operator">:</span> <span class="token string">&quot;+0123456789&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;dateOfBirth&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2000-05-14T15:52:00.741Z&quot;</span> <span class="token comment">// ISO date</span>
+            ... 
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="addmember"><a href="#addmember" class="header-anchor">#</a> addMember</h3> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;addMember&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;member&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;firstName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;John&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;lastName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Smith&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;email&quot;</span><span class="token operator">:</span> <span class="token string">&quot;john@smith.com&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;phone&quot;</span><span class="token operator">:</span> <span class="token string">&quot;+0123456789&quot;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;member&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234...&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;firstName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;John&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;lastName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Smith&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;email&quot;</span><span class="token operator">:</span> <span class="token string">&quot;john@smith.com&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;phone&quot;</span><span class="token operator">:</span> <span class="token string">&quot;+0123456789&quot;</span><span class="token punctuation">,</span> 
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="updatemember"><a href="#updatemember" class="header-anchor">#</a> updateMember</h3> <p><strong>Note</strong>: All attributes execpet<code>tags</code>  if are included in the request but are empty they are ignored. If <code>tags == []</code> this value is stored in the database.</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;updateMember&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;memberId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;member&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+           <span class="token property">&quot;email&quot;</span><span class="token operator">:</span> <span class="token string">&quot;john@smith.com&quot;</span><span class="token punctuation">,</span>
+           <span class="token property">&quot;firstName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;John1&quot;</span><span class="token punctuation">,</span>
+           <span class="token property">&quot;tags&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="deletemember"><a href="#deletemember" class="header-anchor">#</a> deleteMember</h3> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;deleteMember&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234...&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="importmembers"><a href="#importmembers" class="header-anchor">#</a> importMembers</h3> <p>Imports the given array of members with their info into the database.</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;importMembers&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;members&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span>
+                <span class="token property">&quot;firstName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;John&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;lastName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Smith&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;email&quot;</span><span class="token operator">:</span> <span class="token string">&quot;john@smith.com&quot;</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span> 
+            ...
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="sendvalidationlink"><a href="#sendvalidationlink" class="header-anchor">#</a> sendValidationLink</h3> <p>Uses the <code>SMTP</code> module to send an email to the  selected member, containing the necessary info to register his public key. See also <code>validateToken</code></p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;sendValidationLink&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;memberId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234-asdgc-....&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="tokens"><a href="#tokens" class="header-anchor">#</a> Tokens</h2> <p>Tokens allow mobile users to add their identity to the organization database by validating their email (or similar) using a one time password, called Token.</p> <h3 id="provisiontokens"><a href="#provisiontokens" class="header-anchor">#</a> provisionTokens</h3> <p>Adds N new empty member entries, filled with the corresponding ID/token only.</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;provisionTokens&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;amount&quot;</span><span class="token operator">:</span> <span class="token number">500</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="exporttokens"><a href="#exporttokens" class="header-anchor">#</a> exportTokens</h3> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;exportTokens&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;memberTokens&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span>
+             <span class="token property">&quot;email&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;john@smith.org&quot;</span><span class="token punctuation">,</span>
+             <span class="token property">&quot;token&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;1234-abcde-....&quot;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+             <span class="token property">&quot;email&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;maria@smith.org&quot;</span><span class="token punctuation">,</span>
+             <span class="token property">&quot;token&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;5768-abcde-....&quot;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            ...
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="targets"><a href="#targets" class="header-anchor">#</a> Targets</h2> <p>Targets are a set of filters that define what users are eligible to be part of a census. Targets are used to create lists of members that are computed on the fly. Ultimately, the output of a target produces a snapshot that becomes a census of public keys.</p> <p>The target id is a UUID.</p> <h3 id="listtargets"><a href="#listtargets" class="header-anchor">#</a> listTargets</h3> <p>Retrieve a list of targets.</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;listTargets&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;listOptions&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;skip&quot;</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;count&quot;</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;sortBy&quot;</span><span class="token operator">:</span> <span class="token string">&quot;name&quot;</span><span class="token punctuation">,</span>    <span class="token comment">// &quot;name&quot;</span>
+            <span class="token property">&quot;order&quot;</span><span class="token operator">:</span> <span class="token string">&quot;asc&quot;</span><span class="token punctuation">,</span>     <span class="token comment">// &quot;asc&quot; | &quot;desc&quot;</span>
+        <span class="token punctuation">}</span>    
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;targets&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span> <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234-abcd-...&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;People over 18&quot;</span><span class="token punctuation">,</span>  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token comment">// all member info</span>
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="gettarget"><a href="#gettarget" class="header-anchor">#</a> getTarget</h3> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getTarget&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;targetId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234-abcd-...&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;target&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234-abcd-...&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;People over 18&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;filters&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">&quot;attributes&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;tags&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span>
+            
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="addtarget"><a href="#addtarget" class="header-anchor">#</a> addTarget</h3> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;addTarget&quot;</span>
+        <span class="token property">&quot;target&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> string
+          <span class="token property">&quot;filters&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token property">&quot;attributes&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token property">&quot;tags&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;target&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234-abcd-...&quot;</span>
+        <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Over 18&quot;</span>
+        <span class="token property">&quot;filters&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">&quot;attributes&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token property">&quot;tags&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="updatetarget"><a href="#updatetarget" class="header-anchor">#</a> updateTarget</h3> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;updateTarget&quot;</span>
+        <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234-abcd-...&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;target&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Over 18&quot;</span>
+            <span class="token property">&quot;filters&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token property">&quot;attributes&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token property">&quot;tags&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="deletetarget"><a href="#deletetarget" class="header-anchor">#</a> deleteTarget</h3> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;deleteTarget&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234-abcd-...&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="dumptarget"><a href="#dumptarget" class="header-anchor">#</a> dumpTarget</h3> <p>Dumps the public keys of the users that match the criteria of the target. The client then can then call the go-dvote <code>addCensus</code> call to add the keys to the Census Service.</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;dumpTarget&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234-abcd-...&quot;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;claims&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token string">&quot;12345abccdef&quot;</span><span class="token punctuation">,</span> <span class="token comment">//pubKey1</span>
+            <span class="token string">&quot;7890abccdeff&quot;</span><span class="token punctuation">,</span> <span class="token comment">//pubKey2</span>
+            <span class="token string">&quot;34567abccdef&quot;</span><span class="token punctuation">,</span> <span class="token comment">//pubKey3</span>
+            ...
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="censuses"><a href="#censuses" class="header-anchor">#</a> Censuses</h2> <p>A census is a group of public keys, containing the snapshot of a Target at a given point in time. Censuses are sent to the Census Service and their Merkle Root is used to define who will be able to vote on a voting process.</p> <h3 id="addcensus"><a href="#addcensus" class="header-anchor">#</a> addCensus</h3> <p>Add a census that is already published by a DvoteGW using the details provided by it.</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;addCensus&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;censusId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;abc342123dadf/cdb12341a&quot;</span><span class="token punctuation">,</span> <span class="token comment">// received from gateway</span>
+        <span class="token property">&quot;targetID&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234-acvbc-...&quot;</span><span class="token punctuation">,</span> <span class="token comment">// target uuid</span>
+        <span class="token property">&quot;census&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;CensusName&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;merkleRoot&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0fa34cb...&quot;</span><span class="token punctuation">,</span>    <span class="token comment">// hex received from gateway</span>
+            <span class="token property">&quot;merkleTreeUri&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ipfs://abc23454cbf&quot;</span><span class="token punctuation">,</span>   <span class="token comment">// received from gateway</span>
+            <span class="token property">&quot;target&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234&quot;</span><span class="token punctuation">,</span> <span class="token comment">// targetId</span>
+            <span class="token property">&quot;createdAt&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2000-05-14T15:52:00.741Z&quot;</span> 
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="listcensus"><a href="#listcensus" class="header-anchor">#</a> listCensus</h3> <p>Retrieve a list of exported census.</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;listCensus&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;listOptions&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;skip&quot;</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;count&quot;</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;sortBy&quot;</span><span class="token operator">:</span> <span class="token string">&quot;name&quot;</span><span class="token punctuation">,</span> <span class="token comment">// &quot;name&quot; | &quot;created&quot;</span>
+            <span class="token property">&quot;order&quot;</span><span class="token operator">:</span> <span class="token string">&quot;asc&quot;</span><span class="token punctuation">,</span>  <span class="token comment">// &quot;asc&quot; | &quot;desc&quot;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;census&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span> <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234...&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;People over 18&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;target&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234...&quot;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            ...
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="getcensus"><a href="#getcensus" class="header-anchor">#</a> getCensus</h3> <p>Returns requested census with the corresponding target</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getCensus&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;censusId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234...&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;census&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234...&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;CensusName&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;merkleRoot&quot;</span><span class="token operator">:</span> <span class="token string">&quot;09cc09acb080/3543c34fe23da&quot;</span><span class="token punctuation">,</span>   
+            <span class="token property">&quot;merkleTreeUri&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ipfs://abc23454cbf&quot;</span><span class="token punctuation">,</span> 
+            <span class="token property">&quot;target&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;createdAt&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2000-05-14T15:52:00.741Z&quot;</span> 
+        <span class="token punctuation">}</span>
+        <span class="token property">&quot;target&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234...&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;People over 18&quot;</span><span class="token punctuation">,</span> 
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="deletecensus"><a href="#deletecensus" class="header-anchor">#</a> deleteCensus</h3> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;deleteCensus&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234...&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="tags"><a href="#tags" class="header-anchor">#</a> Tags</h3> <h3 id="listtags"><a href="#listtags" class="header-anchor">#</a> listTags</h3> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        method<span class="token operator">:</span> <span class="token string">&quot;listTags&quot;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+        tags<span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span> <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234...&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;People over 18&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+            ...
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="createtag"><a href="#createtag" class="header-anchor">#</a> createTag</h3> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;createTag&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;tagName&quot;</span><span class="token operator">:</span> <span class="token string">&quot;TestTag&quot;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;tag&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token number">1234</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;TestTag&quot;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="deletetag"><a href="#deletetag" class="header-anchor">#</a> deleteTag</h3> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;deleteTag&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;tagID&quot;</span><span class="token operator">:</span> <span class="token number">1234</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="addtag"><a href="#addtag" class="header-anchor">#</a> addTag</h3> <p>Add tag to members</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;addTag&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;memberIds&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;1234-abcde-...&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;4567-bcdef-....&quot;</span><span class="token punctuation">,</span>...<span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="removetag"><a href="#removetag" class="header-anchor">#</a> removeTag</h3> <p>Remove Tag from Members</p> <ul><li>Request</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        method<span class="token operator">:</span> <span class="token string">&quot;removeTag&quot;</span>
+        memberIds<span class="token operator">:</span> <span class="token punctuation">[</span>uuid<span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x12345&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>Response</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0x123456&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">7/16/2021, 10:58:40 PM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.a4c6e69e.js" defer></script><script src="/assets/js/2.66139f8f.js" defer></script><script src="/assets/js/44.aff093db.js" defer></script>
+  </body>
+</html>
