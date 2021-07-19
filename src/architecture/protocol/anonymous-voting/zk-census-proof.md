@@ -136,13 +136,13 @@ Vochain->>Vochain: 13. verify zkSNARK proof, accept the vote
         - Verification Key (depends on the circuit being used (census size))
         - User's *public inputs* + *zkProof*
 
-#### Flow for csv votations
+#### Flow for csv voting
 ::: tip
 **Important**: This scheme assumes fully trusting the *organization*, as the
 *organization* could add non-real users to the census that later can be used
 to issue valid votes.
 
-This use case would be using the flag `preRegister=true` and the `CensusOrigin` would be `OFF_CHAIN_TREE` or `OFF_CHAIN_TREE_WEIGHTED`.
+This use case would set the flag `preRegister=true` and the `CensusOrigin` would be `OFF_CHAIN_TREE` or `OFF_CHAIN_TREE_WEIGHTED`.
 :::
 
 ```mermaid
@@ -177,9 +177,9 @@ Note over Organizer,User: From here continues with the normal flow
   - Vochain checks that the **CensusRegistryProof** can be validated for the **CensusOrigin**
 
 ::: tip
-The organization could also directly register *Users'* secret keys to the Vochain, avoiding to need the registration phase. This option would be using the `ProcessMode` flags 
+The organization could also directly register *Users'* secret keys to the Vochain, avoiding the need for a registration phase. This option would use the `ProcessMode` flags 
 
-This use case would be using the flag `preRegister=false` and the `CensusOrigin` would be `OFF_CHAIN_TREE` or `OFF_CHAIN_TREE_WEIGHTED` with the `CensusRoot` determined by the Organization.
+This use case would set the flag `preRegister=false` and the `CensusOrigin` would be `OFF_CHAIN_TREE` or `OFF_CHAIN_TREE_WEIGHTED` with the `CensusRoot` determined by the Organization.
 :::
 
 #### Flow for EthereumStorageProofs votations
