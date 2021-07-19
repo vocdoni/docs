@@ -68,12 +68,12 @@ Steps:
 
 sequenceDiagram
 opt Steps 1-2 depend on the kind of census being used (csv, EthStorageProofs, ...)
-  Organizer->>Vochain: 1. create new voting process (newProcessTx) & define the CensusRegisterFunction
+  Organizer->>Vochain: 1. create new voting process (newProcessTx) & define the CensusOrigin
   User->>User: 2. generate CensusRegisterProof
 end
 
 User->>User: 3. generate zkCensusKey
-User->>Vochain: 4. register zkCensusKey using CensusRegisterProof that matches the CensusRegisterFunction
+User->>Vochain: 4. register zkCensusKey using CensusRegisterProof that matches the CensusOrigin
 Vochain->>Vochain: 5. build voting census merkle tree (in state)
 Vochain->>Vochain: 6. startBlock is reached, election starts
 Vochain->>Vochain: 7. last merkle tree root becomes censusRoot
@@ -95,10 +95,10 @@ Vochain->>Vochain: 13. verify zkSNARK proof, accept the vote
 :::
 
 0. Circom [circuit](https://github.com/vocdoni/zk-franchise-proof-circuit) is compiled & **Trusted Setup** generated
-1. *[O+V]* Create new voting process (newProcessTx) & define the **CensusRegisterFunction**
-    - The **CensusRegisterFunction** could be for example:	
-        - Using **csv file**: Generate MerkleTree from a `csv` data file, where the **CensusRegisterFunction** is the verification of the MerkleProof of that MerkleTree (check [flow-for-csv-votations section](#flow-for-csv-votations) for more details)
-        - Using **Ethereum storage proofs**: The MerkleTree is the root of the EthereumTree at a certain block, and the **CensusRegisterFunction** is the verification of the MerkleProof of that Ethereum MerkleTree (check [flow-for-ethereumstorageproofs-votations section](#flow-for-ethereumstorageproofs-votations) for more details)
+1. *[O+V]* Create new voting process (newProcessTx) & define the **CensusOrigin**
+    - The **CensusOrigin** could be for example:	
+        - Using **csv file**: Generate MerkleTree from a `csv` data file, where the **CensusOrigin** determines the verification of the MerkleProof of that MerkleTree (check [flow-for-csv-votations section](#flow-for-csv-votations) for more details)
+        - Using **Ethereum storage proofs**: The MerkleTree is the root of the EthereumTree at a certain block, and the **CensusOrigin** determines the verification of the MerkleProof of that Ethereum MerkleTree (check [flow-for-ethereumstorageproofs-votations section](#flow-for-ethereumstorageproofs-votations) for more details)
 2. *[U]* Generate CensusRegisterProof, more details:
     - [flow for csv votations](#flow-for-csv-votations)
     - [flow for ethereumstorageproofs votations](#flow-for-ethereumstorageproofs-votations)
@@ -106,7 +106,7 @@ Vochain->>Vochain: 13. verify zkSNARK proof, accept the vote
     - User's *zkCensusKey*: `zkCensusKey = Hash(userSecret)`
     - This is the key that will be added into the *CensusTree*
 4. *[U+V]* **Register zkCensusKey** using **CensusRegisterProof** (registerKeyTx)
-  - Vochain checks that the **CensusRegistryProof** can be validated for the **CensusRegisterFunction**
+  - Vochain checks that the **CensusRegistryProof** can be validated for the **CensusOrigin**
 5. *[V]* Build voting **census merkle tree** (in state)
     - Where each leaf contains the hash of each user's `secretKey` (*zkCensusKey*)
     - MerkleTree type: circom compatible
@@ -141,6 +141,8 @@ Vochain->>Vochain: 13. verify zkSNARK proof, accept the vote
 **Important**: This scheme assumes fully trusting the *organization*, as the
 *organization* could add non-real users to the census that later can be used
 to issue valid votes.
+
+This use case would be using the flag `preRegister=true` and the `CensusOrigin` would be `OFF_CHAIN_TREE` or `OFF_CHAIN_TREE_WEIGHTED`.
 :::
 
 ```mermaid
@@ -150,7 +152,7 @@ sequenceDiagram
 opt Steps 1-2 for the csv processes
   Organizer->>Organizer: 0.1. create user login keys
   Organizer->>Organizer: 0.2. build merkleTree with login keys
-  Organizer->>Vochain: 1. create new voting process (newProcessTx) & define the CensusRegisterFunction=CSVCensus
+  Organizer->>Vochain: 1. create new voting process (newProcessTx) & define the CensusOrigin=CSVCensus
   User->>User: 2. generate CensusRegisterProof of type csv-merkletree
 end
 User->>User: 3. generate zkCensusKey
@@ -161,8 +163,8 @@ Note over Organizer,User: From here continues with the normal flow
 - 0.1. *[O]* Create user **login keys**
     - from csv data
 - 0.2. *[O]* Build **MerkleTree** with login keys
-- 1. *[O+V]* Create **new voting process** (newProcessTx) & define the CensusRegisterFunction=CSVCensus
-    - **CensusRegisterFunction** checks that:
+- 1. *[O+V]* Create **new voting process** (newProcessTx) & define the CensusOrigin=CSVCensus
+    - **CensusOrigin** determines the checks:
       - the given *MerkleProof* matches with the defined *Ethereum Root*
       - the sender of the *MerkleProof* is the owner of that address (check eth-signature)
 - 2. *[U]* Generate **CensusRegisterProof**
@@ -172,11 +174,12 @@ Note over Organizer,User: From here continues with the normal flow
         - Here `userSecret` can be `csv user's data + secret from user`
         - This is the key that will be added into the *CensusTree*
 - 4. *[U+V]* **Register zkCensusKey** using **CensusRegisterProof** (registerKeyTx)
-  - Vochain checks that the **CensusRegistryProof** can be validated for the **CensusRegisterFunction**
+  - Vochain checks that the **CensusRegistryProof** can be validated for the **CensusOrigin**
 
 ::: tip
-The organization could also directly register *Users'*
-secret keys to the Vochain, avoiding to need the registration phase.
+The organization could also directly register *Users'* secret keys to the Vochain, avoiding to need the registration phase. This option would be using the `ProcessMode` flags 
+
+This use case would be using the flag `preRegister=false` and the `CensusOrigin` would be `OFF_CHAIN_TREE` or `OFF_CHAIN_TREE_WEIGHTED` with the `CensusRoot` determined by the Organization.
 :::
 
 #### Flow for EthereumStorageProofs votations
@@ -185,7 +188,7 @@ secret keys to the Vochain, avoiding to need the registration phase.
 
 sequenceDiagram
 opt Steps 1-2 for the Ethereum Storage Proofs processes
-  Organizer->>Vochain: 1.0. create new voting process (newProcessTx) & define the CensusRegisterFunction=EthStorageProofsCensus
+  Organizer->>Vochain: 1.0. create new voting process (newProcessTx) & define the CensusOrigin=EthStorageProofsCensus
   User->>User: 2. generate CensusRegisterProof of type EthStorageProof
 end
 User->>User: 3. generate zkCensusKey
@@ -193,11 +196,11 @@ User->>Vochain: 4. register zkCensusKey using CensusRegisterProof (registerKeyTx
 Note over Organizer,User: From here continues with the normal flow
 ```
 
-- 1. *[O+V]* Create **new voting process** (newProcessTx) & define the CensusRegisterFunction=EthStorageProofsCensus
-    - CensusRegisterFunction: checks that:
+- 1. *[O+V]* Create **new voting process** (newProcessTx) & define the CensusOrigin=EthStorageProofsCensus
+    - CensusOrigin: determines to check that:
       - the given *MerkleProof* matches with the defined *Ethereum Root*
       - the sender of the *MerkleProof* is the owner of that address (check eth-signature)
-    - *[O]* Define the *EthTreeRoot* for the **CensusRegisterFunction**
+    - *[O]* Define the *EthTreeRoot* for the **CensusOrigin**
 - 2. *[U]* Generate **CensusRegisterProof**
     - which is the EthereumStorageProof + an ethereum signature by the address of the EthereumStorageProof (to prove ownership of the proof)
 - 3. *[U]* Generate **zkCensusKey** (used as leaf key)
@@ -205,7 +208,7 @@ Note over Organizer,User: From here continues with the normal flow
 	- Here `userSecret` can be the value of the signature of a public known constant made by the user's EthereumKey (where the output is only known by the user, as it is used as a 'secret key'). This is the approach that Hermez zkRollup uses to derive 'snark friendly' keys from Metamask's Ethereum Keys
         - This is the key that will be added into the *CensusTree*
 - 4. *[U+V]* **Register zkCensusKey** using **CensusRegisterProof** (registerKeyTx)
-  - Vochain checks that the **CensusRegistryProof** can be validated for the **CensusRegisterFunction**
+  - Vochain checks that the **CensusRegistryProof** can be validated for the **CensusOrigin**
 
 
 
@@ -277,6 +280,12 @@ List of current types:
 
 
 # Annex
+#### Examples of flags combinations
+Below there are listed some common combinations of flags used when created a new process:
+- CSV with pre-register: `preRegister=true`, `CensusOrigin=OFF_CHAIN_TREE`
+- CSV with the Organization defining the `CensusRoot` (creating the user's keys, without pre-register phase): `preRegister=false`, `CensusOrigin=OFF_CHAIN_TREE`
+- Ethereum Storage Proofs with an ERC20 token: `preRegister=false`, `CensusOrigin=ERC20`
+
 #### KeyKeepers reveal and commit keys
 
 A set of commitment keys are generated for each election process by a set of trusted identities named `keykeepers`. Only if all `keykeepers` are malicious could they tamper with the election, so it is crucial to distribute these special identities well. Once all these keys are revealed, anyone can generate a valid proof. This mechanism is added to the circuit in order to avoid vote buying when the election is over. Since anyone can now generate a valid proof, a voter will no longer be able to prove that they are the owner of a specific vote nullifier.
