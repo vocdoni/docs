@@ -23,7 +23,7 @@ The instance of the Voting process contract is resolved from `processes.vocdoni.
 // GLOBAL STRUCTS
 
 struct Process {
-    uint8 mode; // The selected process mode. See: ()[#]
+    uint8 mode; // The selected process mode. See: https://docs.vocdoni.io/architecture/smart-contracts/process.html#flags
     uint8 envelopeType; // One of valid envelope types, see: https://docs.vocdoni.io/architecture/smart-contracts/process.html#flags
     CensusOrigin censusOrigin; // How the census proofs are computed (Off-chain vs EVM Merkle Tree)
 
