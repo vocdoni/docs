@@ -186,8 +186,8 @@ The process mode affects both the Vochain, the contract itself and even the meta
 It requires a prior process to share the encryption key with the users with the right to read the data. This will be likely be handled by the `User Registry`.
 
 ##### PRE_REGISTER
-- `false` ⇒ The `CensusRoot` will be defined through a phase where the users need to register, using the `CensusRegisterProof` depending on the `CensusOrigin` of the process.
-- `true` ⇒ The `CensusRoot` is directly defined in the `newProcessTx`.
+- `false` ⇒ There is not registration phase, thus the census root used for validate votes is the `CensusRoot` parameter defined by the `newProcessTx` transaction.
+- `true` ⇒ There is a registration phase, the census root parameter defined by `newProcessTx` is used only during the registration (before the process `startBlock` is reached). The voting `CensusRoot` will be built inside the Vochain when registerVoterKeyTx are send by the elegible voters.
 
 #### Envelope Type
 

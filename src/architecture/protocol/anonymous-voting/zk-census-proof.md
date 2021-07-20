@@ -152,7 +152,7 @@ sequenceDiagram
 opt Steps 1-2 for the csv processes
   Organizer->>Organizer: 0.1. create user login keys
   Organizer->>Organizer: 0.2. build merkleTree with login keys
-  Organizer->>Vochain: 1. create new voting process (newProcessTx) & define the CensusOrigin=CSVCensus
+  Organizer->>Vochain: 1. create new voting process (newProcessTx) & define the CensusOrigin=OFF_CHAIN_TREE
   User->>User: 2. generate CensusRegisterProof of type csv-merkletree
 end
 User->>User: 3. generate zkCensusKey
@@ -163,10 +163,9 @@ Note over Organizer,User: From here continues with the normal flow
 - 0.1. *[O]* Create user **login keys**
     - from csv data
 - 0.2. *[O]* Build **MerkleTree** with login keys
-- 1. *[O+V]* Create **new voting process** (newProcessTx) & define the CensusOrigin=CSVCensus
+- 1. *[O+V]* Create **new voting process** (newProcessTx) & define the `CensusOrigin=OFF_CHAIN_TREE`
     - **CensusOrigin** determines the checks:
-      - the given *MerkleProof* matches with the defined *Ethereum Root*
-      - the sender of the *MerkleProof* is the owner of that address (check eth-signature)
+      - the given *MerkleProof* matches with the defined *Census Root*
 - 2. *[U]* Generate **CensusRegisterProof**
     - which is the MerkleProof that the user 'login key' is in the tree 
 - 3. *[U]* Generate **zkCensusKey** (used as leaf key)
@@ -188,7 +187,7 @@ This use case would set the flag `preRegister=false` and the `CensusOrigin` woul
 
 sequenceDiagram
 opt Steps 1-2 for the Ethereum Storage Proofs processes
-  Organizer->>Vochain: 1.0. create new voting process (newProcessTx) & define the CensusOrigin=EthStorageProofsCensus
+  Organizer->>Vochain: 1.0. create new voting process (newProcessTx) & define the CensusOrigin=ERC20
   User->>User: 2. generate CensusRegisterProof of type EthStorageProof
 end
 User->>User: 3. generate zkCensusKey
@@ -196,7 +195,7 @@ User->>Vochain: 4. register zkCensusKey using CensusRegisterProof (registerKeyTx
 Note over Organizer,User: From here continues with the normal flow
 ```
 
-- 1. *[O+V]* Create **new voting process** (newProcessTx) & define the CensusOrigin=EthStorageProofsCensus
+- 1. *[O+V]* Create **new voting process** (newProcessTx) & define the `CensusOrigin=ERC20` (or one of the others available such as `ERC777`, `MINI_ME`, etc)
     - CensusOrigin: determines to check that:
       - the given *MerkleProof* matches with the defined *Ethereum Root*
       - the sender of the *MerkleProof* is the owner of that address (check eth-signature)
@@ -282,8 +281,8 @@ List of current types:
 # Annex
 #### Examples of flags combinations
 Below there are listed some common combinations of flags used when created a new process:
-- CSV with pre-register: `preRegister=true`, `CensusOrigin=OFF_CHAIN_TREE`
-- CSV with the Organization defining the `CensusRoot` (creating the user's keys, without pre-register phase): `preRegister=false`, `CensusOrigin=OFF_CHAIN_TREE`
+- Census MerkleTree (from CSV file or private database) with pre-register: `preRegister=true`, `CensusOrigin=OFF_CHAIN_TREE`
+- Census MerkleTree (from CSV file or private database) with the Organization defining the `CensusRoot` (creating the user's keys, without pre-register phase): `preRegister=false`, `CensusOrigin=OFF_CHAIN_TREE`
 - Ethereum Storage Proofs with an ERC20 token: `preRegister=false`, `CensusOrigin=ERC20`
 
 #### KeyKeepers reveal and commit keys
