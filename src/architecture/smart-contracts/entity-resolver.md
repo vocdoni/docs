@@ -35,12 +35,14 @@ Entities may define the following Text Records:
 | `vnd.vocdoni.meta`                  | 'ipfs://12345,https://server/json'                                    | [Content URI](/architecture/protocol/data-origins.html#content-uri) to fetch the Entity's JSON metadata. <br/>See [JSON schema](#meta). |
 | `vnd.vocdoni.boot-nodes`            | 'ipfs://12345,https://server/gw.json'                                 | [Content URI](/architecture/protocol/data-origins.html#content-uri) to fetch a set of Gateways for the Entity. <br/>See [Gateway Boot Nodes](#gateway-boot-nodes) below. |
 | `vnd.vocdoni.gateway-heartbeat`     | 'wss://host/path'                                      | [Messaging URI](/architecture/protocol/data-origins.html#messaging-uri) where the Gateways of the entity should report their health status. |
+| `vnd.vocdoni.archive`                  | 'ipns://12345,QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd'                                    | [Content URI](/architecture/protocol/data-origins.html#content-uri) to fetch the process archive record. |
 
 - Required
   - `vnd.vocdoni.meta`
 - Optional
   - `vnd.vocdoni.boot-nodes`
   - `vnd.vocdoni.gateway-heartbeat`  (as long as the entity has no Gateways)
+  - `vnd.vocdoni.archive`
 
 #### JSON Metadata
 
