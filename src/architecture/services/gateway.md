@@ -398,7 +398,8 @@ Get the full information from an existing process.
         "autoStart": true,
         "interruptible": false,
 	      "dynamicCensus": false,
-	      "encryptedMetaData": false
+	      "encryptedMetaData": false,
+	      "preRegister": false
       },
       "questionIndex": 0,
       "sourceBlockHeight": 812000,
