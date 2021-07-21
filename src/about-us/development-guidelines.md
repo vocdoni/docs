@@ -74,6 +74,14 @@ The idea is to be able prove with code that the bug is fixed: to create a test t
 - When creating a PR the PR creator needs to `require` at least 1 PR reviewer
     - Take in mind that the PR reviewer may be receiving lots of emails of notifications of Github, so the PR creator should decide if it's needed to send a private message to that person to notify of the PR
 
+#### Reviewing a PR
+- When doing review request try to fulfill one of these options:
+    - **A**. Be very clear about the requested change stating the issue unambiguously or suggesting a code edit.
+    - **B**. If the request is ambiguous, doesn't provide enough details or it's a
+    personal opinion without strong arguments; state that the request is not
+    blocking and let the author of the PR decide wether to make a change or not
+    at their own discretion.
+
 #### Automated Code Review
 - PRs can be merged once:
     - the tests pass
