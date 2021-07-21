@@ -4,6 +4,11 @@ The following section is an excerpt of the article published on the [Vocdoni Blo
 
 ---
 
+::: warning
+The contents of this article are outdated. An up to date version will be available soon. <br/>
+Use the article as an introduction and combine it with this [end-to-end example](https://github.com/vocdoni/dvote-js/blob/main/example/off-chain-census/index.ts#L24).
+:::
+
 Conducting secure voting processes is far from simple, and today we are only focusing on the first steps. Vocdoni is conceived as a set of decentralized components which can operate as a whole.
 
 - The Ethereum blockchain to declare organizations and their voting processes (Layer 1).

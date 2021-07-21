@@ -143,7 +143,7 @@ module.exports = {
         children: [
           '/integration/overview',
           '/integration/voting-as-a-service',
-          '/integration/registry-token-api',
+          // '/integration/registry-token-api',
         ]
       },
       {

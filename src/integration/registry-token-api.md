@@ -1,5 +1,9 @@
 # Registry token API
 
+::: warning
+This section is deprecated
+:::
+
 The token API allows organizations to take control over the user tokens required for user registration on the Vocdoni registry backend.
 
 The API can be accessed on a url like this `wss://vocdoni-registry-service/api/token`. It uses websockets with a JSON payload.
