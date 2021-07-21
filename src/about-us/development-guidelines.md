@@ -10,7 +10,9 @@
 
 ## Tasks management
 - Description of current status:
-    - Each project uses different tool
+    - Currently:
+        - Product teams are currently using Jira
+        - The Protocol team is still using Linear
     - Concrete tasks are defined in `Github issues`
     - General tasks are defined in
         - `Linear`: *Will be replaced by Jira eventually*
@@ -23,6 +25,12 @@
     - Reasons:
         - Avoid inefficiencies due incompatibilities on the client & server sides
         - Make it easier for the reviewer to verify that the implementation follows the spec
+    - **Product features** need to be well described before being implemented.
+       - A description of **why** this change is being made, is expected.
+       - A clear "definition of done" is expected.
+    - **Protocol changes** need to be documented on a docs PR, following suit of a discussion
+       - Use the discussions on the `protocol` repo when the topic is relevant to the community
+       - Use a Notion page or a HackMD if the topic is relevant to the team only
 
 [discuss.vocdoni.io](https://discuss.vocdoni.io) is used for discussing new features and protocol proposals.
 
