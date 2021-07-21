@@ -28,9 +28,12 @@ We are working on further integration examples. Meanwhile, you can check the exa
 The main library is called [dvote-js](https://github.com/vocdoni/dvote-js) and it works both for the web and NodeJS. <br/>See the following end-to-end examples, depending on your use-case:
 
 - EVM based census
-    - [ERC20-based voting example](https://github.com/vocdoni/dvote-js/blob/main/example/evm-census/index.ts#L30)
-    - [ERC20-based voting example (without a creation Ethereum transaction)](https://github.com/vocdoni/dvote-js/blob/main/example/evm-census-signaling/index.ts#L34)
-    - Erc20 token registration
+    - [ERC20 standard example](https://github.com/vocdoni/dvote-js/blob/main/example/evm-census/index.ts#L30)
+        - This example needs the creator to send one Ethereum transaction to the blockchain (costs some gas)
+    - [ERC20 signaling example](https://github.com/vocdoni/dvote-js/blob/main/example/evm-census-signaling/index.ts#L34)
+        - This example creates a vote by using an oracle.
+        - No blockchain transaction is needed.
+    - [ERC20 token registration](https://github.com/vocdoni/bridge-ui/blob/main/lib/api.ts#L60-L67)
 - Off-chain based census
     - [Example](https://github.com/vocdoni/dvote-js/blob/main/example/off-chain-census/index.ts#L24)
 - Census based on digital certificates (CA)
