@@ -225,9 +225,9 @@ The following diagram contains a visual representation of the data structure of 
 	<img src="/zk-census-proof-poseidon-merkletree-diagram.png" alt="Poseidon merkle tree with zk census proof"/>
 </div>
 
-The `index` value is determined by the *CensusTree* builder, which has an `index` value for each *CensusTree* that increments with each leaf addition.
+The `index` value is determined by the *CensusTree* builder, which has an `index` value for each *CensusTree*. This value increments with the addition of each new leaf.
 
-The *Leafs* are structured in this way in order to have a more efficient usage of the MerkleTrees, which allows to fit more user keys in a smaller tree, allowing us to use smaller circuits for the same census size. So for example, if instead of an incremental `index`, the leaf key (which determines the leaf position in the tree) is directly determined by the `zkCensusKey`, the tree would have collisions when adding leafs way before filling all the available leaf spots, resulting in needing bigger circuits for the same census size while the tree is not fully used. While with the incremental index approach all the leafs can be filled without finding any collision. This has the benefit that allows to use much smaller circuits for the same amount of users.
+The *Leaves* are structured in this way in order to use the MerkleTrees more efficiently, allowing more user keys to fit inside a smaller tree and therefore reducing the zk circuit size. This is because the value of any given leaf's *key* determines that leaf's *position* on the tree. If the leaf key were determined by the `zkCensusKey`, rather than an incremental `index`, each new leaf would have a significant chance of collision before filling all the available leaf spots for a given height. Trees would therefore be less balanced and require larger circuits for the same census size due to inefficient use of tree space. With the incremental index approach, on the other hand, all the leaf spots can be filled without a single collision. This produces much smaller circuits for the same number of users.
 
 
 
