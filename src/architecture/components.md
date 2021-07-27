@@ -3,7 +3,7 @@
 The voting ecosystem is built on top of three kind of components:
 - Decentralized blockchains
 - Decentralized file storage
-- Private services
+- Client frontend
 
 They serve different purposes and they enable to have the following components.
 
@@ -59,88 +59,10 @@ Gateways provide an entry point to decentralized services like Ethereum, IPFS, t
 
 Gateways are neutral and their goal is to provide P2P access to web and app clients. Anyone can start a Gateway and expand the network.
 
-### Census Service
-
-A server handling the public census of an Entity. It stores Merkle trees with user claims, it allows entities to trigger updates (using asymmetric key signature authentication) and allows clients to ask for data on a particular Merkle tree.
-
 ### Client
 
-Multiple types of client could be used. 
-
-#### App 
-A mobile App that generates and manages cryptographic self-sovereign identities. It interacts with network Gateways to participate in the Vocdoni ecosystem.
-
-It allows to visit entities, browse their content, see governance processes, cast votes and see the results.
-
-#### Web
-A web app that allows users to generate a proof that they belong in a process' CSV Registry and vote from the browser without any sign-up process or local storage. It interacts with network Gateways to participate in the Vocdoni ecosystem.
-
-## Manager
-
-A private service providing organizations with a UI to manage their community and public content. This includes a news feed, voting processes, assemblies, events, etc.
-
-It also allows to manage the members and their attributes (age, payment status, etc.). Such data typically lives on a private database (or a CSV registry) that will compute updated snapshots of the census at a given point in time.
-
-The manager also allows to export new census and define the requirements that users have to accomplish for a user to be in a census. These requirements depend on each organization's policies.
-
-### User Registry
-
-A custom private service used to handle registrations and validate them before adding a user to a Census. 
-
-The Vocdoni manager features a user registry out of the box.
+Multiple types of client could be used. The client must allow organizations to interact with the Gateways, Web3, and/or decentralized storage to create and edit entities and processes. It also should serve as the voting frontend allowing eligible users to cast votes.
 
 ---
-
-## Public vs Private relationship
-
-Below is the relationship between publicly accessible and private services that interact within a voting process.
-<head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.css">
-</head>
-
-```mermaid
-graph TD;
-
-OR(<center>Organizer<br/><br/><i class='fa fa-2x fa-user'/></center>)
-APP(<center>Mobile client<br/><br/><i class='fa fa-2x fa-users'/></center>)
-GW(<center>Gateway<br/><br/><i class='fa fa-2x fa-network-wired'/></center>)
-DB((<center><br/>Internal DB<br/><br/><i class='fa fa-2x fa-database'/></center>))
-KYC((<center><br/>KYC, payment, etc<br/><br/><i class='far fa-2x fa-id-card'/></center>))
-UR(<center>User Registry<br/><br/><i class='fa fa-2x fa-server'/></center>)
-EM(<center>Entity Manager<br/><br/><i class='fa fa-2x fa-server'/></center>)
-CS(<center>Census Service<br/><br/><i class='far fa-2x fa-list-alt'/></center>)
-BCH(<center><br/>Blockchain<br/><br/><i class='fab fa-2x fa-ethereum'/></center>)
-IPFS(<center><br/>IPFS<br/><br/><i class='fa fa-2x fa-database'/></center>)
-
-
-subgraph Public services
-	GW
-	CS
-	BCH
-	IPFS
-end
-
-subgraph Entity Private Services
-	UR
-	KYC
-	DB
-	EM
-end
-
-OR-- Manage -->EM
-APP-- Sign up -->UR
-
-UR-.->KYC
-UR-->DB
-EM-->DB
-
-EM-.->|New census|CS
-EM-.->|New process|GW
-CS-.-IPFS
-
-GW-.-IPFS
-GW-.->BCH
-
-```
 
 
