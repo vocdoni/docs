@@ -11,10 +11,7 @@ Digital voting represents a great social and technological challenge. An officia
 
 Vocdoni defines an open architecture and the protocols to empower large communities to exercise full democracy with the aforementioned guarantees. 
 
-A functional implementation of Vocdoni relies mainly on a set of **Decentralized** services: A public Ethereum blockchain, Gateways, Census Service, voting blockchain Miners, Oracles, and decentralized storage systems<br/>
-
-
-The core voting protocol can be extended to include user management with a set of **Private** services: A private database that Entities can use to maintain a census of users (with personal data that should not be disclosed)
+A functional implementation of Vocdoni, at the protocol layer, relies on a set of **Decentralized** services: A public Ethereum blockchain, Gateways, Voting Blockchain Miners, Oracles, and decentralized storage systems<br/>
 
 ## Service architecture
 
@@ -27,16 +24,22 @@ To provide resilience and avoid any kind of censorship, the network architecture
 + Use static web pages, so they can be replicated
 + Allow third parties to contribute to the infrastructure
 
+## Client Layer
+
+The client layer interfaces with the [Gateway API](/src/architecture/services/gateway.md), [Ethereum Smart Contracts](smart-contracts/process.md), and decentralized storage to manage organizations, create & publish census, and host voting processes. Vocdoni provides a permissionless client layer with a csv- or ethereum token-based census mechanism, but other user census (such as a private user registry DB) could be used on top of the voting protocol. 
+
+
 ### Key components
 A voting process makes use of the following components:
 
 <div style="padding: 20px; background-color: white;">
-	<img src="/main-architecture.svg" alt="Main architecture"/>
+	<img src="/main-architecture.png" alt="Main architecture"/>
 </div>
 
 - A Merkle Tree is generated with a snapshot of the census and published to IPFS. The census can be generated in one of many ways, including:
-  - Mobile app users create a key pair (self-sovereign identity) and sign up to a Registry DB for an organization with their public key. Users in the registry can be filtered on different attributes, and their public keys are included in the Merkle Tree. Users can prove their census inclusion with the private key they own. 
-  - The organization creates a CSV spreadsheet containing voter information (i.e. name, ID number, etc). This information is encrypted to create a key pair for each eligible user, the public key of which is added to the Merkle Tree. Web client users can enter their correct information to ephemerally generate their one-time private key and prove census inclusion.
+  - The organization creates a CSV spreadsheet containing voter information (i.e. name, ID number, etc). This information is encrypted to create a key pair for each eligible user, the public key of which is added to the Merkle Tree. Web client users can enter their correct information to ephemerally generate their one-time private key and prove census inclusion. This census method is used by Vocdoni's [web client](https://vocdoni.app/).
+  - An Ethereum Storage Proof is generated for a given token address, where the root of the Ethereum Tree is used as the Censuse Merkle Tree and holders of that token are the users in the census. This census method is used by [Aragon Voice](https://voice.aragon.org/). 
+  - Each user creates a key pair (self-sovereign identity) and signs up to a Registry DB for an organization with their public key. Users in the registry can be filtered on different attributes, and their public keys are included in the Merkle Tree. Users can prove their census inclusion with the private key they own. 
 - Voting processes are declared on an Ethereum Smart Contract
 	- This acts as the source of truth and contains pointers to the metadata, census root and parameters defining how a process should behave
 - Metadata is obtained from distributed filesystems such as IPFS
