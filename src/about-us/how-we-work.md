@@ -1,4 +1,4 @@
-# How we work
+# How We Work
 
 ## Ideals
 

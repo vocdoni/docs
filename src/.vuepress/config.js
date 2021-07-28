@@ -133,6 +133,16 @@ module.exports = {
           '/integration/overview',
           '/integration/voting-as-a-service',
           // '/integration/registry-token-api',
+          {
+            title: 'Census',
+            collapsible: false,
+            path: '/integration/census/general',
+            children: [
+              '/integration/census/csv',
+              '/integration/census/on-chain',
+              '/integration/census/registry',
+            ]
+          },
         ]
       },
       {

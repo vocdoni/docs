@@ -1,4 +1,4 @@
-# Oracle deployment (stage)
+# Oracle Deployment (stage)
 
 This section shows how to deploy a node with the oracle role running on Vocdoni network, relay Ethereum transactions and signal events within the own Vochain. This component also requires an Ethereum node, ideally running next to it, so we are going to deploy both components.
 

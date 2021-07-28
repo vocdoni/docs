@@ -1,4 +1,4 @@
-# Miner deployment
+# Miner Deployment
 
 This section shows how to deploy a node with the miner role running on Vocdoni network, to propose and include blocks in the Vochain.
 

@@ -1,4 +1,4 @@
-# Process overview
+# Process Overview
 
 Similarly to an operating system, Vocdoni also **runs processes**. An OS process traditionally starts with a system call to the kernel, requesting the execution of a program with flags and permissions.
 

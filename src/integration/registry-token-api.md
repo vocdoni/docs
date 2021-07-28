@@ -1,4 +1,4 @@
-# Registry token API
+# Registry Token API
 
 ::: warning
 This section is deprecated
