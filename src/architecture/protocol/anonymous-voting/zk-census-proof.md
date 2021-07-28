@@ -255,7 +255,7 @@ Origin of each zkInput parameter:
     - the *User* retrieves the *siblings* from the *Vochain* through the *Gateway*
     - the length of *censusSiblings* will depend on the *zkCircuit*:
         - The design of the *MerkleTree* used in circomlib provokes different lengths in the siblings returned when generating a *MerkleProof*
-	  - This is due the design of the *MerkleTree* defines a tree in which the deep of the tree (from the root to the leafs) will depend on each leaf and its neighbours. More details can be found in the [*MerkleTree* spec](https://docs.iden3.io/publications/pdfs/Merkle-Tree.pdf).
+	  - This is due the design of the *MerkleTree* defines a tree in which the deep of the tree (from the root to the leafs) will depend on each leaf and its neighbors. More details can be found in the [*MerkleTree* spec](https://docs.iden3.io/publications/pdfs/Merkle-Tree.pdf).
         - In order to input those siblings into the circuit, the `nLevels` of the circuit is fixed, so the length of *siblings* needs to be fixed also.
         - So, the len(siblings) will depend on the *zkCircuit* being used, specifically from the `nLevels` parameter of the circuit
         - The logic needed to be implemented in the User side can be found [here (go) lines 67-70](https://github.com/vocdoni/zk-franchise-proof-circuit/blob/feature/go-code-inputs-generation/test/go-inputs-generator/census_test.go#L67), and [here (js) line 23](https://github.com/vocdoni/zk-franchise-proof-circuit/blob/feature/go-code-inputs-generation/src/franchise.js#L33):

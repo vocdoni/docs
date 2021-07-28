@@ -1,4 +1,4 @@
-# Gateway deployment (stage)
+# Gateway Deployment (stage)
 
 This section shows how to deploy a node with the gateway role running on Vocdoni, which provides an entry point to the P2P networks for the clients. To get more information about the gateway component, read the [gateway docs](https://docs.vocdoni.io/#/architecture/services/gateway).
 

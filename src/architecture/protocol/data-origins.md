@@ -1,4 +1,4 @@
-# Data origins
+# Data Origins
 
 Most of the metadata schemes discussed in the documentation need to point to external data that may be available through various channels.
 

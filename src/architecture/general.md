@@ -1,4 +1,4 @@
-# Global architecture
+# Global Architecture
 
 Digital voting represents a great social and technological challenge. An official binding vote with standard requirements should at least be able to:
 
