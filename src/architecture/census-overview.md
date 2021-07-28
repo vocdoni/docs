@@ -25,30 +25,32 @@ A **prover** is able to prove the inclusion of any leaf of the Merkle Tree to a 
 + The **verifier** only needs to know the Root Hash
 + The **prover** only needs to provide the Leaf and its Sibling, as well as the sibling of each of its ancestors (hence, `log(N)` elements).
 
-This means that, in the case of our example Voting Merkle Tree, the owner of PubKey1 only needs `HashPubKey1 + H4 + H2` to prove that their key is part of the Merkle Tree, and therefore that their public key is in the voter census. 
+This means that, in the case of our example Voting Merkle Tree, the owner of PubKey1 only needs `HashPubKey1 + H4 + H2` (highlighted in green on the graph below) to prove that their key is part of the Merkle Tree, and therefore that their public key is in the voter census. 
+
+```mermaid
+graph TD
+HP1{{HashPubKey1}}
+HP2{{H2}}
+HP4{{H4}}
+
+style Root fill:#df7957,stroke:#333,stroke-width:2px
+style HP1 fill:#98fb98,stroke:#333,stroke-width:2px
+style HP2 fill:#98fb98,stroke:#333,stroke-width:2px
+style HP4 fill:#98fb98,stroke:#333,stroke-width:2px
+
+Root-->H1
+Root-->HP2
+H1-->H3
+H1-->HP4
+HP2-->H5
+HP2-->H6
+H3-.->HP1
+HP4-.->Empty
+H5-.->HashPubKey2
+H6-.->HashPubKey3
+```
 
 To verify this proof, the verifier simply computes `hash( hash( hash(HashPubKey1) + H4 ) + H2 )` and compares this result with the known Root hash of the Merkle Tree.
-
-***
-***
-***
-***
-***
-***
-***
-***
-***
-***
-// TODO: add new design here with pubkey1, H2, H4 highlighted\
-***
-***
-***
-***
-***
-***
-***
-***
-***
 
 This Merkle Proof design allows voters to prove census inclusion without knowing any other voters' keys, and with a computation time that is logarithmically proportionate to the census size. 
 
