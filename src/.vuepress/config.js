@@ -138,8 +138,8 @@ module.exports = {
             collapsible: false,
             path: '/integration/census/general',
             children: [
-              '/integration/census/csv',
               '/integration/census/on-chain',
+              '/integration/census/csv',
               '/integration/census/registry',
             ]
           },
