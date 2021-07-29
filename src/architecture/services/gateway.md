@@ -1069,6 +1069,177 @@ The `fromId` field works the same as in [Get Process List](#get-process-list).
 }
 ```
 
+## File API
+
+### Fetch File
+
+Fetch a file from the P2P network (currently IPFS) and return it encoded in base 64.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "fetchFile",
+    "uri": "<content uri>",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "content": "base64Payload",  // The contents of the file
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+  
+**Used in:**
+- [Voting process retrieval](/architecture/component-interaction.html#voting)
+- [Vote scrutiny](/architecture/component-interaction.html#after-voting)
+
+**Related:**
+- [Content URI](/architecture/protocol/data-origins.html#content-uri)
+
+
+### Add File
+
+Uploads a file and pins it on an IPFS cluster. This private method is aimed to be used by the election organizer. The Gateway running the API is usually a private server, only used by entity admins.
+
+These methods require authentication, following the [JSON API rules](/architecture/protocol/json-api.html#authentication).
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "addFile",
+    "type": "ipfs",
+    "content": "base64Payload",  // File contents
+    "name": "string",            // Human readable name to help identify the content in the future
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "uri": "<content uri>",
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+  
+}
+```
+
+**Used in:**
+- [Voting process creation](/architecture/component-interaction.html#voting-process-creation)
+
+**Related:**
+- [Content URI](/architecture/protocol/data-origins.html#content-uri)
+
+### List pinned files
+
+This method provides private Gateway users with the list of resources that have been pinned on IPFS.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "pinList",
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "files": [
+      { "name": "file1.txt", "uri": "<content-uri>" },
+      { "name": "file2.png", "uri": "<content-uri>" },
+      { "name": "file3.bin", "uri": "<content-uri>" },
+      ...
+    ],
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+**Related:**
+- [Content URI](/architecture/protocol/data-origins.html#content-uri)
+
+### Pin a file
+
+This method allows administrators to pin already existing remote content, so it remains available on IPFS.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "pinFile",
+    "uri": "<content-uri>", // Multiple origins can be pinned at once
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
+}
+```
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "ok": true,
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+
+### Unpin a file
+
+This method is the counterpart of `pin` and `addFile`. It allows administrators to unpin and drop content from a Gateway so it doesn't eventually run out of space.
+
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "unpinFile",
+    "uri": "<content-uri>",  // Multiple origins can be unpinned at once
+    "timestamp": 1556110671
+  },
+  "signature": "hexString"
+}
+```
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "ok": true,
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
+**Related:**
+- [Content URI](/architecture/protocol/data-origins.html#content-uri)
+
 ## Using the API (for beginners)
 
 If you don't have experience using a [JSON API](/architecture/protocol/json-api), let's run through an example. Here we'll be using [curl](https://linux.die.net/man/1/curl) to make requests to https://gw1.vocdoni.net, one of the gateways hosted by Vocdoni.
