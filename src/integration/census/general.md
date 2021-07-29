@@ -1,3 +1,6 @@
 # Census Integration
 
-Organizations have to publish their census before launching any governance process. They may generate a census with one of many methods. The current recommended methods are Registry DB and CSV census.
+The Voting Protocol requires a [Census Merkle Tree](../../architecture/census-overview.md) to be created and published before an organization can host a voting process. There are three main types of census: 
++ [on-chain](on-chain.md) 
++ [off-chain CSV](csv.md)
++ [off-chain registry database](registry.md). 

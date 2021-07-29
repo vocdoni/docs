@@ -4,6 +4,7 @@ In Vocdoni, a census of identities is represented as a binary [Merkle Tree](http
 
 ```mermaid
 graph TD;
+style Root fill:#EBAE9A,stroke:#333,stroke-width:2px
 
 Root-->H1
 Root-->H2
@@ -33,7 +34,7 @@ HP1{{HashPubKey1}}
 HP2{{H2}}
 HP4{{H4}}
 
-style Root fill:#df7957,stroke:#333,stroke-width:2px
+style Root fill:#EBAE9A,stroke:#333,stroke-width:2px
 style HP1 fill:#98fb98,stroke:#333,stroke-width:2px
 style HP2 fill:#98fb98,stroke:#333,stroke-width:2px
 style HP4 fill:#98fb98,stroke:#333,stroke-width:2px

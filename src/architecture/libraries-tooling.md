@@ -34,6 +34,10 @@ Provides the Smart Contracts supporting the trustless management of entities, pr
 
 ## DVote Flutter
 
+:::tip
+Note that all flutter/dart libraries are deprecated at the moment, as we are no longer developing a mobile application
+:::
+
 This library features a subset of DVote JS features, tailored to the usage on mobile apps consuming decentralized metadata and governance processes. While most of the plumbing is developed in Dart, all performance sensitive computations are handled by native versions. See DVote Flutter Native below. 
 
 This library is likely to be refactored into a pure Dart version and a Flutter superset in the future.
