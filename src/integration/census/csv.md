@@ -1,6 +1,10 @@
-#### CSV Registry
+#### CSV Census
 
-The CSV registry enables organizations to host voting processes without requiring users to store their own private keys, best used for a light-weight frontend with minimal user sign-up. The entity generates a CSV file including user information:
+:::tip
+This is the census mechanism used by [Vocdoni.app](https://vocdoni.app/)
+:::
+
+The CSV census enables organizations to host voting processes without requiring users to store their own private keys, best used for a light-weight frontend with minimal user interaction. The entity generates a CSV file including user information. For example:
 
 | name     | age | country     | favorite color |
 | -------- | --- | ----------- | ----------     |

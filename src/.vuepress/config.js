@@ -139,8 +139,14 @@ module.exports = {
             path: '/integration/census/general',
             children: [
               '/integration/census/on-chain',
-              '/integration/census/csv',
-              '/integration/census/registry',
+              {
+                title: 'Off-chain Census',
+                path: '/integration/census/off-chain',
+                children: [
+                '/integration/census/csv',
+                '/integration/census/registry',
+                ],
+              },
             ]
           },
         ]
