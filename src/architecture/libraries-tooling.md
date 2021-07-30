@@ -18,7 +18,7 @@ The intended functionality is to interact with a public Ethereum blockchain, to 
 - See an example integration of [Voting as a Service](https://blog.vocdoni.io/introducing-voting-as-a-service/) using DVote JS
 
 ## Go DVote
-Similarly to DVote JS, Go DVote provides an extensive toolkit to interact with Vocdoni, in addition to actually running it. Beyond the SDK libraries, Go DVote also allows to spin up a DVote Gateway, a Vochain Miner, a Census Service, etc.
+Similarly to DVote JS, Go DVote provides an extensive toolkit to interact with Vocdoni, in addition to actually running it. Beyond the SDK libraries, Go DVote also allows to spin up a DVote Gateway, a Vochain Miner, etc.
 
 Its intent is to enable P2P access to its JS counterparts, and process data conforming to the standard formats and data structures. 
 
