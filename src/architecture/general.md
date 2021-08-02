@@ -11,7 +11,7 @@ Digital voting represents a great social and technological challenge. An officia
 
 Vocdoni defines an open architecture and the protocols to empower large communities to exercise full democracy with the aforementioned guarantees. 
 
-A functional implementation of Vocdoni, at the protocol layer, relies on a set of **Decentralized** services: A public Ethereum blockchain, Gateways, Voting Blockchain Miners, Oracles, and decentralized storage systems<br/>
+A functional implementation of Vocdoni, at the protocol layer, relies on a set of **Decentralized** services: A public Ethereum blockchain, Gateways, a Census Service, Voting Blockchain Miners, Oracles, and decentralized storage systems<br/>
 
 ## Service architecture
 
