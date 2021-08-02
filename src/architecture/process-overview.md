@@ -21,7 +21,7 @@ graph TD
 OG(<center>Vote organizer<br/><br/><i class='fa fa-2x fa-user'/></center>)
 DATA(<center>IPFS data<br/><br/><i class='fa fa-2x fa-database'/></center>)
 BP(<center>Process contract<br/><br/><i class='fab fa-2x fa-ethereum'/></center>)
-CS(<center>Census Module<br/><br/><i class='fa fa-2x fa-address-book'/></center>)
+CS(<center>Census Service<br/><br/><i class='fa fa-2x fa-address-book'/></center>)
 
 OG --> |Generate user census|CS
 OG -.- |Pin metadata and census|DATA
@@ -48,12 +48,14 @@ APP(<center>Voter<br/><br/><i class='fa fa-2x fa-mobile-alt'/></center>)
 DATA[<center>P2P Filesystem<br/><br/><i class='fa fa-2x fa-database'/></center>]
 GW[<center>Gateway<br/><br/><i class='fa fa-2x fa-network-wired'/></center>]
 PSS[<center>P2P Messaging<br/><br/><i class='fa fa-2x fa-comments'/></center>]
+CS[<center>Census Service<br/><br/><i class='fa fa-2x fa-address-book'/></center>]
 VN[<center>Vochain node<br/><br/><i class='fa fa-2x fa-cubes'/></center>]
 VM[<center>Vochain Miner<br/><br/><i class='fa fa-2x fa-cubes'/></center>]
 
 APP -->|<center>0 Fetch entity's open processes<br/>1 Fetch process metadata<br/>2 Generate census proof or ZKP<br/>3 Submit voting package</center>| GW
 GW -->|Get metadata|DATA
 GW --> PSS
+GW -.-|Get/check merkle proof|CS
 PSS -->|Relay voting package|VN
 VN -->|Add to mempool|VM
 VN -.->|Validate proof<br/>Validate vote package|VN
@@ -63,6 +65,7 @@ subgraph P2P communication
 	DATA
 	PSS
 	VN
+	CS
 end
 
 ```

@@ -211,6 +211,9 @@ sequenceDiagram
 **Used schemas:**
 
 - [Process Metadata](/architecture/data-schemes/process.html#process-metadata)
+- [Census Service addClaimBulk](/architecture/services/census-service.html#addclaimbulk)
+- [Census Service getRoot](/architecture/services/census-service.html#getroot)
+- [Census Service dump](/architecture/services/census-service.html#dump)
 
 ### Voting process retrieval
 
@@ -268,16 +271,21 @@ sequenceDiagram
     participant App as Client
     participant DV as DVote
     participant GW as Gateway/Web3
-    participant CS as Census Module
+    participant CS as Census Service
 
     App->>+DV: Census.isInCensus(publicKey, censusId, censusMessagingURI)
 
         DV->>+GW: genCensusProof(censusId, publicKey)
-        CS-->>GW: MerkleRoot
+        GW->>+CS: genProof(censusId, publicKey)
+        CS-->>-GW: isInCensus
         GW-->>-DV: isInCensus
 
     DV-->>-App: isInCensus
 ```
+
+**Used schemas:**
+
+- [Census Service generateProof](/architecture/services/census-service.html#generateproof)
 
 **Notes:**
 
@@ -295,11 +303,15 @@ sequenceDiagram
     participant App as Client
     participant DV as DVote
     participant GW as Gateway/Web3
+    participant CS as Census Service
     participant MP as Mempool
 
     App->>+DV: Process.castVote(vote, processMetadata, merkleProof?)
 
         DV->>+GW: genProof(<br/>processMetadata.census.id,<br/> publicKey)
+
+            GW->>+CS: genProof(publicKeyHash)
+            CS-->>-GW: merkleProof
 
         GW-->>-DV: merkleProof
 
@@ -330,6 +342,7 @@ sequenceDiagram
 **Used schemas:**
 
 - [Process Metadata](/architecture/data-schemes/process.html#process-metadata)
+- [Census Service generateProof](/architecture/services/census-service.html#generateproof)
 - [Vote Package](/architecture/smart-contracts/process.html#vote-package)
 
 **Notes:**

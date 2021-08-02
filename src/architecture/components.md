@@ -59,10 +59,11 @@ Gateways provide an entry point to decentralized services like Ethereum, IPFS, t
 
 Gateways are neutral and their goal is to provide P2P access to web and app clients. Anyone can start a Gateway and expand the network.
 
+### Census Service
+
+A server handling the public census of an Entity. It stores Merkle trees with user claims, it allows entities to trigger updates (using asymmetric key signature authentication) and allows clients to ask for data on a particular Merkle tree.
+
 ### Client
 
 Multiple types of client could be used. The client must allow organizations to interact with the Gateways, Web3, and/or decentralized storage to create and edit entities and processes. It also should serve as the voting frontend allowing eligible users to cast votes.
-
----
-
 

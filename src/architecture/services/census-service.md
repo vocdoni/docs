@@ -1,10 +1,5 @@
 # Census Service
 
-:::warning
-This section is deprecated
-:::
-
-
 The Census Service provides a service for both organizations and users. Its purpose is to store and manage census, which are a list of public keys stored as a Merkle Tree.
 
 The organizer can:
