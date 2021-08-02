@@ -1,20 +1,6 @@
-# The Census
+# Off-Chain Census
 
-In Vocdoni, a census of identities can be represented in one of two ways. For Ethereum-based processes, in which eligible voters are represented by Ethereum addresses holding a specific token, an on-chain (ERC-20) census is used. For all other voting processes (organizations that are not represented as DAOs), an [off-chain](../integration/census/off-chain.md) census is used.
-
-## On-Chain Based Census (Ethereum ERC-20)
-
-On-chain census allow the set of eligible voters to be expressed as a weighted census of holders of a specific token on Ethereum. There is only one entity per Ethereum token, where the address of that entity is the contract address of the given token. 
-
-To this end, [Ethereum Storage Proofs](smart-contracts/storage-proofs.md) are used. 
-
-Anyone can permissionlessly register a token to the Storage Proof Smart Contract, incurring some gas cost. Then any holder of the token can create a voting process for that token and set the proper [census origin](/architecture/smart-contracts/process.html) value to signal the use of an on-chain census. The Census Merkle Root is the Ethereum Root Hash at a given block height, and any user can request a Merkle Proof that their address holds tokens on the target ERC20 smart contract. They can then provide this proof to vote on processes for the entity representing that token address. Weighted processes enable users to employ a voting power that is proportionate to the nubmer of tokens they hold.
-
-Technical details for on-chain census can be found on the [Ethereum Storage Proof](smart-contracts/storage-proofs.md) documentation page. 
-
-## Off-Chain Based Census (Merkle Tree)
-
-An off-chain census allows organizations to centrally manage the set of members who can vote on any given process. The census itself is represented as a binary [Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree), where the leaves of the tree contain the public keys of all eligible voters, hashed. 
+The census itself is represented as a binary [Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree), where the leaves of the tree contain the public keys of all eligible voters, hashed. 
 
 ```mermaid
 graph TD;
@@ -73,7 +59,7 @@ Vocdoni stores a hash of public keys instead of public keys themselves to provid
 
 ### Creating & publishing the census
 
-Any organization is required to generate and publish a census Merkle Tree in order to host a voting process on the [Voting Blockchain](services/vochain.md). The method for managing and filtering users and generating the Merkle Tree, however, is up to integrators of the Voting Protocol. For users of [Vocdoni.app](https://vocdoni.app) and [Aragon Voice](https://voice.aragon.org), this is handled automatically by the client layer. The census module is further documented on the [census integration](../integration/census/general.md) page.
+Any organization which does not wish to use the [on-chain census mechanism](on-chain.md) is required to generate and publish a census Merkle Tree in order to host a voting process on the [Voting Blockchain](services/vochain.md). The method for managing and filtering users and generating the Merkle Tree, however, is up to integrators of the Voting Protocol. For users of [Vocdoni.app](https://vocdoni.app), this is handled automatically by the client layer. The census module is further documented on the [census integration](../../integration/census/general.md) page.
 
 ### Accessing the census
 

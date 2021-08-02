@@ -58,7 +58,15 @@ module.exports = {
         children: [
           '/architecture/general',
           '/architecture/process-overview',
-          '/architecture/census-overview',
+          {
+            title: 'The Census',
+            collapsible: false,
+            path: '/architecture/census/census-overview',
+            children: [
+            '/architecture/census/on-chain',
+            '/architecture/census/off-chain',
+            ]
+          },
           '/architecture/components',
           {
             title: 'Smart Contracts',
