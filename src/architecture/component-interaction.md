@@ -126,7 +126,7 @@ The voting process as a whole is as follows:
 	- Get the census Merkle Root
 	- Pin the Merkle Tree on IPFS or similar
 	- Pin the [Process Metadata](/architecture/data-schemes/process) on IPFS
-	- Send a transaction to the process smart contract, including [Content URI](/architecture/protocol/data-origins.html#content-uri)s pointing to the [Process Metadata](/architecture/data-schemes/process) and the [Census Merkle Tree](/architecture/census-overview), along with the rest of parameters
+	- Send a transaction to the process smart contract, including [Content URI](/architecture/protocol/data-origins.html#content-uri)s pointing to the [Process Metadata](/architecture/data-schemes/process) and the [Census Merkle Tree](census/census-overview.md), along with the rest of parameters
 	- Update the list of voting processes on the [ENS Resolver](/architecture/smart-contracts/entity-resolver.html#entity-resolver) contract for the entity
 2. The **voter** fetches the active processes for an **Entity**, or is sent a link directly to a process
 	- Read the description and review the voting options
