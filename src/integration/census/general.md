@@ -5,4 +5,3 @@ The Voting Protocol requires a [Census Merkle Tree](../../architecture/census-ov
 + [off-chain](off-chain.md)
   + [CSV](csv.md)
   + [registry database](registry.md)
-+ [off-chain registry database](registry.md). 
