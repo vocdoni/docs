@@ -6,7 +6,7 @@ The second case, referred to as an on-chain census, enables the weighted set of 
 
 ## ERC-20 Token Storage Proofs
 
-Each Ethereum account has its own Storage Trie, which is where all of the contract data lives for that account. A 256-bit hash of the storage trie’s root node is stored as the storageRoot value in the global Ethereum state trie.
+Each Ethereum account has its own Storage Trie, which is where all of the contract data lives for that account. A 256-bit hash of the storage trie’s root node is stored as the storageRoot value in the global Ethereum state trie. In the context of storage proofs, we are concerned with ERC-20 Token Smart Contract accounts, whose Storage Tries contain the list of token balances of each token holder. 
 
 A storage proof is a Merkle Proof computed on this storage trie. For the scope of this proposal, the storage proof allows anyone to demonstrate the balance of a token holder for a given ERC-20 token, at a specific State Root Hash (Ethereum block). In other words, we can cheaply generate a proof of any user's balance of a token, and this proof can be used in a Vocdoni voting census.  
 
