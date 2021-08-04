@@ -4,7 +4,7 @@ There are two types of census origins: Those who depend on a list of public keys
 
 The second case, referred to as an on-chain census, enables the weighted set of eligible voters for a process to be derived from the token holder balances for some ERC-20 Ethereum token. This is possible through the use of [Ethereum Storage Proofs](../smart-contracts/storage-proofs.md).
 
-## ERC-20 Token Storage Proofs
+### ERC-20 Token Storage Proofs
 
 Each Ethereum account has its own Storage Trie, which is where all of the contract data lives for that account. A 256-bit hash of the storage trie’s root node is stored as the storageRoot value in the global Ethereum state trie. In the context of storage proofs, we are concerned with ERC-20 Token Smart Contract accounts, whose Storage Tries contain the list of token balances of each token holder. 
 
