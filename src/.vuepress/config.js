@@ -223,6 +223,13 @@ module.exports = {
         showSequenceNumbers: false,
       },
     }
-    ]
+    ],
+    [
+    "md-enhance",
+      {
+        // Enable Tex Support
+        tex: true,
+      },
+    ],
   ]
 }
