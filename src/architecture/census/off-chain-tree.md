@@ -1,4 +1,4 @@
-# Off-Chain Census
+# Off-Chain Tree Census
 
 The census itself is represented as a binary [Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree), where the leaves of the tree contain the public keys of all eligible voters, hashed. 
 

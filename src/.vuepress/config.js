@@ -64,7 +64,8 @@ module.exports = {
             path: '/architecture/census/census-overview',
             children: [
             '/architecture/census/on-chain',
-            '/architecture/census/off-chain',
+            '/architecture/census/off-chain-csp',
+            '/architecture/census/off-chain-tree',
             ]
           },
           '/architecture/components',

@@ -11,7 +11,7 @@ The user registry is a private component used by entities to manage and generate
 | 2   | Daenerys | 22  | Dragonstone | 0xaabb...  |
 | 3   | Jorah    | 65  | Bear Island | 0xcc11...  |
 
-When the entity wants to create a governance process, the administrator will use the registry to select the group of users matching a certain criteria, for example `age < 40`. The backend, in this case, will then select users `0,1,2` and create a Merkle tree with the corresponding public key hashes, according to the [Census Merkle Tree](../../architecture/census/off-chain.md) schema.
+When the entity wants to create a governance process, the administrator will use the registry to select the group of users matching a certain criteria, for example `age < 40`. The backend, in this case, will then select users `0,1,2` and create a Merkle tree with the corresponding public key hashes, according to the [Census Merkle Tree](../../architecture/census/off-chain-tree.md) schema.
 
 ### Exporting the census
 
