@@ -18,6 +18,7 @@
     "@vuepress/plugin-nprogress": "^1.8.2",
     "vuepress": "^1.5.3",
     "vuepress-plugin-container": "^2.1.5",
+    "vuepress-plugin-mathjax": "^1.2.8",
     "vuepress-plugin-md-enhance": "^1.18.5",
     "vuepress-plugin-mermaidjs": "^1.8.1"
   },
