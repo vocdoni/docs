@@ -33,14 +33,14 @@ sequenceDiagram
 
 In order to ensure that each CSP voter approval is valid only for one specific election process (processId), a deterministic key derivation is be used. Thus, the CSP is only required to publish a single root public key. The specific per-election keys are computed independently by all parties (CSP will derive its election private key and the election organizers will derive the election public key). To this end we use the following simple approach (G is the elliptic curve generator):
 
-$$
-PubKeyRoot = PrivKeyRoot * G\\
-PrivKey2 = PrivkeyRoot + ProcessId\\
+```
+PubKeyRoot = PrivKeyRoot * G
+PrivKey2 = PrivkeyRoot + ProcessId
 PubKey2 = PubKeyRoot + ProcessId
-$$
+```
 
 Following this derivation, $PubKey2$ becomes the election public key. Thus, there is no way the CSP can share claims before the ProcessId is known and there is no way to reuse a CSP signature for a different election process.
 
 <div style="padding: 20px; background-color: white; text-align: center;">
-	<img src="/ca-voting.png" alt="ZkRollup"/>
+	<img src="/csp-voting.png" alt="CSP voting"/>
 </div>

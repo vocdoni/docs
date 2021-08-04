@@ -1,6 +1,10 @@
 # The Census
 
-In Vocdoni, a census of identities can be represented in one of two ways. For Ethereum-based processes, in which eligible voters are represented by Ethereum addresses holding a specific token, an [on-chain](on-chain.md) (ERC-20) census is used. In cases where a central authority wants to manually validate each voter at the time of voting, [off-chain-csp](off-chain-csp.md) is used. For all other voting processes (organizations that are not represented as DAOs), an [off-chain-tree](off-chain.md) census is used. For those integrating the Vocdoni protocol into third-party clients or using the API, census integration is documented [here](../../integration/census/general.md). 
+In Vocdoni, a census of identities can be represented in one of three ways. For Ethereum-based processes, in which eligible voters are represented by Ethereum addresses holding a specific token, an [on-chain](on-chain.md) (ERC-20) census is used. In cases where a central authority wants to manually validate each voter at the time of voting, [off-chain credential service provider](off-chain-csp.md) is used. For all other voting processes (organizations that are not represented as DAOs), an [off-chain tree](off-chain.md) census is used. 
+
+:::tip
+Between the three of these census methods, an incredible range of use-cases and third-party integrations for voter eligibility management is possible. Furthermore, the flexibility of the voting protocol is designed to allow more census types to be easily added in the future.
+:::
 
 When a voting process is created, the [Census Origin](/architecture/smart-contracts/process.html#census-origin) is set to signify which type of census the process should expect to use. 
 

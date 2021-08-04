@@ -224,12 +224,5 @@ module.exports = {
       },
     }
     ],
-    [
-    "md-enhance",
-      {
-        // Enable Tex Support
-        tex: true,
-      },
-    ],
   ]
 }
