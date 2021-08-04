@@ -224,5 +224,8 @@ module.exports = {
       },
     }
     ],
+    [
+      'vuepress-plugin-mathjax',
+    ],
   ]
 }
