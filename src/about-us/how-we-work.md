@@ -15,7 +15,7 @@ We share very strong ideals among us
 
 We strive for a sustainable work-life balance
 
-- We encourage the use of working hours to learn things related to out work and our collective mission.
+- We encourage the use of working hours to learn things related to our work and our collective mission.
 - We encourage a balanced lifestyle and we suggest a daily average of 7 working hours
 - We adapt to everyone's needs and motivations
 
