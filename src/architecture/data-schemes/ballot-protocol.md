@@ -132,9 +132,8 @@ Give a value from 0-5 to a product
 
 - Vote Envelopes: `[2]` `[5]` `[2]`
 - Results: [ [0,0,2,0,0,1] ]
-
-Two users have given 2 stars
-One user have given 5 stars
+  - Two users have given 2 stars
+  - One user have given 5 stars
 
 **Parameters**
 
@@ -148,10 +147,9 @@ Lennon, Hendrix, Joplin ⇒ 0, 1, 2
 
 - Vote Envelope: `[2,1,2]` `[0,1,2]` `[0,0,0]`
 - Results: `[ [2,0,1], [1,2,0], [1,0,2] ]`
-
-Lennon got `2*0 + 0*1 + 1*2` = 2 points
-Hendrix got `1*0 + 2*1 + 0*2` = 2 points
-Joplin got `1*0 + 0*1 + 2*2` = 4 points
+  - Lennon got `2*0 + 0*1 + 1*2` = 2 points
+  - Hendrix got `1*0 + 2*1 + 0*2` = 2 points
+  - Joplin got `1*0 + 0*1 + 2*2` = 4 points
 
 | maxCount | minValue | maxValue | minTotalCost | maxTotalCost  | costExponent  | uniqueValues  |
 |---|---|---|---|---|---|---|
@@ -163,10 +161,9 @@ How do you feel today? Choose 1 out of 3 possible options: Bad, Good, Amazing
 
 - Vote Envelopes: `[0,1,0]` `[0,1,0]` `[0,0,1]`
 - Results: `[ [3,0,0], [1,2,0], [2,1,0] ]`
-
-Bad: `0*3 + 1*0 + 2*0` = 0
-Good: `0*1 + 1*2 + 2*0` = 2
-Amazing: `0*2 + 1*1 + 2*0` = 1
+  - Bad: `0*3 + 1*0 + 2*0` = 0
+  - Good: `0*1 + 1*2 + 2*0` = 2
+  - Amazing: `0*2 + 1*1 + 2*0` = 1
 
 | maxCount | minValue | maxValue | minTotalCost | maxTotalCost  | costExponent  | uniqueValues  |
 |---|---|---|---|---|---|---|
@@ -178,12 +175,11 @@ Choose your 3 favorite colours out of 5: green:0, blue:1, pink:2, orange:3, blac
 
 - Vote Envelope: `[1,1,1,0,0]` `[0,1,1,1,0]` `[1,1,1,0,0]`
 - Results: `[ [1, 2], [0, 3], [0, 3], [2, 1], [3, 0] ]`
-
-green: `0*1 + 2*1` = 2
-blue: `0*0 + 1*3` = 3
-pink: `0*0 + 1*3` = 3
-orange: `0*2 + 1*1` = 1
-black: `0*3 + 0*1` = 0
+  - green: `0*1 + 2*1` = 2
+  - blue: `0*0 + 1*3` = 3
+  - pink: `0*0 + 1*3` = 3
+  - orange: `0*2 + 1*1` = 1
+  - black: `0*3 + 0*1` = 0
 
 | maxCount | minValue | maxValue | minTotalCost | maxTotalCost  | costExponent  | uniqueValues  |
 |---|---|---|---|---|---|---|
@@ -197,12 +193,11 @@ Your first option gets 5 points,... the last 0 points.
 
 - Vote Envelope: `[0,3,1,4,2]` `[3,0,1,4,2]` `[1,2,3,4,0]`
 - Results;`[ [1,1,0,1,0], [1,0,1,1,0], [0,2,1,0,0], [0,0,0,0,3], [1,0,2,0,0] ]`
-
-Bitcoin: `0*1 + 1*1 + 2*0 + 3*1 + 0*4` = 4
-Ethereum: `0*1 + 1*0 + 2*1 + 3*1 + 0*4` = 5
-Monero: `0*1 + 1*2 + 2*1 + 3*0 + 4*0` = 6
-Zcash: `0*0 + 1*0 + 2*0 + 3*0 + 4*3` = 12
-Polkadot: `0*1 + 1*0 + 2*2 + 3*0 + 4*0` = 4
+  - Bitcoin: `0*1 + 1*1 + 2*0 + 3*1 + 0*4` = 4
+  - Ethereum: `0*1 + 1*0 + 2*1 + 3*1 + 0*4` = 5
+  - Monero: `0*1 + 1*2 + 2*1 + 3*0 + 4*0` = 6
+  - Zcash: `0*0 + 1*0 + 2*0 + 3*0 + 4*3` = 12
+  - Polkadot: `0*1 + 1*0 + 2*2 + 3*0 + 4*0` = 4
 
 | maxCount | minValue | maxValue | minTotalCost | maxTotalCost  | costExponent  | uniqueValues  |
 |---|---|---|---|---|---|---|
@@ -233,11 +228,10 @@ envelope 3 calculation: 0^2 + 3^2 + 1^2 + 1^2
 ```
 
 - Results: `[ [1,1,1,0], [0,1,1,1], [0,1,2,0], [1,1,1,0] ]`
-
-greenpeace: `0*1 + 1*1 + 2*1 + 3*0` = 3
-redcross: `0*0 + 1*1 + 2*1 + 3*1` = 6
-msf: `0*0 + 1*1 + 2*2 + 3*0` = 5
-amnesty: `0*1 + 1*1 + 2*1 + 3*0` = 3
+  - greenpeace: `0*1 + 1*1 + 2*1 + 3*0` = 3
+  - redcross: `0*0 + 1*1 + 2*1 + 3*1` = 6
+  - msf: `0*0 + 1*1 + 2*2 + 3*0` = 5
+  - amnesty: `0*1 + 1*1 + 2*1 + 3*0` = 3
 
 | maxCount | minValue | maxValue | minTotalCost | maxTotalCost  | costExponent  | uniqueValues  |
 |---|---|---|---|---|---|---|
@@ -251,10 +245,9 @@ This mode requires a different way of interpreting the results, since each posit
 
 - Ballots: `[4,3,2]` `[4,2,3]` `[0,1,4]`
 - Results: `[ [1,0,0,0,2], [0,1,1,1,0], [0,0,1,1,1] ]`
-
-CEO: candidate0:1 candidate4:2
-COO: candidate1:1 candidate2:1 candidate3:1
-CFO: candidate2:1 candidate3:1 candidate4:1
+  - CEO: candidate0:1 candidate4:2
+  - COO: candidate1:1 candidate2:1 candidate3:1
+  - CFO: candidate2:1 candidate3:1 candidate4:1
 
 ```
 Vote Envelopes: [4,3,2] [4,2,3] [0,1,4]
