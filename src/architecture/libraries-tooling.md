@@ -46,7 +46,7 @@ This library is likely to be refactored into a pure Dart version and a Flutter s
 
 ## DVote Rust
 
-A Rust library that provides fast and performant functions to compute Ethereum wallets, Poseidon hashes, encrypt and decrypt data and generate ZK Proofs on modest hardware. These expenside computations need the lightest implementation possible, and DVote Rust serves exactly this purpose. 
+A Rust library that provides fast and performant functions to compute Ethereum wallets, Poseidon hashes, encrypt and decrypt data and generate ZK Proofs on modest hardware. These expensive computations need the lightest implementation possible, and DVote Rust serves exactly this purpose. 
 
 - See [DVote Rust on GitHub](https://github.com/vocdoni/dvote-rs)
 
@@ -78,7 +78,7 @@ This library provides experimental support for the cryptographic primitives avai
 
 ## Eventual
 
-Eventual is a Flutter package that provides a convenient path toward a Reactive Programming model on Flutter apps. It allows to create value listeners, track progress of their related remote requests and handle errors, all while repainting the UI in clean and efficient fashion.
+Eventual is a Flutter package that provides a convenient path toward a Reactive Programming model on Flutter apps. It allows to create value listeners, track progress of their related remote requests and handle errors, all while repainting the UI in a clean and efficient fashion.
 
 A simple and performant alternative to the BLOC pattern or the boilerplate of using Providers.
 
