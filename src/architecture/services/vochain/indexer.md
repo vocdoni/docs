@@ -56,7 +56,7 @@ It also maintains six pools and an internal database for data persistence:
 
   Used for signifying which processes may need to be updated in the indexer database. Each process in the pool is updated according to the current Vochain state, and final results are computed if applicable.
 
-  Live processes results are computed in parallel every new Vochain block and the results of encrypted or non live processes are scheduled for the tally when the end block of a process is reached or when the keys of a processes are published.
+  Live processes results are computed in parallel for every new Vochain block and the results of encrypted or non live processes are scheduled for the tally when the end block of a process is reached or when the keys of a processes are published.
 
   Each pool item contains a byte array representing the identifier for a process which needs to be updated.
 
