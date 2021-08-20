@@ -8,7 +8,7 @@ This document is divided in two sections:
 
 The census proof (also called franchise proof) enables user privacy and allows for fully anonymous voting.
 
-The starting point is a [Merkle Proof](/src/architecture/census/census-overview.md), which efficiently proves that a voter's *zkCensusKey* belongs to a Merkle Tree (census). However, using this proof alone would allow the organizer of a process to correlate each vote envelope with its voter's the *zkCensusKey* on the database, so votes wouldn't be secret.
+The starting point is a [Merkle Proof](/architecture/census/census-overview.md), which efficiently proves that a voter's *zkCensusKey* belongs to a Merkle Tree (census). However, using this proof alone would allow the organizer of a process to correlate each vote envelope with its voter's the *zkCensusKey* on the database, so votes wouldn't be secret.
 
 To this end, Vocdoni achieves voting anonymity by the use of ZK-Snarks.
 

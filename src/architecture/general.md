@@ -26,7 +26,7 @@ To provide resilience and avoid any kind of censorship, the network architecture
 
 ## Client Layer
 
-The client layer interfaces with the [Gateway API](/src/architecture/services/gateway.md), [Ethereum Smart Contracts](smart-contracts/process.md), and decentralized storage to manage organizations, create & publish census, and host voting processes. Vocdoni provides a permissionless client layer with a csv- or ethereum token-based census mechanism, but other user census (such as a private user registry DB) could be used on top of the voting protocol. 
+The client layer interfaces with the [Gateway API](/architecture/services/gateway.md), [Ethereum Smart Contracts](smart-contracts/process.md), and decentralized storage to manage organizations, create & publish census, and host voting processes. Vocdoni provides a permissionless client layer with a csv- or ethereum token-based census mechanism, but other user census (such as a private user registry DB) could be used on top of the voting protocol. 
 
 
 ### Key components
