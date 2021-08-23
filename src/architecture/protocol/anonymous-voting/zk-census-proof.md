@@ -267,7 +267,7 @@ Origin of each zkInput parameter:
   - Since the encoded vote values may not fit into a constant number of circuit inputs, we calculate a summary of the raw user vote using an EVM-friendly hash function: `sha256(vote_bytes)`.  The output of the sha256 hash is slightly larger than the field used in SNARKS, so we split the hash output (32-bytes) into 2 16-byte arrays, take them as integers (in little-endian), and use them as circuit inputs.
     - `sha256` hash is used, as if necessary in the future it can be [verified inside](https://github.com/iden3/circomlib/blob/master/circuits/sha256/sha256.circom) the circuit. This usage has two characteristics to keep in mind:
       - `sha256` is twice as expensive as `keccak256` in terms of gas in EVM, but it is implemented in `circom`, so it can be checked inside a circuit
-      - checking the `sha256` inside a circom circuit is expensive in terms of number of constraints
+      - checking the `sha256` inside a circom circuit is expensive in terms of number of constraints (in the current version of this spec, this is not checked inside the circuit)
   - example:
     ```go
     h := sha256.Sum256(voteBytes) // voteBytes can be the votes array converted to bytes, or the encrypted votes
