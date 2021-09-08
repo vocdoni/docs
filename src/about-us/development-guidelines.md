@@ -92,7 +92,9 @@ The idea is to be able prove with code that the bug is fixed: to create a test t
 There will be an 'official' minimum linter configuration file, that all the repos of each language must include in the automated tests.
 
 ## Git branching model
-Git branching model can be found at: https://github.com/vocdoni/protocol/wiki/Repository-branching-and-guideline
+
+Git repo guidelines can be found [here](repository-branching.md)
+
 
 
 <!--

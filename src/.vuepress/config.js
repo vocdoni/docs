@@ -178,7 +178,15 @@ module.exports = {
         children: [
           '/about-us/vision',
           '/about-us/how-we-work',
-          '/about-us/development-guidelines',
+          {
+            title: 'Development Guidelines',
+            path: '/about-us/development-guidelines',
+            collapsable: false,
+            children: [
+              '/about-us/development-guidelines',
+              '/about-us/repository-branching',
+            ],
+          },
         ],
       },
     ]
