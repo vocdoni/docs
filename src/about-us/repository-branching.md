@@ -4,7 +4,7 @@
 
 1. `master` all new developments are merged on this branch, it is the main branch
 2. `stage` pre-release branch environment
-3. `release-*` for each new release there will be a release branch based on master. **The highest-number release branch is assumed to be active & deployed**
+3. `release-*` for each new release there will be a release branch based on master. **The highest-number release-\* branch is assumed to be active & deployed**
 4. `feature/*` development branch for a new feature (they are temporary and merged into master)
 5. `hotfix/*` branch for fixing release bugs
 
