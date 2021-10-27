@@ -140,7 +140,17 @@ module.exports = {
         collapsable: false,
         children: [
           '/integration/overview',
-          '/integration/voting-as-a-service',
+          {
+            title: 'Voting as a Service',
+            collapsible: false,
+            path: '/integration/vaas-api',
+            children: [
+              '/integration/voting-as-a-service',
+              '/integration/vaas-api',
+              '/integration/how-it-works',
+            ]
+          },
+          '/integration/manual-integration',
           // '/integration/registry-token-api',
           {
             title: 'Census',
