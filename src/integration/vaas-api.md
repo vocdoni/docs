@@ -1,20 +1,4 @@
-# Integration API
-
-The Integration (VaaS) API is a product built on top of our existing stack that allows third parties to easily integrate the voting protocol. This is a REST API that acts as a single endpoint- integrators will not need to interact with Web3/Ethereum, IPFS, or any other decentralized technologies. 
-
-The Integrator API provides:
-- Abstraction of the complexity of the Vocdoni voting protocol
-- Census management
-- Real-time or encrypted voting
-- Anonymous voting
-- Confidential voting processes (questions/options are only visible to voters & administrators)
-- Weighted voting census
-
----
-
-::: warning
-The Integrator API is not yet available as a product, and the specification is subject to change. This is a very early design. 
-:::
+# Integration API Specification
 
 ## Internal (superadmin)
 
