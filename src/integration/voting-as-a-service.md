@@ -16,23 +16,23 @@ The Integrator API provides:
 The Integrator API is not yet available as a product, and the specification is subject to change. This is a very early design. 
 :::
 
-Integrators can use the [Integration API](vaas-api.md) to implement the voting protocol into their own CRM, customer base, product, etc. 
+Integrators can use the [Integration API](vaas-api.md) to connect to the voting protocol from their own CRM, customer base, product, etc. 
 
 ## Definitions
 
 ### Account
 
-Each integrator must have an account. An account can have multiple entities. An account has a billing plan, where proposals and voters are consumed on a monthly quota. Accounts also have an secret API key, to manage entities.
+Each integrator has its own account. An account can have multiple entities. An account has a billing plan, where proposals and voters are consumed on a monthly quota. Accounts also have an secret API key, to manage entities.
 
 ### Entity
 
-An entity can create proposals and may be managed by many different people. Entities might be managed by the users of an integrator's software, rather than by the integrator itself. 
+Entities are the role that can create proposals and may be managed by many different people. Entities might be managed by the users of an integrator's software, rather than by the integrator itself. 
 
 Entities have a secret API key and a public API token to authenticate requests.
 
 ### Census
 
-In order to create a voting process, an entity first needs to have a census of eligible voters. Entities can request to create a new census of N randomly generated keys, given a default weight of 1. Entities can also import a mapping of pubKey/weight to create a new census, too.
+In order to create a voting process, an entity first needs to have a census of eligible voters. Entities can request census tokens for voters to register their public key. Entities can also request to create a new census of N randomly generated keys, given a default weight of 1. They can also import a mapping of pubKey/weight into existing censuses, too.
 
 ### Processes
 

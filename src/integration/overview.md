@@ -10,7 +10,7 @@ The following section is a work in progress.
 
 ### Voting as a service
 
-See the [Voting as a Service](/integration/voting-as-a-service) section for a tutorial on how to run an election process using NodeJS.
+See the [Voting as a Service](/integration/voting-as-a-service) section to see the specs for running an election by using a Rest API.
 
 <!--
 ## Registry backend
