@@ -39,7 +39,7 @@ Data that could reveal the identity of the voter are kept private (gray boxes in
 The circuit above verifies that:
 - the prover is the owner of the secret key
 - the `zkCensusKey` of the secret key is inside a Hash, which is inside the Merkle Tree with the CensusRoot (`key=Poseidon(secretKey), value=0`)
-- `H(secretKey, electionID) == nullifier`
+- `H(secretKey, processID) == nullifier`
 
 #### Proof generation
 
@@ -75,7 +75,7 @@ end
 User->>User: 3. generate zkCensusKey
 User->>Vochain: 4. register zkCensusKey using CensusRegisterProof that matches the CensusOrigin
 Vochain->>Vochain: 5. build voting census merkle tree (in state)
-Vochain->>Vochain: 6. startBlock is reached, election starts
+Vochain->>Vochain: 6. startBlock is reached, process starts
 Vochain->>Vochain: 7. last merkle tree root becomes censusRoot
 Vochain->>User: 8.get MerkleProof
 # note, next line goes from User->User instead of User->IPFS to avoid spending a full column just for 1 query to IPFS
@@ -112,7 +112,7 @@ Vochain->>Vochain: 13. verify zkSNARK proof, accept the vote
     - MerkleTree type: circom compatible
         - Hash function: [Poseidon](https://github.com/iden3/go-iden3-crypto/blob/master/poseidon/poseidon.go)
         - Tree [Go impl](https://github.com/vocdoni/vocdoni-node/blob/master/censustree/arbotree/wrapper.go)
-6. *[V]* StartBlock is reached, **election starts**
+6. *[V]* StartBlock is reached, **process starts**
 7. *[V]* Last merkle tree root becomes **censusRoot**
 8. *[V+U]* **Get MerkleProof**
     - Vochain will send the *'compressed MerkleProof'* (which are the siblings compressed)
@@ -240,7 +240,7 @@ The *Leaves* are structured in this way in order to use the MerkleTrees more eff
 	"index": "30",
 	"secretKey": "6190793965647866647574058687473278714480561351424348391693421151024369116465",
 	"voteHash": ["100964581237483263846637432502620436451", "278307331411790712608582894981321409946"],
-	"electionId": "10",
+	"processId": ["115971795979716226347584900263213958763", "100167351390541057173626244722405453127"],
 	"nullifier": "1938187656076799017313903315498318464349291455761501098436114043715056719301",
 }
 ```
@@ -275,9 +275,14 @@ Origin of each zkInput parameter:
     b2 := new(big.Int).SetBytes(swapEndianness(h[16:]))
     ```
     And the json input of the `voteHash` for the circuit would be: `"voteHash": [b1, b2]`
-- *electionId*: the election ID in which the *User* is participating
+- *processId*: the process ID in which the *User* is participating. As the process ID is a 32 byte array, we use the same method used for the `voteHash`: the 32 bytes of process ID are splitted by the half, and each one is represented as a big integer (little-endian).
+  - example:
+  ```go
+    processID0 := new(big.Int).SetBytes(swapEndianness(processIDBytes[:16])) // swap endianness, as golang big int package works in big-endian, and we use little-endian
+    processID1 := new(big.Int).SetBytes(swapEndianness(processIDBytes[16:]))
+  ```
 - *nullifier*: computed by *User*
-    - `nullifier = poseidon.Hash(sk, electionID)`
+    - `nullifier = poseidon.Hash(sk, processID[0], processID[1])`
 
 ### Circuit identification
 There will be different circuits of the `zk-census-proof` depending on the census size, also there could be more use cases with different circuit designs.
@@ -305,7 +310,7 @@ Below there are listed some common combinations of flags used when created a new
 
 #### KeyKeepers reveal and commit keys
 
-A set of commitment keys are generated for each election process by a set of trusted identities named `keykeepers`. Only if all `keykeepers` are malicious could they tamper with the election, so it is crucial to distribute these special identities well. Once all these keys are revealed, anyone can generate a valid proof. This mechanism is added to the circuit in order to avoid vote buying when the election is over. Since anyone can now generate a valid proof, a voter will no longer be able to prove that they are the owner of a specific vote nullifier.
+A set of commitment keys are generated for each election process by a set of trusted identities named `keykeepers`. Only if all `keykeepers` are malicious could they tamper with the process, so it is crucial to distribute these special identities well. Once all these keys are revealed, anyone can generate a valid proof. This mechanism is added to the circuit in order to avoid vote buying when the process is over. Since anyone can now generate a valid proof, a voter will no longer be able to prove that they are the owner of a specific vote nullifier.
 
 <div style="padding: 20px; background-color: white;">
 	<img src="/zk-census-proof-circuit-with-keykeepers-keys-diagram.png" alt="Circuit with keykeepers diagram"/>
@@ -319,7 +324,7 @@ zkInputs of this alternative scheme:
 	"censusSiblings": ["0","0","0","0"],
 	"secretKey": "6190793965647866647574058687473278714480561351424348391693421151024369116465",
 	"voteHash": ["100964581237483263846637432502620436451", "278307331411790712608582894981321409946"],
-	"electionId": "10",
+	"processId": ["242108076058607163538102198631955675649", "142667662805314151155817304537028292174"],
 	"nullifier": "1938187656076799017313903315498318464349291455761501098436114043715056719301",
 	"relayerPublicKey": "100",
 	"relayerProof": "21349690342514405503176665977362532634490340702670001813783738965751319356478",
