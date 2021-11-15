@@ -1006,6 +1006,41 @@ Get a single tx from the [Vochain](/architecture/services/vochain). `height` is 
 }
 ```
 
+### Get Tx By Hash
+
+Get a single tx from the [Vochain](/architecture/services/vochain). `hash` is the hash of the bytes of that transaction and is identical to the `hash` returned by other tx API calls. This call can be used to verify that a transaction was mined.
+
+```json
+{
+  "request": {
+    "hash": "hexString",
+    "method": "getTxByHash",
+    "timestamp": 1625063687
+  },
+  "id": "137",
+  "signature": "hexString"
+}
+```
+
+```json
+{
+  "response": {
+    "ok": true,
+    "request": "137",
+    "timestamp": 1625063686,
+    "tx": {
+      "block_height": 354793,
+      "hash": "hexString",
+      "height": 852,
+      "signature": "hexString",
+      "tx": "base64String"
+    }
+  },
+  "id": "137",
+  "signature": "hexString"
+}
+```
+
 ### Get Validator List
 
 Get the list of all addresses currently validating blocks on the [Vochain](/architecture/services/vochain). 
