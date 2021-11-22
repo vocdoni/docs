@@ -65,7 +65,7 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
   - The receiver should compute its Poseidon Hash and store it
 - If `digested` is `true`, the receiver will handle `censusKey` as an already hashed public key, encoded in base64
   - The receiver should store `censusKey` as it is
-- On weighted census, `censusValue` contains the amount of power that the given `censusKey` has
+- On weighted census, `weight` contains the amount of power that the given `censusKey` has
 
 ```json
 {
@@ -75,7 +75,7 @@ Adds a payload to the census Merkle Tree and returns the updated Root Hash
     "censusId": "0x12345678/0x23456789", // where to add the claim (must already exist)
     "digested": false,  // is the key digested? the Gateway should do it if not
     "censusKey": "base64-string", // usually the public key in base64 or its hash, also in base64
-    "censusValue": "base64-string", // usually the numeric weight (big num). Can be empty (for non-weighted census)
+    "weight": "bigInt-string", // usually the numeric weight (big num). If empty, weight=1 is assumed    
     "timestamp": 1556110671
   },
   "signature": "hexString"
@@ -123,10 +123,10 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
         "base64-string-2",
         "base64-string-3"
     ],
-    "censusValues": [  // can be empty (for non-weighted census)
-        "base64-string-1",
-        "base64-string-2",
-        "base64-string-3"
+    "weights": [  // if empty, weight=1 is assumed
+        "bigInt-string",
+        "bigInt-string",
+        "bigInt-string"
 ],
     "timestamp": 1556110671
   },
@@ -215,7 +215,6 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
     "method": "genProof",
     "censusId": "0x123456789", // Merkle Root of the census for which the claim siblings are requested
     "censusKey": "base64-string", // the leaf for which the proof is requested (base64 encoded)
-    "censusValue": "hexString", // if weighted census, the hexadecimal representation of the numeric big num weight
     "digested": false,  // is the key digested? the backend should do it if not
     "rootHash": "optional-hexString" // from a specific version
   },
@@ -228,6 +227,8 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
   "id": "req-12345678",
   "response": {
     "siblings": "hexString",
+    "censusValue": "base64-string", // the bytes representation of the numeric big num weight
+    "weight": "bigInt-string", // the string representation of the weight
     "request": "req-12345678",
     "timestamp": 1556110672
   },
@@ -246,7 +247,7 @@ Adds a set of payloads to the census Merkle Tree and returns the updated Root Ha
     "method": "checkProof",
     "censusId": "0x123456789", // Merkle Root of the census for which the Merkle Tree's claim will be checked
     "censusKey": "base64-string", // the leaf for which data is requested
-    "censusValue": "hexString", // if weighted census, the hexadecimal representation of the weight big num
+    "censusValue": "base64-string", // the bytes representation of the weight big num
     "proofData": "hexString", // the siblings, same format obtained in genProof
     "digested": false,  // is the claim digested? the backend should do it if not
     "rootHash": "optional-hexString" // from a specific version
