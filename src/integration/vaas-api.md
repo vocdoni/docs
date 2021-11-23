@@ -111,21 +111,21 @@ curl -X DELETE -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts/<i
 ## Private Integrator API
 
 ### Integrator related
-The following endpoints are authenticated by using the integrator secret key. They allow integrators to manage the entities related to their customers. 
+The following endpoints are authenticated by using the integrator secret key. They allow integrators to manage the organizations related to their customers. 
 
-#### Create an entity
+#### Create an organization
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/account/entities
+curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/account/organizations
 ```
 
 #### Request body
 ```json
 {
-    "name": "Entity name",
+    "name": "Organization name",
     "description": "",
     "header": "https://my/header.jpeg",
     "avatar": "https://my/avatar.png"
@@ -134,9 +134,9 @@ curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/account/entiti
 #### HTTP 200
 ```json
 {
-    "entityId": "0x1234...",
+    "organizationId": "0x1234...",
     "apiToken": "qwertyui...",   // API token for public voting endpoints
-    "apiKey": "asdfghjk..."      // Secret API key to manage the entity
+    "apiKey": "asdfghjk..."      // Secret API key to manage the organization
 }
 ```
 #### HTTP 400
@@ -148,20 +148,20 @@ curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/account/entiti
 </details>
 </details>
 
-#### Get an entity
+#### Get an organization
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/account/entities/<entityId>
+curl -H "Bearer: <integrator-key>" https://server/v1/priv/account/organizations/<organizationId>
 ```
 
 #### HTTP 200
 ```json
 {
     "apiToken": "qoiuwhgoiauhsdaiouh",   // the public API token
-    "name": "Entity name",
+    "name": "Organization name",
     "description": "",
     "header": "https://my/header.jpeg",
     "avatar": "https://my/avatar.png"
@@ -175,13 +175,13 @@ curl -H "Bearer: <integrator-key>" https://server/v1/priv/account/entities/<enti
 ```
 </details>
 
-#### Remove an entity
+#### Remove an organization
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -X DELETE -H "Bearer: <integrator-key>" https://server/v1/priv/account/entities/<entityId>
+curl -X DELETE -H "Bearer: <integrator-key>" https://server/v1/priv/account/organizations/<organizationId>
 ```
 
 #### HTTP 200
@@ -196,13 +196,13 @@ curl -X DELETE -H "Bearer: <integrator-key>" https://server/v1/priv/account/enti
 ```
 </details>
 
-#### Reset an entity API key
+#### Reset the public API key of an organization
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -X PATCH -H "Bearer: <superadmin-key>" https://server/v1/account/entities/<id>/key
+curl -X PATCH -H "Bearer: <superadmin-key>" https://server/v1/account/organizations/<id>/key
 ```
 
 #### HTTP 200
@@ -220,22 +220,22 @@ curl -X PATCH -H "Bearer: <superadmin-key>" https://server/v1/account/entities/<
 ```
 </details>
 
-### Entity related
-These methods are also intended for integrators, but they are expected to do the duties of an entity managing a proposal.
+### Organization related
+These methods are also intended for integrators, but they are expected to do the duties of an organization managing a proposal.
 
-#### Set Entity metadata
+#### Set Organization metadata
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -X PUT -H "Bearer: <integrator-key>" https://server/v1/priv/entities/<entityId>/metadata
+curl -X PUT -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/metadata
 ```
 
 #### Request body
 ```json
 {
-    "name": "Entity name",
+    "name": "Organization name",
     "description": "",
     "header": "https://my/header.jpeg",
     "avatar": "https://my/avatar.png"
@@ -244,7 +244,7 @@ curl -X PUT -H "Bearer: <integrator-key>" https://server/v1/priv/entities/<entit
 #### HTTP 200
 ```json
 {
-    "entityId": "0x1234..."
+    "organizationId": "0x1234..."
 }
 ```
 #### HTTP 400
@@ -263,8 +263,8 @@ Generates a Merkle Tree with the given current census keys and generates a votin
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/entities/<entityId>/processes/signed
-curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/entities/<entityId>/processes/blind
+curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/signed
+curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/blind
 ```
 
 #### Request body
@@ -304,19 +304,19 @@ curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/entities/<enti
 </details>
 
 #### List processes (filtered)
-Allows unrestricted listing, paging and filtering for the integrator backend to display all info to entity admin's.
+Allows unrestricted listing, paging and filtering for the integrator backend to display all info to organization admin's.
 <details>
 <summary>Example</summary>
 
 
 #### Request 
 ```bash
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/entities/<entityId>/processes/signed
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/entities/<entityId>/processes/blind
+curl -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/signed
+curl -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/blind
 
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/entities/<entityId>/processes/active
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/entities/<entityId>/processes/ended
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/entities/<entityId>/processes/upcoming
+curl -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/active
+curl -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/ended
+curl -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/upcoming
 ```
 #### HTTP 200
 ```json
@@ -340,7 +340,7 @@ curl -H "Bearer: <integrator-key>" https://server/v1/priv/entities/<entityId>/pr
 </details>
 
 #### Get a process
-Allows unrestricted access for the integrator backend to display all info to entity admin's.
+Allows unrestricted access for the integrator backend to display all info to organization admin's.
 Confidential processes do not require any additional step, just the integrator API key.
 <details>
 <summary>Example</summary>
@@ -657,19 +657,19 @@ curl -X PUT -H "Bearer: <integrator-key>" https://server/v1/priv/processes/<proc
 ## Public API
 (token API authenticated, voter apps call it directly)
 
-#### Get Entity data
+#### Get Organization data
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -H "Bearer: <entity-api-token>" https://server/v1/pub/entities/<entityId>
+curl -H "Bearer: <organization-api-token>" https://server/v1/pub/organizations/<organizationId>
 ```
 
 #### HTTP 200
 ```json
 {
-    "name": "Entity name",
+    "name": "Organization name",
     "description": "",
     "header": "https://my/header.jpeg",
     "avatar": "https://my/avatar.png"
@@ -683,15 +683,15 @@ curl -H "Bearer: <entity-api-token>" https://server/v1/pub/entities/<entityId>
 ```
 </details>
 
-#### Get process list (per entity)
+#### Get process list (per organization)
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -H "Bearer: <manager-key>" https://server/v1/pub/entities/<entityId>/processes/active
-curl -H "Bearer: <manager-key>" https://server/v1/pub/entities/<entityId>/processes/ended
-curl -H "Bearer: <manager-key>" https://server/v1/pub/entities/<entityId>/processes/upcoming
+curl -H "Bearer: <manager-key>" https://server/v1/pub/organizations/<organizationId>/processes/active
+curl -H "Bearer: <manager-key>" https://server/v1/pub/organizations/<organizationId>/processes/ended
+curl -H "Bearer: <manager-key>" https://server/v1/pub/organizations/<organizationId>/processes/upcoming
 
 ```
 #### HTTP 200
@@ -721,7 +721,7 @@ curl -H "Bearer: <manager-key>" https://server/v1/pub/entities/<entityId>/proces
 
 #### Request 
 ```bash
-curl -H "Bearer: <entity-api-token>" https://server/v1/pub/processes/<processId>
+curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<processId>
 ```
 
 #### HTTP 200
@@ -770,7 +770,7 @@ If the voter belongs to the census, it decrypts the metadata and returns it to t
 
 #### Request 
 ```bash
-curl -X -H "Bearer: <entity-api-token>" https://server/v1/pub/processes/<processId>/auth/<signature>
+curl -X -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<processId>/auth/<signature>
 ```
 
 #### HTTP 200
@@ -813,7 +813,7 @@ People voting on a signed process will need to package a vote envelope using the
 
 #### Request 
 ```bash
-curl -H "Bearer: <entity-api-token>" https://server/v1/pub/processes/<processId>/proof
+curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<processId>/proof
 ```
 
 #### Request body
@@ -845,7 +845,7 @@ Voters using the tiny JS SDK will get a base64 bundle including the vote and the
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <entity-api-token>" https://server/v1/pub/processes/<processId>/vote
+curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<processId>/vote
 ```
 
 #### Request body
@@ -877,7 +877,7 @@ Voters can check the status of their vote here, and eventually check the explore
 
 #### Request 
 ```bash
-curl -H "Bearer: <entity-api-token>" https://server/v1/pub/nullifiers/<nullifier>
+curl -H "Bearer: <organization-api-token>" https://server/v1/pub/nullifiers/<nullifier>
 ```
 #### HTTP 200
 ```json
@@ -904,7 +904,7 @@ For transparency, external observers can request the exhaustive list of public k
 
 #### Request 
 ```bash
-curl -H "Bearer: <entity-api-token>" https://server/v1/pub/processes/<processId>/blind/authorized
+curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<processId>/blind/authorized
 ```
 
 #### HTTP 200
@@ -938,7 +938,7 @@ If the wallet is lost, the integrator will need to remove the pubKey from the ce
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <entity-api-token>" https://server/v1/pub/censuses/<censusId>/token
+curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/pub/censuses/<censusId>/token
 ```
 
 #### Request body
@@ -976,7 +976,7 @@ In the first interaction, the voter proves their eligibility. If everything is c
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<processId>/blind/auth
+curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/processes/<processId>/blind/auth
 ```
 
 #### Request body
@@ -1010,7 +1010,7 @@ The voter then unblinds the response and uses it as their vote signature.
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<processId>/blind/sign
+curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/processes/<processId>/blind/sign
 ```
 
 #### Request body
@@ -1048,7 +1048,7 @@ In the first interaction, the voter proves their eligibility. If everything is c
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <entity-api-token>" https://server/v1/auth/custom/processes/<processId>/blind/auth
+curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/custom/processes/<processId>/blind/auth
 ```
 
 #### Request body
@@ -1083,7 +1083,7 @@ The voter, then unblinds the response and uses it as their vote signature.
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<processId>/blind/sign
+curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/processes/<processId>/blind/sign
 ```
 
 #### Request body
