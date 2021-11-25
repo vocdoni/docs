@@ -202,7 +202,7 @@ curl -X DELETE -H "Bearer: <integrator-key>" https://server/v1/priv/account/orga
 
 #### Request 
 ```bash
-curl -X PATCH -H "Bearer: <superadmin-key>" https://server/v1/account/organizations/<id>/key
+curl -X PATCH -H "Bearer: <integrator-key>" https://server/v1/account/organizations/<id>/key
 ```
 
 #### HTTP 200
@@ -895,36 +895,6 @@ curl -H "Bearer: <organization-api-token>" https://server/v1/pub/nullifiers/<nul
 ```
 </details>
 
-#### Get the pubKeys that have requested a blind signature on a process
-For transparency, external observers can request the exhaustive list of public keys that made a blind signature request. 
-
-<details>
-<summary>Example</summary>
-
-
-#### Request 
-```bash
-curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<processId>/blind/authorized
-```
-
-#### HTTP 200
-```json
-{
-    "publicKeys": [
-        "0x12345678...",
-        "0x23456789...",
-        ...
-    ]
-}
-```
-#### HTTP 400
-```json
-{
-    "error": "Message goes here"
-}
-```
-</details>
-
 #### Registering a voter's public key
 
 This process needs to be done by the integrator's frontend, once. 
@@ -1024,6 +994,36 @@ curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/proces
 ```json
 {
     "blindSignature": "0x1234567890abcde..."
+}
+```
+#### HTTP 400
+```json
+{
+    "error": "Message goes here"
+}
+```
+</details>
+
+#### Get the pubKeys that have requested a blind signature on a process
+For transparency, external observers can request the exhaustive list of public keys that made a blind signature request. 
+
+<details>
+<summary>Example</summary>
+
+
+#### Request 
+```bash
+curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<processId>/blind/authorized
+```
+
+#### HTTP 200
+```json
+{
+    "publicKeys": [
+        "0x12345678...",
+        "0x23456789...",
+        ...
+    ]
 }
 ```
 #### HTTP 400
