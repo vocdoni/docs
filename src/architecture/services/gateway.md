@@ -296,6 +296,35 @@ Get details about the current block and the average block time for the last 1m, 
 }
 ```
 
+### Get pre-register voter weight
+
+For a pre-register processes, returns the used weight for an address.
+
+```json
+{
+  "id": "req-12345678",
+  "request": {
+    "method": "getPreregisterVoterWeight",
+    "voterAddress": "hexString", // the Ethereum address of the registered pubKey
+    "processId": "hexString",
+    "timestamp": 1556110671
+  }
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "weight": "1",
+    "ok": true,
+    "request": "req-2345679",
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
 ## Results API
 
 ### Get Process List
