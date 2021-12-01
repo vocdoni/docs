@@ -5,6 +5,40 @@ The service exposes an HTTP Restful API with the following endpoints.
 ## Internal API
 The group of calls below is intended for the admin running the service itself. 
 
+#### Create an integrator account
+<details>
+<summary>Example</summary>
+
+#### Request 
+```bash
+curl -X POST -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts
+```
+
+#### Request body
+```json
+{
+	"cspUrlPrefix": "my-csp-url-prefix",
+	"cspPubKey": "hexBytes",
+	"name": "My integrator account",
+}
+```
+
+#### HTTP 200
+```json
+{
+	"id": "1234567890",
+	"apiKey": "ksjdhfksjdh..."   // The integrator (secret) key to use the API
+}
+```
+
+#### HTTP 400
+```json
+{
+    "error": "Message goes here"
+}
+```
+</details>
+    
 #### Update an integrator account
 <details>
 <summary>Example</summary>
