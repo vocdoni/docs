@@ -5,7 +5,11 @@ The service exposes an HTTP Restful API with the following endpoints.
 ## Internal API
 The group of calls below is intended for the admin running the service itself. 
 
-#### Create an integrator account
+**Superadmin related**
+
+---
+
+### Create an integrator account
 <details>
 <summary>Example</summary>
 
@@ -39,7 +43,7 @@ curl -X POST -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts
 ```
 </details>
     
-#### Update an integrator account
+### Update an integrator account
 <details>
 <summary>Example</summary>
 
@@ -71,7 +75,7 @@ curl -X PUT -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts/<id>
 ```
 </details>
     
-#### Reset an integrator API key  
+### Reset an integrator API key  
 <details>
 <summary>Example</summary> 
 
@@ -95,7 +99,7 @@ curl -X PATCH -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts/<id
 }
 ```
 
-#### Get an integrator account
+### Get an integrator account
 <details>
 <summary>Example</summary>
 
@@ -121,7 +125,7 @@ curl -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts/<id>
 </details>
 </details>
 
-#### Delete an integrator account
+### Delete an integrator account
 <details>
 <summary>Example</summary>
 
@@ -142,12 +146,15 @@ curl -X DELETE -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts/<i
 </details>
 </details>
 
-## Private Integrator API
+## Integrator API (Private)
 
-### Integrator related
+**Integrator related**
+
+---
+
 The following endpoints are authenticated by using the integrator secret key. They allow integrators to manage the organizations related to their customers. 
 
-#### Create an organization
+### Create an organization
 <details>
 <summary>Example</summary>
 
@@ -182,7 +189,7 @@ curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/account/organi
 </details>
 </details>
 
-#### Get an organization
+### Get an organization
 <details>
 <summary>Example</summary>
 
@@ -209,7 +216,7 @@ curl -H "Bearer: <integrator-key>" https://server/v1/priv/account/organizations/
 ```
 </details>
 
-#### Remove an organization
+### Remove an organization
 <details>
 <summary>Example</summary>
 
@@ -230,7 +237,7 @@ curl -X DELETE -H "Bearer: <integrator-key>" https://server/v1/priv/account/orga
 ```
 </details>
 
-#### Reset the public API key of an organization
+### Reset the public API key of an organization
 <details>
 <summary>Example</summary>
 
@@ -254,10 +261,13 @@ curl -X PATCH -H "Bearer: <integrator-key>" https://server/v1/account/organizati
 ```
 </details>
 
-### Organization related
+**Organization related**
+
+---
+
 These methods are also intended for integrators, but they are expected to do the duties of an organization managing a proposal.
 
-#### Set Organization metadata
+### Set Organization metadata
 <details>
 <summary>Example</summary>
 
@@ -289,7 +299,7 @@ curl -X PUT -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<
 ```
 </details>
 
-#### Create a process
+### Create a process
 Generates a Merkle Tree with the given current census keys and generates a voting process with the given metadata. 
 <details>
 <summary>Example</summary>
@@ -337,7 +347,7 @@ curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/
 ```
 </details>
 
-#### List processes (filtered)
+### List processes (filtered)
 Allows unrestricted listing, paging and filtering for the integrator backend to display all info to organization admin's.
 <details>
 <summary>Example</summary>
@@ -373,7 +383,7 @@ curl -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organiz
 ```
 </details>
 
-#### Get a process
+### Get a process
 Allows unrestricted access for the integrator backend to display all info to organization admin's.
 Confidential processes do not require any additional step, just the integrator API key.
 <details>
@@ -420,7 +430,7 @@ curl -H "Bearer: <integrator-key>" https://server/v1/priv/processes/<processId>
 ```
 </details>
 
-#### Create a census
+### Create a census
 A census where public keys or token slots (that will eventually contain a public key) are stored. A census can start with 0 items, and public keys can be imported later on.
 
 If census tokens are allocated, users will need to generate a wallet on the frontend and register the public key by themselves. This prevents both the API and the integrator from gaining access to the private key.
@@ -454,7 +464,7 @@ curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/censuses
 ```
 </details>
 
-#### Add N census tokens (once)
+### Add N census tokens (once)
 Creates N census tokens for voters to register their public key in the future. 
 
 <details>
@@ -490,7 +500,7 @@ curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<cens
 ```
 </details>
 
-#### Add weighted census tokens (once)
+### Add weighted census tokens (once)
 Creates weighted census tokens so that voters with the token can register their public key to the appropriate census weight. 
 
 <details>
@@ -530,7 +540,7 @@ curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<cens
 ```
 </details>
 
-#### Get census token (see a registered public key)
+### Get census token (see a registered public key)
 
 Allows integrators to check the status of a census token, given to a user.
 
@@ -559,7 +569,7 @@ curl -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<censusId>/to
 ```
 </details>
 
-#### Remove a census token or public key from a census
+### Remove a census token or public key from a census
 Removes the given token or key from the given census. The next time it is used, the new key will be in effect.
 
 <details>
@@ -584,7 +594,7 @@ curl -X DELETE -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<ce
 ```
 </details>
 
-#### Import public keys into a census
+### Import public keys into a census
 Import a group of public keys to an existing census. All voters have the same weight (1).
 
 <details>
@@ -621,7 +631,7 @@ curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<cens
 ```
 </details>
 
-#### Import weighted public keys into a census
+### Import weighted public keys into a census
 Import a group of public keys to an existing census, using their respective weight. 
 
 <details>
@@ -658,7 +668,7 @@ curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<cens
 ```
 </details>
 
-#### End/start/pause/cancel a process
+### End/start/pause/cancel a process
 <details>
 <summary>Example</summary>
 
@@ -691,7 +701,7 @@ curl -X PUT -H "Bearer: <integrator-key>" https://server/v1/priv/processes/<proc
 ## Public API
 (token API authenticated, voter apps call it directly)
 
-#### Get Organization data
+### Get Organization data
 <details>
 <summary>Example</summary>
 
@@ -717,7 +727,7 @@ curl -H "Bearer: <organization-api-token>" https://server/v1/pub/organizations/<
 ```
 </details>
 
-#### Get process list (per organization)
+### Get process list (per organization)
 <details>
 <summary>Example</summary>
 
@@ -749,7 +759,7 @@ curl -H "Bearer: <manager-key>" https://server/v1/pub/organizations/<organizatio
 ```
 </details>
 
-#### Get process info – non-confidential
+### Get process info – non-confidential
 <details>
 <summary>Example</summary>
 
@@ -789,22 +799,24 @@ curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<proc
 ```
 </details>
 
-#### Get process info – confidential
+### Get process info – confidential
+Provides the details of a confidential voting process if the user holds a wallet that belongs to its census.
 
-::: tip
-This endpoints needs to have a variant to allow for custom use cases.
-:::
+If `{processId, address}` has been signed by the CSP, then it gets the Vochain parameters, decrypts the metadata and returns it to the caller.
 
-Checks the given signature against a well-known payload, extracts the signer's public key and checks for its inclusion in the process census. 
+URL Params:
 
-If the voter belongs to the census, it decrypts the metadata and returns it to the caller. 
+- process-id
+- pid-signed: `sign(processId, voterPrivK)`
+- csp-signature: `sign({processId, address}, cspPrivK)`
+    - [See here](https://www.notion.so/Vocdoni-API-v1-86357bf911a24e33ab7159a2b6e54632)
 
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -X -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<processId>/auth/<signature>
+curl -H "Bearer: <entity-api-token>" https://server/v1/pub/processes/<process-id>/auth/<pid-signed>/<csp-signature>
 ```
 
 #### HTTP 200
@@ -838,12 +850,11 @@ curl -X -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<p
 ```
 </details>
 
-#### Requesting a census proof
+### Requesting a census proof
 People voting on a signed process will need to package a vote envelope using the result of this call. 
 
 <details>
 <summary>Example</summary>
-
 
 #### Request 
 ```bash
@@ -870,7 +881,7 @@ curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<proc
 ```
 </details>
 
-#### Submitting a vote (signed or blind)
+### Submitting a vote (signed or blind)
 
 Voters using the tiny JS SDK will get a base64 bundle including the vote and the census proof. This payload is submitted as a base64 string.
 
@@ -902,7 +913,7 @@ curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/pub/process
 ```
 </details>
 
-#### Getting a ballot (nullifier)
+### Getting a ballot (nullifier)
 Voters can check the status of their vote here, and eventually check the explorer link, for independent confirmation.
 
 <details>
@@ -929,7 +940,7 @@ curl -H "Bearer: <organization-api-token>" https://server/v1/pub/nullifiers/<nul
 ```
 </details>
 
-#### Registering a voter's public key
+### Registering a voter's public key
 
 This process needs to be done by the integrator's frontend, once. 
 
@@ -965,30 +976,60 @@ curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/pub/censuse
 </details>
 
 
-## Validator API
+## Authentication API
 
-### Generic authentication
+**Generic authentication**
 
-#### Get a token for requesting a blind signature
+---
 
-The blind signature process involves a two step interaction.
+### Get a plain signature
 
-In the first interaction, the voter proves their eligibility. If everything is correct, the backend replies with the `tokenR`, which the voter needs to use on the second step. 
+The CSP issues a signature to prove that a wallet belongs to the process's census. The signature can be used to retrieve confidential information, restricted to only census members.
+
+The voter signs the `processID` to prove that he/she has a private key within the election census. If everything is correct, the CSP returns `sign({ processId, address }, cspPrivK)`. 
+
+- process-id
+- pid-signed: `sign(processId, voterPrivK)`
 
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/processes/<processId>/blind/auth
+curl -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<process-id>/plain/auth/<pid-signed>
 ```
 
-#### Request body
+#### HTTP 200
 ```json
 {
-    "signature": "<process-id-signed-with-the-registered-wallet>"
+    "signature": "0x1234567890abcde..."
 }
 ```
+#### HTTP 400
+```json
+{
+    "error": "Message goes here"
+}
+```
+</details>
+
+### Get a token for requesting a blind signature
+
+The blind signature process involves a two step interaction.
+
+In the first interaction, the voter proves to have a private key within the election census. If everything is correct, the backend replies with the `tokenR`, which the voter needs to use on the second step. 
+
+- process-id
+- pid-signed: `sign(processId, voterPrivK)`
+
+<details>
+<summary>Example</summary>
+
+#### Request 
+```bash
+curl -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<process-id>/blind/auth/<signed-pid>
+```
+
 #### HTTP 200
 ```json
 {
@@ -1003,7 +1044,7 @@ curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/proces
 ```
 </details>
 
-#### Request the blind signature for the ephemeral wallet
+### Request the blind signature for an ephemeral wallet
 
 The user generates an ephemeral wallet and the received tokenR to generate a blinded payload. This payload is sent to the backend, which will check the correctness and reply with a signature of the blinded payload. 
 
@@ -1038,7 +1079,7 @@ curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/proces
 ```
 </details>
 
-#### Get the pubKeys that have requested a blind signature on a process
+### Get the public keys that have requested a blind signature on a process
 For transparency, external observers can request the exhaustive list of public keys that made a blind signature request. 
 
 <details>
@@ -1069,12 +1110,17 @@ curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<proc
 </details>
 
 
-### Custom authentication API
+**Custom authentication API**
 
-#### Get a token for requesting a blind signature
+---
+
+### Get a token for requesting a blind signature - custom
+
+This endpoint is conceptually the same as [the one from above](#get-a-token-for-requesting-a-blind-signature). The only difference lies on the custom logic that decides whether a `tokenR` is generated or not.
+
 The blind signature process involves a two step interaction.
 
-In the first interaction, the voter proves their eligibility. If everything is correct, the backend replies with the `tokenR`, which the voter needs to use on the second step. 
+In the first interaction, the voter proves their eligibility. If everything is correct, the backend replies with the `tokenR`, which the voter needs to use on [the second step](#request-the-blind-signature-for-the-ephemeral-wallet). 
 
 <details>
 <summary>Example</summary>
@@ -1096,41 +1142,6 @@ curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/custom
 ```json
 {
     "tokenR": "0x1234567890abcde..."
-}
-```
-#### HTTP 400
-```json
-{
-    "error": "Message goes here"
-}
-```
-</details>
-
-#### Request the blind signature for the ephemeral wallet
-
-The user generates an ephemeral wallet and the received tokenR to generate a blinded payload. This payload is sent to the backend, which will check the correctness and reply with a signature of the blinded payload. 
-
-The voter, then unblinds the response and uses it as their vote signature. 
-
-<details>
-<summary>Example</summary>
-
-#### Request 
-```bash
-curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/processes/<processId>/blind/sign
-```
-
-#### Request body
-```json
-{
-    "blindedPayload": "0xabcdef...",   // blind(hash({processId, address}))
-    "tokenR": "0x1234567890abcde..."
-}
-```
-#### HTTP 200
-```json
-{
-    "blindSignature": "0x1234567890abcde..."
 }
 ```
 #### HTTP 400
