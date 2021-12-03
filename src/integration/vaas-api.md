@@ -802,13 +802,13 @@ curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<proc
 ### Get process info – confidential
 Provides the details of a confidential voting process if the user holds a wallet that belongs to its census.
 
-If `{processId, address}` has been signed by the CSP, then it gets the Vochain parameters, decrypts the metadata and returns it to the caller.
+If `{processId}` has been signed by the CSP, then it gets the Vochain parameters, decrypts the metadata and returns it to the caller.
 
 URL Params:
 
 - process-id
-- pid-signed: `sign(processId, voterPrivK)`
-- csp-signature: `sign({processId, address}, cspPrivK)`
+- signed-pid: `sign({processId}, voterPrivK)`
+- csp-signature: `sign({processId}, cspPrivK)`
     - [See here](https://www.notion.so/Vocdoni-API-v1-86357bf911a24e33ab7159a2b6e54632)
 
 <details>
@@ -816,7 +816,7 @@ URL Params:
 
 #### Request 
 ```bash
-curl -H "Bearer: <entity-api-token>" https://server/v1/pub/processes/<process-id>/auth/<pid-signed>/<csp-signature>
+curl -H "Bearer: <entity-api-token>" https://server/v1/pub/processes/<process-id>/auth/<signed-pid>/<csp-signature>
 ```
 
 #### HTTP 200
@@ -982,23 +982,29 @@ curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/pub/censuse
 
 ---
 
-### Get a plain signature
+### Get a plain ECDSA signature
 
 The CSP issues a signature to prove that a wallet belongs to the process's census. The signature can be used to retrieve confidential information, restricted to only census members.
 
-The voter signs the `processID` to prove that he/she has a private key within the election census. If everything is correct, the CSP returns `sign({ processId, address }, cspPrivK)`. 
+The voter signs the `processID` to prove that he/she has a private key within the election census. If everything is correct, the CSP returns `sign({processId}, cspPrivK)`. 
 
 - process-id
-- pid-signed: `sign(processId, voterPrivK)`
+- signed-pid: `sign({processId}, voterPrivK)`
 
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<process-id>/plain/auth/<pid-signed>
+curl -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<process-id>/ecdsa/auth
 ```
 
+#### Request body
+```json
+{
+	"authData": ["<signed-pid>"]
+}
+```
 #### HTTP 200
 ```json
 {
@@ -1020,16 +1026,22 @@ The blind signature process involves a two step interaction.
 In the first interaction, the voter proves to have a private key within the election census. If everything is correct, the backend replies with the `tokenR`, which the voter needs to use on the second step. 
 
 - process-id
-- pid-signed: `sign(processId, voterPrivK)`
+- signed-pid: `sign({processId}, voterPrivK)`
 
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<process-id>/blind/auth/<signed-pid>
+curl -X POST -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<process-id>/blind/auth
 ```
 
+#### Request body
+```json
+{
+	"authData": ["<signed-pid>"]
+}
+```
 #### HTTP 200
 ```json
 {
@@ -1061,7 +1073,7 @@ curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/proces
 #### Request body
 ```json
 {
-    "blindedPayload": "0xabcdef...",   // blind(hash({processId, address}))
+    "blindedPayload": "0xabcdef...",   // blind(hash({processId}))
     "tokenR": "0x1234567890abcde..."
 }
 ```
@@ -1114,6 +1126,44 @@ curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<proc
 
 ---
 
+### Get a plain ECDSA signature
+
+This endpoint is conceptually the same as [the one from above](#get-a-token-for-requesting-a-blind-signature). The only difference lies on the custom logic that decides whether a voter is eligible or not.
+
+The CSP issues a signature to prove that a wallet belongs to the process's census. The signature can be used to retrieve confidential information, restricted to only census members.
+
+If the evidence provided is correct, the CSP returns `sign({processId}, cspPrivK)`. 
+
+- process-id
+- signed-pid: `sign({processId}, voterPrivK)`
+
+<details>
+<summary>Example</summary>
+
+#### Request 
+```bash
+curl -X POST -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<process-id>/ecdsa/auth
+```
+
+#### Request body
+```json
+{
+    "authData": ["param1", "param2", ...]
+}
+#### HTTP 200
+```json
+{
+    "signature": "0x1234567890abcde..."
+}
+```
+#### HTTP 400
+```json
+{
+    "error": "Message goes here"
+}
+```
+</details>
+
 ### Get a token for requesting a blind signature - custom
 
 This endpoint is conceptually the same as [the one from above](#get-a-token-for-requesting-a-blind-signature). The only difference lies on the custom logic that decides whether a `tokenR` is generated or not.
@@ -1134,8 +1184,7 @@ curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/custom
 #### Request body
 ```json
 {
-    "voterId": "0x1234...",
-    "caSignature": "..."
+    "authData": ["param1", "param2", ...]
 }
 ```
 #### HTTP 200
