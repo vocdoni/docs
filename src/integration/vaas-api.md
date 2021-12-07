@@ -15,7 +15,7 @@ The group of calls below is intended for the admin running the service itself.
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts
+curl -X POST -H "Authorization: Bearer <superadmin-key>" https://server/v1/admin/accounts
 ```
 
 #### Request body
@@ -49,7 +49,7 @@ curl -X POST -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts
 
 #### Request 
 ```bash
-curl -X PUT -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts/<id>
+curl -X PUT -H "Authorization: Bearer <superadmin-key>" https://server/v1/admin/accounts/<id>
 ```
 
 #### Request body
@@ -81,7 +81,7 @@ curl -X PUT -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts/<id>
 
 #### Request 
 ```bash
-curl -X PATCH -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts/<id>/key
+curl -X PATCH -H "Authorization: Bearer <superadmin-key>" https://server/v1/admin/accounts/<id>/key
 ```
 
 #### HTTP 200
@@ -105,7 +105,7 @@ curl -X PATCH -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts/<id
 
 #### Request 
 ```bash
-curl -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts/<id>
+curl -H "Authorization: Bearer <superadmin-key>" https://server/v1/admin/accounts/<id>
 
 ```
 #### HTTP 200
@@ -131,7 +131,7 @@ curl -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts/<id>
 
 #### Request 
 ```bash
-curl -X DELETE -H "Bearer: <superadmin-key>" https://server/v1/admin/accounts/<id>
+curl -X DELETE -H "Authorization: Bearer <superadmin-key>" https://server/v1/admin/accounts/<id>
 ```
 #### HTTP 200
 ```json
@@ -160,7 +160,7 @@ The following endpoints are authenticated by using the integrator secret key. Th
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/account/organizations
+curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/account/organizations
 ```
 
 #### Request body
@@ -195,7 +195,7 @@ curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/account/organi
 
 #### Request 
 ```bash
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/account/organizations/<organizationId>
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/account/organizations/<organizationId>
 ```
 
 #### HTTP 200
@@ -222,7 +222,7 @@ curl -H "Bearer: <integrator-key>" https://server/v1/priv/account/organizations/
 
 #### Request 
 ```bash
-curl -X DELETE -H "Bearer: <integrator-key>" https://server/v1/priv/account/organizations/<organizationId>
+curl -X DELETE -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/account/organizations/<organizationId>
 ```
 
 #### HTTP 200
@@ -243,7 +243,7 @@ curl -X DELETE -H "Bearer: <integrator-key>" https://server/v1/priv/account/orga
 
 #### Request 
 ```bash
-curl -X PATCH -H "Bearer: <integrator-key>" https://server/v1/account/organizations/<id>/key
+curl -X PATCH -H "Authorization: Bearer <integrator-key>" https://server/v1/account/organizations/<id>/key
 ```
 
 #### HTTP 200
@@ -273,7 +273,7 @@ These methods are also intended for integrators, but they are expected to do the
 
 #### Request 
 ```bash
-curl -X PUT -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/metadata
+curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/metadata
 ```
 
 #### Request body
@@ -307,8 +307,8 @@ Generates a Merkle Tree with the given current census keys and generates a votin
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/signed
-curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/blind
+curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/signed
+curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/blind
 ```
 
 #### Request body
@@ -355,12 +355,12 @@ Allows unrestricted listing, paging and filtering for the integrator backend to 
 
 #### Request 
 ```bash
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/signed
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/blind
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/signed
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/blind
 
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/active
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/ended
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/upcoming
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/active
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/ended
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/upcoming
 ```
 #### HTTP 200
 ```json
@@ -392,7 +392,7 @@ Confidential processes do not require any additional step, just the integrator A
 
 #### Request 
 ```bash
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/processes/<processId>
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/processes/<processId>
 ```
 
 #### Request body
@@ -441,7 +441,7 @@ If census tokens are allocated, users will need to generate a wallet on the fron
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/censuses
+curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/censuses
 ```
 
 #### Request body
@@ -473,7 +473,7 @@ Creates N census tokens for voters to register their public key in the future.
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<censusId>/tokens/flat
+curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/censuses/<censusId>/tokens/flat
 ```
 
 #### Request body
@@ -509,7 +509,7 @@ Creates weighted census tokens so that voters with the token can register their 
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<censusId>/tokens/weighted
+curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/censuses/<censusId>/tokens/weighted
 ```
 
 #### Request body
@@ -551,7 +551,7 @@ If the token has already been redeemed, the public key will be used as part of t
 
 #### Request 
 ```bash
-curl -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<censusId>/tokens/<tokenId>
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/censuses/<censusId>/tokens/<tokenId>
 ```
 
 #### HTTP 200
@@ -578,8 +578,8 @@ Removes the given token or key from the given census. The next time it is used, 
 
 #### Request 
 ```bash
-curl -X DELETE -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<censusId>/tokens/<tokenId>
-curl -X DELETE -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<censusId>/keys/<publicKey>
+curl -X DELETE -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/censuses/<censusId>/tokens/<tokenId>
+curl -X DELETE -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/censuses/<censusId>/keys/<publicKey>
 ```
 
 #### HTTP 200
@@ -603,7 +603,7 @@ Import a group of public keys to an existing census. All voters have the same we
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<censusId>/import/flat
+curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/censuses/<censusId>/import/flat
 ```
 
 #### Request body
@@ -640,7 +640,7 @@ Import a group of public keys to an existing census, using their respective weig
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<censusId>/import/weighted
+curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/censuses/<censusId>/import/weighted
 ```
 
 #### Request body
@@ -674,7 +674,7 @@ curl -X POST -H "Bearer: <integrator-key>" https://server/v1/priv/censuses/<cens
 
 #### Request 
 ```bash
-curl -X PUT -H "Bearer: <integrator-key>" https://server/v1/priv/processes/<processId>/status
+curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/processes/<processId>/status
 ```
 
 #### Request body
@@ -707,7 +707,7 @@ curl -X PUT -H "Bearer: <integrator-key>" https://server/v1/priv/processes/<proc
 
 #### Request 
 ```bash
-curl -H "Bearer: <organization-api-token>" https://server/v1/pub/organizations/<organizationId>
+curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/organizations/<organizationId>
 ```
 
 #### HTTP 200
@@ -733,9 +733,9 @@ curl -H "Bearer: <organization-api-token>" https://server/v1/pub/organizations/<
 
 #### Request 
 ```bash
-curl -H "Bearer: <manager-key>" https://server/v1/pub/organizations/<organizationId>/processes/active
-curl -H "Bearer: <manager-key>" https://server/v1/pub/organizations/<organizationId>/processes/ended
-curl -H "Bearer: <manager-key>" https://server/v1/pub/organizations/<organizationId>/processes/upcoming
+curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/processes/active
+curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/processes/ended
+curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/processes/upcoming
 
 ```
 #### HTTP 200
@@ -765,7 +765,7 @@ curl -H "Bearer: <manager-key>" https://server/v1/pub/organizations/<organizatio
 
 #### Request 
 ```bash
-curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<processId>
+curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/processes/<processId>
 ```
 
 #### HTTP 200
@@ -816,7 +816,7 @@ URL Params:
 
 #### Request 
 ```bash
-curl -H "Bearer: <entity-api-token>" https://server/v1/pub/processes/<process-id>/auth/<signed-pid>/<csp-signature>
+curl -H "Authorization: Bearer <entity-api-token>" https://server/v1/pub/processes/<process-id>/auth/<signed-pid>/<csp-signature>
 ```
 
 #### HTTP 200
@@ -858,7 +858,7 @@ People voting on a signed process will need to package a vote envelope using the
 
 #### Request 
 ```bash
-curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<processId>/proof
+curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/processes/<processId>/proof
 ```
 
 #### Request body
@@ -890,7 +890,7 @@ Voters using the tiny JS SDK will get a base64 bundle including the vote and the
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<processId>/vote
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/processes/<processId>/vote
 ```
 
 #### Request body
@@ -922,7 +922,7 @@ Voters can check the status of their vote here, and eventually check the explore
 
 #### Request 
 ```bash
-curl -H "Bearer: <organization-api-token>" https://server/v1/pub/nullifiers/<nullifier>
+curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/nullifiers/<nullifier>
 ```
 #### HTTP 200
 ```json
@@ -953,7 +953,7 @@ If the wallet is lost, the integrator will need to remove the pubKey from the ce
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/pub/censuses/<censusId>/token
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/censuses/<censusId>/token
 ```
 
 #### Request body
@@ -996,7 +996,7 @@ The voter signs the `processID` to prove that he/she has a private key within th
 
 #### Request 
 ```bash
-curl -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<process-id>/ecdsa/auth
+curl -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/ecdsa/auth
 ```
 
 #### Request body
@@ -1033,7 +1033,7 @@ In the first interaction, the voter proves to have a private key within the elec
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<process-id>/blind/auth
+curl -X POST -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/blind/auth
 ```
 
 #### Request body
@@ -1067,7 +1067,7 @@ The voter then unblinds the response and uses it as their vote signature.
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/processes/<processId>/blind/sign
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/processes/<processId>/blind/sign
 ```
 
 #### Request body
@@ -1100,7 +1100,7 @@ For transparency, external observers can request the exhaustive list of public k
 
 #### Request 
 ```bash
-curl -H "Bearer: <organization-api-token>" https://server/v1/pub/processes/<processId>/blind/authorized
+curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/processes/<processId>/blind/authorized
 ```
 
 #### HTTP 200
@@ -1142,7 +1142,7 @@ If the evidence provided is correct, the CSP returns `sign({processId}, cspPrivK
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <entity-api-token>" https://server/v1/auth/processes/<process-id>/ecdsa/auth
+curl -X POST -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/ecdsa/auth
 ```
 
 #### Request body
@@ -1178,7 +1178,7 @@ In the first interaction, the voter proves their eligibility. If everything is c
 
 #### Request 
 ```bash
-curl -X POST -H "Bearer: <organization-api-token>" https://server/v1/auth/custom/processes/<processId>/blind/auth
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/custom/processes/<processId>/blind/auth
 ```
 
 #### Request body
