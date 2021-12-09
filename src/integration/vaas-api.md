@@ -177,8 +177,7 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
 ```json
 {
     "organizationId": "0x1234...",
-    "apiToken": "qwertyui...",   // API token for public voting endpoints
-    "apiKey": "asdfghjk..."      // Secret API key to manage the organization
+    "apiToken": "qwertyui..."   // API token for public voting endpoints
 }
 ```
 #### HTTP 400
