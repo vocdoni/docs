@@ -24,6 +24,7 @@ curl -X POST -H "Authorization: Bearer <superadmin-key>" https://server/v1/admin
 	"cspUrlPrefix": "my-csp-url-prefix",
 	"cspPubKey": "hexBytes",
 	"name": "My integrator account",
+    "email": "admin@account.net"
 }
 ```
 
