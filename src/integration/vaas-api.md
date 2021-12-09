@@ -982,9 +982,9 @@ curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/
 
 ---
 
-### Get a plain ECDSA signature
+### Get a shared key to access the private data of a process
 
-The CSP issues a signature to prove that a wallet belongs to the process's census. The signature can be used to retrieve confidential information, restricted to only census members.
+The CSP issues a per-process signature whenever the wallet belongs to the process's census. The signature can be used to retrieve confidential information, restricted to only census members.
 
 The voter signs the `processID` to prove that he/she has a private key within the election census. If everything is correct, the CSP returns `sign({processId}, cspPrivK)`. 
 
@@ -996,7 +996,7 @@ The voter signs the `processID` to prove that he/she has a private key within th
 
 #### Request 
 ```bash
-curl -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/ecdsa/auth
+curl -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/sharedKey
 ```
 
 #### Request body
@@ -1008,7 +1008,7 @@ curl -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/proces
 #### HTTP 200
 ```json
 {
-    "signature": "0x1234567890abcde..."
+    "sharedKey": "0x1234567890abcde..."
 }
 ```
 #### HTTP 400
@@ -1126,11 +1126,11 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/p
 
 ---
 
-### Get a plain ECDSA signature
+### Get a shared key to access the private data of a process
 
 This endpoint is conceptually the same as [the one from above](#get-a-token-for-requesting-a-blind-signature). The only difference lies on the custom logic that decides whether a voter is eligible or not.
 
-The CSP issues a signature to prove that a wallet belongs to the process's census. The signature can be used to retrieve confidential information, restricted to only census members.
+The CSP issues a per-process signature whenever the wallet belongs to the process's census. The signature can be used to retrieve confidential information, restricted to only census members.
 
 If the evidence provided is correct, the CSP returns `sign({processId}, cspPrivK)`. 
 
@@ -1142,7 +1142,7 @@ If the evidence provided is correct, the CSP returns `sign({processId}, cspPrivK
 
 #### Request 
 ```bash
-curl -X POST -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/ecdsa/auth
+curl -X POST -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/sharedKey
 ```
 
 #### Request body
@@ -1153,7 +1153,7 @@ curl -X POST -H "Authorization: Bearer <entity-api-token>" https://server/v1/aut
 #### HTTP 200
 ```json
 {
-    "signature": "0x1234567890abcde..."
+    "sharedkey": "0x1234567890abcde..."
 }
 ```
 #### HTTP 400
