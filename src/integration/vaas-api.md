@@ -56,8 +56,9 @@ curl -X PUT -H "Authorization: Bearer <superadmin-key>" https://server/v1/admin/
 #### Request body
 ```json
 {
-    "name": "My integrator account",
-    "plan": "billing-plan-key"
+	"cspUrlPrefix": "my-csp-url-prefix",
+	"cspPubKey": "hexBytes",
+	"name": "My integrator account",
 }
 ```
 
@@ -112,8 +113,9 @@ curl -H "Authorization: Bearer <superadmin-key>" https://server/v1/admin/account
 #### HTTP 200
 ```json
 {
-    "name": "My integrator account",
-    "plan": "billing-plan-key"
+	"cspUrlPrefix": "my-csp-url-prefix",
+	"cspPubKey": "hexBytes",
+	"name": "My integrator account",
 }
 
 ```
@@ -168,7 +170,7 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
 ```json
 {
     "name": "Organization name",
-    "description": "",
+    "description": "my-description",
     "header": "https://my/header.jpeg",
     "avatar": "https://my/avatar.png"
 }
@@ -237,7 +239,7 @@ curl -X DELETE -H "Authorization: Bearer <integrator-key>" https://server/v1/pri
 ```
 </details>
 
-### Reset the public API key of an organization
+### Reset the public API token of an organization
 <details>
 <summary>Example</summary>
 
@@ -249,8 +251,7 @@ curl -X PATCH -H "Authorization: Bearer <integrator-key>" https://server/v1/acco
 #### HTTP 200
 ```json
 {
-    "id": "1234567890",
-    "apiKey": "zxcvbnm"
+    "apiToken": "zxcvbnm"
 }
 ```
 #### HTTP 400
@@ -280,7 +281,7 @@ curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/o
 ```json
 {
     "name": "Organization name",
-    "description": "",
+    "description": "my-description",
     "header": "https://my/header.jpeg",
     "avatar": "https://my/avatar.png"
 }
@@ -288,7 +289,8 @@ curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/o
 #### HTTP 200
 ```json
 {
-    "organizationId": "0x1234..."
+    "organizationId": "0x1234...",
+    "contentUri": "ipfs://1234...",
 }
 ```
 #### HTTP 400
@@ -299,7 +301,7 @@ curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/o
 ```
 </details>
 
-### Create a process
+### Create an election
 Generates a Merkle Tree with the given current census keys and generates a voting process with the given metadata. 
 <details>
 <summary>Example</summary>
@@ -307,8 +309,8 @@ Generates a Merkle Tree with the given current census keys and generates a votin
 
 #### Request 
 ```bash
-curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/signed
-curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/blind
+curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/signed
+curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/blind
 ```
 
 #### Request body
@@ -327,16 +329,16 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
             "choices": ["Yes", "No", "Maybe"]  // simplified version of title/value
         }, {...}
     ],
-    "confidential": true,  // Metadata access restricted to only census members
-    "hiddenResults": true, // Encrypt results until the process ends
-    "census": "<censusId>"
+    "confidential": false,  // Metadata access restricted to only census members
+    "hiddenResults": true, // Encrypt results until the election ends
+    "census": "<censusId>" // Optional for CSP processes
 }
 ```
 
 #### HTTP 200
 ```json
 {
-    "processId": "0x1234..."
+    "electionId": "0x1234..."
 }
 ```
 #### HTTP 400
@@ -347,20 +349,20 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
 ```
 </details>
 
-### List processes (filtered)
-Allows unrestricted listing, paging and filtering for the integrator backend to display all info to organization admin's.
+### List elections (filtered)
+Allows unrestricted listing, paging and filtering for the integrator backend to display all info to organization admins.
 <details>
 <summary>Example</summary>
 
 
 #### Request 
 ```bash
-curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/signed
-curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/blind
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/signed
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/blind
 
-curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/active
-curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/ended
-curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/processes/upcoming
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/active
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/ended
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/upcoming
 ```
 #### HTTP 200
 ```json
@@ -383,43 +385,99 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organiza
 ```
 </details>
 
-### Get a process
-Allows unrestricted access for the integrator backend to display all info to organization admin's.
-Confidential processes do not require any additional step, just the integrator API key.
+### Get an election
+Allows unrestricted access for the integrator backend to display all info to organization admins.
+Confidential elections do not require any additional step, just the integrator API key.
 <details>
 <summary>Example</summary>
 
 
 #### Request 
 ```bash
-curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/processes/<processId>
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>
 ```
 
 #### Request body
 ```json
 {
-    "type": "signed", // blind, ...
-    "title": "Important election",
-    "description": "Description goes here",
-    "header": "https://my/header.jpeg",
-    "streamUri": "https://youtu.be/1234",
-    "questions": [
-        {
-            "title": "Question 1",
-            "description": "(optional)",
-            "choices": ["Yes", "No", "Maybe"]
-        }, {...}
-    ],
-    "confidential": true,  // Metadata access restricted to only census members
-    "hiddenResults": true, // Encrypt results until the process ends
-    "census": "<censusId>",
-    "status": "PAUSED"
+  "type": "blind-confidential-hidden-results",
+  "title": "test election",
+  "description": "description test 1",
+  "header": "https://source.unsplash.com/random/800x600",
+  "questions": [
+    {
+      "title": "test q1",
+      "description": "",
+      "choices": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "title": "test q2",
+      "description": "",
+      "choices": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "title": "test q3",
+      "description": "",
+      "choices": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "status": "Results",
+  "streamUri": "uri",
+  "vote_count": 1,
+  "results": [
+    {
+      "title": [
+        "Yes",
+        "No"
+      ],
+      "value": [
+        "1",
+        "0"
+      ]
+    },
+    {
+      "title": [
+        "Yes",
+        "No"
+      ],
+      "value": [
+        "1",
+        "0"
+      ]
+    },
+    {
+      "title": [
+        "Yes",
+        "No"
+      ],
+      "value": [
+        "1",
+        "0"
+      ]
+    }
+  ],
+  "organizationId": "20323909c3e0965d1489893db1512b32b55707ea",
+  "ok": true,
+  "electionId": "47f2c1f1164a27db4f5e7b825f8ec064c44da88a83ff72b90e5755fff8bfb53b",
+  "start_block": "2090900",
+  "end_block": "2091900",
+  "ResultsAggregation": "discrete-counting",
+  "ResultsDisplay": "multiple-question"
 }
 ```
 #### HTTP 200
 ```json
 {
-    "processId": "0x1234..."
+    "electionId": "0x1234..."
 }
 ```
 #### HTTP 400
@@ -668,13 +726,13 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
 ```
 </details>
 
-### End/start/pause/cancel a process
+### End/start/pause/cancel an election
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/processes/<processId>/status
+curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/status
 ```
 
 #### Request body
@@ -727,27 +785,31 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/o
 ```
 </details>
 
-### Get process list (per organization) – non-confidential
+### Get election list (per organization) – non-confidential
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/processes/active
-curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/processes/ended
-curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/processes/upcoming
+curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/elections/active
+curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/elections/ended
+curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/elections/upcoming
 
 ```
 #### HTTP 200
 ```json
 [
     {
+	    "orgEthAddress": "hexBytes",
+        "electionId": "hexBytes",
         "title": "Important election",
-        "description": "",
-        "header": "https://my/header.jpeg",
-        "status": "READY",
-        "startDate": "2021-10-25T11:20:53.769Z", // can be empty
-        "endDate": "2021-10-30T12:00:00.000Z",
+        "startDate": "2021-12-25T11:20:53.769Z",
+        "endDate": "2021-12-30T12:00:00Z",
+        "startBlock": 140988,
+        "endBlock": 184423,
+        "confidential": false,
+        "hiddenResults": true,
+		"metadataPrivKey": "hexBytes"
     }, {...}
 ]
 ```
@@ -759,13 +821,13 @@ curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organization
 ```
 </details>
 
-### Get process info – non-confidential
+### Get election info – non-confidential
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/processes/<processId>
+curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/elections/<electionId>
 ```
 
 #### HTTP 200
@@ -799,16 +861,16 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/p
 ```
 </details>
 
-### Get process info – confidential
+### Get election info – confidential
 Provides the details of a confidential voting process if the user holds a wallet that belongs to its census.
 
-If `{processId}` has been signed by the CSP, then it gets the Vochain parameters, decrypts the metadata and returns it to the caller.
+If `{electionId}` has been signed by the CSP, then it gets the Vochain parameters, decrypts the metadata and returns it to the caller.
 
 URL Params:
 
-- process-id
-- signed-pid: `sign({processId}, voterPrivK)`
-- csp-signature: `sign({processId}, cspPrivK)`
+- election-id
+- signed-pid: `sign({electionId}, voterPrivK)`
+- csp-signature: `sign({electionId}, cspPrivK)`
     - [See here](https://www.notion.so/Vocdoni-API-v1-86357bf911a24e33ab7159a2b6e54632)
 
 <details>
@@ -816,7 +878,7 @@ URL Params:
 
 #### Request 
 ```bash
-curl -H "Authorization: Bearer <entity-api-token>" https://server/v1/pub/processes/<process-id>/auth/<csp-shared-key>
+curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/elections/<election-id>/auth/<csp-shared-key>
 ```
 
 #### HTTP 200
@@ -860,7 +922,7 @@ Note: This call does not apply to deployments where a custom CSP validation is b
 
 #### Request 
 ```bash
-curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/processes/<processId>/proof
+curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/elections/<electionId>/proof
 ```
 
 #### Request body
@@ -892,7 +954,7 @@ Voters using the tiny JS SDK will get a base64 bundle including the vote and the
 
 #### Request 
 ```bash
-curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/processes/<processId>/vote
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/elections/<electionId>/vote
 ```
 
 #### Request body
@@ -929,7 +991,7 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/n
 #### HTTP 200
 ```json
 {
-    "processId": "0x12345678...",
+    "electionId": "0x12345678...",
     "registered": true,
     "explorerUrl": "https://vaas.explorer.vote/nullifiers/0x12345678"
 }
@@ -984,21 +1046,21 @@ curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/
 
 ---
 
-### Get a shared key to access the private data of a process
+### Get a shared key to access the private data of an election
 
 The CSP issues a per-process signature whenever the wallet belongs to the process's census. The signature can be used to retrieve confidential information, restricted to only census members.
 
-The voter signs the `processID` to prove that he/she has a private key within the election census. If everything is correct, the CSP returns `sign({processId}, cspPrivK)`. 
+The voter signs the `electionID` to prove that he/she has a private key within the election census. If everything is correct, the CSP returns `sign({electionId}, cspPrivK)`. 
 
-- process-id
-- signed-pid: `sign({processId}, voterPrivK)`
+- election-id
+- signed-pid: `sign({electionId}, voterPrivK)`
 
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/sharedKey
+curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/elections/<election-id>/sharedKey
 ```
 
 #### Request body
@@ -1028,15 +1090,15 @@ The blind signature process involves a two step interaction.
 In the first interaction, the voter proves to have a private key within the election census. If everything is correct, the backend replies with the `tokenR`, which the voter needs to use on the second step. 
 
 - process-id
-- signed-pid: `sign({processId}, voterPrivK)`
+- signed-pid: `sign({electionId}, voterPrivK)`
 
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -X POST -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/ecdsa/auth
-curl -X POST -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/blind/auth
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/elections/<election-id>/ecdsa/auth
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/elections/<election-id>/blind/auth
 ```
 
 #### Request body
@@ -1070,14 +1132,14 @@ The voter then may unblind the response (if applicable) and use it as their vote
 
 #### Request 
 ```bash
-curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/processes/<processId>/ecdsa/sign
-curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/processes/<processId>/blind/sign
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/elections/<electionId>/ecdsa/sign
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/elections/<electionId>/blind/sign
 ```
 
 #### Request body
 ```json
 {
-    "payload": "0xabcdef...",   // hash({processId, address}) or blind(hash({processId, address}))
+    "payload": "0xabcdef...",   // hash({electionId, address}) or blind(hash({electionId, address}))
     "tokenR": "0x1234567890abcde..."
 }
 ```
@@ -1095,7 +1157,7 @@ curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/
 ```
 </details>
 
-### Get the public keys that have requested a blind signature on a process
+### Get the public keys that have requested a blind signature on an election
 For transparency, external observers can request the exhaustive list of public keys that made a blind signature request. 
 
 <details>
@@ -1104,7 +1166,7 @@ For transparency, external observers can request the exhaustive list of public k
 
 #### Request 
 ```bash
-curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/processes/<processId>/blind/authorized
+curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/elections/<electionId>/blind/authorized
 ```
 
 #### HTTP 200
@@ -1130,23 +1192,23 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/p
 
 ---
 
-### Get a shared key to access the private data of a process
+### Get a shared key to access the private data of an election
 
 This endpoint is conceptually the same as [the one from above](#get-a-token-for-requesting-a-blind-signature). The only difference lies on the custom logic that decides whether a voter is eligible or not.
 
 The CSP issues a per-process signature whenever the wallet belongs to the process's census. The signature can be used to retrieve confidential information, restricted to only census members.
 
-If the evidence provided is correct, the CSP returns `sign({processId}, cspPrivK)`. 
+If the evidence provided is correct, the CSP returns `sign({electionId}, cspPrivK)`. 
 
-- process-id
-- signed-pid: `sign({processId}, voterPrivK)`
+- election-id
+- signed-pid: `sign({electionId}, voterPrivK)`
 
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
-curl -X POST -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/sharedKey
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/elections/<election-id>/sharedKey
 ```
 
 #### Request body
@@ -1182,7 +1244,7 @@ In the first interaction, the voter proves their eligibility. If everything is c
 
 #### Request 
 ```bash
-curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/custom/processes/<processId>/blind/auth
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/custom/elections/<electionId>/blind/auth
 ```
 
 #### Request body
