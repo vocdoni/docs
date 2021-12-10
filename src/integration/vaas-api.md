@@ -727,7 +727,7 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/o
 ```
 </details>
 
-### Get process list (per organization)
+### Get process list (per organization) – non-confidential
 <details>
 <summary>Example</summary>
 
@@ -786,8 +786,8 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/p
     "status": "READY",
     "voteCount": 1234,
     "results": [   // Empty array when no results []
-        [ { "title": "Yes", "value": 1234, "title": "No", "value": 2345 } ],
-        [ { "title": "Yes", "value": 22, "title": "No", "value": 33 } ]
+        [ { "title": "Yes", "value": "1234" }, { "title": "No", "value": "2345" } ],
+        [ { "title": "Yes", "value": "22" }, { "title": "No", "value": "33" } ]
     ]
 }
 ```
@@ -816,7 +816,7 @@ URL Params:
 
 #### Request 
 ```bash
-curl -H "Authorization: Bearer <entity-api-token>" https://server/v1/pub/processes/<process-id>/auth/<signed-pid>/<csp-signature>
+curl -H "Authorization: Bearer <entity-api-token>" https://server/v1/pub/processes/<process-id>/auth/<csp-shared-key>
 ```
 
 #### HTTP 200
@@ -837,8 +837,8 @@ curl -H "Authorization: Bearer <entity-api-token>" https://server/v1/pub/process
     "status": "READY",
     "voteCount": 1234,
     "results": [   // Empty array when no results []
-        [ { "title": "Yes", "value": 1234, "title": "No", "value": 2345 } ],
-        [ { "title": "Yes", "value": 22, "title": "No", "value": 33 } ]
+        [ { "title": "Yes", "value": "1234" }, { "title": "No", "value": "2345" } ],
+        [ { "title": "Yes", "value": "22" }, { "title": "No", "value": "33" } ]
     ]
 }
 ```
@@ -852,6 +852,8 @@ curl -H "Authorization: Bearer <entity-api-token>" https://server/v1/pub/process
 
 ### Requesting a census proof
 People voting on a signed process will need to package a vote envelope using the result of this call. 
+
+Note: This call does not apply to deployments where a custom CSP validation is being used. 
 
 <details>
 <summary>Example</summary>
@@ -1019,7 +1021,7 @@ curl -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/proces
 ```
 </details>
 
-### Get a token for requesting a blind signature
+### Get a token for requesting a plain/blind signature
 
 The blind signature process involves a two step interaction.
 
@@ -1033,6 +1035,7 @@ In the first interaction, the voter proves to have a private key within the elec
 
 #### Request 
 ```bash
+curl -X POST -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/ecdsa/auth
 curl -X POST -H "Authorization: Bearer <entity-api-token>" https://server/v1/auth/processes/<process-id>/blind/auth
 ```
 
@@ -1056,31 +1059,32 @@ curl -X POST -H "Authorization: Bearer <entity-api-token>" https://server/v1/aut
 ```
 </details>
 
-### Request the blind signature for an ephemeral wallet
+### Request the plain/blind signature for an ephemeral wallet
 
-The user generates an ephemeral wallet and the received tokenR to generate a blinded payload. This payload is sent to the backend, which will check the correctness and reply with a signature of the blinded payload. 
+The user generates an ephemeral wallet and the received tokenR to generate a (plain or blinded) payload. This payload is sent to the backend, which will check the correctness and reply with a signature of the payload. 
 
-The voter then unblinds the response and uses it as their vote signature. 
+The voter then may unblind the response (if applicable) and use it as their vote signature. 
 
 <details>
 <summary>Example</summary>
 
 #### Request 
 ```bash
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/processes/<processId>/ecdsa/sign
 curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/processes/<processId>/blind/sign
 ```
 
 #### Request body
 ```json
 {
-    "blindedPayload": "0xabcdef...",   // blind(hash({processId}))
+    "payload": "0xabcdef...",   // hash({processId, address}) or blind(hash({processId, address}))
     "tokenR": "0x1234567890abcde..."
 }
 ```
 #### HTTP 200
 ```json
 {
-    "blindSignature": "0x1234567890abcde..."
+    "signature": "0x1234567890abcde..."  // plain or blind signature
 }
 ```
 #### HTTP 400
