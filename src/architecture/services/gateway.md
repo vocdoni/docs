@@ -150,7 +150,6 @@ Check the status of an already submitted [Vote Envelope](/architecture/smart-con
   "id": "req-2345679",
   "request": {
     "method": "getEnvelopeStatus",
-    "processId": "hexString",
     "nullifier": "hexString",
     "timestamp": 1556110671
   }
