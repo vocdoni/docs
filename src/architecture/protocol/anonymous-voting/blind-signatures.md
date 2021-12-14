@@ -37,3 +37,4 @@ So if PubKey2 becomes the election CSP public key, there is no way the CSP can s
 1. H. Mala, N. Nezhadansari, *"New Blind Signature Schemes Based on the (Elliptic Curve) Discrete Logarithm Problem"* [https://sci-hub.st/10.1109/iccke.2013.6682844](https://sci-hub.st/10.1109/iccke.2013.6682844) Implementation: [https://github.com/arnaucube/go-blindsecp256k1](https://github.com/arnaucube/go-blindsecp256k1)
 2. *EC deterministic derivation key schema PoC implementation*
 [https://github.com/p4u/go-eckey-derivation](https://github.com/p4u/go-eckey-derivation/blob/master/main.go)
+3. CSP server implementation https://github.com/vocdoni/blind-csp
