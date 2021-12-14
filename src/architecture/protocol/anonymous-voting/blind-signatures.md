@@ -14,9 +14,11 @@ For preserving the anonymity of the voter, the CSP server will perform a blind s
 
 For making the CSP voter approval valid only for a specific election process (processId) and attached to a specific weight while preserving the privacy, a deterministic key derivation is used. So the CSP is only required to publish a single root public key. The specific per-election keys will be computed independently by all parties (CSP will derive its election private key and the election organizers will derive the election public key). To this end we use the following simple approach (G is the EC generator point):
 
-$$PubKeyRoot = PrivKeyRoot * G\\
-PrivKey2 = PrivkeyRoot + ProcessId + Weight\\
-PubKey2 = PubKeyRoot + (ProcessId + Weight)*G$$
+```js
+PubKeyRoot = PrivKeyRoot * G
+PrivKey2   = PrivkeyRoot +  ProcessId + Weight
+PubKey2    = PubKeyRoot  + (ProcessId + Weight)*G
+```
 
 So if PubKey2 becomes the election CSP public key, there is no way the CSP can share signature proofs before the processId is known and there is no way to reuse a CSP signature for a different election process.
 
