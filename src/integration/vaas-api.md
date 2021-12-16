@@ -372,6 +372,33 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
 ```
 </details>
 
+### Set an election status
+Generates a Merkle Tree with the given current census keys and generates a voting process with the given metadata. 
+<details>
+<summary>Example</summary>
+
+#### Request 
+```bash
+curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/ready
+curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/ended
+curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/canceled
+curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/paused
+curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/results
+```
+
+#### HTTP 200
+```json
+// empty response
+```
+
+#### HTTP 400
+```json
+{
+    "error": "Message goes here"
+}
+```
+</details>
+
 ### List elections (filtered)
 Allows unrestricted listing, paging and filtering for the integrator backend to display all info to organization admins.
 <details>
