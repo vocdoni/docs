@@ -301,6 +301,29 @@ curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/o
 ```
 </details>
 
+### Check a transaction status
+<details>
+<summary>Example</summary>
+
+#### Request 
+```bash
+curl -X GET -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/transactions/<transactionHash>
+```
+
+#### HTTP 200
+```json
+{
+    "true" // true | false, whether the transaction has been mined
+}
+```
+#### HTTP 400
+```json
+{
+    "error": "Message goes here"
+}
+```
+</details>
+
 ### Create an election
 Generates a Merkle Tree with the given current census keys and generates a voting process with the given metadata. 
 <details>
