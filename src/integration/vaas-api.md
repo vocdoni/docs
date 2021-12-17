@@ -1110,7 +1110,7 @@ The voter signs the `electionID` to prove that he/she has a private key within t
 
 #### Request 
 ```bash
-curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/elections/<election-id>/sharedKey
+curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/elections/<election-id>/sharedkey
 ```
 
 #### Request body
@@ -1122,7 +1122,7 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/
 #### HTTP 200
 ```json
 {
-    "sharedKey": "0x1234567890abcde..."
+    "sharedkey": "0x1234567890abcde..."
 }
 ```
 #### HTTP 400
@@ -1258,7 +1258,7 @@ If the evidence provided is correct, the CSP returns `sign({electionId}, cspPriv
 
 #### Request 
 ```bash
-curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/elections/<election-id>/sharedKey
+curl -X POST -H "Authorization: Bearer <organization-api-token>" https://server/v1/auth/elections/<election-id>/sharedkey
 ```
 
 #### Request body
