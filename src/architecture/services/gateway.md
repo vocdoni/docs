@@ -1006,9 +1006,9 @@ Get a single tx from the [Vochain](/architecture/services/vochain). `height` is 
 }
 ```
 
-### Get Tx By Hash
+### Get Transaction By Hash
 
-Get a single tx from the [Vochain](/architecture/services/vochain). `hash` is the hash of the bytes of that transaction and is identical to the `hash` returned by other tx API calls. More specifically, this value is the Tendermint hash of the entire `req.Tx` added to the vochain state. This call can be used to verify that a transaction was mined.
+Get a single transaction from the [Vochain](/architecture/services/vochain). `hash` is the hash of the bytes of that transaction and is identical to the `hash` returned by other transaction API calls. More specifically, this value is the Tendermint hash of the entire `req.Tx` added to the vochain state. This call can be used to verify that a transaction was mined.
 
 ```json
 {
