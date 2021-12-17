@@ -90,7 +90,7 @@ curl -X PATCH -H "Authorization: Bearer <superadmin-key>" https://server/v1/admi
 ```json
 {
     "id": "1234567890",
-    "apiKey": "zxcvbnm"
+    "apiKey": "priv_abcdefghijklmnoprstuvwxyz"
 }
 
 ```
@@ -179,7 +179,7 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
 ```json
 {
     "organizationId": "0x1234...",
-    "apiToken": "qwertyui..."   // API token for public voting endpoints
+    "apiToken": "pub_qwertyui..."   // API token for public voting endpoints
 }
 ```
 #### HTTP 400
@@ -307,13 +307,13 @@ curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/o
 
 #### Request 
 ```bash
-curl -X GET -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/transactions/<transactionHash>
+curl -X GET -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/transactions/<transaction-hash>
 ```
 
 #### HTTP 200
 ```json
 {
-    "true" // true | false, whether the transaction has been mined
+    "mined": true // true | false
 }
 ```
 #### HTTP 400
@@ -364,6 +364,7 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
     "electionId": "0x1234..."
 }
 ```
+
 #### HTTP 400
 ```json
 {
@@ -373,17 +374,21 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
 </details>
 
 ### Set an election status
-Generates a Merkle Tree with the given current census keys and generates a voting process with the given metadata. 
+Generates a Merkle Tree with the given current census keys and generates a voting process with the given metadata.
 <details>
 <summary>Example</summary>
 
-#### Request 
+#### Request
+
 ```bash
-curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/ready
-curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/ended
-curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/canceled
-curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/paused
-curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/results
+curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/status
+```
+
+#### Request body
+```json
+{
+    "status": "READY" // READY, ENDED, CANCELED, PAUSED
+}
 ```
 
 #### HTTP 200
@@ -451,6 +456,7 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/election
 ```json
 {
   "type": "blind-confidential-hidden-results",
+  "organizationId": "20323909c3e0965d1489893db1512b32b55707ea",
   "title": "test election",
   "description": "description test 1",
   "header": "https://source.unsplash.com/random/800x600",
@@ -517,8 +523,8 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/election
   ],
   "organizationId": "20323909c3e0965d1489893db1512b32b55707ea",
   "electionId": "47f2c1f1164a27db4f5e7b825f8ec064c44da88a83ff72b90e5755fff8bfb53b",
-  "resultsAggregation": "discrete-counting",
-  "resultsDisplay": "multiple-question"
+  "aggregation": "discrete-counting",
+  "display": "multiple-question"
 }
 ```
 #### HTTP 200
@@ -631,9 +637,9 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
     "censusId": "123456789...",
     "size": 700,  // new size
     "tokens": [
-        { "token": "jashdlkfjahs", weight: 40 },
-        { "token": "uyroeituwyert", weight: 70 },
-        { "token": "e7rg9e87rn9", weight: 200 }
+        { "token": "jashdlkfjahs", "weight": 40 },
+        { "token": "uyroeituwyert", "weight": 70 },
+        { "token": "e7rg9e87rn9", "weight": 200 }
     ]
 }
 ```
@@ -847,14 +853,13 @@ curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organization
 ```json
 [
     {
-	    "orgEthAddress": "hexBytes",
-        "electionId": "hexBytes",
+        "id": "0x12345678...",
         "title": "Important election",
+        "avatar": "https://my/avatar.png",
         "startDate": "2021-12-25T11:20:53.769Z",
-        "endDate": "2021-12-30T12:00:00Z",
+        "endDate": "2021-10-30T12:00:00.000Z",
         "confidential": false,
-        "hiddenResults": true,
-		"metadataPrivKey": "hexBytes"
+        "hiddenResults": true
     }, {...}
 ]
 ```
