@@ -482,7 +482,7 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/election
   ],
   "status": "Results",
   "streamUri": "uri",
-  "vote_count": 1,
+  "voteCount": 1,
   "results": [
     {
       "title": [
@@ -516,12 +516,9 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/election
     }
   ],
   "organizationId": "20323909c3e0965d1489893db1512b32b55707ea",
-  "ok": true,
   "electionId": "47f2c1f1164a27db4f5e7b825f8ec064c44da88a83ff72b90e5755fff8bfb53b",
-  "start_block": "2090900",
-  "end_block": "2091900",
-  "ResultsAggregation": "discrete-counting",
-  "ResultsDisplay": "multiple-question"
+  "resultsAggregation": "discrete-counting",
+  "resultsDisplay": "multiple-question"
 }
 ```
 #### HTTP 200
@@ -855,8 +852,6 @@ curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organization
         "title": "Important election",
         "startDate": "2021-12-25T11:20:53.769Z",
         "endDate": "2021-12-30T12:00:00Z",
-        "startBlock": 140988,
-        "endBlock": 184423,
         "confidential": false,
         "hiddenResults": true,
 		"metadataPrivKey": "hexBytes"
