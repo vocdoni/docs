@@ -198,7 +198,7 @@ The envelope type tells how the vote envelope is formatted and handled. Its valu
      |||||
      ||||`- serial
      |||`-- anonymous
-     ||`--- encryptedVote
+     ||`--- encryptedVotes
      |`---- uniqueValues
       `---- costFromWeight 
 ```
