@@ -158,8 +158,10 @@ curl -X DELETE -H "Authorization: Bearer <superadmin-key>" https://server/v1/adm
 The following endpoints are authenticated by using the integrator secret key. They allow integrators to manage the organizations related to their customers. 
 
 ### Create an organization
+
 <details>
 <summary>Example</summary>
+This request submits a transaction to the [voting blockchain](../architecture/services/vochain.md) which can take some time (~15 seconds) to be accepted and mined. Therefore, the return values of this method should not be considered valid until the Transaction Status method is called, using the `txHash` value to confirm that the desired transaction has been mined. Only then is it safe to query for the organization you have created. 
 
 #### Request 
 ```bash
@@ -179,7 +181,8 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
 ```json
 {
     "organizationId": "0x1234...",
-    "apiToken": "pub_qwertyui..."   // API token for public voting endpoints
+    "apiToken": "pub_qwertyui...",   // API token for public voting endpoints
+    "txHash": "0x1234...",
 }
 ```
 #### HTTP 400
@@ -271,6 +274,7 @@ These methods are also intended for integrators, but they are expected to do the
 ### Set Organization metadata
 <details>
 <summary>Example</summary>
+This request submits a transaction to the [voting blockchain](../architecture/services/vochain.md) which can take some time (~15 seconds) to be accepted and mined. Therefore, the return values of this method should not be considered valid until the Transaction Status method is called, using the `txHash` value to confirm that the desired transaction has been mined. Only then is it safe to query for the organization you have updated. 
 
 #### Request 
 ```bash
@@ -291,6 +295,7 @@ curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/o
 {
     "organizationId": "0x1234...",
     "contentUri": "ipfs://1234...",
+    "txHash": "0x1234...",
 }
 ```
 #### HTTP 400
@@ -328,6 +333,7 @@ curl -X GET -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/t
 Generates a Merkle Tree with the given current census keys and generates a voting process with the given metadata. 
 <details>
 <summary>Example</summary>
+This request submits a transaction to the [voting blockchain](../architecture/services/vochain.md) which can take some time (~15 seconds) to be accepted and mined. Therefore, the return values of this method should not be considered valid until the Transaction Status method is called, using the `txHash` value to confirm that the desired transaction has been mined. Only then is it safe to query for the election you have created. 
 
 
 #### Request 
@@ -361,7 +367,8 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
 #### HTTP 200
 ```json
 {
-    "electionId": "0x1234..."
+    "electionId": "0x1234...",
+    "txHash": "0x1234...",
 }
 ```
 
@@ -377,6 +384,7 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
 Generates a Merkle Tree with the given current census keys and generates a voting process with the given metadata.
 <details>
 <summary>Example</summary>
+This request submits a transaction to the [voting blockchain](../architecture/services/vochain.md) which can take some time (~15 seconds) to be accepted and mined. Therefore, the desired results of this method should not be considered valid until the Transaction Status method is called, using the `txHash` value to confirm that the desired transaction has been mined. Only then is it safe to query for the election you have updated. 
 
 #### Request
 
@@ -393,7 +401,9 @@ curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/e
 
 #### HTTP 200
 ```json
-// empty response
+{
+    "txHash": "0x1234..."
+}
 ```
 
 #### HTTP 400
