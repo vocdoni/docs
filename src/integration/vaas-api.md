@@ -422,8 +422,7 @@ Allows unrestricted listing, paging and filtering for the integrator backend to 
 
 #### Request 
 ```bash
-curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/signed
-curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/blind
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections
 
 curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/active
 curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/ended
@@ -854,10 +853,11 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/o
 
 #### Request 
 ```bash
+curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/elections
+
 curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/elections/active
 curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/elections/ended
 curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/elections/upcoming
-
 ```
 #### HTTP 200
 ```json
