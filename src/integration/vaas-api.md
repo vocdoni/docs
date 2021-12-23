@@ -435,7 +435,7 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organiza
         "title": "Important election",
         "description": "",
         "header": "https://my/header.jpeg",
-        "status": "READY",
+        "status": "UPCOMING", // "UNKNOWN" | "PAUSED" | "CANCELED" | "UPCOMING" | "ACTIVE" | "ENDED"
         "startDate": "2021-10-25T11:20:53.769Z", // can be empty
         "endDate": "2021-10-30T12:00:00.000Z",
     }, {...}
@@ -495,7 +495,7 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/election
       ]
     }
   ],
-  "status": "Results",
+  "status": "ENDED", // "UNKNOWN" | "PAUSED" | "CANCELED" | "UPCOMING" | "ACTIVE" | "ENDED"
   "streamUri": "uri",
   "voteCount": 1,
   "results": [
@@ -788,35 +788,6 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
 ```
 </details>
 
-### End/start/pause/cancel an election
-<details>
-<summary>Example</summary>
-
-#### Request 
-```bash
-curl -X PUT -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/elections/<electionId>/status
-```
-
-#### Request body
-```json
-{
-    "status": "PAUSED" // READY, PAUSED, ENDED, CANCELED
-}
-```
-#### HTTP 200
-```json
-{
-    "censusId": "123456789..."
-}
-```
-#### HTTP 400
-```json
-{
-    "error": "Message goes here"
-}
-```
-</details>
-
 
 ## Public API
 (token API authenticated, voter apps call it directly)
@@ -905,7 +876,7 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/e
             "choices": ["Yes", "No", "Maybe"]
         }, {...}
     ],
-    "status": "READY",
+    "status": "UPCOMING", // "UNKNOWN" | "PAUSED" | "CANCELED" | "UPCOMING" | "ACTIVE" | "ENDED"
     "voteCount": 1234,
     "results": [   // Empty array when no results []
         [ { "title": "Yes", "value": "1234" }, { "title": "No", "value": "2345" } ],
@@ -956,7 +927,7 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/e
             "choices": ["Yes", "No", "Maybe"]
         }, {...}
     ],
-    "status": "READY",
+    "status": "UPCOMING", // "UNKNOWN" | "PAUSED" | "CANCELED" | "UPCOMING" | "ACTIVE" | "ENDED"
     "voteCount": 1234,
     "results": [   // Empty array when no results []
         [ { "title": "Yes", "value": "1234" }, { "title": "No", "value": "2345" } ],
