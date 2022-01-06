@@ -792,7 +792,7 @@ curl -X POST -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/
 ## Public API
 (token API authenticated, voter apps call it directly)
 
-### Get Organization data
+<!-- ### Get Organization data
 <details>
 <summary>Example</summary>
 
@@ -816,7 +816,7 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/o
     "error": "Message goes here"
 }
 ```
-</details>
+</details> -->
 
 ### Get election list (per organization) – non-confidential
 <details>
