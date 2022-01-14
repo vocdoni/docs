@@ -498,6 +498,7 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/election
     }
   ],
   "status": "ENDED", // "UNKNOWN" | "PAUSED" | "CANCELED" | "UPCOMING" | "ACTIVE" | "ENDED"
+  "proofType": "blind", // "blind" | "ecdsa"
   "streamUri": "uri",
   "voteCount": 1,
   "results": [
@@ -882,6 +883,7 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/e
     ],
     "status": "UPCOMING", // "UNKNOWN" | "PAUSED" | "CANCELED" | "UPCOMING" | "ACTIVE" | "ENDED"
     "voteCount": 1234,
+    "proofType": "blind", // "blind" | "ecdsa"
     "results": [   // Empty array when no results []
         [ { "title": "Yes", "value": "1234" }, { "title": "No", "value": "2345" } ],
         [ { "title": "Yes", "value": "22" }, { "title": "No", "value": "33" } ]
@@ -932,6 +934,7 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/e
         }, {...}
     ],
     "status": "UPCOMING", // "UNKNOWN" | "PAUSED" | "CANCELED" | "UPCOMING" | "ACTIVE" | "ENDED"
+    "proofType": "blind", // "blind" | "ecdsa"
     "voteCount": 1234,
     "results": [   // Empty array when no results []
         [ { "title": "Yes", "value": "1234" }, { "title": "No", "value": "2345" } ],
