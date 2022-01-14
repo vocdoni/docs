@@ -429,6 +429,9 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organiza
 curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/paused
 curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/canceled
 curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/ended
+
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/blind
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organizations/<organizationId>/elections/signed
 ```
 #### HTTP 200
 ```json
@@ -440,6 +443,7 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/organiza
         "status": "UPCOMING", // "UNKNOWN" | "PAUSED" | "CANCELED" | "UPCOMING" | "ACTIVE" | "ENDED"
         "startDate": "2021-10-25T11:20:53.769Z", // can be empty
         "endDate": "2021-10-30T12:00:00.000Z",
+        "proofType": "blind", // "blind | "ecdsa"
     }, {...}
 ]
 ```
@@ -834,6 +838,9 @@ curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organization
 curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/elections/paused
 curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/elections/canceled
 curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/elections/ended
+
+curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/elections/blind
+curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organizations/<organizationId>/elections/signed
 ```
 #### HTTP 200
 ```json
@@ -845,7 +852,8 @@ curl -H "Authorization: Bearer <manager-key>" https://server/v1/pub/organization
         "startDate": "2021-12-25T11:20:53.769Z",
         "endDate": "2021-10-30T12:00:00.000Z",
         "confidential": false,
-        "hiddenResults": true
+        "hiddenResults": true,
+        "proofType": "blind", // "blind | "ecdsa"
     }, {...}
 ]
 ```
