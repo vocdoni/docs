@@ -66,7 +66,8 @@ Get an overview of the gateway status: available APIs, health and whether privat
 {
   "id": "req-2345679",
   "response": {
-	"apiList": ["census","file","vote", "results"],
+    "apiList": ["census","file","vote", "results"],
+    "chainId": "vocdoni-release-1.3", // the Vochain chainID on which the gateway is connected
     "health": 65,  // A number between 1 and 100 that indicates the health of the gateway (resource consumption, network status, etc.)
     "ok": true,
     "request": "req-2345679", // Request ID here as well, to check its integrity
