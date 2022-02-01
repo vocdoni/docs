@@ -480,25 +480,43 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/election
       "title": "test q1",
       "description": "",
       "choices": [
-        "Yes",
-        "No"
-      ]
+        {
+          "title": "Yes",
+          "value": 0,
+        },
+        {
+          "title": "No",
+          "value": 1,
+        },
+      ],
     },
     {
       "title": "test q2",
       "description": "",
       "choices": [
-        "Yes",
-        "No"
-      ]
+        {
+          "title": "Yes",
+          "value": 0,
+        },
+        {
+          "title": "No",
+          "value": 1,
+        },
+      ],
     },
     {
       "title": "test q3",
       "description": "",
       "choices": [
-        "Yes",
-        "No"
-      ]
+        {
+          "title": "Yes",
+          "value": 0,
+        },
+        {
+          "title": "No",
+          "value": 1,
+        },
+      ],
     }
   ],
   "status": "ENDED", // "UNKNOWN" | "PAUSED" | "CANCELED" | "UPCOMING" | "ACTIVE" | "ENDED"
@@ -886,7 +904,20 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/e
         {
             "title": "Question 1",
             "description": "(optional)",
-            "choices": ["Yes", "No", "Maybe"]
+            "choices": [
+                {
+                    "title": "Yes",
+                    "value": 0,
+                },
+                                {
+                    "title": "No",
+                    "value": 1,
+                },
+                                {
+                    "title": "Maybe",
+                    "value": 2,
+                },
+            ],
         }, {...}
     ],
     "status": "UPCOMING", // "UNKNOWN" | "PAUSED" | "CANCELED" | "UPCOMING" | "ACTIVE" | "ENDED"
@@ -938,7 +969,20 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/e
         {
             "title": "Question 1",
             "description": "(optional)",
-            "choices": ["Yes", "No", "Maybe"]
+            "choices": [
+                {
+                    "title": "Yes",
+                    "value": 0,
+                },
+                                {
+                    "title": "No",
+                    "value": 1,
+                },
+                                {
+                    "title": "Maybe",
+                    "value": 2,
+                },
+            ],
         }, {...}
     ],
     "status": "UPCOMING", // "UNKNOWN" | "PAUSED" | "CANCELED" | "UPCOMING" | "ACTIVE" | "ENDED"
