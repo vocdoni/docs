@@ -221,6 +221,41 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/account/
 ```
 </details>
 
+### Get an organization list
+Retrieves the full list of organizations created by the given integrator key
+
+<details>
+<summary>Example</summary>
+
+#### Request 
+```bash
+curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/account/organizations
+```
+
+#### HTTP 200
+```json
+{
+    "organizations":
+        [
+            {
+                "api_token":"qoiuwhgoiauhsdaiouh",
+                "name":"Organization name",
+                "description":"",
+                "header": "https://my/header.jpeg",
+                "avatar": "https://my/avatar.png"
+            },
+            ...
+        ]
+}
+```
+#### HTTP 400
+```json
+{
+    "error": "Message goes here"
+}
+```
+</details>
+
 ### Remove an organization
 <details>
 <summary>Example</summary>
