@@ -470,6 +470,7 @@ curl -H "Authorization: Bearer <integrator-key>" https://server/v1/priv/election
 #### Request body
 ```json
 {
+  "chainId": "vocdoni-main-1",
   "type": "blind-confidential-hidden-results",
   "organizationId": "20323909c3e0965d1489893db1512b32b55707ea",
   "title": "test election",
@@ -895,6 +896,7 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/e
 #### HTTP 200
 ```json
 {
+    "chainId": "vocdoni-main-1",
     "type": "signed-plain", // blind-plain, ...
     "title": "Important election",
     "description": "Description goes here",
@@ -960,6 +962,7 @@ curl -H "Authorization: Bearer <organization-api-token>" https://server/v1/pub/e
 #### HTTP 200
 ```json
 {
+    "chainId": "vocdoni-main-1",
     "type": "signed-plain", // blind-plain, ...
     "title": "Important election",
     "description": "Description goes here",
