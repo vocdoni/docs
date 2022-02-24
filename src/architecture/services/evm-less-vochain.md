@@ -67,6 +67,7 @@ message SetAccountInfoTx {
 	uint32 nonce = 2;   // account nonce for the transaction
 	string infoURI = 3; // infoURI to set
 	bytes account = 4;  // account to be changed
+	FaucetPackage faucetPackage = 5; // faucet payload used on account creation
 }
 ```
 
@@ -146,5 +147,30 @@ message SetTransactionCostsTx {
 }
 ```
 
+- `NewProcessTx`
+
+```protobuf
+message NewProcessTx {
+	TxType txtype = 1;
+	uint32 nonce = 2;
+	Process process = 3;
+}
+```
+
+- `SetProcessTx`
+
+```protobuf
+message SetProcessTx {
+	TxType txtype = 1;
+	uint32 nonce = 2;
+	bytes processId = 3;
+	optional ProcessStatus status = 4;
+	optional uint32 questionIndex = 5;
+	optional bytes censusRoot = 6;
+	optional string censusURI = 7;
+	optional Proof proof = 8;
+	optional ProcessResult results = 9;
+}
+```
 
 
