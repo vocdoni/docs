@@ -972,15 +972,15 @@ Get a single tx from the [Vochain](/architecture/services/vochain). `height` is 
 }
 ```
 
-### Get Tx By Height
+### Get Tx By ID (height)
 
-Get a single tx from the [Vochain](/architecture/services/vochain). `height` is that transaction's height on the vochain as a whole, and each height value references a unique transaction. Transaction height corresponds to the order in which that transaction was mined.
+Get a single tx from the [Vochain](/architecture/services/vochain). `id` is that transaction's height on the vochain as a whole, and each ID value references a unique transaction. Transaction ID corresponds to the order in which that transaction was mined.
 
 ```json
 {
   "request": {
-    "height": 851,
-    "method": "getTxByHeight",
+    "id": 851,
+    "method": "getTxById",
     "timestamp": 1625063686
   },
   "id": "137",
@@ -997,7 +997,7 @@ Get a single tx from the [Vochain](/architecture/services/vochain). `height` is 
     "tx": {
       "block_height": 354792,
       "hash": "hexString",
-      "height": 851,
+      "id": 851,
       "signature": "hexString",
       "tx": "base64String"
     }
@@ -1032,7 +1032,7 @@ Get a single transaction from the [Vochain](/architecture/services/vochain). `ha
     "tx": {
       "block_height": 354793,
       "hash": "hexString",
-      "height": 852,
+      "id": 852,
       "signature": "hexString",
       "tx": "base64String"
     }
