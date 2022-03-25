@@ -83,6 +83,33 @@ The Census API methods can be found on the [Census Service section](/architectur
 
 ## Vote API
 
+### Get Transaction Cost
+Get the token cost for a single transaction type.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getTxCost",
+    "type":"NewProcess", // NewProcess, SetProcessStatus, SetProcessCensus, SetProcessQuestionIndex, AddProcessKeys, RevealProcessKeys, AddOracle, RemoveOracle, AddValidator, RemoveValidator, Vote, SetProcessResults, RegisterVoterKey, MintTokens, SendTokens, SetTransactionCosts, SetAccountInfo, AddDelegateForAccount, DelDelegateForAccount, CollectFaucet
+    "timestamp": 1556110671 // optional, not required
+  }
+ }
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "amount":50,
+    "ok": true,
+    "request": "req-2345679", // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
 ### Submit Raw Vochain Transaction
 
 Send a [Vote Envelope](/architecture/smart-contracts/process.html#vote-envelope) to the mempool of the [Vochain](/architecture/services/vochain).
