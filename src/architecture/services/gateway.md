@@ -746,6 +746,67 @@ Get the content of an existing [Vote Envelope](/architecture/smart-contracts/pro
 }
 ```
 
+### Get Account
+
+Get an existing account given an entityID.
+
+```json
+{
+  "request": {
+    "method": "getAccount",
+    "entityId": "hexString",
+    "timestamp": 1620074081
+  },
+  "id": "81",
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "request": "req-2345679",
+    "balance": 0,
+    "nonce": 0,
+    "infoURI": "ipfs://123",
+    "delegates": [
+      "0x1",
+      "0x2",
+    ],
+    "ok": true,
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+### Get Treasurer
+
+Gets the chain Treasurer.
+
+```json
+{
+  "request": {
+    "method": "getTreasurer",
+    "timestamp": 1620074081
+  },
+  "id": "81",
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "request": "req-2345679",
+    "nonce": 0,
+    "entityId": "hexString",
+    "ok": true,
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
 ## Indexer API
 
 ### Get Stats
