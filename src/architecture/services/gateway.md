@@ -83,6 +83,33 @@ The Census API methods can be found on the [Census Service section](/architectur
 
 ## Vote API
 
+### Get Transaction Cost
+Get the token cost for a single transaction type.
+
+```json
+{
+  "id": "req-2345679",
+  "request": {
+    "method": "getTxCost",
+    "type":"NewProcess", // NewProcess, SetProcessStatus, SetProcessCensus, SetProcessQuestionIndex, AddProcessKeys, RevealProcessKeys, AddOracle, RemoveOracle, AddValidator, RemoveValidator, Vote, SetProcessResults, RegisterVoterKey, MintTokens, SendTokens, SetTransactionCosts, SetAccountInfo, AddDelegateForAccount, DelDelegateForAccount, CollectFaucet
+    "timestamp": 1556110671 // optional, not required
+  }
+ }
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "amount":50,
+    "ok": true,
+    "request": "req-2345679", // Request ID here as well, to check its integrity
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+
 ### Submit Raw Vochain Transaction
 
 Send a [Vote Envelope](/architecture/smart-contracts/process.html#vote-envelope) to the mempool of the [Vochain](/architecture/services/vochain).
@@ -715,6 +742,67 @@ Get the content of an existing [Vote Envelope](/architecture/smart-contracts/pro
     "timestamp": 1620225283
   },
   "id": "81",
+  "signature": "hexString"
+}
+```
+
+### Get Account
+
+Get an existing account given an entityID.
+
+```json
+{
+  "request": {
+    "method": "getAccount",
+    "entityId": "hexString",
+    "timestamp": 1620074081
+  },
+  "id": "81",
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "request": "req-2345679",
+    "balance": 0,
+    "nonce": 0,
+    "infoURI": "ipfs://123",
+    "delegates": [
+      "0x1",
+      "0x2",
+    ],
+    "ok": true,
+    "timestamp": 1556110672
+  },
+  "signature": "hexString"
+}
+```
+### Get Treasurer
+
+Gets the chain Treasurer.
+
+```json
+{
+  "request": {
+    "method": "getTreasurer",
+    "timestamp": 1620074081
+  },
+  "id": "81",
+}
+```
+
+```json
+{
+  "id": "req-2345679",
+  "response": {
+    "request": "req-2345679",
+    "nonce": 0,
+    "entityId": "hexString",
+    "ok": true,
+    "timestamp": 1556110672
+  },
   "signature": "hexString"
 }
 ```
