@@ -130,6 +130,8 @@ Send a [Vote Envelope](/architecture/smart-contracts/process.html#vote-envelope)
   "id": "req-2345679",
   "response": {
     "ok": true,
+    "payload": "hexString", // specific transaction data: nullifier or processID
+    "hash": "hexString", // the transaction hash so it can be tracked
     "request": "req-2345679",
     "timestamp": 1556110672
   },
@@ -748,7 +750,7 @@ Get the content of an existing [Vote Envelope](/architecture/smart-contracts/pro
 
 ### Get Account
 
-Get an existing account given an entityID.
+Get an existing account given its address.
 
 ```json
 {
@@ -766,8 +768,9 @@ Get an existing account given an entityID.
   "id": "req-2345679",
   "response": {
     "request": "req-2345679",
-    "balance": 0,
-    "nonce": 0,
+    "balance": 120,
+    "nonce": 3,
+    "processNonce": 2, 
     "infoURI": "ipfs://123",
     "delegates": [
       "0x1",
