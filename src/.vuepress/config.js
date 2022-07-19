@@ -140,6 +140,7 @@ module.exports = {
         collapsable: false,
         children: [
           '/integration/overview',
+          '/integration/getting-started-local-vochain',
           {
             title: 'Voting as a Service',
             collapsible: false,
