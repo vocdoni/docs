@@ -731,7 +731,8 @@ Get the content of an existing [Vote Envelope](/architecture/smart-contracts/pro
         "nullifier": "hexString",
         "process_id": "hexString",
         "tx_hash": "hexString",
-        "tx_index": 0
+        "tx_index": 0,
+        "voter_id": "hexString"
       },
       "nonce": "hexString",
       "signature": "hexString",
@@ -886,21 +887,24 @@ The `fromId` field works the same as in [Get Process List](#get-process-list).
         "nullifier": "hexString",
         "process_id": "hexString",
         "tx_hash": "hexString",
-        "tx_index": 0
+        "tx_index": 0,
+        "voter_id": "hexString"
       },
       {
         "height": 359,
         "nullifier": "hexString",
         "process_id": "hexString",
         "tx_hash": "hexString",
-        "tx_index": 0
+        "tx_index": 0,
+        "voter_id": "hexString"
       },
       {
         "height": 306,
         "nullifier": "hexString",
         "process_id": "hexString",
         "tx_hash": "hexString",
-        "tx_index": 0
+        "tx_index": 0,
+        "voter_id": "hexString"
       }
     ],
     "ok": true,
