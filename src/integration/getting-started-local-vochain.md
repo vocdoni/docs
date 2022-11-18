@@ -1,44 +1,17 @@
 # Getting started with a local instance
-`vocli` is a command line interface to the vochain for end users with basic blockchain and CLI experience. For the latest usage information please refer to [vocdoni-node/cmd/vocli/README.md](https://github.com/vocdoni/vocdoni-node/blob/master/cmd/vocli/README.md).
+
+`cli` is a command line interface to the vochain for end users with basic blockchain and CLI experience.
 
 `voconed` is a convenient form of `dvotenode` that doesn't require that much setup. It's useful as a quick single-node test blockchain to get a feeling for the vochain as a whole.
 
 # Building
 ```
 git clone https://github.com/vocdoni/vocdoni-node && cd vocdoni-node
-go build ./cmd/vocli
+go build ./cmd/cli
 go build ./cmd/voconed
 ```
 
-```
-$ ./vocli help
-vocli is a convenience CLI that helps you do things on Vochain
-
-Usage:
-  vocli [command]
-
-Available Commands:
-  account     Manage a key's account. Accounts are stored on the vochain and are controlled by keys.
-  claimfaucet Claim tokens from another account, using a payload generated from that account that acts as an authorization.
-  genfaucet   Generate a payload allowing another account to claim tokens from this account.
-  help        Help about any command
-  keys        Create, import and list keys.
-  mint        Mint more tokens to an address. Only the Treasurer may do this.
-  send        Send tokens to another account
-  sign        Sign a string message. Used for debugging
-  txcost      Manage transaction costs for each type of transaction. Only the Treasurer may do this.
-
-Flags:
-  -d, --debug             prints additional information; $VOCHAIN_DEBUG
-  -h, --help              help for vocli
-      --home string       root directory where all vochain files are stored; $VOCHAIN_HOME (default "/home/shinichi/.dvote")
-  -n, --nonce uint32      account nonce to use when sending transaction
-                          	(useful when it cannot be queried ahead of time, e.g. offline transaction signing)
-      --password string   supply the password as an argument instead of prompting
-  -u, --url string        Gateway RPC URL; $VOCHAIN_URL (default "https://gw1.dev.vocdoni.net/dvote")
-
-Use "vocli [command] --help" for more information about a command.
-```
+# Run the chain
 
 ```
 $ ./voconed --help
@@ -56,29 +29,7 @@ Usage of ./voconed:
 pflag: help requested
 ```
 
-# Run the chain
-vochain has two types of important system accounts - the treasurer, who can mint/burn tokens, and oracles, a bridge to EVM chains that watches for events there and submits corresponding transactions on vochain, or submit a transaction on the EVM chain based on the result of a process on vochain. The treasurer mints tokens to new entities (accounts), who need the tokens to conduct a new process (poll, election etc). The entities in turn airdrop the tokens to the participants of the process/poll/election, so that the participants can submit transactions too.
-
-Generate two keys, one for the treasurer and another for an oracle. Go-Ethereum's `geth` can be used for the same purpose - just rename the `.json` files to `.vokey`.
-
-```
-$ ./vocli keys new
-The key will be generated the key and saved, encrypted, on your disk.
-Remember to run 'vocli account set <address>' afterwards to create an account for this key on the vochain.
-Your new key file will be locked with a password. Please give a password:
-
-Your new key was generated
-Public address of the key:   0x24F6b3f0AECbF7303bCdB786830C0f825A32cEEA
-Path of the secret key file: /home/shinichi/.dvote/keys/0x24F6b3f0AECbF7303bCdB786830C0f825A32cEEA-2022-7-19.vokey
-- As usual, please BACKUP your key file and REMEMBER your password!
-```
-
-Despite what the help message states, the treasurer account does not need the `account set` command, as it is handled differently in the vochain's State than a normal account. The oracle's account will be set by `voconed` automatically too, so you don't have to do anything.
-
-`voconed` needs the private key of the oracle to run. Print the private key with the `keys showprivkey` command.
-```
-./vocli keys showprivkey /home/shinichi/.dvote/keys/0x24F6b3f0AECbF7303bCdB786830C0f825A32cEEA-2022-7-19.vokey
-```
+Example of a running instance:
 
 ```
 ./voconed --treasurer=$TREASURER_ADDRESS --oracle=$ORACLE_PRIVATE_KEY --logLevel=info
@@ -116,37 +67,27 @@ Despite what the help message states, the treasurer account does not need the `a
 2022-07-19T20:00:22+02:00	INFO	rpcapi/handlers.go:19	enabling file API
 2022-07-19T20:00:22+02:00	INFO	rpcapi/handlers.go:131	enabling indexer API
 ...
-
 ```
 
-
-# Create an Account
-Now that `voconed` is running, create another account.
+# Connect and interact with the running chain
 
 ```
-./vocli keys new
-The key will be generated the key and saved, encrypted, on your disk.
-Remember to run 'vocli account set <address>' afterwards to create an account for this key on the vochain.
-Your new key file will be locked with a password. Please give a password:
+$ ./cli --help
+--config string     config file (default "/home/me/.vocdoni-cli.json")
+--host string       API host endpoint to connect with (such as http://localhost:9090/v2)
+--logLevel string   log level (default "error")
 
-Your new key was generated
-Public address of the key:   0x110951D9259a9cD0830DCe90134b1079c01544A3
-Path of the secret key file: /home/shinichi/.dvote/keys/0x110951D9259a9cD0830DCe90134b1079c01544A3-2022-7-19.vokey
-- As usual, please BACKUP your key file and REMEMBER your password!
+$ ./cli http://localhost:9090/v2
+ 
+⚙️  Handle accounts
+📖  Account info
+✨  Account bootstrap
+👛  Transfer tokens
+🕸️  Network info
+📝  Build a new census
+🗳️  Create an election
+☑️  Vote
+🖧  Change API endpoint host
+💾  Save config to file
+❌  Quit
 ```
-On Ethereum, you can create a new key without having to tell the network of its existence. This is different in Vochain, where we have to send a free `SetAccountInfoTx` to the network to tell vochain that this new Key exists, and we should create an Account for it. Hence the distinction between *Keys* and *Accounts* (Ethereum uses these words interchangeably).
-
-Ensure that the `SetAccountInfoTx` is sent to your `voconed` instance using the environment variable `VOCHAIN_URL` or `--url`. The API URL always has to end in `/dvote`.
-Currently, you may use any string for the IPFS Info-URI.
-```
-./vocli account set /home/shinichi/.dvote/keys/0x110951D9259a9cD0830DCe90134b1079c01544A3-2022-7-19.vokey ipfs://unvalidated --url=http://localhost:9095/dvote
-or
-VOCHAIN_URL=http://localhost:9095/dvote ./vocli account set /home/shinichi/.dvote/keys/0x110951D9259a9cD0830DCe90134b1079c01544A3-2022-7-19.vokey ipfs://unvalidated
-```
-
-# Workflow
-1. An Entity (could be a real life company, organization or anon who wants to conduct a poll/process) creates an Account on the vochain.
-2. The treasurer mints tokens to the entity's Account, thus ensuring that it can create a process.
-3. The entity then sends tokens to other participants, who have created their own Accounts, ensuring that they can submit votes to the vochain.
-
-For Step 3, an entity can simply send tokens using `vocli send` or use the `genfaucet/claimfaucet` commands. Any account can generate a "faucet package", which is then used by another account like a coupon to "claim the faucet". For examples, see the [vocli README.md](https://github.com/vocdoni/vocdoni-node/blob/master/cmd/vocli/README.md#faucet).
