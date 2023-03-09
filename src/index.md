@@ -2,7 +2,7 @@
 home: true
 heroImage: /Logotype.svg
 heroText: 
-tagline: A decentralized self sovereign governance platform
+tagline: The information provided on this website is no longer up-to-date. For the latest documentation, please visit developer.vocdoni.io
 actionText: Get started →
 actionLink: /architecture/general
 lang: en-US
