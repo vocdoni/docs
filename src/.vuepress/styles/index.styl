@@ -32,3 +32,17 @@
   background linear-gradient(90deg, rgba(231, 255, 0, 0) -0.01%, #00DDB3 100%), linear-gradient(90deg, rgba(0, 221, 179, 0) -0.01%, #FF005D 125%), white
   backdrop-filter blur(12px)
   font-size 13px
+
+@media only screen and (max-width: 767px)
+  .navbar::before
+    top -80px // Adjust according to your superior bar height
+    line-height 1.75
+    padding 8px 15px
+
+  .page
+    margin-top 90px
+
+  .navbar
+    top 80px
+    background-color #fff
+
