@@ -6,3 +6,29 @@
 
 .home .hero img
   max-width 450px!important
+
+.sidebar
+  margin-top 40px
+
+.page
+  margin-top 40px
+
+.navbar
+  top 30px
+  background-color #fff
+
+.navbar::before
+  content "The information provided on this website is no longer up-to-date. For the latest documentation, please visit developer.vocdoni.io"
+  display block
+  position absolute
+  top -30px // Adjust according to your superior bar height
+  left 0
+  right 0
+  color #333
+  padding 0 15px
+  text-align left
+
+  height fit-content
+  background linear-gradient(90deg, rgba(231, 255, 0, 0) -0.01%, #00DDB3 100%), linear-gradient(90deg, rgba(0, 221, 179, 0) -0.01%, #FF005D 125%), white
+  backdrop-filter blur(12px)
+  font-size 13px
