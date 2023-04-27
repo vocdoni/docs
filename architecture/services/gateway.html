@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Gateway | Vocdoni</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="A decentralized self sovereign governance platform">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.b4782a24.css" as="style"><link rel="preload" href="/assets/js/app.003a3fab.js" as="script"><link rel="preload" href="/assets/js/2.d75a9e61.js" as="script"><link rel="preload" href="/assets/js/32.c6e6f766.js" as="script"><link rel="prefetch" href="/assets/js/10.7d736aa9.js"><link rel="prefetch" href="/assets/js/11.24f4b6a1.js"><link rel="prefetch" href="/assets/js/12.fbc7926a.js"><link rel="prefetch" href="/assets/js/13.1d48d867.js"><link rel="prefetch" href="/assets/js/14.f1695afd.js"><link rel="prefetch" href="/assets/js/15.fd5bd6ca.js"><link rel="prefetch" href="/assets/js/16.7848fcf4.js"><link rel="prefetch" href="/assets/js/17.a09d0fce.js"><link rel="prefetch" href="/assets/js/18.2d6d7bd0.js"><link rel="prefetch" href="/assets/js/19.7ca86ba4.js"><link rel="prefetch" href="/assets/js/20.7610a2ee.js"><link rel="prefetch" href="/assets/js/21.a33e4585.js"><link rel="prefetch" href="/assets/js/22.cdbbe0cb.js"><link rel="prefetch" href="/assets/js/23.daf8da8a.js"><link rel="prefetch" href="/assets/js/24.33f4a899.js"><link rel="prefetch" href="/assets/js/25.ca7b1363.js"><link rel="prefetch" href="/assets/js/26.00dda6a7.js"><link rel="prefetch" href="/assets/js/27.9643f5df.js"><link rel="prefetch" href="/assets/js/28.95fc6467.js"><link rel="prefetch" href="/assets/js/29.6d11f8e1.js"><link rel="prefetch" href="/assets/js/3.87bd6438.js"><link rel="prefetch" href="/assets/js/30.5f4b8604.js"><link rel="prefetch" href="/assets/js/31.57338027.js"><link rel="prefetch" href="/assets/js/33.ee83017b.js"><link rel="prefetch" href="/assets/js/34.9adc375a.js"><link rel="prefetch" href="/assets/js/35.5a5f7bb7.js"><link rel="prefetch" href="/assets/js/36.e2545582.js"><link rel="prefetch" href="/assets/js/37.0eb8cc70.js"><link rel="prefetch" href="/assets/js/38.84124562.js"><link rel="prefetch" href="/assets/js/39.bf4aa161.js"><link rel="prefetch" href="/assets/js/4.6ba5942f.js"><link rel="prefetch" href="/assets/js/40.11b0e7ee.js"><link rel="prefetch" href="/assets/js/41.e727669e.js"><link rel="prefetch" href="/assets/js/42.995b740c.js"><link rel="prefetch" href="/assets/js/43.6a147059.js"><link rel="prefetch" href="/assets/js/44.a2bf17a5.js"><link rel="prefetch" href="/assets/js/45.3ff1d0d1.js"><link rel="prefetch" href="/assets/js/46.c84ab2db.js"><link rel="prefetch" href="/assets/js/47.b5fc1bda.js"><link rel="prefetch" href="/assets/js/48.87932f25.js"><link rel="prefetch" href="/assets/js/49.1b5e3ca0.js"><link rel="prefetch" href="/assets/js/5.0c02ed2b.js"><link rel="prefetch" href="/assets/js/50.0c49f3da.js"><link rel="prefetch" href="/assets/js/51.05425652.js"><link rel="prefetch" href="/assets/js/52.51995a7a.js"><link rel="prefetch" href="/assets/js/53.cd441341.js"><link rel="prefetch" href="/assets/js/54.69d5ba43.js"><link rel="prefetch" href="/assets/js/55.496f36cc.js"><link rel="prefetch" href="/assets/js/56.f98a821f.js"><link rel="prefetch" href="/assets/js/57.bf2fdef7.js"><link rel="prefetch" href="/assets/js/58.f208592f.js"><link rel="prefetch" href="/assets/js/59.a1cf2460.js"><link rel="prefetch" href="/assets/js/6.75834963.js"><link rel="prefetch" href="/assets/js/60.59aefd15.js"><link rel="prefetch" href="/assets/js/7.0929d87c.js"><link rel="prefetch" href="/assets/js/8.66ffbfac.js"><link rel="prefetch" href="/assets/js/9.5e86fdd3.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.b4782a24.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Vocdoni</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/architecture/general.html" class="nav-link">
+  Architecture
+</a></div><div class="nav-item"><a href="https://blog.vocdoni.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Blog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="/about-us/vision.html" class="nav-link">
+  About us
+</a></div><div class="nav-item"><a href="https://discord.gg/sQCxgYs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Discord
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/architecture/general.html" class="nav-link">
+  Architecture
+</a></div><div class="nav-item"><a href="https://blog.vocdoni.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Blog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="/about-us/vision.html" class="nav-link">
+  About us
+</a></div><div class="nav-item"><a href="https://discord.gg/sQCxgYs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Discord
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><a href="/architecture/general" class="sidebar-heading clickable open"><span>Architecture</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/architecture/general.html" class="sidebar-link">Global Architecture</a></li><li><a href="/architecture/process-overview.html" class="sidebar-link">Process Overview</a></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/architecture/census/census-overview" class="sidebar-heading clickable"><span>The Census</span> <span class="arrow right"></span></a> <!----></section></li><li><a href="/architecture/components.html" class="sidebar-link">Component Overview</a></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/architecture/smart-contracts/entity-resolver" class="sidebar-heading clickable"><span>Smart Contracts</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/architecture/services/gateway" class="sidebar-heading clickable open active"><span>Services</span> <span class="arrow down"></span></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/architecture/services/gateway.html" aria-current="page" class="active sidebar-link">Gateway</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/architecture/services/gateway.html#api-definition" class="sidebar-link">API definition</a></li><li class="sidebar-sub-header"><a href="/architecture/services/gateway.html#info-api" class="sidebar-link">Info API</a></li><li class="sidebar-sub-header"><a href="/architecture/services/gateway.html#census-api" class="sidebar-link">Census API</a></li><li class="sidebar-sub-header"><a href="/architecture/services/gateway.html#vote-api" class="sidebar-link">Vote API</a></li><li class="sidebar-sub-header"><a href="/architecture/services/gateway.html#results-api" class="sidebar-link">Results API</a></li><li class="sidebar-sub-header"><a href="/architecture/services/gateway.html#indexer-api" class="sidebar-link">Indexer API</a></li><li class="sidebar-sub-header"><a href="/architecture/services/gateway.html#file-api" class="sidebar-link">File API</a></li><li class="sidebar-sub-header"><a href="/architecture/services/gateway.html#using-the-api-for-beginners" class="sidebar-link">Using the API (for beginners)</a></li></ul></li><li><section class="sidebar-group collapsable is-sub-group depth-2"><a href="/architecture/services/vochain" class="sidebar-heading clickable"><span>Vochain</span> <span class="arrow right"></span></a> <!----></section></li><li><a href="/architecture/services/census-service.html" class="sidebar-link">Census Service</a></li><li><a href="/architecture/services/bootnode.html" class="sidebar-link">Boot node</a></li></ul></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/architecture/data-schemes/entity-metadata" class="sidebar-heading clickable"><span>Data Schemes</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/architecture/protocol/json-api" class="sidebar-heading clickable"><span>Protocol</span> <span class="arrow right"></span></a> <!----></section></li><li><a href="/architecture/component-interaction.html" class="sidebar-link">Component Interaction</a></li><li><a href="/architecture/libraries-tooling.html" class="sidebar-link">Libraries and Tooling</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/integration/overview" class="sidebar-heading clickable"><span>Integration</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/integration/overview.html" class="sidebar-link">Overview</a></li><li><a href="/integration/getting-started-local-vochain.html" class="sidebar-link">Getting started with a local instance</a></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/integration/vaas-api" class="sidebar-heading clickable"><span>Voting as a Service</span> <span class="arrow right"></span></a> <!----></section></li><li><a href="/integration/manual-integration.html" class="sidebar-link">Manual Integration</a></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/integration/census/general" class="sidebar-heading clickable"><span>Census</span> <span class="arrow right"></span></a> <!----></section></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/deployment/gateway" class="sidebar-heading clickable"><span>Deployment</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/deployment/gateway.html" class="sidebar-link">Gateway Deployment (stage)</a></li><li><a href="/deployment/miner.html" class="sidebar-link">Miner Deployment</a></li><li><a href="/deployment/oracle.html" class="sidebar-link">Oracle Deployment (stage)</a></li><li><a href="/deployment/custom-vochain.html" class="sidebar-link">Custom Vochain Deployment</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/about-us/vision" class="sidebar-heading clickable"><span>About</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/about-us/vision.html" class="sidebar-link">Vision</a></li><li><a href="/about-us/how-we-work.html" class="sidebar-link">How We Work</a></li><li><section class="sidebar-group is-sub-group depth-1"><a href="/about-us/development-guidelines" class="sidebar-heading clickable"><span>Development Guidelines</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/about-us/development-guidelines.html" class="sidebar-link">Development guidelines</a></li><li><a href="/about-us/repository-branching.html" class="sidebar-link">Repository and branching guidelines</a></li></ul></section></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="gateway"><a href="#gateway" class="header-anchor">#</a> Gateway</h1> <p>Gateways provide redundant entry points to the P2P networks. They allow clients to reach decentralized services from a simple HTTP/WebSocket endpoint.</p> <p>The following diagram shows the gateway's overall architecture and components.</p> <div style="padding:20px;"><img src="/gateway-components.png" alt="Gateway Components"></div> <h3 id="discovery-mechanism"><a href="#discovery-mechanism" class="header-anchor">#</a> Discovery mechanism</h3> <p>A Gateway is a neutral piece of the ecosystem which can be hosted by any third party. Any kind of organization might run Gateway instances to improve network access and increase resilience against potential attacks.</p> <p>To this end, Gateways use an automatic discovery system through a P2P messaging network so that Bootnodes know of their existence. Clients make requests to Bootnodes and fetch a fresh list of working Gateways.</p> <head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.css"></head> <div class="spinner" style="background:rgb(66, 185, 131);" data-v-1bbcb91a></div><hr> <h2 id="api-definition"><a href="#api-definition" class="header-anchor">#</a> API definition</h2> <p>A Gateway exposes APIs that enable accessing peer-to-peer networks. The currently supported API schemes are the following:</p> <ul><li><code>Info API</code>: details about the gateway</li> <li><code>Census API</code> access to the Census Service</li> <li><code>Vote API</code> access to the Vochain methods for voting</li> <li><code>Results API</code> access to the Vochain methods for computing election results</li> <li><code>Indexer API</code> access to the Indexer methods for analyzing the Vochain</li> <li><code>File API</code> access to P2P file storage methods</li></ul> <p>These APIs can be used by web and mobile clients using an HTTP/WS endpoint.</p> <p>The API methods below follow the <a href="/architecture/protocol/json-api">JSON API</a> specifications.</p> <h2 id="info-api"><a href="#info-api" class="header-anchor">#</a> Info API</h2> <h3 id="get-gateway-info"><a href="#get-gateway-info" class="header-anchor">#</a> Get Gateway Info</h3> <p>Get an overview of the gateway status: available APIs, health and whether private methods are available or not.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getInfo&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span> <span class="token comment">// optional, not required</span>
+  <span class="token punctuation">}</span>
+ <span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;apiList&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;census&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;file&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;vote&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;results&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;chainId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;vocdoni-release-1.3&quot;</span><span class="token punctuation">,</span> <span class="token comment">// the Vochain chainID on which the gateway is connected</span>
+    <span class="token property">&quot;health&quot;</span><span class="token operator">:</span> <span class="token number">65</span><span class="token punctuation">,</span>  <span class="token comment">// A number between 1 and 100 that indicates the health of the gateway (resource consumption, network status, etc.)</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span> <span class="token comment">// Request ID here as well, to check its integrity</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="census-api"><a href="#census-api" class="header-anchor">#</a> Census API</h2> <p>The Census API methods can be found on the <a href="/architecture/services/census-service.html#json-api">Census Service section</a>.</p> <h2 id="vote-api"><a href="#vote-api" class="header-anchor">#</a> Vote API</h2> <h3 id="get-transaction-cost"><a href="#get-transaction-cost" class="header-anchor">#</a> Get Transaction Cost</h3> <p>Get the token cost for a single transaction type.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getTxCost&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;type&quot;</span><span class="token operator">:</span><span class="token string">&quot;NewProcess&quot;</span><span class="token punctuation">,</span> <span class="token comment">// NewProcess, SetProcessStatus, SetProcessCensus, SetProcessQuestionIndex, AddProcessKeys, RevealProcessKeys, AddOracle, RemoveOracle, AddValidator, RemoveValidator, Vote, SetProcessResults, RegisterVoterKey, MintTokens, SendTokens, SetTransactionCosts, SetAccountInfo, AddDelegateForAccount, DelDelegateForAccount, CollectFaucet</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span> <span class="token comment">// optional, not required</span>
+  <span class="token punctuation">}</span>
+ <span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;amount&quot;</span><span class="token operator">:</span><span class="token number">50</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span> <span class="token comment">// Request ID here as well, to check its integrity</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="submit-raw-vochain-transaction"><a href="#submit-raw-vochain-transaction" class="header-anchor">#</a> Submit Raw Vochain Transaction</h3> <p>Send a <a href="/architecture/smart-contracts/process.html#vote-envelope">Vote Envelope</a> to the mempool of the <a href="/architecture/services/vochain">Vochain</a>.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;submitRawTx&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;payload&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64string&quot;</span><span class="token punctuation">,</span> <span class="token comment">// A raw transaction (protobuf encoded) payload in base64</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;payload&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span> <span class="token comment">// specific transaction data: nullifier or processID</span>
+    <span class="token property">&quot;hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span> <span class="token comment">// the transaction hash so it can be tracked</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="submit-envelope"><a href="#submit-envelope" class="header-anchor">#</a> Submit Envelope</h3> <p>Send a <a href="/architecture/smart-contracts/process.html#vote-envelope">Vote Envelope</a> to the mempool of the <a href="/architecture/services/vochain">Vochain</a>.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;submitEnvelope&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;payload&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64string&quot;</span><span class="token punctuation">,</span> <span class="token comment">// Vote envelope (protobuf encoded) payload in base64</span>
+    <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span> <span class="token comment">// signature of the payload if the process requires it</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><strong>Used in:</strong></p> <ul><li><a href="https://docs.vocdoni.io/#/architecture/sequence-diagrams.html#casting-a-vote" target="_blank" rel="noopener noreferrer">Casting a vote<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul> <h3 id="get-envelope-status"><a href="#get-envelope-status" class="header-anchor">#</a> Get Envelope Status</h3> <p>Check the status of an already submitted <a href="/architecture/smart-contracts/process.html#vote-envelope">Vote Envelope</a>. The envelope is identified by the voter's nullifier.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getEnvelopeStatus&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;nullifier&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;registered&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>  <span class="token comment">// Whether the vote is registered or not</span>
+    <span class="token property">&quot;blockTimestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span><span class="token punctuation">,</span> <span class="token comment">// only if registered == true</span>
+    <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">1234</span><span class="token punctuation">,</span> <span class="token comment">// only if registered == true</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><strong>Used in:</strong></p> <ul><li><a href="https://docs.vocdoni.io/#/architecture/sequence-diagrams.html#checking-a-vote-envelope" target="_blank" rel="noopener noreferrer">Checking a Vote Envelope<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul> <h3 id="get-envelope-height"><a href="#get-envelope-height" class="header-anchor">#</a> Get Envelope Height</h3> <p>Get the number of envelopes registered on a given process.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getEnvelopeHeight&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;processId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">1234</span><span class="token punctuation">,</span> <span class="token comment">// Number of envelopes for the process ID</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-block-height"><a href="#get-block-height" class="header-anchor">#</a> Get Block Height</h3> <p>Get the current block number on the <a href="/architecture/services/vochain">Vochain</a>.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getBlockHeight&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;blockTimestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">12345</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-process-keys"><a href="#get-process-keys" class="header-anchor">#</a> Get Process Keys</h3> <p>Get the available encryption keys for the given process ID.</p> <p>If the process has encrypted votes and it is on-going, <code>encryptionPubkeys</code> and <code>commitmentKeys</code> should be available. Once the process has ended, <code>encryptionPrivKeys</code> and <code>revealKeys</code> will be also be available.</p> <p><a href="/architecture/smart-contracts/process.html#vote-package">Vote Package</a> encryption and decryption keys are expected to follow the order of their indexes. Smaller indexes are used first and it's important to note that indexes might not be consecutive.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getProcessKeys&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;processId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;encryptionPubKeys&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token punctuation">{</span><span class="token property">&quot;idx&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token property">&quot;key&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234567890...&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token property">&quot;idx&quot;</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token property">&quot;key&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2345678901...&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span> ... <span class="token punctuation">]</span><span class="token punctuation">,</span> 
+    <span class="token property">&quot;commitmentKeys&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token punctuation">{</span><span class="token property">&quot;idx&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token property">&quot;key&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234567890...&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token property">&quot;idx&quot;</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token property">&quot;key&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2345678901...&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span> ... <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;encryptionPrivKeys&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token punctuation">{</span><span class="token property">&quot;idx&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token property">&quot;key&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234567890...&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token property">&quot;idx&quot;</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token property">&quot;key&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2345678901...&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span> ... <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;revealKeys&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token punctuation">{</span><span class="token property">&quot;idx&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token property">&quot;key&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1234567890...&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token property">&quot;idx&quot;</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token property">&quot;key&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2345678901...&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span> ... <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><strong>Used in:</strong></p> <ul><li><a href="https://docs.vocdoni.io/#/architecture/sequence-diagrams.html#checking-a-vote-envelope" target="_blank" rel="noopener noreferrer">Checking a Vote Envelope<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul> <h3 id="get-block-status"><a href="#get-block-status" class="header-anchor">#</a> Get Block Status</h3> <p>Get details about the current block and the average block time for the last 1m, 10m, 1h, 6h and 24h.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getBlockStatus&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;blockTime&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">10000</span><span class="token punctuation">,</span> <span class="token number">12000</span><span class="token punctuation">,</span> <span class="token number">12200</span><span class="token punctuation">,</span> <span class="token number">12500</span><span class="token punctuation">,</span> <span class="token number">12600</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// In milliseconds, average for 1 minute, 10m, 1h, 6h, 24h. If no average yet, values are 0</span>
+    <span class="token property">&quot;blockTimestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span><span class="token punctuation">,</span> <span class="token comment">// in seconds</span>
+    <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">12345</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-pre-register-voter-weight"><a href="#get-pre-register-voter-weight" class="header-anchor">#</a> Get pre-register voter weight</h3> <p>For a pre-register processes, returns the used weight for an address.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-12345678&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getPreregisterVoterWeight&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;voterAddress&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span> <span class="token comment">// the Ethereum address of the registered pubKey</span>
+    <span class="token property">&quot;processId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;weight&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="results-api"><a href="#results-api" class="header-anchor">#</a> Results API</h2> <h3 id="get-process-list"><a href="#get-process-list" class="header-anchor">#</a> Get Process List</h3> <p>Get a list of processes for a specific entity or namespace on the <a href="/architecture/services/vochain">Vochain</a>. There is a hardcoded maximum size of 64 per page.</p> <p>The results are ordered from process creation date. So processes created recently will appear first on the list.</p> <p>The following query filters can be used:</p> <ul><li><code>entityId</code> can be used for retreiving the list of processes from a specific entity organization.</li> <li><code>from</code> can be used to seek specific positions and start from them. So if a call without <code>from</code> (<code>from = 0</code>) returns 64 values, a second call with <code>from = 64</code> will get the next 64 values.</li> <li><code>namespace</code> can be used for querying only a specific namespace. The namespace zero (default value) means all existing namespaces.</li> <li><code>sourceNetworkId</code> can be used for querying only a specific network origin (where the process has been created). Current possible values are:
+UNKNOWN, ETH_MAINNET, ETH_RINKEBY, ETH_GOERLI, POA_XDAI, POA_SOKOL, POLYGON, BSC, ETH_MAINNET_SIGNALING, ETH_RINKEBY_SIGNALING
+An empty string is also allowed (means no filter).</li> <li><code>searchTerm</code> can be used for querying a specific process ID or partial ID.</li> <li><code>status</code> can be used for querying processes on a specific status (READY, PAUSED, CANCELED, ENDED or RESULTS).</li> <li><code>withResults</code> bool filter can be used for quering only those processes that already have results (open process or finished with revealed keys).</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;entityId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;from&quot;</span><span class="token operator">:</span> <span class="token number">8</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;listSize&quot;</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getProcessList&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;namespace&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;sourceNetworkId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ETH_MAINNET&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;searchTerm&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;status&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620066207</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;withResults&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;847&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;processList&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;847&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;size&quot;</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620066207</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;847&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-process-info"><a href="#get-process-info" class="header-anchor">#</a> Get Process Info</h3> <p>Get the full information from an existing process.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getProcessInfo&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;processId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620060163</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;410&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;process&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;censusOrigin&quot;</span><span class="token operator">:</span> <span class="token number">11</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;censusRoot&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;censusURI&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;metadata&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ipfs://QmTtSkt9BQyXhCAAThG6JgdQcCdSJXKRVzoeQz6mjusTZ6&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;creationTime&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2021-05-03T11:38:03-04:00&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;endBlock&quot;</span><span class="token operator">:</span> <span class="token number">103991</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;entityId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;entityIndex&quot;</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;envelopeType&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;encryptedVotes&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;serial&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+	      <span class="token property">&quot;anonymous&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+	      <span class="token property">&quot;uniqueValues&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+	      <span class="token property">&quot;costFromWeight&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;finalResults&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;haveResults&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;namespace&quot;</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;sourceNetworkId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ETH_RINKEBY&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;processId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;processMode&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;autoStart&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;interruptible&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+	      <span class="token property">&quot;dynamicCensus&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+	      <span class="token property">&quot;encryptedMetaData&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+	      <span class="token property">&quot;preRegister&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;questionIndex&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;sourceBlockHeight&quot;</span><span class="token operator">:</span> <span class="token number">812000</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;startBlock&quot;</span><span class="token operator">:</span> <span class="token number">26464</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;status&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;voteOptions&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;costExponent&quot;</span><span class="token operator">:</span> <span class="token number">10000</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;maxCount&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;maxValue&quot;</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;maxVoteOverwrites&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;maxTotalCost&quot;</span><span class="token operator">:</span> <span class="token number">4</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;410&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620060163</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;410&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-process-summary"><a href="#get-process-summary" class="header-anchor">#</a> Get Process Summary</h3> <p>Get a minimal summary for the given process.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getProcessSummary&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;processId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1622039347</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;59&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;processSummary&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;blockCount&quot;</span><span class="token operator">:</span> <span class="token number">500</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;entityId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;entityIndex&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;metadata&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ipfs://...&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;envelopeHeight&quot;</span><span class="token operator">:</span> <span class="token number">41156</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;envelopeType&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;anonymous&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;encrypted&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;costFromWeight&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;serial&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;uniqueValues&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;sourceNetworkID&quot;</span><span class="token operator">:</span> <span class="token string">&quot;UNKNOWN&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;startBlock&quot;</span><span class="token operator">:</span> <span class="token number">82326</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;state&quot;</span><span class="token operator">:</span> <span class="token string">&quot;RESULTS&quot;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;59&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1622039356</span>
+  <span class="token punctuation">}</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;59&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;776ee4eaeed05dd840c43e81d73422379d8d2ab583889afb16a5f5fd240cfd6a175d4a9595057402f98a457e2aabb7d9cdf3cc507c7ebce927a629935568170300&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-process-count"><a href="#get-process-count" class="header-anchor">#</a> Get Process Count</h3> <p>Returns the number of processes registered on the <a href="/architecture/services/vochain">Vochain</a>.</p> <p>The following query filters can be used:</p> <ul><li><code>entityId</code> can be used for retreiving the number of processes registered by a specific entity organization.</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;entityId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getProcessCount&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;size&quot;</span><span class="token operator">:</span> <span class="token number">198</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-process-results"><a href="#get-process-results" class="header-anchor">#</a> Get Process Results</h3> <p>Get the results of the given processId, as indexed by the scrutinizer. If the process doesn't have encrypted votes but it has already started, then the gateway returns the <strong>partial results</strong>. The results can only be considered final if <code>final</code> is true.</p> <p>The results of an election are represented in <a href="/architecture/smart-contracts/process.html#results">the following format</a>.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getResults&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;processId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620076071</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;235&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;final&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;235&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;results&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">[</span>
+        <span class="token string">&quot;0&quot;</span><span class="token punctuation">,</span>
+        <span class="token string">&quot;2&quot;</span><span class="token punctuation">,</span>
+        <span class="token string">&quot;2&quot;</span><span class="token punctuation">,</span>
+        <span class="token string">&quot;0&quot;</span>
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token punctuation">[</span>
+        <span class="token string">&quot;0&quot;</span><span class="token punctuation">,</span>
+        <span class="token string">&quot;0&quot;</span><span class="token punctuation">,</span>
+        <span class="token string">&quot;0&quot;</span><span class="token punctuation">,</span>
+        <span class="token string">&quot;4&quot;</span>
+      <span class="token punctuation">]</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;state&quot;</span><span class="token operator">:</span> <span class="token string">&quot;READY&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620076071</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;poll open single&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;weight&quot;</span><span class="token operator">:</span> <span class="token string">&quot;4&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;235&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-results-weight"><a href="#get-results-weight" class="header-anchor">#</a> Get Results Weight</h3> <p>The results weight is the total amount of voting power that have been cast for a processId.
+For a non-weighted process the weight will be equal to the number of votes.
+This information can be queried in real-time on encrypted elections too.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getResultsWeight&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;processId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620076071</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;236&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;weight&quot;</span><span class="token operator">:</span> <span class="token string">&quot;4&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;236&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-entity-list"><a href="#get-entity-list" class="header-anchor">#</a> Get Entity List</h3> <p>Get a list of entities that created at least 1 process on the <a href="/architecture/services/vochain">Vochain</a>.</p> <p>The <code>from</code> field can be used to seek specific positions and start from them. So if a call without <code>from</code> (<code>from = 0</code>) returns 64 values, a second call with <code>from = 64</code> will get the next 64 values.</p> <p>The following query filters can be used:</p> <ul><li><code>searchTerm</code> can be used for querying a specific entity ID or partial ID.</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;from&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;listSize&quot;</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getEntityList&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;searchTerm&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620075711</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;511&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;entityIds&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;hexString&quot;</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;511&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620075711</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;511&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-entity-count"><a href="#get-entity-count" class="header-anchor">#</a> Get Entity Count</h3> <p>Returns the number of entities registered on the <a href="/architecture/services/vochain">Vochain</a> (those that have created at least one process).</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getEntityCount&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;size&quot;</span><span class="token operator">:</span> <span class="token number">14</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-envelope"><a href="#get-envelope" class="header-anchor">#</a> Get Envelope</h3> <p>Get the content of an existing <a href="/architecture/smart-contracts/process.html#vote-envelope">Vote Envelope</a>. The envelope is identified by the nullifier. <code>height</code> and <code>txIndex</code> refer to the block height and the index on that block, respectively, of the transaction containing this vote envelope. These fields can be used with <a href="/architecture/services/gateway.html#get-tx">Get Tx</a> to fetch this transaction.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getEnvelope&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;nullifier&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620074081</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;81&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;envelope&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;encryption_key_indexes&quot;</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;meta&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">357</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;nullifier&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;process_id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;tx_hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;tx_index&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;voter_id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;nonce&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;vote_package&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64String&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;weight&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;registered&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;81&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620225283</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;81&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-account"><a href="#get-account" class="header-anchor">#</a> Get Account</h3> <p>Get an existing account given its address.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getAccount&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;entityId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620074081</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;81&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;balance&quot;</span><span class="token operator">:</span> <span class="token number">120</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;nonce&quot;</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;processNonce&quot;</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span> 
+    <span class="token property">&quot;infoURI&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ipfs://123&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;delegates&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">&quot;0x1&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;0x2&quot;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-treasurer"><a href="#get-treasurer" class="header-anchor">#</a> Get Treasurer</h3> <p>Gets the chain Treasurer.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getTreasurer&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620074081</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;81&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;nonce&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;entityId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="indexer-api"><a href="#indexer-api" class="header-anchor">#</a> Indexer API</h2> <h3 id="get-stats"><a href="#get-stats" class="header-anchor">#</a> Get Stats</h3> <p>Get general information &amp; statistics about the current <a href="/architecture/services/vochain">Vochain</a> status.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getStats&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620059835</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;887&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;887&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;stats&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;block_height&quot;</span><span class="token operator">:</span> <span class="token number">26680</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;block_time&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token number">10000</span><span class="token punctuation">,</span>
+        <span class="token number">11000</span><span class="token punctuation">,</span>
+        <span class="token number">10000</span><span class="token punctuation">,</span>
+        <span class="token number">10000</span><span class="token punctuation">,</span>
+        <span class="token number">10000</span>
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;block_time_stamp&quot;</span><span class="token operator">:</span> <span class="token number">1620059824</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;chain_id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;vocdoni-development-39&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;entity_count&quot;</span><span class="token operator">:</span> <span class="token number">9</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;envelope_count&quot;</span><span class="token operator">:</span> <span class="token number">602</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;genesis_time_stamp&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2021-04-30T11:43:28.668436552Z&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;process_count&quot;</span><span class="token operator">:</span> <span class="token number">19</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;syncing&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;transaction_count&quot;</span><span class="token operator">:</span> <span class="token number">861</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;validator_count&quot;</span><span class="token operator">:</span> <span class="token number">4</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620059835</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;887&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+
+</code></pre></div><h3 id="get-envelope-list"><a href="#get-envelope-list" class="header-anchor">#</a> Get Envelope List</h3> <p>Get a list of nullifiers for votes registered on a given process ID (at most, 64 per request).</p> <p>The <code>fromId</code> field works the same as in <a href="#get-process-list">Get Process List</a>.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;from&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;listSize&quot;</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getEnvelopeList&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;processId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620067128</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;356&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;envelopes&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">357</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;nullifier&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;process_id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;tx_hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;tx_index&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;voter_id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">359</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;nullifier&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;process_id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;tx_hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;tx_index&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;voter_id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">306</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;nullifier&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;process_id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;tx_hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;tx_index&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;voter_id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;356&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620222421</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;356&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-block"><a href="#get-block" class="header-anchor">#</a> Get Block</h3> <p>Get the metadata for a single block on the <a href="/architecture/services/vochain">Vochain</a> by its height. <code>num_txs</code> contains the number of transactions contained in this block. In order to access these transactions (the contents of the block), use <a href="/architecture/services/gateway.html#get-tx-list-for-block">Get Tx List for Block</a>.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">24061</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getBlock&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620661000</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;561&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;block&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;last_block_hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;num_txs&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;proposer_address&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2021-05-10T15:37:50.477536778Z&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;561&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620661094</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;561&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-block-by-hash"><a href="#get-block-by-hash" class="header-anchor">#</a> Get Block By Hash</h3> <p>Get the metadata for a single block on the <a href="/architecture/services/vochain">Vochain</a> by its hash. <code>num_txs</code> contains the number of transactions contained in this block. In order to access these transactions (the contents of the block), use <a href="/architecture/services/gateway.html#get-tx-list-for-block">Get Tx List for Block</a>.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getBlockByHash&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620661000</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;561&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;block&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">24061</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;last_block_hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;num_txs&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;proposer_address&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2021-05-10T15:37:50.477536778Z&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;561&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620661094</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;561&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-block-list"><a href="#get-block-list" class="header-anchor">#</a> Get Block List</h3> <p>Get a list of confirmed blocks on the <a href="/architecture/services/vochain">Vochain</a> (at most, 64 per request).</p> <p>The <code>fromId</code> field works the same as in <a href="#get-process-list">Get Process List</a>.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;from&quot;</span><span class="token operator">:</span> <span class="token number">24031</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;listSize&quot;</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getBlockList&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620660800</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;847&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;blockList&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">&quot;hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">24031</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;last_block_hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;num_txs&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;proposer_address&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2021-05-10T15:32:40.122987363Z&quot;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">&quot;hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">24032</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;last_block_hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;num_txs&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;proposer_address&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2021-05-10T15:32:50.540679299Z&quot;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;847&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620660882</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;847&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-tx"><a href="#get-tx" class="header-anchor">#</a> Get Tx</h3> <p>Get a single tx from the <a href="/architecture/services/vochain">Vochain</a>. <code>height</code> is the block containing a transaction and <code>txIndex</code> in the transaction's index on that block.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">27522</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getTx&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620068626</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;txIndex&quot;</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;632&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;632&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620068626</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;tx&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;tx&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64String&quot;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;632&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-tx-by-id-height"><a href="#get-tx-by-id-height" class="header-anchor">#</a> Get Tx By ID (height)</h3> <p>Get a single tx from the <a href="/architecture/services/vochain">Vochain</a>. <code>id</code> is that transaction's height on the vochain as a whole, and each ID value references a unique transaction. Transaction ID corresponds to the order in which that transaction was mined.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token number">851</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getTxById&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1625063686</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;137&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;137&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1625063686</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;tx&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;block_height&quot;</span><span class="token operator">:</span> <span class="token number">354792</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token number">851</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;tx&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64String&quot;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;137&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-transaction-by-hash"><a href="#get-transaction-by-hash" class="header-anchor">#</a> Get Transaction By Hash</h3> <p>Get a single transaction from the <a href="/architecture/services/vochain">Vochain</a>. <code>hash</code> is the hash of the bytes of that transaction and is identical to the <code>hash</code> returned by other transaction API calls. More specifically, this value is the Tendermint hash of the entire <code>req.Tx</code> added to the vochain state. This call can be used to verify that a transaction was mined.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getTxByHash&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1625063687</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;137&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;137&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1625063686</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;tx&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;block_height&quot;</span><span class="token operator">:</span> <span class="token number">354793</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token number">852</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;tx&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64String&quot;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;137&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-validator-list"><a href="#get-validator-list" class="header-anchor">#</a> Get Validator List</h3> <p>Get the list of all addresses currently validating blocks on the <a href="/architecture/services/vochain">Vochain</a>.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getValidatorList&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620059997</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;199&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;199&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620059998</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;validatorlist&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">&quot;address&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64string&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;power&quot;</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;pubKey&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64string&quot;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">&quot;address&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64string&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;power&quot;</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;pubKey&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64string&quot;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">&quot;address&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64string&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;power&quot;</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;pubKey&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64string&quot;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">&quot;address&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64string&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;power&quot;</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;pubKey&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64string&quot;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;199&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="get-tx-list-for-block"><a href="#get-tx-list-for-block" class="header-anchor">#</a> Get Tx List For Block</h3> <p>Get a list of transactions contained in the given block (at most, 64 per request).</p> <p>The <code>fromId</code> field works the same as in <a href="#get-process-list">Get Process List</a>.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">27522</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;listSize&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getTxListForBlock&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620070701</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;887&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;887&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1620070701</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;txList&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">&quot;Hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;Index&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;Type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;vote&quot;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">&quot;Hash&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;Index&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;Type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;vote&quot;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;887&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="file-api"><a href="#file-api" class="header-anchor">#</a> File API</h2> <h3 id="fetch-file"><a href="#fetch-file" class="header-anchor">#</a> Fetch File</h3> <p>Fetch a file from the P2P network (currently IPFS) and return it encoded in base 64.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;fetchFile&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;uri&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&lt;content uri&gt;&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;content&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64Payload&quot;</span><span class="token punctuation">,</span>  <span class="token comment">// The contents of the file</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><strong>Used in:</strong></p> <ul><li><a href="/architecture/component-interaction.html#voting">Voting process retrieval</a></li> <li><a href="/architecture/component-interaction.html#after-voting">Vote scrutiny</a></li></ul> <p><strong>Related:</strong></p> <ul><li><a href="/architecture/protocol/data-origins.html#content-uri">Content URI</a></li></ul> <h3 id="add-file"><a href="#add-file" class="header-anchor">#</a> Add File</h3> <p>Uploads a file and pins it on an IPFS cluster. This private method is aimed to be used by the election organizer. The Gateway running the API is usually a private server, only used by entity admins.</p> <p>These methods require authentication, following the <a href="/architecture/protocol/json-api.html#authentication">JSON API rules</a>.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;addFile&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ipfs&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;content&quot;</span><span class="token operator">:</span> <span class="token string">&quot;base64Payload&quot;</span><span class="token punctuation">,</span>  <span class="token comment">// File contents</span>
+    <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>            <span class="token comment">// Human readable name to help identify the content in the future</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;uri&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&lt;content uri&gt;&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+  
+<span class="token punctuation">}</span>
+</code></pre></div><p><strong>Used in:</strong></p> <ul><li><a href="/architecture/component-interaction.html#voting-process-creation">Voting process creation</a></li></ul> <p><strong>Related:</strong></p> <ul><li><a href="/architecture/protocol/data-origins.html#content-uri">Content URI</a></li></ul> <h3 id="list-pinned-files"><a href="#list-pinned-files" class="header-anchor">#</a> List pinned files</h3> <p>This method provides private Gateway users with the list of resources that have been pinned on IPFS.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;pinList&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;files&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span> <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;file1.txt&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;uri&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&lt;content-uri&gt;&quot;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span> <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;file2.png&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;uri&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&lt;content-uri&gt;&quot;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span> <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;file3.bin&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;uri&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&lt;content-uri&gt;&quot;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      ...
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><strong>Related:</strong></p> <ul><li><a href="/architecture/protocol/data-origins.html#content-uri">Content URI</a></li></ul> <h3 id="pin-a-file"><a href="#pin-a-file" class="header-anchor">#</a> Pin a file</h3> <p>This method allows administrators to pin already existing remote content, so it remains available on IPFS.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;pinFile&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;uri&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&lt;content-uri&gt;&quot;</span><span class="token punctuation">,</span> <span class="token comment">// Multiple origins can be pinned at once</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="unpin-a-file"><a href="#unpin-a-file" class="header-anchor">#</a> Unpin a file</h3> <p>This method is the counterpart of <code>pin</code> and <code>addFile</code>. It allows administrators to unpin and drop content from a Gateway so it doesn't eventually run out of space.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;method&quot;</span><span class="token operator">:</span> <span class="token string">&quot;unpinFile&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;uri&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&lt;content-uri&gt;&quot;</span><span class="token punctuation">,</span>  <span class="token comment">// Multiple origins can be unpinned at once</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110671</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req-2345679&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1556110672</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;hexString&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><strong>Related:</strong></p> <ul><li><a href="/architecture/protocol/data-origins.html#content-uri">Content URI</a></li></ul> <h2 id="using-the-api-for-beginners"><a href="#using-the-api-for-beginners" class="header-anchor">#</a> Using the API (for beginners)</h2> <p>If you don't have experience using a <a href="/architecture/protocol/json-api">JSON API</a>, let's run through an example. Here we'll be using <a href="https://linux.die.net/man/1/curl" target="_blank" rel="noopener noreferrer">curl<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> to make requests to https://gw1.vocdoni.net, one of the gateways hosted by Vocdoni.</p> <p>Open a terminal emulator and run the following command:</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">curl</span> https://gw1.vocdoni.net/dvote -X POST -H Content-Type:application/json --data <span class="token string">'{&quot;id&quot;: &quot;req00'</span><span class="token environment constant">$RANDOM</span><span class="token string">'&quot;, &quot;request&quot;: {&quot;method&quot;: &quot;getInfo&quot;, &quot;timestamp&quot;:'</span><span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%s<span class="token variable">)</span></span><span class="token string">'}}'</span>
+</code></pre></div><p>you should see a response:</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;apiList&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">&quot;file&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;vote&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;results&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;indexer&quot;</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;health&quot;</span><span class="token operator">:</span> <span class="token number">77</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req0015529&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1623410118</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req0015529&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;a80f11f32190c5ae55ac6ed1494daf7fc570baa2d275403e6d497455d4a513e37ac42dbbee7e16ae38ce55850756038e7d88822d4bcdec00d6b2047601610ba301&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>now we know that the gateway hosted at gw1.vocdoni.net enables the file, <a href="/architecture/services/gateway.html#vote-api">vote</a>, <a href="/architecture/services/gateway.html#results-api">results</a>, and <a href="/architecture/services/gateway.html#indexer-api">indexer</a> apis.</p> <p>Let's do some simple requests to learn more about the state of the Vochain.</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">curl</span> https://gw1.vocdoni.net/dvote -X POST -H Content-Type:application/json --data <span class="token string">'{&quot;id&quot;: &quot;req00'</span><span class="token environment constant">$RANDOM</span><span class="token string">'&quot;, &quot;request&quot;: {&quot;method&quot;: &quot;getStats&quot;, &quot;timestamp&quot;:'</span><span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%s<span class="token variable">)</span></span><span class="token string">'}}'</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req005711&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;stats&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;block_height&quot;</span><span class="token operator">:</span> <span class="token number">216810</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;block_time&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token number">12000</span><span class="token punctuation">,</span>
+        <span class="token number">11764</span><span class="token punctuation">,</span>
+        <span class="token number">11920</span><span class="token punctuation">,</span>
+        <span class="token number">11900</span><span class="token punctuation">,</span>
+        <span class="token number">11912</span>
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;block_time_stamp&quot;</span><span class="token operator">:</span> <span class="token number">1623417292</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;chain_id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;vocdoni-release-1.0.1&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;entity_count&quot;</span><span class="token operator">:</span> <span class="token number">73</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;envelope_count&quot;</span><span class="token operator">:</span> <span class="token number">1804</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;genesis_time_stamp&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2021-05-12T12:38:33.672114557Z&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;process_count&quot;</span><span class="token operator">:</span> <span class="token number">202</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;syncing&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;validator_count&quot;</span><span class="token operator">:</span> <span class="token number">5</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1623417311</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req005711&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;e91bd3394104b416a2cacd9bf0f47d36e7e17a53edef072105f477c85bbbb9642865350182758e723048eb4c4c36a6e49844e99da3428933a5ec0384e87909f201&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>we know there are 73 entities. Let's list the first 10:</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">curl</span> https://gw1.vocdoni.net/dvote -X POST -H Content-Type:application/json --data <span class="token string">'{&quot;id&quot;: &quot;req00'</span><span class="token environment constant">$RANDOM</span><span class="token string">'&quot;, &quot;request&quot;: {&quot;method&quot;: &quot;getEntityList&quot;, &quot;from&quot;: 0, &quot;listSize&quot;: 10, &quot;timestamp&quot;:'</span><span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%s<span class="token variable">)</span></span><span class="token string">'}}'</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;entityIds&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">&quot;6b175474e89094c44da98b954eedeac495271d0f&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;a117000000f279d81a1d3cc75430faa017fa5a2e&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;c02f9e6f32841d1d827b5a4d4a4f1762fddeca8f&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;df329aaf25131e47dc33c0bec24d5be1987cc821&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;ba5dbe351ef455b876d9faff3286dc60bf2a0b74&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;8a77ba9ec4c9fbb2adb9ccdf73f5cfab54986607&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;0924e2baa477d3b3ec1668369337bf574a4190d4&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;4564c9bc8db2f83a6c448ee542d2cef6c24c69ff&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;f7306afac9abf11ec49dc30e2a9a2cfe5cb76c5a&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;d41665e0f8b8b6b2e076723e05850a443660566d&quot;</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req0026064&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1623419048</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req0026064&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1ec2daddbc811f19bef08eaf5d922e0d8c030ee4e12d4cf888b82744899731d333831fb0ed5c804757f373b064be7451833e268056d5ef7e6534760bf2cd652a00&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Now let's see the list of processes started by the first entity:</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">curl</span> https://gw1.vocdoni.net/dvote -X POST -H Content-Type:application/json --data <span class="token string">'{&quot;id&quot;: &quot;req00'</span><span class="token environment constant">$RANDOM</span><span class="token string">'&quot;, &quot;request&quot;: {&quot;method&quot;: &quot;getProcessList&quot;, &quot;from&quot;: 0, &quot;listSize&quot;: 64, &quot;entityID&quot;: &quot;6b175474e89094c44da98b954eedeac495271d0f&quot;, &quot;timestamp&quot;:'</span><span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%s<span class="token variable">)</span></span><span class="token string">'}}'</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;processList&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">&quot;b21982b7a69d0a8b1e6645afbe12c9dec42703cd994f9b02bd8922a921325d15&quot;</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req007487&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;size&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1623418108</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req007487&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;c9fdf2faf545d1d4e669b4a61bb6165a33258df6c3033913002f4924aa3e5ba83157202639cf8508a0e80aee1ee44976a8a7ab174e2ff546cf71e4bcd6e5cb7001&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>And finally, let's get the details of this process:</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">curl</span> https://gw1.vocdoni.net/dvote -X POST -H Content-Type:application/json --data <span class="token string">'{&quot;id&quot;: &quot;req00'</span><span class="token environment constant">$RANDOM</span><span class="token string">'&quot;, &quot;request&quot;: {&quot;method&quot;: &quot;getProcessSummary&quot;, &quot;processID&quot;: &quot;b21982b7a69d0a8b1e6645afbe12c9dec42703cd994f9b02bd8922a921325d15&quot;, &quot;timestamp&quot;:'</span><span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%s<span class="token variable">)</span></span><span class="token string">'}}'</span>
+</code></pre></div><div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;response&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;ok&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;processSummary&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;blockCount&quot;</span><span class="token operator">:</span> <span class="token number">50738</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;entityId&quot;</span><span class="token operator">:</span> <span class="token string">&quot;6b175474e89094c44da98b954eedeac495271d0f&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;entityIndex&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;envelopeHeight&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;envelopeType&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;sourceNetworkID&quot;</span><span class="token operator">:</span> <span class="token string">&quot;UNKNOWN&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;startBlock&quot;</span><span class="token operator">:</span> <span class="token number">15593</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;state&quot;</span><span class="token operator">:</span> <span class="token string">&quot;RESULTS&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;request&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req009439&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;timestamp&quot;</span><span class="token operator">:</span> <span class="token number">1623418186</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;req009439&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;signature&quot;</span><span class="token operator">:</span> <span class="token string">&quot;b188b512c46446a8b23d1fc0dffd585076d8745c799a377db71bb63ff8aab1090d42df2d4fdef9f0ee6e736e38475b4babcf65dbe956fafcd3ffee163d44a27e01&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Hopefully now you have a rough idea of how to use the Gateway APIs.</p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">9/14/2022, 8:14:55 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/architecture/smart-contracts/storage-proofs.html" class="prev">
+        Storage Proofs Contracts
+      </a></span> <span class="next"><a href="/architecture/services/vochain.html">
+        Vochain
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.003a3fab.js" defer></script><script src="/assets/js/2.d75a9e61.js" defer></script><script src="/assets/js/32.c6e6f766.js" defer></script>
+  </body>
+</html>
